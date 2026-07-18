@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "YAPS Music — Uganda's Sound",
+  "name": "YAPS Music",
   "short_name": "YAPS Music",
-  "description": "Uganda's premier music platform — stream, upload, and share Ugandan music, videos, and AI-generated tracks.",
+  "description": "Uganda's premier music platform stream, upload, and share Ugandan music, videos, and AI generated tracks.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
