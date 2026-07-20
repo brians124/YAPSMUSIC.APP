@@ -4116,6 +4116,12 @@ function goToLibraryTab(tab) {
 // Skip the intro instantly on future loads (before it can even flash on screen).
 if (safeLS.getItem('yaps_intro_seen')) {
   document.currentScript.parentElement.style.display = 'none';
+  // IMPORTANT: hiding the splash does NOT render the app underneath it.
+  // Without this, returning visitors saw a blank page because navigate('home')/
+  // renderHome() was only ever triggered from the splash's own buttons.
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof navigate === 'function') navigate('home');
+  });
 }
 
 // Also dismiss on back-swipe / escape
@@ -9106,7 +9112,12 @@ let _db = null;
 function openDB() {
   return new Promise((resolve, reject) => {
     if (_db) return resolve(_db);
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    let req;
+    try {
+      req = indexedDB.open(DB_NAME, DB_VERSION);
+    } catch (e) {
+      return reject(e); // e.g. SecurityError when opened via file:// directly
+    }
     req.onupgradeneeded = e => {
       const db = e.target.result;
       // Store full track metadata
@@ -14035,7 +14046,12 @@ let _deviceDb = null;
 function _openDB() {
   return new Promise((res, rej) => {
     if (_deviceDb) return res(_deviceDb);
-    const req = indexedDB.open(_DB_NAME, 1);
+    let req;
+    try {
+      req = indexedDB.open(_DB_NAME, 1);
+    } catch (e) {
+      return rej(e); // e.g. SecurityError when opened via file:// directly
+    }
     req.onupgradeneeded = e => {
       const store = e.target.result.createObjectStore(_DB_STORE, { keyPath: 'id', autoIncrement: true });
       store.createIndex('name', 'name', { unique: false });
