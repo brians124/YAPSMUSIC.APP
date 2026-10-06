@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>YAPS Music · Virtual DJ Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#030816;--pn:rgba(9,22,60,.62);--bd:rgba(60,140,255,.38);--tx:#eaf4ff;--mu:#7fb2ee;--cy:#19c3ff;--pu:#8b5cf6;--rd:#ff3b5c}
+*,*:before,*:after{box-sizing:border-box;margin:0}
+body{background:radial-gradient(900px 520px at 88% -8%,#0e2f86 0,transparent 60%),radial-gradient(700px 500px at 0 100%,#0a1c55 0,transparent 60%),var(--bg);color:var(--tx);font:500 13px 'Archivo',system-ui,sans-serif;min-height:100dvh;overflow-x:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+#app{display:grid;grid-template-columns:190px 1fr;min-height:100dvh}
+header{grid-column:1/3;display:flex;align-items:center;gap:22px;padding:10px 18px;border-bottom:1px solid var(--bd);background:linear-gradient(90deg,rgba(5,14,44,.9),rgba(5,14,44,.4));position:relative;overflow:hidden}
+.earth{position:absolute;right:18%;top:-190px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle at 40% 70%,rgba(25,195,255,.35),rgba(20,60,160,.18) 45%,transparent 70%);pointer-events:none}
+.logo{font:700 40px/1 'Rajdhani',sans-serif;letter-spacing:.04em;background:linear-gradient(180deg,#bff0ff,#19c3ff 55%,#1457d6);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 12px rgba(25,195,255,.6))}
+.logo small{display:block;font:600 11px 'Rajdhani',sans-serif;letter-spacing:.32em;color:#cfe6ff;-webkit-text-fill-color:#cfe6ff}
+.ttl{position:relative;font:700 34px/1 'Rajdhani',sans-serif;letter-spacing:.02em}
+.ttl b{color:var(--cy)}.ttl p{font:500 17px 'Rajdhani',sans-serif;color:var(--mu);margin-top:6px;letter-spacing:.04em}
+.sp{flex:1}
+.aibtn{position:relative;display:flex;align-items:center;gap:12px;padding:10px 18px;border-radius:16px;border:1.5px solid var(--cy);background:rgba(25,195,255,.1);box-shadow:0 0 22px rgba(25,195,255,.35),inset 0 0 14px rgba(25,195,255,.15);text-align:left}
+.aibtn b{display:block;font:700 15px 'Rajdhani'}.aibtn span{font-size:11.5px;color:var(--mu)}
+.ic{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--cy);background:rgba(25,195,255,.08);display:grid;place-items:center;font-size:18px;color:var(--cy);flex:none}
+nav{padding:12px 8px;border-right:1px solid var(--bd);background:rgba(4,12,38,.7);display:flex;flex-direction:column;gap:2px}
+nav a{display:flex;gap:12px;align-items:center;padding:11px 14px;border-radius:10px;color:#cfe3ff;text-decoration:none;font-weight:600;font-size:14px}
+nav a i{font-style:normal;width:20px;text-align:center;color:var(--cy)}
+nav a.on{background:linear-gradient(90deg,#1d7bff,#2f8eff);color:#fff;box-shadow:0 0 18px rgba(47,142,255,.5)}nav a.on i{color:#fff}
+.globe{margin-top:auto;padding:70px 8px 6px;text-align:center;background:radial-gradient(circle at 50% 60%,rgba(25,195,255,.35),transparent 60%);font:700 13px 'Rajdhani';letter-spacing:.08em;color:#bfe6ff}
+.globe b{display:block;font-size:22px;color:var(--cy);text-shadow:0 0 14px rgba(25,195,255,.7)}
+main{padding:12px;display:grid;gap:12px;align-content:start;min-width:0}
+.pn{border:1px solid var(--bd);border-radius:16px;background:var(--pn);backdrop-filter:blur(8px);box-shadow:0 0 0 1px rgba(255,255,255,.03) inset,0 10px 30px -14px rgba(0,0,0,.8)}
+.row1{display:grid;grid-template-columns:minmax(0,1fr) 250px minmax(0,1fr);gap:12px}
+.deck{--ac:#19c3ff;--dim:rgba(25,195,255,.32);--gl:rgba(25,195,255,.55);padding:10px}
+.deck.b{--ac:#8b5cf6;--dim:rgba(139,92,246,.4);--gl:rgba(110,120,255,.55)}
+.info{display:grid;grid-template-columns:auto auto 1fr auto;gap:10px;align-items:center;padding:4px 2px}
+.tag{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font:700 19px 'Rajdhani';background:var(--ac);color:#fff;box-shadow:0 0 14px var(--gl)}
+.art{width:62px;height:62px;border-radius:10px;display:grid;place-items:center;font:700 22px 'Rajdhani';color:#fff;box-shadow:0 0 0 1px var(--bd)}
+.meta{min-width:0}.meta b{display:block;font:700 18px 'Rajdhani';white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta span{display:block;color:#cfe0ff;margin-top:2px}.meta i{font-style:normal;color:var(--mu);font-size:12px}
+.tm{text-align:right;font-size:12px;color:#cfe0ff}.tm em{display:block;margin-top:6px;padding:3px 9px;border:1px solid var(--bd);border-radius:6px;font-style:normal;font-weight:700}
+canvas{grid-column:1/-1;width:100%;height:58px;display:block;margin-top:2px}
+.ctl{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:10px 4px 2px}
+.deck.b .ctl{flex-direction:row-reverse}
+.btns{display:flex;flex-direction:column;gap:14px}
+.k{width:88px;padding:16px 8px;border-radius:12px;border:1.5px solid var(--bd);background:linear-gradient(180deg,rgba(25,70,170,.35),rgba(8,22,70,.6));font:700 15px 'Rajdhani';letter-spacing:.06em;transition:.15s}
+.k:hover{border-color:var(--ac)}.k:active{transform:scale(.96)}
+.k.pl{background:linear-gradient(180deg,#1f7dff,#1148c8);border-color:#5aa8ff;box-shadow:0 0 16px var(--gl);font-size:16px}
+.k.pl.on{box-shadow:0 0 26px var(--gl),inset 0 0 12px rgba(255,255,255,.3)}
+.jog{flex:1;display:grid;place-items:center;min-width:0}
+.disc{width:min(100%,196px);aspect-ratio:1;border-radius:50%;position:relative;display:grid;place-items:center;background:radial-gradient(circle,#050d27 0 58%,transparent 59%),conic-gradient(from 0deg,var(--ac),#0b2f8e,var(--dim),#0b2f8e,var(--ac));box-shadow:0 0 34px var(--gl),inset 0 0 20px rgba(0,0,0,.8)}
+.disc:after{content:"";position:absolute;inset:6%;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.16) 0 1deg,transparent 1deg 7deg);-webkit-mask:radial-gradient(circle,transparent 62%,#000 63% 75%,transparent 76%);mask:radial-gradient(circle,transparent 62%,#000 63% 75%,transparent 76%)}
+.hub{width:38%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font:700 16px 'Rajdhani';letter-spacing:.06em;color:var(--ac);border:2px solid var(--ac);background:#06122e;box-shadow:0 0 16px var(--gl),inset 0 0 12px var(--dim)}
+.sl{display:flex;flex-direction:column;align-items:center;gap:6px;height:178px;font-size:11px;color:var(--mu)}
+.sl output{font-weight:700;color:var(--tx);border:1px solid var(--bd);padding:3px 7px;border-radius:7px;font-size:11px}
+input[type=range]{accent-color:var(--ac,#19c3ff);cursor:pointer}
+input.v{writing-mode:vertical-lr;direction:rtl;height:100px;width:22px;flex:1}
+.mix{padding:10px 12px;display:flex;flex-direction:column}
+.mix h3,.hd{text-align:center;font:700 14px 'Rajdhani';letter-spacing:.12em;margin-bottom:8px}
+.mx{display:grid;grid-template-columns:1fr 54px 1fr;gap:6px;align-items:center;flex:1}
+.kn{display:flex;flex-direction:column;align-items:center;gap:5px;margin:7px 0;font-size:10.5px;letter-spacing:.1em;color:#cfe0ff}
+.knob{width:42px;height:42px;border-radius:50%;position:relative;touch-action:none;cursor:ns-resize;border:2px solid var(--kc);background:radial-gradient(circle at 35% 30%,#16306e,#06122e);box-shadow:0 0 12px var(--kc)}
+.knob:after{content:"";position:absolute;left:50%;top:5px;width:3px;height:13px;margin-left:-1.5px;border-radius:2px;background:var(--kc);transform-origin:50% 16px;transform:rotate(var(--r,0deg))}
+.meters{display:flex;gap:6px;justify-content:center;height:150px}
+.meters div{width:11px;border-radius:3px;background:rgba(255,255,255,.07);position:relative;overflow:hidden}
+.meters i{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(0deg,#19c3ff,#19c3ff 60%,#ffd35c 85%,#ff3b5c)}
+.meters div:nth-child(n+3) i{background:linear-gradient(0deg,#8b5cf6,#8b5cf6 60%,#ffd35c 85%,#ff3b5c)}
+.cf{margin-top:8px;text-align:center;font:700 11px 'Rajdhani';letter-spacing:.12em}
+.cf div{display:flex;align-items:center;gap:6px;margin-top:6px}.cf input{flex:1;accent-color:#6aa8ff}
+.mv{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:11px;color:var(--mu)}.mv input{flex:1}
+.row2{display:grid;grid-template-columns:1.1fr 1.7fr 1.3fr;gap:0;padding:10px 14px}
+.row2>div{padding:0 14px;border-left:1px solid var(--bd)}.row2>div:first-child{border:0;padding-left:0}
+.bs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.sm{min-width:48px;padding:13px 12px;border-radius:10px;border:1.5px solid var(--bd);background:rgba(10,30,90,.55);font:700 15px 'Rajdhani';transition:.15s}
+.sm:hover{border-color:var(--cy)}.sm.on{background:linear-gradient(180deg,#1f7dff,#1148c8);border-color:#7fc0ff;box-shadow:0 0 14px rgba(47,142,255,.7)}
+.hcw{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}.hcw .sm{min-width:40px;padding:9px 12px;border-radius:50%;font-size:14px}
+.hcw .sm.pu{border-color:#7c5cf0}.hcw .sm.pu.on{background:linear-gradient(180deg,#8b5cf6,#5a31c9);border-color:#b79cff;box-shadow:0 0 14px rgba(139,92,246,.7)}
+.hcw b{font:700 15px 'Rajdhani';color:var(--cy);margin:0 4px}.hcw b.p{color:#a98bff}
+.row3{display:grid;grid-template-columns:1fr 1.15fr 1fr 1fr;gap:12px}
+.card{padding:14px}.card h4{font:700 14px 'Rajdhani';letter-spacing:.08em;margin-bottom:10px}
+.src{display:flex;gap:12px;align-items:center;width:100%;padding:9px 6px;border:0;border-top:1px solid var(--bd);background:none;text-align:left}
+.src:first-of-type{border-top:0}
+.src .ic{width:38px;height:38px;border-radius:9px;font-size:16px}.src b{display:block;font-size:13.5px}.src span{font-size:11px;color:var(--mu)}.src u{margin-left:auto;text-decoration:none;color:var(--mu)}
+.ai{border:2px solid var(--cy);box-shadow:0 0 30px rgba(25,195,255,.35),inset 0 0 24px rgba(25,195,255,.12);text-align:left}
+.ai .top{display:flex;gap:14px;align-items:center}.ai .top .ic{width:62px;height:62px;font-size:28px}
+.ai h4{font-size:22px;margin:0;letter-spacing:.03em}.ai .top span{font:600 18px 'Rajdhani'}
+.ai ul{list-style:none;padding:0;margin:14px 0 14px 8px;display:grid;gap:7px;color:#d6e8ff}.ai li:before{content:"✓";color:var(--cy);margin-right:10px;font-weight:800}
+.go{display:block;width:78%;margin:0 auto;padding:14px;border-radius:14px;border:1.5px solid #6fc0ff;background:linear-gradient(180deg,#1f8bff,#1148c8);font:700 16px 'Rajdhani';letter-spacing:.04em;box-shadow:0 0 22px rgba(47,142,255,.7)}
+.go.live{background:linear-gradient(180deg,#ff5473,#c0143a);border-color:#ff9ab0;box-shadow:0 0 22px rgba(255,59,92,.6)}
+.rw{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;margin-top:10px;border-radius:12px;border:1.5px solid var(--bd);background:rgba(8,22,70,.55);font-weight:600;text-align:left}
+.rw:hover{border-color:var(--cy)}.rw.rec{border-color:#ff5473}
+.dot{width:16px;height:16px;border-radius:50%;background:var(--rd);box-shadow:0 0 12px var(--rd);flex:none}.rw.rec .dot{animation:bl 1s infinite}
+@keyframes bl{50%{opacity:.25}}
+.hd2{display:flex;gap:12px;align-items:center;margin-bottom:10px}.hd2 h4{margin:0}.hd2 span{font-size:12.5px;color:#cfe0ff}
+.mixes{margin-top:8px;display:grid;gap:6px;max-height:110px;overflow:auto}.mixes a{color:var(--cy);font-size:12.5px;text-decoration:none;padding:6px 8px;border:1px solid var(--bd);border-radius:8px}
+footer{grid-column:2;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid var(--bd);font-size:13px;color:#cfe0ff}
+footer b{color:var(--cy)}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#0b1d55;border:1px solid var(--cy);padding:11px 18px;border-radius:99px;transition:.25s;z-index:9;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1180px) and (orientation:portrait){.row1{grid-template-columns:1fr}.mix{order:2}.row3{grid-template-columns:1fr 1fr}.row2{grid-template-columns:1fr}.row2>div{border:0;padding:8px 0}.earth{display:none}}
+@media(max-width:820px){#app{grid-template-columns:1fr}header{grid-column:1;flex-wrap:wrap;gap:12px}nav{display:none}footer{grid-column:1}.row3{grid-template-columns:1fr}.ttl{font-size:26px}.logo{font-size:32px}.ctl{gap:6px}.k{width:70px;padding:13px 4px}.sl{height:150px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+input[type=search]{width:100%;min-height:44px;padding:0 12px;border-radius:10px;border:1px solid var(--bd);background:#06122e;color:var(--tx);font:inherit}
+#list{display:grid;gap:6px;max-height:46dvh;overflow:auto}
+.it{display:grid;grid-template-columns:44px 1fr auto auto;gap:8px;align-items:center;padding:6px;border-radius:10px;border:1px solid transparent}
+.it:hover{border-color:var(--bd)}
+.it img{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#0b1d55}
+.it div{min-width:0}.it b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.it span{font-size:12px;color:var(--mu)}
+.ld{width:44px;border:1px solid var(--bd);border-radius:8px;background:rgba(25,195,255,.12);font:700 15px Rajdhani}.ld.b{background:rgba(139,92,246,.2)}
+.empty{padding:18px;text-align:center;color:var(--mu)}
+[hidden]{display:none!important}
+dialog{width:min(520px,calc(100% - 24px));max-height:92dvh;overflow:auto;border:1px solid var(--bd);border-radius:16px;background:#071538;color:var(--tx);padding:16px}
+dialog::backdrop{background:rgba(0,0,0,.65)}
+dialog h2{font:700 22px Rajdhani;margin-bottom:8px}
+.f{display:grid;gap:4px;margin-bottom:10px;color:var(--mu);font-size:12.5px}
+.f input[type=text],.f textarea,.f select{width:100%;min-height:44px;padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:#06122e;color:var(--tx);font:inherit}
+.f textarea{min-height:70px;resize:vertical}
+.ck{display:flex;gap:8px;align-items:flex-start;margin:6px 0;color:var(--tx);font-size:13px}
+.ck input{width:20px;height:20px;margin-top:2px}
+.tabs{display:flex;gap:6px;overflow-x:auto}.tabs button{flex:none;padding:0 14px;min-height:40px;border:1px solid var(--bd);border-radius:99px;background:none}.tabs .on{background:var(--cy);color:#032;border-color:var(--cy)}
+#libd[open]{display:grid;grid-template-rows:auto auto auto minmax(0,1fr);gap:10px;height:min(86dvh,720px)}
+.lh{display:flex;justify-content:space-between;align-items:center;font:700 16px Rajdhani;letter-spacing:.12em}
+.x{min-width:40px;min-height:40px;border:1px solid var(--bd);border-radius:10px;background:none}
+#libd #list{max-height:none;min-height:0}
+dialog .k{width:auto;flex:1;padding:12px}.drow{display:flex;gap:8px}
+.mixes2{margin-top:8px;font-size:12.5px;color:var(--mu)}
+
+/* ===================================================================
+   DJ CONSOLE MODE  (Cross DJ style)
+   - phone held sideways  -> full-screen console: Deck A | Mixer | Deck B,
+     loop / hot cues / FX strip underneath, no page scroll.
+     Sources / AI DJ / Record / Export live in a slide-up TOOLS sheet.
+   - tablet landscape     -> three-column decks instead of stacked.
+   - phone portrait       -> same stacked layout + "rotate" hint.
+   =================================================================== */
+body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
+button,.disc,input[type=range]{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.hbtn,.sheethd,#scrim{display:none}
+.rot{display:none;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--cy);border-radius:14px;background:rgba(25,195,255,.1);box-shadow:0 0 18px rgba(25,195,255,.25);color:#d6ecff;font-weight:600}
+.rot>span:first-child{font-size:24px;color:var(--cy)}
+.rot>span:nth-child(2){flex:1;line-height:1.3}
+.rot button{min-height:40px;padding:0 14px;border-radius:10px;border:1px solid var(--cy);background:rgba(25,195,255,.18);font:700 14px Rajdhani;letter-spacing:.05em}
+.rot button.q{padding:0 10px;border-color:var(--bd);background:none}
+@media(orientation:portrait) and (max-width:820px){.rot{display:flex}}
+
+@media(orientation:landscape) and (min-height:521px) and (max-width:1180px){
+ #app{grid-template-columns:1fr}header,footer{grid-column:1}nav,.earth{display:none}
+ .row1{grid-template-columns:minmax(0,1fr) 220px minmax(0,1fr)}
+ .row3{grid-template-columns:1fr 1fr}.k{width:74px}
+}
+
+@media(orientation:landscape) and (max-height:520px){
+ :root{--h:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+ html{height:100dvh}
+ body{height:100%;min-height:0;overflow:hidden}
+ #app{display:flex;flex-direction:column;height:100%;min-height:0;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+ nav,footer,.earth,.rot,header>span.ic{display:none}
+
+ /* top bar */
+ header{flex:none;flex-wrap:nowrap;gap:10px;padding:4px 10px}
+ .logo{font-size:22px}.logo small{display:none}
+ .ttl{font-size:17px}.ttl p{display:none}
+ .aibtn{padding:3px 10px;border-radius:12px;gap:8px}
+ .aibtn .ic{width:26px;height:26px;font-size:13px}.aibtn b{font-size:13px}.aibtn span span{display:none}
+ header .hbtn{display:grid;width:34px;height:34px;font-size:15px;cursor:pointer}
+
+ /* console */
+ main{flex:1;min-height:0;padding:6px;gap:6px;align-content:stretch;grid-template-rows:minmax(0,1fr) auto}
+ .row1{grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr);gap:6px;min-height:0}
+ .deck{display:flex;flex-direction:column;min-height:0;padding:6px;border-radius:12px;overflow:hidden}
+ .info{grid-template-columns:auto auto 1fr auto;gap:6px;padding:0}
+ .tag{width:24px;height:24px;font-size:14px;border-radius:6px}
+ .art{width:34px;height:34px;font-size:14px;border-radius:7px}
+ .meta b{font-size:13px}.meta span{font-size:11px;margin-top:0}.meta i{font-size:10px}
+ .tm{font-size:10px}.tm em{margin-top:2px;padding:1px 6px;font-size:10px}
+ canvas{height:28px;margin-top:2px}
+ .ctl{flex:1;min-height:0;padding:4px 0 0;gap:6px;align-items:stretch}
+ .btns{gap:6px}
+ .btns .k{flex:1;width:46px;min-height:0;max-height:52px;padding:2px;font-size:12px;border-radius:9px}
+ .btns .k.pl{font-size:11px}
+ .jog{flex:1;min-width:0;align-self:center}
+ .disc{width:clamp(80px,min(calc(var(--h) - 215px),calc(50vw - 222px)),210px)}
+ .hub{font-size:12px}
+ .sl{height:auto;gap:3px;font-size:9px}
+ .sl output{font-size:8.5px;padding:1px 3px}
+ input.v{width:26px;height:auto;min-height:0}
+
+ /* mixer */
+ .mix{order:0;padding:6px 8px;min-height:0;overflow:hidden}
+ .mix h3{font-size:11px;margin-bottom:2px}
+ .mx{grid-template-columns:1fr 30px 1fr;gap:2px;min-height:0}
+ .kn{gap:2px;margin:2px 0;font-size:8px;letter-spacing:.05em}
+ .knob{width:30px;height:30px;border-width:1.5px}
+ .knob:after{top:3px;height:9px;transform-origin:50% 10.5px}
+ .meters{height:100%;max-height:120px;gap:2px}.meters div{width:6px}
+ .cf{margin-top:2px;font-size:9px}.cf div{margin-top:0;gap:3px}
+ .mv{margin-top:2px;font-size:9px;gap:4px}
+ .cf input,.mv input{height:26px;min-width:0;width:0;flex:1}
+ .cf div,.mv{min-width:0}
+ .hd{white-space:nowrap}
+
+ /* loop / hot cues / fx strip */
+ .row2{display:flex;align-items:center;padding:4px 8px;border-radius:12px;overflow-x:auto}
+ .row2>div{flex:none;display:flex;align-items:center;gap:8px;padding:0 10px}
+ .row2>div:nth-child(2){flex:1;justify-content:center}
+ .hd{margin:0;font-size:10px}
+ .bs{flex-wrap:nowrap;gap:5px}
+ .sm{min-width:34px;padding:6px 8px;font-size:13px;border-radius:8px}
+ .hcw{flex-wrap:nowrap;gap:4px}
+ .hcw .sm{min-width:32px;padding:5px 8px}
+ .hcw b{margin:0 2px;font-size:12px}.hcw b.p{margin-left:8px!important}
+
+ /* tools sheet (sources, AI DJ, record, export) */
+ .row3{position:fixed;left:0;right:0;bottom:0;z-index:30;max-height:84%;overflow:auto;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;padding:10px calc(12px + env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) calc(12px + env(safe-area-inset-left,0px));background:#071538;border-top:1px solid var(--cy);border-radius:18px 18px 0 0;box-shadow:0 -20px 50px rgba(0,0,0,.7);transform:translateY(105%);visibility:hidden;transition:transform .25s,visibility 0s .25s}
+ body.tools .row3{transform:none;visibility:visible;transition:transform .25s}
+ #scrim{display:block;position:fixed;inset:0;z-index:25;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .25s}
+ body.tools #scrim{opacity:1;pointer-events:auto}
+ .sheethd{display:flex;grid-column:1/-1;justify-content:space-between;align-items:center;font:700 14px Rajdhani;letter-spacing:.12em;color:var(--cy)}
+ .row3 .card{padding:10px}.row3 .card h4{margin-bottom:6px}
+ .ai .top .ic{width:40px;height:40px;font-size:20px}.ai h4{font-size:17px}.ai .top span{font-size:14px}
+ .ai ul{margin:8px 0;gap:3px;font-size:12px}
+ .go{width:90%;padding:10px}
+ .rw{padding:9px 10px;margin-top:6px}
+ .src{padding:6px 4px}
+ #toast{z-index:60;bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+ dialog{width:min(560px,calc(100% - 24px));max-height:96dvh}
+ #libd[open]{height:min(94dvh,720px)}
+}
+@media(orientation:landscape) and (max-height:520px) and (max-width:780px){
+ .row2>div{padding:0 6px;gap:5px}.row2 .hd{display:none}
+ .sm{min-width:30px;padding:5px 7px}.hcw .sm{min-width:28px;padding:4px 6px}
+}
+@media(orientation:landscape) and (max-height:360px){
+ .knob{width:26px;height:26px}.knob:after{top:3px;height:8px;transform-origin:50% 8.5px}
+ .kn{font-size:7.5px;margin:1px 0}
+}
+
+/* ===== PORTRAIT PHONE: both decks side by side, mixer underneath ===== */
+@media(orientation:portrait) and (max-width:820px){
+ header{flex-wrap:nowrap;gap:8px;padding:6px 10px}
+ .logo{font-size:24px}.logo small{display:none}
+ .ttl{font-size:15px;line-height:1.1}.ttl p{display:none}
+ .aibtn{padding:4px 8px;gap:6px;border-radius:12px}.aibtn .ic{width:26px;height:26px;font-size:12px}.aibtn b{font-size:12px}.aibtn span span{display:none}
+ header>span.ic{display:none}
+ main{padding:6px;gap:6px}
+ .row1{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}
+ .mix{grid-column:1/-1;padding:8px}
+ .deck{padding:6px;border-radius:12px}
+ .info{grid-template-columns:auto 1fr;gap:4px 6px;padding:0}
+ .art{display:none}
+ .tag{width:24px;height:24px;font-size:14px;border-radius:6px}
+ .meta b{font-size:14px}.meta span{font-size:11px;margin-top:0}.meta i{font-size:10px}
+ .tm{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;font-size:10px}
+ .tm em{margin:0;padding:1px 6px;font-size:10px}
+ canvas{height:34px}
+ .ctl,.deck.b .ctl{flex-direction:column;gap:8px;padding:6px 0 0;align-items:stretch}
+ .jog{order:-1;width:100%}
+ .disc{width:min(100%,150px)}
+ .hub{font-size:13px}
+ .btns{flex-direction:row;gap:5px;width:100%}
+ .btns .k{flex:1;width:auto;padding:11px 0;font-size:12px;border-radius:10px}
+ .btns .k.pl{font-size:12px}
+ .sl{height:auto;flex-direction:row;align-items:center;gap:5px;width:100%;font-size:9px}
+ .sl output{font-size:9px;padding:1px 3px}
+ input.v{writing-mode:horizontal-tb;direction:ltr;height:30px;width:auto;flex:1;min-width:0}
+ #eqA,#eqB{display:flex;justify-content:space-around;gap:2px}
+ .kn{margin:0}
+ .meters{height:80px}
+}
+
+/* ===== FORCED LANDSCAPE HOST (phones): app runs inside #hf; when the phone is
+   held upright the frame is rotated 90deg so the app is ALWAYS landscape ===== */
+#hf{display:none;position:fixed;border:0;background:#030816}
+html.host{padding:0;height:100%;overflow:hidden}
+html.host body{height:100%;min-height:0;overflow:hidden}
+html.host body>*:not(#hf){display:none!important}
+html.host #hf{display:block;top:env(safe-area-inset-top,0px);left:env(safe-area-inset-left,0px);width:calc(100% - env(safe-area-inset-left,0px) - env(safe-area-inset-right,0px));height:calc(100% - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+html.host.rot #hf{top:0;left:0;width:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));height:100vw;transform-origin:0 0;transform:translate(100vw,env(safe-area-inset-top,0px)) rotate(90deg)}
+canvas{touch-action:none;cursor:pointer}.disc{touch-action:none;cursor:grab}
+body.beginner .row2,body.beginner #eqA,body.beginner #eqB,body.beginner .sl:has([data-a=pitch]){display:none!important}
+#aiSt.live{color:var(--cy);font-weight:700}.k[data-a=sync].on{background:linear-gradient(180deg,#1f7dff,#1148c8);border-color:#9fd0ff;box-shadow:0 0 16px var(--gl)}
+</style></head>
+<body><div id="app">
+<header><div class="earth"></div>
+ <a class="logo" href="index.html" aria-label="YAPS Music home" style="text-decoration:none">YAPS<small>MUSIC</small></a>
+ <div class="ttl">VIRTUAL <b>DJ STUDIO</b><p>Mix. Create. Record. Publish. Become a DJ.</p></div><div class="sp"></div>
+ <button class="aibtn" id="aiTop"><span class="ic">✦</span><span><b>AI DJ</b><span>Automated mixing</span></span></button>
+ <button class="ic" id="helpBtn" aria-label="Show tutorial">?</button><button class="ic" id="modeBtn" aria-label="Switch Beginner or Pro mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Rajdhani">PRO</button><button class="ic hbtn" id="fsBtn" aria-label="Fullscreen and lock landscape">⛶</button><button class="ic hbtn" id="toolsBtn" aria-label="Open tools: sources, AI DJ, record, export">☰</button>
+ <span class="ic" role="img" aria-label="Profile">☺</span><span class="ic" role="img" aria-label="Settings">⚙</span></header>
+<nav aria-label="Main"><a href="index.html"><i>⌂</i>Home</a><a href="index.html"><i>⌕</i>Search</a><a href="index.html"><i>♪</i>Library</a><a href="index.html"><i>◎</i>Discover</a><a href="index.html"><i>☺</i>Artists</a><a href="index.html"><i>▥</i>Chart</a><a href="index.html"><i>▶</i>Video</a><a href="#" class="on"><i>🎧︎</i>Studio</a><a href="index.html"><i>⬆</i>Upload</a><a href="index.html"><i>⬇</i>Downloads</a><a href="index.html"><i>⚙</i>Settings</a>
+ <div class="globe"><b>YAPS MUSIC</b>Global Vibes<br>Local Roots</div></nav>
+<main>
+ <div class="rot" id="rot"><span aria-hidden="true">↻</span><span>Tip: rotate your phone for bigger decks</span><button id="rotGo">Landscape</button><button class="q" id="rotX" aria-label="Dismiss">✕</button></div>
+ <div class="row1" id="decks">
+  <div id="slotA" style="display:contents"></div>
+  <section class="pn mix"><h3>MIXER</h3>
+   <div class="mx">
+    <div id="eqA"></div>
+    <div class="meters" aria-hidden="true"><div><i id="mA"></i></div><div><i id="mA2"></i></div><div><i id="mB"></i></div><div><i id="mB2"></i></div></div>
+    <div id="eqB"></div>
+   </div>
+   <div class="cf">CROSSFADER<div>A<input type="range" id="xf" min="0" max="100" value="50" aria-label="Crossfader">B</div></div>
+   <div class="mv">MASTER<input type="range" id="mvol" min="0" max="100" value="85" aria-label="Master volume"></div>
+  </section>
+  <div id="slotB" style="display:contents"></div>
+ </div>
+ <section class="pn row2">
+  <div><div class="hd">LOOP</div><div class="bs"><button class="sm" data-loop="4">4</button><button class="sm" data-loop="8">8</button><button class="sm" data-loop="16">16</button><button class="sm" data-loop="0" aria-label="Exit loop">⟲</button></div></div>
+  <div><div class="hd">HOT CUES</div><div class="hcw" id="hc"></div></div>
+  <div><div class="hd">EFFECTS</div><div class="bs"><button class="sm" data-fx="echo">Echo</button><button class="sm" data-fx="rev">Reverb</button><button class="sm" data-fx="fil">Filter</button></div></div>
+ </section>
+ <div class="row3" id="tools">
+  <div class="sheethd"><span>TOOLS · SOURCES · AI DJ · RECORD · EXPORT</span><button class="x" id="toolsX" aria-label="Close tools">✕</button></div>
+  <section class="pn card"><h4>YOUR MUSIC SOURCES</h4>
+   <button class="src" data-src="lib"><span class="ic">♪</span><span><b>YAPS Library</b><span>Browse all YAPS songs</span></span><u>›</u></button>
+   <button class="src" data-src="file"><span class="ic">▯</span><span><b>Phone / Device</b><span>Select music from your phone</span></span><u>›</u></button>
+   <button class="src" data-src="saved"><span class="ic">▤</span><span><b>Saved Mixes</b><span>Your mixes on this device</span></span><u>›</u></button>
+   <button class="src" data-src="uploads"><span class="ic">▭</span><span><b>My Uploads</b><span>Tracks you uploaded to YAPS</span></span><u>›</u></button>
+   <input type="file" id="file" accept="audio/*" hidden></section>
+  <section class="pn card ai"><div class="top"><span class="ic">☻</span><div><h4>AI DJ</h4><span>Automated mixing</span></div></div>
+   <ul><li>Crossfades between your two decks</li><li>Detects BPM and matches tempo</li><li>Beat-aligned crossfades with bass swap</li><li>Stop it any time with one tap</li></ul>
+   <div style="display:flex;gap:8px;margin:0 auto 8px;width:90%"><select id="aiStyle" class="sm" aria-label="Transition style" style="flex:1;font-size:13px"><option value="smooth">Smooth</option><option value="club">Club</option><option value="fast">Fast</option><option value="creative">Creative</option><option value="long">Long Mix</option></select><select id="aiEnergy" class="sm" aria-label="Energy mode" style="flex:1;font-size:13px"><option value="chill">Chill</option><option value="normal" selected>Normal</option><option value="party">Party</option><option value="high">High Energy</option></select></div><div id="aiSt" aria-live="polite" style="text-align:center;color:var(--mu);font-size:12.5px;margin-bottom:10px">AI DJ is off</div><button class="go" id="aiGo">▶ Start AI DJ</button></section>
+  <section class="pn card"><div class="hd2"><span class="ic">🎙︎</span><div><h4>RECORD MIX</h4><span>Record your DJ mix</span></div></div>
+   <button class="rw" id="rec"><span class="dot"></span><span id="recT">Start Recording</span></button>
+   <button class="rw" id="svd">▤ <span style="flex:1">Saved Mixes</span><span id="svn">0 ›</span></button><div id="rst" class="mixes2" aria-live="polite"></div><div id="done" hidden style="margin-top:8px"><b style="font:700 18px Rajdhani;color:var(--cy)">MIX COMPLETE</b><audio id="mixAudio" controls preload="auto" style="width:100%;margin-top:6px"></audio></div></section>
+  <section class="pn card"><div class="hd2"><span class="ic">⇪</span><div><h4>EXPORT / SHARE</h4><span>Save your mix or share it</span></div></div>
+   <button class="rw" id="exS">⭐ Save Mix</button><button class="rw" id="exH">⤴ Share</button><button class="rw" id="exD">⬇ Download</button><button class="rw" id="exP">🚀 Publish to YAPS</button></section>
+ </div>
+</main>
+<footer><span>▮▮▯ <b>YAPS Music</b> — Music to the World, from Uganda</span><span>Mix your world • Be a DJ • Be You</span></footer>
+</div><div id="scrim"></div><dialog id="libd" aria-label="Library"><div class="lh"><b>SELECT MUSIC</b><button class="x" id="libx" aria-label="Close">✕</button></div>
+<div class="tabs"><button class="on" data-s="lib">YAPS Library</button><button data-s="saved">Saved Mixes</button></div>
+<input type="search" id="q" placeholder="Search title, artist or genre" aria-label="Search library"><div id="list" aria-live="polite"></div></dialog>
+<dialog id="pub" aria-labelledby="pubh"><h2 id="pubh">Publish to YAPS</h2>
+ <div id="pauth" style="margin-bottom:10px;font-size:13px"></div>
+ <label class="f">Title *<input type="text" id="pt_" maxlength="150" placeholder="Name your mix"></label>
+ <label class="f">Description<textarea id="pd" maxlength="500" placeholder="What's in this mix?"></textarea></label>
+ <label class="f">Genre *<select id="pg"></select></label>
+ <label class="f">Tags (comma separated)<input type="text" id="ptg" placeholder="party, kampala, afrobeats"></label>
+ <label class="f">Cover image (optional, max 2 MB; defaults to Deck A's cover)<input type="file" id="pc" accept="image/*"></label>
+ <label class="f">Visibility<select id="pv_"><option value="private">Private: only me</option><option value="public">Public: appears on YAPS</option></select></label>
+ <label class="ck"><input type="checkbox" id="pr"><span>I have the right to share this mix and the tracks in it.</span></label>
+ <div id="pst" aria-live="polite" style="min-height:20px;margin:6px 0;color:var(--mu)"></div>
+ <div class="drow"><button class="k" id="pcx">Cancel</button><button class="k pl" id="pgo">Publish</button></div></dialog>
+<dialog id="tut" aria-label="Quick tutorial"><h2>Welcome to YAPS DJ Studio</h2><div id="tutT" style="color:var(--cy);font-weight:700"></div><p id="tutB" style="margin:10px 0 14px;font-size:15px"></p><div class="drow"><button class="k" id="tutS">Skip</button><button class="k pl" id="tutN">Next</button></div></dialog>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div id="toast" role="status" aria-live="polite"></div>
+<script type="text/plain" id="appjs">
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2600)};
+const D=[
+ {L:'A',id:'a',t:'Empty deck',ar:'Load a track from YAPS Library',g:'',bpm:null,dur:0,key:55,art:'#0b1d55',ini:'A',seed:3},
+ {L:'B',id:'b',t:'Empty deck',ar:'Load a track from YAPS Library',g:'',bpm:null,dur:0,key:49,art:'#0b1d55',ini:'B',seed:9}];
+D.forEach(d=>{d.pitch=0;d.pos=0;d.on=false;d.hc=[null,null,null,null];d.loop=0;d.ang=0;d.c=d.id=='a'?'#19c3ff':'#8b5cf6';d.dm=d.id=='a'?'rgba(25,195,255,.3)':'rgba(139,92,246,.38)';d.volv=.8;d.eq={lo:0,mi:0,hi:0};
+ let s=d.seed*997;d.pk=Array.from({length:240},(_,i)=>{s=(s*16807)%2147483647;return Math.min(1,.14+(s/2147483647)*.55*(.55+.45*Math.sin(i*.06+d.seed))+.2*Math.abs(Math.sin(i*.31)))})});
+const deckHTML=d=>`<section class="pn deck ${d.id}" id="deck${d.L}"><div class="info"><div class="tag">${d.L}</div><div class="art" id="art${d.L}"></div><div class="meta"><b id="t${d.L}"></b><span id="ar${d.L}"></span><i id="g${d.L}"></i></div><div class="tm"><span id="tm${d.L}"></span><em id="bp${d.L}"></em></div><canvas id="wf${d.L}"></canvas></div>
+<div class="ctl"><div class="btns"><button class="k" data-a="cue">CUE</button><button class="k pl" data-a="play" aria-label="Play or pause">▶ / ❚❚</button><button class="k" data-a="sync">SYNC</button></div>
+<div class="jog"><div class="disc" id="jog${d.L}"><div class="hub">YAPS</div></div></div>
+<div class="sl">+<input type="range" class="v" min="-16" max="16" step=".1" value="0" data-a="pitch" aria-label="Pitch deck ${d.L}"><output id="pt${d.L}">0.0%</output>PITCH<button class="sm" data-a="rp" aria-label="Reset pitch" style="min-width:0;padding:6px 8px;font-size:11px">RESET</button></div>
+<div class="sl">🔊︎<input type="range" class="v" min="0" max="100" value="80" data-a="vol" aria-label="Volume deck ${d.L}">VOLUME</div></div></section>`;
+D.forEach(d=>$('#slot'+d.L).innerHTML=deckHTML(d));
+const eqHTML=(d)=>['hi','mi','lo'].map(b=>`<div class="kn">${{hi:'HIGH',mi:'MID',lo:'LOW'}[b]}<div class="knob" data-d="${d.L}" data-b="${b}" role="slider" aria-label="${b} EQ deck ${d.L}" style="--kc:${d.c}"></div></div>`).join('');
+$('#eqA').innerHTML=eqHTML(D[0]);$('#eqB').innerHTML=eqHTML(D[1]);
+$('#hc').innerHTML=D.map(d=>(d.L=='B'?'<b class="p" style="margin-left:14px">B</b>':'<b>A</b>')+[1,2,3,4].map(n=>`<button class="sm ${d.id=='b'?'pu':''}" data-hc="${d.L}${n-1}">${n}</button>`).join('')).join('');
+const dk=L=>D[L=='A'?0:1],fmt=s=>{s=Math.max(0,s|0);return String(s/60|0).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+function ui0(d){const L=d.L;$('#t'+L).textContent=d.t;$('#ar'+L).textContent=d.ar;$('#g'+L).textContent=d.g;$('#bp'+L).textContent='BPM  '+(d.bpm?(d.bpm*(1+d.pitch/100)).toFixed(1):'n/a');const a=$('#art'+L);a.style.background=d.art;a.textContent=d.ini;$('#deck'+L).querySelector('.pl').classList.toggle('on',d.on)}
+D.forEach(d=>d.pk=new Array(240).fill(.06));D.forEach(ui);
+/* ---------- audio engine ---------- */
+let C,master,an,recDest,nb;
+const bq=(t,f)=>{const n=C.createBiquadFilter();n.type=t;n.frequency.value=f;return n};
+function init(){if(C){C.resume();return}
+ C=new (window.AudioContext||window.webkitAudioContext)();master=C.createGain();master.gain.value=.85;an=C.createAnalyser();recDest=C.createMediaStreamDestination();
+ master.connect(an);an.connect(C.destination);master.connect(recDest);window.ma=C.createAnalyser();ma.fftSize=256;master.connect(ma);
+ nb=C.createBuffer(1,C.sampleRate,C.sampleRate);nb.getChannelData(0).forEach((_,i,a)=>a[i]=Math.random()*2-1);
+ const ir=C.createBuffer(2,C.sampleRate*1.6,C.sampleRate);for(let c=0;c<2;c++)ir.getChannelData(c).forEach((_,i,a)=>a[i]=(Math.random()*2-1)*Math.pow(1-i/a.length,2.5));
+ D.forEach(d=>{d.in=C.createGain();d.lo=bq('lowshelf',200);d.mi=bq('peaking',1200);d.hi=bq('highshelf',4000);d.fl=bq('lowpass',22000);d.vg=C.createGain();d.xg=C.createGain();
+  d.dl=C.createDelay(1);d.dl.delayTime.value=.32;d.fb=C.createGain();d.fb.gain.value=.4;d.ew=C.createGain();d.ew.gain.value=0;d.cv=C.createConvolver();d.cv.buffer=ir;d.rw=C.createGain();d.rw.gain.value=0;
+  d.in.connect(d.lo);d.lo.connect(d.mi);d.mi.connect(d.hi);d.hi.connect(d.fl);d.fl.connect(d.vg);d.vg.connect(d.xg);d.xg.connect(master);
+  d.vg.connect(d.dl);d.dl.connect(d.fb);d.fb.connect(d.dl);d.dl.connect(d.ew);d.ew.connect(master);d.vg.connect(d.cv);d.cv.connect(d.rw);d.rw.connect(master);
+  d.an=C.createAnalyser();d.an.fftSize=256;d.vg.connect(d.an);d.buf2=new Uint8Array(256)});
+ D.forEach(applyEq);D.forEach(d=>d.vg.gain.value=d.volv);xfade()}
+const db=v=>v<=-.98?-40:v*12;
+function applyEq(d){if(!C)return;d.lo.gain.value=db(d.eq.lo);d.mi.gain.value=db(d.eq.mi);d.hi.gain.value=db(d.eq.hi)}
+let xv=.5;function xfade(){if(!C)return;D[0].xg.gain.value=Math.cos(xv*Math.PI/2);D[1].xg.gain.value=Math.sin(xv*Math.PI/2)}
+const eff=d=>d.bpm?d.bpm*(1+d.pitch/100):null;
+function osc(d,type,f0,f1,dur,g,t){const o=C.createOscillator(),e=C.createGain();o.type=type;o.frequency.setValueAtTime(f0,t);o.frequency.exponentialRampToValueAtTime(f1,t+dur);e.gain.setValueAtTime(g,t);e.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(e);e.connect(d.in);o.start(t);o.stop(t+dur+.02)}
+function noise(d,dur,g,t,f){const s=C.createBufferSource(),h=bq('highpass',f),e=C.createGain();s.buffer=nb;e.gain.setValueAtTime(g,t);e.gain.exponentialRampToValueAtTime(.001,t+dur);s.connect(h);h.connect(e);e.connect(d.in);s.start(t);s.stop(t+dur+.02)}
+function hit(d,st,t){const a=d.id=='a',kick=a?[0,4,8,12]:[0,6,8,14],bass=a?[0,6,10]:[0,3,10,13];
+ if(kick.includes(st))osc(d,'sine',150,45,.28,.9,t);
+ if(st==4||st==12)noise(d,.16,.35,t,1800);
+ if(st%2==0)noise(d,.04,.12,t,7000);
+ if(bass.includes(st))osc(d,'sawtooth',d.key*(st==10?1.5:1),d.key*(st==10?1.5:1),.22,.22,t);
+ if(a&&st==14)osc(d,'triangle',d.key*4,d.key*4,.18,.12,t)}
+function sched(d){const s16=60/(d.bpm*(1+d.pitch/100))/4;while(d.next<C.currentTime+.15){hit(d,d.step,d.next);d.next+=s16;d.step=(d.step+1)%16}}
+function play(d){init();if(d.on)return;if(!d.buf){toast('Load a track into Deck '+d.L+' first');return}d.on=true;
+ if(d.buf){const s=C.createBufferSource();s.buffer=d.buf;s.playbackRate.value=1+d.pitch/100;s.connect(d.in);s.start(0,d.pos);d.src=s;applyLoop(d)}
+ else{d.next=C.currentTime+.05;d.step=0;d.iv=setInterval(()=>sched(d),25)}ui(d)}
+function stopD(d){if(!d.on)return;d.on=false;if(d.src){try{d.src.stop()}catch(e){}d.src=null}clearInterval(d.iv);ui(d)}
+function applyLoop(d){if(!d.src)return;if(d.loop&&d.bpm){const spb=60/d.bpm;d.src.loopStart=d.pos;d.src.loopEnd=Math.min(d.dur,d.pos+d.loop*spb);d.src.loop=true}else d.src.loop=false}
+/* ---------- controls ---------- */
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&b.tagName=='BUTTON'){const d=dk(b.closest('.deck').id.slice(-1)),a=b.dataset.a;
+  if(a=='play'){d.on?stopD(d):play(d)}
+  else if(a=='cue'){init();const was=d.on;stopD(d);d.pos=d.hc[0]??0;if(was)ui(d)}
+  else if(a=='sync')doSync(d);else if(a=='rp'){d.pitch=0;setPitch(d)}}
+ const l=e.target.closest('[data-loop]');if(l){const v=+l.dataset.loop;D.forEach(d=>{d.loop=v;applyLoop(d)});$$('[data-loop]').forEach(x=>x.classList.toggle('on',+x.dataset.loop==v&&v>0));if(v&&!D.some(d=>d.src))toast('Loop armed — applies to loaded audio files')}
+ const f=e.target.closest('[data-fx]');if(f){f.classList.toggle('on');fx()}
+ const h=e.target.closest('[data-hc]');if(h){const d=dk(h.dataset.hc[0]),i=+h.dataset.hc[1];if(d.hc[i]==null){d.hc[i]=d.pos;h.classList.add('on');toast('Hot cue '+(i+1)+' set at '+fmt(d.pos))}else{d.pos=d.hc[i];if(d.src){stopD(d);play(d)}}}
+ const s=e.target.closest('[data-src]');if(s)srcPick(s.dataset.src)});
+document.addEventListener('contextmenu',e=>{const h=e.target.closest('[data-hc]');if(h){e.preventDefault();dk(h.dataset.hc[0]).hc[+h.dataset.hc[1]]=null;h.classList.remove('on')}});
+function setPitch0(d){const L=d.L,v=$('#deck'+L).querySelector('[data-a=pitch]');v.value=d.pitch;$('#pt'+L).textContent=d.pitch.toFixed(1)+'%';if(d.src)d.src.playbackRate.value=1+d.pitch/100;ui(d)}
+document.addEventListener('input',e=>{const r=e.target;if(r.dataset.a=='pitch'){const d=dk(r.closest('.deck').id.slice(-1));d.pitch=+r.value;setPitch(d)}
+ else if(r.dataset.a=='vol'){const d=dk(r.closest('.deck').id.slice(-1));d.volv=r.value/100;if(C)d.vg.gain.value=d.volv}
+ else if(r.id=='xf'){xv=r.value/100;xfade()}else if(r.id=='mvol'&&C)master.gain.value=r.value/100});
+function fx(){if(!C)init();const on=k=>$(`[data-fx=${k}]`).classList.contains('on');D.forEach(d=>{d.ew.gain.value=on('echo')?.5:0;d.rw.gain.value=on('rev')?.7:0;d.fl.frequency.setTargetAtTime(on('fil')?700:22000,C.currentTime,.05)})}
+$$('.knob').forEach(k=>{const d=dk(k.dataset.d),b=k.dataset.b;const set=v=>{d.eq[b]=Math.max(-1,Math.min(1,v));k.style.setProperty('--r',d.eq[b]*135+'deg');k.setAttribute('aria-valuenow',Math.round(d.eq[b]*100));applyEq(d)};
+ k.addEventListener('pointerdown',e=>{k.setPointerCapture(e.pointerId);const y0=e.clientY,v0=d.eq[b];k.onpointermove=m=>set(v0+(y0-m.clientY)/80)});k.addEventListener('pointerup',()=>k.onpointermove=null);k.addEventListener('dblclick',()=>set(0))});
+/* ---------- local files ---------- */
+let tgt=0;
+$('#file').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;if(f.size>80e6){toast('That file is very large (over 80 MB). Try a shorter or compressed track.');e.target.value='';return}init();const d=D[tgt];tgt^=1;
+ try{const ab=await C.decodeAudioData(await f.arrayBuffer());stopD(d);d.buf=ab;d.dur=ab.duration;d.pos=0;d.t=f.name.replace(/\.[^.]+$/,'');d.ar='Local file';d.g='Loaded from device';d.bpm=null;d.ini='♪';d.art='linear-gradient(135deg,#1457d6,#19c3ff)';d.tid=null;d.cover='';
+  const raw=ab.getChannelData(0),n=240,step=Math.floor(raw.length/n);d.pk=Array.from({length:n},(_,i)=>{let m=0;for(let j=0;j<step;j+=40)m=Math.max(m,Math.abs(raw[i*step+j]||0));return Math.max(.08,Math.min(1,m))});ui(d);postLoad(d);toast('Loaded into Deck '+d.L)}
+ catch(err){toast('Couldn\u2019t read that audio file')}e.target.value=''});
+/* ---------- AI DJ ---------- */
+
+/* ══════ YAPS integration (real library, recording, save, publish) ══════
+   Reused from index.html: catalogue shape (tracks[]), Supabase project/session, FastAPI /api/* endpoints. */
+const LOC=(()=>{try{return self!==top?parent.location:location}catch(e){return location}})();
+/* ===== DEVELOPER CONFIG: edit only this block =====
+   API_URL: your FastAPI base URL (empty = server features off; localhost uses :8000).
+   SUPABASE_URL / SUPABASE_ANON_KEY: public client values. Safe in the browser ONLY with RLS enabled. NEVER put a service_role key here.
+   AI_API_URL: optional future backend for server-side analysis (unused today). */
+const YAPS_CONFIG={API_URL:'',AI_API_URL:'',SUPABASE_URL:'https://wnpqikufnwyiivrqfktk.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_1Dc7Ag-ZqsqJsgETEkxi5Q_VcG1w0XJ',BUCKETS:{public:'audio',private:'mixes-private',cover:'artwork'}};
+const YAPS_API_URL=(LOC.hostname==='localhost'||LOC.hostname==='127.0.0.1')?'http://localhost:8000':(YAPS_CONFIG.API_URL||(()=>{try{return localStorage.getItem('yaps_shared_api')||''}catch(e){return ''}})());
+const CATALOGUE=[{"id":201,"title":"Yoyo","artist":"Joshua Baraka","cover":"images/Joshua_Baraka.png","audio":"audio/Joshua Baraka - Yoyo.mp3","genre":"Afrobeats","duration":"2:25","tags":["Uganda","Trending","New","Afrobeats"]},{"id":200,"title":"Sissa","artist":"Dax Vibez","cover":"images/yaps-music-cover.jpg","audio":"audio/Dax Vibez - Sissa.mp3","genre":"Afrobeats","duration":"3:37","tags":["Uganda","Trending","New","Afrobeats"]},{"id":199,"title":"Sikiwa","artist":"Fik Fameica","cover":"images/Fik_Fameica.png","audio":"audio/Fik Fameica - Sikiwa.mp3","genre":"Afrobeats","duration":"3:13","tags":["Uganda","Trending","New","Afrobeats"]},{"id":198,"title":"Yeffe","artist":"Jose Chameleone ft. Jeff Kiwa","cover":"images/Jose Chameleon.jpg","audio":"audio/Jose Chameleone Ft Jeff Kiwa - Yeffe.mp3","genre":"Luganda Pop","duration":"2:57","tags":["Uganda","Trending","New","Luganda","Collab"]},{"id":197,"title":"Finally","artist":"Spice Diana","cover":"images/Spice_Diana.png","audio":"audio/Spice Diana - Finally.mp3","genre":"Afrobeats","duration":"2:51","tags":["Uganda","Trending","New","Afrobeats"]},{"id":196,"title":"Grave Into Gardens","artist":"Elevation Worship ft. Brandon Lake","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Elevation_Worship_-_Grave_Into_Gardens.mp3","genre":"Gospel","duration":"7:32","tags":["Weekend","New","Worship","Gospel"]},{"id":195,"title":"Here Again (Worthy)","artist":"Elevation Worship","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Elevation_Worship_-_Here_Again_Worthy.mp3","genre":"Gospel","duration":"9:03","tags":["Weekend","New","Worship","Gospel"]},{"id":194,"title":"10,000 Reasons (Bless the Lord)","artist":"Matt Redman","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Matt_Redman_-_10000_Reasons_Bless_The_Lord.mp3","genre":"Gospel","duration":"4:20","tags":["Weekend","New","Worship","Gospel"]},{"id":193,"title":"Oceans (Where Feet May Fail)","artist":"Hillsong UNITED","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Hillsong_UNITED_-_Oceans_Where_Feet_May_Fail.mp3","genre":"Gospel","duration":"9:00","tags":["Weekend","New","Worship","Gospel"]},{"id":192,"title":"Build My Life","artist":"Pat Barrett","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Pat_Barrett_-_Build_My_Life.mp3","genre":"Gospel","duration":"4:06","tags":["Weekend","New","Worship","Gospel"]},{"id":191,"title":"Ruhanga Isitwe","artist":"Patrick Lowry","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Patrick_Lowry_-_Ruhanga_Isitwe.mp3","genre":"Gospel","duration":"6:02","tags":["Weekend","New","Worship","Gospel","Uganda"]},{"id":190,"title":"Battle Belongs","artist":"Phil Wickham","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Phil_Wickham_-_Battle_Belongs.mp3","genre":"Gospel","duration":"4:47","tags":["Weekend","New","Worship","Gospel"]},{"id":189,"title":"This Is Amazing Grace","artist":"Phil Wickham","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Phil_Wickham_-_This_Is_Amazing_Grace.mp3","genre":"Gospel","duration":"4:38","tags":["Weekend","New","Worship","Gospel"]},{"id":188,"title":"Reckless Love","artist":"Cory Asbury","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Cory_Asbury_-_Reckless_Love.mp3","genre":"Gospel","duration":"5:31","tags":["Weekend","New","Worship","Gospel"]},{"id":187,"title":"King of Heaven","artist":"Ryan Ofei","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Ryan_Ofei_-_King_Of_Heaven.mp3","genre":"Gospel","duration":"7:50","tags":["Weekend","New","Worship","Gospel"]},{"id":186,"title":"I Know Who I Am","artist":"Sinach","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Sinach_-_I_Know_Who_I_Am.mp3","genre":"Gospel","duration":"6:10","tags":["Weekend","New","Worship","Gospel"]},{"id":185,"title":"Way Maker","artist":"Sinach","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Sinach_-_Way_Maker.mp3","genre":"Gospel","duration":"5:05","tags":["Weekend","New","Worship","Gospel"]},{"id":184,"title":"What A Beautiful Name","artist":"Hillsong Worship","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Hillsong_Worship_-_What_A_Beautiful_Name.mp3","genre":"Gospel","duration":"5:42","tags":["Weekend","New","Worship","Gospel"]},{"id":183,"title":"House of the Lord","artist":"Vertical Worship","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Vertical_Worship_-_House_Of_The_Lord.mp3","genre":"Gospel","duration":"4:50","tags":["Weekend","New","Worship","Gospel"]},{"id":182,"title":"Yesu Beera Nange","artist":"Judith Babirye","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Judith_Babirye_-_Yesu_Beera_Nange.mp3","genre":"Gospel","duration":"6:17","tags":["Weekend","New","Worship","Gospel","Uganda"]},{"id":181,"title":"Wambatira","artist":"Judith Babirye","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Judith_Babirye_-_Wambatira.mp3","genre":"Gospel","duration":"5:22","tags":["Weekend","New","Worship","Gospel","Uganda"]},{"id":180,"title":"Omukisa Gwa Mukama","artist":"Judith Babirye","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Judith_Babirye_-_Omukisa_Gwa_Mukama.mp3","genre":"Gospel","duration":"4:36","tags":["Weekend","New","Worship","Gospel","Uganda"]},{"id":179,"title":"Katonda Tageya (Lopela Katonda)","artist":"Gabie Ntaate","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Gabie_Ntaate_-_Katonda_Tageya.mp3","genre":"Gospel","duration":"2:29","tags":["Weekend","New","Worship","Gospel","Uganda"]},{"id":178,"title":"Gwasembayo","artist":"Gabie Ntaate","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Gabie_Ntaate_-_Gwasembayo.mp3","genre":"Gospel","duration":"3:45","tags":["Weekend","New","Worship","Gospel","Uganda"]},{"id":177,"title":"Brag About God","artist":"Gabie Ntaate","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Gabie_Ntaate_-_Brag_About_God.mp3","genre":"Gospel","duration":"3:50","tags":["Weekend","New","Worship","Gospel","Uganda"]},{"id":176,"title":"What A Friend We Have In Jesus","artist":"Traditional Hymn","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Christian_Hymn_-_What_A_Friend_We_Have_In_Jesus.mp3","genre":"Gospel","duration":"4:16","tags":["Weekend","New","Worship","Gospel","Hymn"]},{"id":175,"title":"Do It Again (Live)","artist":"Elevation Worship","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Do-It-Again-Live-Elevation-Worship.mp3","genre":"Gospel","duration":"10:15","tags":["Weekend","New","Worship","Gospel"]},{"id":174,"title":"King Of My Heart","artist":"David Funk","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/David_Funk_-_King_Of_My_Heart.mp3","genre":"Gospel","duration":"9:01","tags":["Weekend","New","Worship","Gospel"]},{"id":173,"title":"Raise A Hallelujah","artist":"Dante Bowe & Jenn Johnson","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Dante_Bowe_Jenn_Johnson_-_Raise_A_Hallelujah.mp3","genre":"Gospel","duration":"6:14","tags":["Weekend","New","Worship","Gospel"]},{"id":172,"title":"Firm Foundation (He Won't)","artist":"Cody Carnes","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Cody_Carnes_-_Firm_Foundation_He_Wont.mp3","genre":"Gospel","duration":"6:22","tags":["Weekend","New","Worship","Gospel"]},{"id":171,"title":"Jesus Keep Me Near The Cross","artist":"Traditional Hymn","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Christian_Hymn_-_Jesus_Keep_Me_Near_The_Cross.mp3","genre":"Gospel","duration":"3:05","tags":["Weekend","New","Worship","Gospel","Hymn"]},{"id":170,"title":"Calm Down","artist":"Vyroota","cover":"images/Vyroota.png","audio":"audio/Vyroota - Calm Down.mp3","genre":"Luganda Pop","duration":"2:40","tags":["Uganda","New","Luganda"]},{"id":169,"title":"Dangerous","artist":"Ceaserous","cover":"images/Ceaserous - Dangerous.jpg","audio":"audio/Ceaserous - Dangerous.mp3","genre":"Afrobeats","duration":"3:27","tags":["Uganda","Trending","New","Afrobeats"]},{"id":168,"title":"Ndi Omu","artist":"Ava Peace","cover":"images/Ava peace.png","audio":"audio/Ava Peace - Ndi Omu.mp3","genre":"Afrobeats","duration":"2:55","tags":["Uganda","Popular","Afrobeats"]},{"id":167,"title":"Onzise","artist":"Dax Vibez & Rema Namakula","cover":"images/Rema_Namakula.png","audio":"audio/Dax Vibez & Rema Namakula - Onzise.mp3","genre":"Afropop","duration":"2:52","tags":["Uganda","Popular","Afropop","Collab"]},{"id":166,"title":"Middle","artist":"Vinka","cover":"images/Vinka.png","audio":"audio/Middle - Vinka.mp3","genre":"Afropop","duration":"2:47","tags":["Uganda","Popular","Afropop"]},{"id":165,"title":"Miracles (Extended)","artist":"James Ploh ft. A Pass & Kiboo","cover":"images/Apass.png","audio":"audio/James_Ploh_Official_-_Miracles_Extended_-_A_Pass___Kiboo.mp3","genre":"Dancehall","duration":"2:56","tags":["Uganda","Trending","New","Dancehall","Collab"]},{"id":164,"title":"Bikyaganye","artist":"Dokta Brain","cover":"images/Dokta_Brain.png","audio":"audio/Dokta Brain - Bikyaganye.mp3","genre":"Afrobeats","duration":"3:29","tags":["Uganda","Trending","New","Afrobeats"]},{"id":163,"title":"Moni Ami","artist":"Gloria Bugie","cover":"images/Gloria_Bugie.png","audio":"audio/Gloria Bugie - Moni Ami.mp3","genre":"Afropop","duration":"3:58","tags":["Uganda","Trending","New","Afropop"]},{"id":162,"title":"Chap Chap","artist":"Lutty Neika","cover":"images/Anaconda_Lutty_Neika_Bravion_Emcee.png","audio":"audio/Lutty Neika - Chap Chap.mp3","genre":"Afropop","duration":"2:57","tags":["Uganda","Trending","New","Afropop"]},{"id":161,"title":"Stress Killer","artist":"Sheebah Karungi","cover":"images/Sheebah.jpg","audio":"audio/Sheebah Karungi - Stress Killer.mp3","genre":"Afrobeats","duration":"2:50","tags":["Uganda","Trending","New","Afrobeats"]},{"id":160,"title":"Nebirungi Byogere","artist":"Sqoop Larma","cover":"images/Sqoop_Larma_Temutuloga.webp","audio":"audio/Sqoop Larma - Nebirungi Byogere.mp3","genre":"Afrobeats","duration":"2:41","tags":["Uganda","Trending","New","Afrobeats"]},{"id":159,"title":"Nassanga (Remix)","artist":"Kalifah AgaNaga ft. Eddy Kenzo, Winnie Nwagi, Lil Pazo & Weasel","cover":"images/nassanga_remix.jpg","audio":"audio/Kalifah AgaNaga ft. Eddy Kenzo, Winnie Nwagi, Lil Pazo & Weasel - Nassanga (Remix).mp3","genre":"Afrobeats","duration":"3:44","tags":["Uganda","Trending","New","Collab","Remix"]},{"id":158,"title":"Nigina","artist":"Hoozambe D.Star","cover":"images/1000014852.png","audio":"audio/Hoozambe-DStar-Nigina.mp3","genre":"Afrobeats","duration":"2:25","tags":["Uganda","Trending","New","Afrobeats"]},{"id":156,"title":"Daddy","artist":"Da Agent","cover":"images/Da_Agent.png","audio":"audio/Da_Agent_Daddy.mp3","genre":"Afrobeats","duration":"3:30","tags":["Uganda","Trending","Afrobeats"]},{"id":1,"title":"P2","artist":"King Saha","cover":"images/King_Saha_-_P2.jpg","audio":"audio/King_Saha_-_P2.mp3","genre":"Luganda Pop","duration":"3:52","tags":["Uganda","Trending","Luganda"]},{"id":2,"title":"Wano Wano","artist":"Rema Namakula","cover":"images/Rema_Namakula.png","audio":"audio/Rema - Wano Wano.mp3","genre":"Afropop","duration":"4:05","tags":["Uganda","Trending","Afropop"]},{"id":3,"title":"Kunsi","artist":"Vyroota","cover":"images/Vyroota.png","audio":"audio/Vyroota - Kunsi.mp3","genre":"Luganda Pop","duration":"3:28","tags":["Uganda","Trending","Luganda"]},{"id":4,"title":"Toma","artist":"Vyroota","cover":"images/Vyroota.png","audio":"audio/Vyroota - Toma.mp3","genre":"Luganda Pop","duration":"3:24","tags":["Uganda","Trending","Luganda"]},{"id":5,"title":"Champion Gal","artist":"Fik Fameica","cover":"images/Fik_Fameica.png","audio":"audio/Fik Fameica - Champion Gal.mp3","genre":"Afrobeats","duration":"3:29","tags":["Uganda","Trending","New","Afrobeats"]},{"id":6,"title":"Angella","artist":"John Blaq","cover":"images/John blaq.png","audio":"audio/John Blaq - Angella.mp3","genre":"Afropop","duration":"3:41","tags":["Uganda","Trending","New","Afropop"]},{"id":7,"title":"Mine","artist":"Vinka","cover":"images/Vinka.png","audio":"audio/Mine - Vinka (erycom)_1775090955.mp3","genre":"Afropop","duration":"3:33","tags":["Uganda","Trending","Afropop"]},{"id":8,"title":"Ngezaako","artist":"John Blaq","cover":"images/John blaq.png","audio":"audio/John Blaq - Ngezaako.mp3","genre":"Luganda Pop","duration":"3:58","tags":["Uganda","Trending","Luganda","TikTok"]},{"id":9,"title":"Nsi Namba","artist":"TPaul ft. Sheebah","cover":"images/Sheebah.jpg","audio":"audio/Sheebah Ft Tpaul 256 - Nsi Namba.mp3","genre":"Afrobeats","duration":"3:35","tags":["Uganda","Trending","TikTok"]},{"id":10,"title":"Daily Bundle","artist":"Elijah Kitaka","cover":"images/Eliaja Kitaka.png","audio":"audio/Elijah Kitaka - Daily bundle.mp3","genre":"Afropop","duration":"3:18","tags":["Uganda","Trending"]},{"id":11,"title":"See You Tonight","artist":"Omega 256 ft. Cindy Sanyu","cover":"images/see you tonight.jpg","audio":"audio/See You Tonight - Omega 256 & Cindy Sanyu (erycom)_1755435655.mp3","genre":"R&B","duration":"3:44","tags":["Uganda","Trending","RnB"]},{"id":12,"title":"Wrong Places","artist":"Joshua Baraka & JAE5","cover":"images/Joshua Baraka.png","audio":"audio/Joshua Baraka - Wrong Places.mp3","genre":"Afrobeats","duration":"3:37","tags":["Uganda","Trending","Afrobeats"]},{"id":13,"title":"This Time","artist":"Joshua Baraka","cover":"images/Joshua_Baraka.png","audio":"audio/Joshua Baraka - This Time.mp3","genre":"R&B","duration":"3:47","tags":["Uganda","Trending","TikTok"]},{"id":14,"title":"Siaka","artist":"Fik Fameica & Mejja","cover":"images/Fik_Fameica.png","audio":"audio/Fik Fameica, Mejja - Siaka.mp3","genre":"Afrobeats","duration":"3:31","tags":["Uganda","Trending","Collab"]},{"id":15,"title":"London","artist":"Kapeke","cover":"images/Kapeke.png","audio":"audio/Kapeke - London.mp3","genre":"Afropop","duration":"3:22","tags":["Uganda","Trending","Afropop"]},{"id":16,"title":"Ntwala","artist":"Pawaboy & Jowy Landa","cover":"images/Pawaboy.jpg","audio":"audio/Pawaboy, Jowy Landa - Ntwala.mp3","genre":"Luganda Pop","duration":"3:41","tags":["Uganda","Trending","Luganda"]},{"id":17,"title":"Nalokinga","artist":"Pawaboy","cover":"images/Pawaboy.jpg","audio":"audio/Pawaboy - Nalokinga.mp3","genre":"Luganda Pop","duration":"3:36","tags":["Uganda","Trending","Luganda"]},{"id":18,"title":"Oyaya","artist":"Lutty Neika","cover":"images/Neika Oyaya.jpg","audio":"audio/Lutty Neika - Oyaya.mp3","genre":"Afropop","duration":"3:19","tags":["Uganda","Trending"]},{"id":19,"title":"Yandalula","artist":"Pawaboy","cover":"images/Pawaboy.jpg","audio":"audio/Pawaboy - Yandalula.mp3","genre":"Afropop","duration":"3:19","tags":["Uganda","Trending"]},{"id":21,"title":"Addict","artist":"Azawi","cover":"images/Azawi.png","audio":"audio/Addict - Azawi (erycom)_1774696906.mp3","genre":"Afrobeats","duration":"3:45","tags":["Uganda","Trending","Afrobeats"]},{"id":22,"title":"Number Mojja","artist":"Levixone ft. Winnie Nwagi","cover":"images/g2w-gospel-to-the-world.png","audio":"audio/Number Moja - Levixone & Winnie Nwagi (erycom)_1777669338.mp3","genre":"Gospel","duration":"4:02","tags":["Uganda","Gospel","Collab"]},{"id":23,"title":"Go","artist":"Karole Kasita","cover":"images/Karole kasita.jpg","audio":"audio/Karole Kasita ft Elijah Kitaka - Go (Remix).mp3","genre":"Afropop","duration":"3:27","tags":["Uganda","Trending","New","Afropop"]},{"id":25,"title":"Nzalina","artist":"Feffe Bussi ft. Winnie Nwagi, Spice Diana, Kapeke & Dax Vibez","cover":"images/Nzalina.jpg","audio":"audio/Feffe Bussi Ft Winnie Nwagi, Spice Diana, Dax Vibez, Kapeke - Nzalina.mp3","genre":"Afrobeats","duration":"4:01","tags":["Uganda","Collab","TikTok"]},{"id":26,"title":"Tema Ensingo Kaba","artist":"Kapeke","cover":"images/Kapeke.png","audio":"audio/Kapeke - Kaba.mp3","genre":"Luganda Pop","duration":"3:29","tags":["Uganda","Luganda"]},{"id":28,"title":"Wewe","artist":"King Saha","cover":"images/king saha.jpg","audio":"audio/King_Saha_-_Wewe.mp3","genre":"Luganda Pop","duration":"3:54","tags":["Uganda","Luganda"]},{"id":32,"title":"Biggwa","artist":"Liam Voice & Fik Fameica","cover":"images/Fik_Fameica.png","audio":"audio/Liam Voice & Fik Fameica - Biggwa.mp3","genre":"Afropop","duration":"3:42","tags":["Uganda","Collab","Afropop"]},{"id":34,"title":"Somebody","artist":"Sheebah","cover":"images/Sheebah_Somebody.jpg","audio":"audio/Sheebah_Somebody.mp3","genre":"Afrobeats","duration":"3:44","tags":["Uganda","Trending","Afrobeats"]},{"id":37,"title":"Anaconda","artist":"Lutty Neika & Bravion Emcee","cover":"images/Anaconda_Lutty_Neika_Bravion_Emcee.png","audio":"audio/Anaconda.mp3","genre":"Afrobeats","duration":"3:26","tags":["Uganda","Trending","Collab"]},{"id":51,"title":"Baddie Remix","artist":"Shannon ft. Fik Fameica, AaronX, Tojo & DJ Lito","cover":"images/Fik_Fameica.png","audio":"audio/Shannon ft. Fik Fameica, AaronX, Tojo & DJ Lito - Baddie Remix.mp3","genre":"Afropop","duration":"3:45","tags":["Uganda","Remix","Collab","TikTok"]},{"id":52,"title":"Tobingamba","artist":"Acidic Vokoz & Ava Peace","cover":"images/Ava peace.png","audio":"audio/Acidic Vokoz, Ava Peace - Tobingamba.mp3","genre":"Afrobeats","duration":"3:22","tags":["Uganda","Afrobeats"]},{"id":53,"title":"Da Re","artist":"Sheebah Karungi","cover":"images/Sheebah_Da_Re.jpg","audio":"audio/Sheebah_Da_Re.mp3","genre":"Afropop","duration":"3:31","tags":["Uganda","Afropop","Trending"]},{"id":54,"title":"Gundi (Remix)","artist":"Kapeke & Mimi Kampala","cover":"images/Kapeke.png","audio":"audio/Kapeke & Mimi Kampala - Gundi (Remix).mp3","genre":"Afrobeats","duration":"3:28","tags":["Uganda","Remix","Collab"]},{"id":55,"title":"Nze Nakiriza","artist":"Spice Diana & Vyroota","cover":"images/Spice_Diana.png","audio":"audio/Spice Diana & Vyroota - Nze Nakiriza.mp3","genre":"Afrobeats","duration":"3:38","tags":["Uganda","Collab","New","Afrobeats"]},{"id":58,"title":"Valu Valu","artist":"Jose Chameleone","cover":"images/yaps-music-cover.jpg","audio":"audio/Jose_Chameleone_Valu_Valu.mp3","genre":"Luganda Pop","duration":"4:02","tags":["Uganda","Classic","AllTime","Luganda"]},{"id":83,"title":"Love You Everyday","artist":"Bebe Cool","cover":"images/Bebe Cool.png","audio":"audio/Love_you_everyday.mp3","genre":"Afropop","duration":"3:59","tags":["Uganda","AllTime","Classic"]},{"id":117,"title":"Kampala","artist":"Pallaso","cover":"images/pallaso","audio":"audio/Pallaso_Kampala.mp3","genre":"Afropop","duration":"3:58","tags":["Uganda","AllTime","Classic"]},{"id":150,"title":"Sirubala","artist":"Vinka","cover":"images/Vinka.png","audio":"audio/Vinka_Sirubala.mp3","genre":"Afropop","duration":"3:35","tags":["Uganda","AllTime","Classic"]},{"id":157,"title":"Temutuloga","artist":"Sqoop Larma","cover":"images/Sqoop_Larma_Temutuloga.webp","audio":"audio/Sqoop Larma - Temutuloga.mp3","genre":"Afrobeats","duration":"3:00","tags":["Uganda","Trending","Afrobeats"]}];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const src=u=>/^(https?:|blob:|data:)/.test(u)?u:encodeURI(u);
+let library=CATALOGUE.slice(),mode='lib';
+const load=(L,t)=>loadTrack(L,t);
+
+/* ── Connect to index.html: same songs as the YAPS Music app ──
+   1) yaps_shared_catalogue (localStorage) = live song list that index.html keeps up to date.
+   2) IndexedDB 'YapsMusicDB' = songs the user uploaded on this device (same origin as index.html).
+   3) /api/tracks = shared uploads from the server (see loadRemote). Built-in CATALOGUE stays as fallback. */
+function addTracks(rows){rows.forEach(x=>{if(!x||!x.audio)return;const i=library.findIndex(t=>String(t.id)===String(x.id));if(i<0)library.push(x);else library[i]=Object.assign({},library[i],x)})}
+function readShared(){try{const a=JSON.parse(localStorage.getItem('yaps_shared_catalogue')||'[]');if(Array.isArray(a))addTracks(a)}catch(e){console.warn('Shared catalogue unavailable',e)}}
+async function readDeviceUploads(){
+ try{const db=await new Promise((res,rej)=>{const r=indexedDB.open('YapsMusicDB');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);r.onupgradeneeded=()=>{r.transaction.abort()}});
+  const names=db.objectStoreNames;if(!names.contains('tracks')||!names.contains('audio')){db.close();return}
+  const all=s=>new Promise((res,rej)=>{const q=db.transaction(s,'readonly').objectStore(s).getAll();q.onsuccess=()=>res(q.result||[]);q.onerror=()=>rej(q.error)});
+  const meta=await all('tracks'),au=await all('audio'),ar=names.contains('artwork')?await all('artwork'):[];db.close();
+  const A={},C={};au.forEach(r=>A[r.id]=r.blob);ar.forEach(r=>C[r.id]=r.blob);
+  addTracks(meta.filter(m=>A[m.id]).map(m=>({id:String(m.id),title:m.title,artist:m.artist,cover:C[m.id]?URL.createObjectURL(C[m.id]):'',audio:URL.createObjectURL(A[m.id]),genre:m.genre||'',duration:m.duration||'',tags:m.tags||[],local:true,up:true})))}
+ catch(e){console.warn('Device uploads unavailable:',e&&e.message)}}
+readShared();
+const libReady=readDeviceUploads().then(()=>{if($('#libd').open)render()});
+
+/* Load a real track into a deck: fetch + decode so loops, hot cues, EQ and effects all work */
+async function loadTrack0(L,t){const d=dk(L);
+ if(t.duration){const p=String(t.duration).split(':').map(Number);if((p[0]||0)*60+(p[1]||0)>600){toast('“'+t.title+'” is over 10 minutes, too long to mix on most phones. Pick a shorter track.');return}}
+ init();toast('Loading '+t.title+'…');
+ try{const r=await fetch(src(t.audio));if(!r.ok)throw new Error('HTTP '+r.status);const ab=await C.decodeAudioData(await r.arrayBuffer());
+  stopD(d);d.buf=ab;d.dur=ab.duration;d.pos=0;d.pitch=0;d.hc=[null,null,null,null];d.loop=0;
+  d.t=t.title;d.ar=t.artist;d.g=t.genre||'';d.bpm=t.bpm||null;d.art=t.cover?'url("'+src(t.cover)+'") center/cover':'linear-gradient(135deg,#1457d6,#19c3ff)';d.ini='';d.tid=t.local?null:String(t.id);d.cover=t.cover||'';
+  const raw=ab.getChannelData(0),n=240,step=Math.floor(raw.length/n);d.pk=Array.from({length:n},(_,i)=>{let m=0;for(let j=0;j<step;j+=40)m=Math.max(m,Math.abs(raw[i*step+j]||0));return Math.max(.08,Math.min(1,m))});
+  setPitch(d);$$('[data-hc^="'+L+'"]').forEach(x=>x.classList.remove('on'));ui(d);toast('Loaded into Deck '+L)}
+ catch(e){console.warn(e);toast(loadErr(e,t.title))}}
+
+/* Library dialog */
+function openLib(){$$('.tabs button').forEach(x=>x.classList.toggle('on',x.dataset.s===mode));$('#libd').showModal();render()}
+function srcPick(k){if(k==='file')$('#file').click();else if(k==='lib'){mode='lib';openLib()}else if(k==='saved'){mode='saved';openLib()}else{mode='uploads';openLib()}}
+$('#libx').onclick=()=>$('#libd').close();
+function render(){if(mode==='saved')return renderSaved();const q=$('#q').value.trim().toLowerCase();
+ const rows=library.filter(t=>(mode!=='uploads'||t.up)&&(!q||[t.title,t.artist,t.genre].join(' ').toLowerCase().includes(q)));
+ $('#list').innerHTML=rows.length?rows.map(t=>`<div class="it"><img loading="lazy" alt="" src="${esc(src(t.cover||''))}" onerror="this.removeAttribute('src')"><div><b>${esc(t.title)}</b><span>${esc(t.artist)}${t.genre?' · '+esc(t.genre):''}${t.duration?' · '+esc(t.duration):''}</span></div>
+  <button class="ld" data-d="A" data-id="${esc(t.id)}" aria-label="Load ${esc(t.title)} into Deck A">A</button><button class="ld b" data-d="B" data-id="${esc(t.id)}" aria-label="Load ${esc(t.title)} into Deck B">B</button></div>`).join('')
+ :'<div class="empty">'+(mode==='uploads'&&!q?'No uploads yet. Upload a song in YAPS Music and it shows up here.':library.length?'No tracks match “'+esc(q)+'”. Try a different search.':'The library is empty.')+'</div>'}
+$('#list').addEventListener('click',e=>{const b=e.target.closest('.ld[data-id]');if(!b)return;const t=library.find(x=>String(x.id)===b.dataset.id);if(t)loadTrack(b.dataset.d,t)});
+$('#q').addEventListener('input',render);
+async function loadRemote(){if(!YAPS_API_URL)return;
+ try{(await api('/api/tracks?limit=100')).forEach(x=>{if(library.some(t=>String(t.id)===String(x.id))||!x.audio_url)return;
+  library.push({id:String(x.id),title:x.title,artist:x.artist,cover:x.artwork_url||'',audio:x.audio_url,genre:x.genre||'',duration:x.duration||'',tags:x.tags||[]})})}catch(e){console.warn('Uploads unavailable:',e&&e.message)}}
+
+/* Recording: master mix (both decks combined) → MediaRecorder */
+const R={rec:null,chunks:[],blob:null,url:'',t0:0,iv:0,peak:0,mime:'',dur:0,tracks:[],cover:''};
+const setSt=(m,e)=>{const s=$('#rst');s.textContent=m;s.style.color=e?'#ff8da1':''};
+const pickMime=()=>['audio/webm;codecs=opus','audio/mp4','audio/ogg;codecs=opus','audio/webm'].find(m=>MediaRecorder.isTypeSupported(m))||'';
+const extOf=m=>/mp4/.test(m)?'m4a':/ogg/.test(m)?'ogg':'webm';
+const mixName=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return 'YAPS-Mix-'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes())+'.'+extOf(R.mime)};
+function recUi(s){$('#rec').classList.toggle('rec',s==='rec');$('#rec').disabled=s==='proc';$('#recT').textContent={rec:'Stop Recording',proc:'Processing…',done:'Record again'}[s]||'Start Recording';$('#done').hidden=s!=='done'}
+$('#rec').onclick=()=>{
+ if(R.rec&&R.rec.state==='recording'){recUi('proc');setSt('Processing your mix…');R.rec.stop();return}
+ if(!window.MediaRecorder||!(window.AudioContext||window.webkitAudioContext)){setSt('Recording isn’t supported in this browser. Try the latest Chrome, Edge, Firefox or Safari.',1);return}
+ try{init()}catch(e){setSt('Couldn’t start the audio engine: '+e.message,1);return}
+ if(R.url)URL.revokeObjectURL(R.url);R.url='';R.blob=null;R.chunks=[];R.peak=0;R.mime=pickMime();
+ try{R.rec=new MediaRecorder(recDest.stream,R.mime?{mimeType:R.mime}:{})}catch(e){setSt('Couldn’t start recording: '+e.message,1);return}
+ R.mime=R.rec.mimeType||R.mime;R.rec.ondataavailable=e=>{if(e.data&&e.data.size)R.chunks.push(e.data)};
+ R.rec.onerror=e=>{clearInterval(R.iv);R.rec.onstop=null;recUi('idle');setSt('Recording failed ('+((e.error&&e.error.message)||'unknown error')+'). Your decks are unaffected.',1)};
+ R.rec.onstop=finish;R.rec.start(1000);R.t0=Date.now();recUi('rec');
+ R.iv=setInterval(()=>{const b=new Uint8Array(ma.fftSize);ma.getByteTimeDomainData(b);b.forEach(v=>{R.peak=Math.max(R.peak,Math.abs(v-128))});
+  $('#recT').textContent='Stop Recording · '+fmt((Date.now()-R.t0)/1000);setSt(R.peak<2?'No sound yet. Press play on a deck.':'')},250)};
+function finish(){clearInterval(R.iv);R.dur=(Date.now()-R.t0)/1000;
+ if(R.peak<2||!R.chunks.length){recUi('idle');setSt('Nothing was recorded. Play at least one deck while recording, then stop.',1);return}
+ R.tracks=D.map(d=>d.tid||null);R.cover=D[0].cover||D[1].cover||'';
+ R.blob=new Blob(R.chunks,{type:R.mime||'audio/webm'});R.url=URL.createObjectURL(R.blob);$('#mixAudio').src=R.url;recUi('done');
+ setSt(fmt(R.dur)+' · '+extOf(R.mime).toUpperCase()+' · '+(R.blob.size/1048576).toFixed(1)+' MB. Preview it, then download, share, save or publish.')}
+$('#mixAudio').onplay=()=>D.forEach(stopD); /* preview never overlaps the decks */
+addEventListener('beforeunload',e=>{if(R.blob||(R.rec&&R.rec.state==='recording')){e.preventDefault();e.returnValue=''}}); /* don't silently lose an unsaved mix */
+const need=()=>R.blob?true:(toast('Record a mix first'),false);
+$('#exD').onclick=()=>{if(!need())return;const a=document.createElement('a');a.href=R.url;a.download=mixName();document.body.appendChild(a);a.click();a.remove()};
+$('#exH').onclick=async()=>{if(!need())return;const f=new File([R.blob],mixName(),{type:R.blob.type});
+ try{if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],title:'My YAPS Mix',text:'Made in YAPS Music DJ Studio'});
+  else{$('#exD').click();setSt('This browser can’t share files, so the mix was downloaded. Share the file from your device.')}}
+ catch(e){e.name==='AbortError'?setSt('Share cancelled. Your mix is still here.'):setSt('Couldn’t share ('+e.message+'). Use Download instead.',1)}};
+$('#exS').onclick=()=>{if(need())saveMix()};
+$('#svd').onclick=()=>{mode='saved';openLib()};
+async function updSaved(){try{$('#svn').textContent=(await idbDo('readonly',s=>s.count()))+' ›'}catch(e){}}
+
+/* ── Phase 4: Save (this device) + Publish (account) ──
+   Save = IndexedDB on this device, no sign-in needed, never lost on upload failure.
+   Publish = Supabase sign-in (same project/session as index.html) + FastAPI POST /api/mixes. See BACKEND NEEDS below. */
+const SB_URL=YAPS_CONFIG.SUPABASE_URL,SB_KEY=YAPS_CONFIG.SUPABASE_ANON_KEY;
+const BUCKETS=YAPS_CONFIG.BUCKETS; // BACKEND NEEDS: 'mixes-private' bucket, table `mixes` with RLS, POST/GET /api/mixes
+let sb=null,user=null;
+try{sb=supabase.createClient(SB_URL,SB_KEY);sb.auth.getSession().then(({data})=>{user=data.session&&data.session.user;pubAuth()});sb.auth.onAuthStateChange((_e,s)=>{user=s&&s.user;pubAuth()})}catch(e){console.warn('Supabase unavailable',e)}
+function pubAuth(){const a=$('#pauth');a.innerHTML=user?'Signed in as '+esc(user.email||'your YAPS account'):(sb?'Sign in to publish. <a href="index.html" style="color:var(--cy)">Open YAPS Music</a>, sign in, then come back. Your mix stays here.':'Sign-in is unavailable right now. Check your connection and reload.');$('#pgo').disabled=!user}
+async function api(path,o={}){if(!YAPS_API_URL)throw Object.assign(new Error('The YAPS API URL isn’t set up yet.'),{status:0});
+ const h={'Content-Type':'application/json'},{data}=await sb.auth.getSession();if(data.session)h.Authorization='Bearer '+data.session.access_token;
+ const r=await fetch(YAPS_API_URL+path,{method:o.method||'GET',headers:h,body:o.body&&JSON.stringify(o.body)});
+ if(!r.ok){let m=r.statusText;try{const j=await r.json();m=typeof j.detail==='string'?j.detail:JSON.stringify(j.detail||j)}catch(e){}throw Object.assign(new Error(m||'HTTP '+r.status),{status:r.status})}return r.status===204?null:r.json()}
+async function upload(bucket,file,name){ /* same two-step pattern as index.html _apiUpload */
+ try{const s=await api('/api/uploads/sign',{method:'POST',body:{bucket,filename:name}});const {error}=await sb.storage.from(bucket).uploadToSignedUrl(s.path,s.token,file,{contentType:file.type,cacheControl:'3600'});if(error)throw error;return{path:s.path,url:s.public_url}}
+ catch(e){console.warn('Signed upload unavailable:',e&&e.message);const path=user.id+'/'+Date.now()+'_'+name.replace(/[^\w.-]/g,'_');
+  const {error}=await sb.storage.from(bucket).upload(path,file,{contentType:file.type,cacheControl:'3600'});if(error)throw error;return{path,url:sb.storage.from(bucket).getPublicUrl(path).data.publicUrl}}}
+const abs=u=>u?new URL(u,document.baseURI).href:'';
+
+/* Save to this device */
+const idb=()=>new Promise((res,rej)=>{const r=indexedDB.open('yaps-studio',1);r.onupgradeneeded=()=>r.result.createObjectStore('mixes',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+const idbDo=async(mode,fn)=>{const db=await idb();return new Promise((res,rej)=>{const t=db.transaction('mixes',mode),q=fn(t.objectStore('mixes'));t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error)})};
+window.saveMix=async()=>{if(!R.blob)return;const title='My YAPS Mix '+new Date().toLocaleDateString();
+ try{await idbDo('readwrite',s=>s.put({id:'m'+Date.now(),title,blob:R.blob,mime:R.mime,dur:R.dur,created:Date.now(),tracks:R.tracks}));setSt('Saved on this device in Saved Mixes. Publish it to keep a copy in your YAPS account.')}
+ catch(e){setSt('Couldn’t save on this device (storage is full or blocked). Use Download so you don’t lose it.',1)}};
+async function renderSaved(){updSaved();let rows=[];try{rows=await idbDo('readonly',s=>s.getAll())}catch(e){$('#list').innerHTML='<div class="empty">Saved mixes aren’t available in this browser (private mode or storage blocked).</div>';return}
+ const q=$('#q').value.trim().toLowerCase();rows=rows.filter(m=>!q||m.title.toLowerCase().includes(q)).sort((a,b)=>b.created-a.created);
+ $('#list').innerHTML=rows.length?rows.map(m=>`<div class="it" style="grid-template-columns:1fr auto auto auto auto"><div><b>${esc(m.title)}</b><span>${fmt(m.dur)} · ${new Date(m.created).toLocaleDateString()} · on this device</span></div>
+  <button class="ld" data-sid="${m.id}" data-act="A" aria-label="Load into Deck A">A</button><button class="ld b" data-sid="${m.id}" data-act="B" aria-label="Load into Deck B">B</button><button class="ld" data-sid="${m.id}" data-act="dl" aria-label="Download">⬇</button><button class="ld" data-sid="${m.id}" data-act="del" aria-label="Delete">🗑</button></div>`).join(''):'<div class="empty">No saved mixes yet. Record a mix, then tap ⭐ Save.</div>'}
+$('#list').addEventListener('click',async e=>{const b=e.target.closest('[data-sid]');if(!b)return;const m=(await idbDo('readonly',s=>s.get(b.dataset.sid)));if(!m)return renderSaved();const a=b.dataset.act;
+ if(a==='del'){if(confirm('Delete “'+m.title+'” from this device?')){await idbDo('readwrite',s=>s.delete(m.id));renderSaved()}}
+ else if(a==='dl'){const l=document.createElement('a');l.href=URL.createObjectURL(m.blob);l.download=m.title.replace(/[^\w -]/g,'')+'.'+extOf(m.mime);l.click()}
+ else load(a,{id:m.id,title:m.title,artist:'My mix',cover:'',audio:URL.createObjectURL(m.blob),local:true})});
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{if(b.disabled)return;mode=b.dataset.s;document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));render()});
+
+/* Publish */
+$('#exP').onclick=()=>{if(!R.blob){toast('Record a mix first');return}const g=$('#pg');g.innerHTML=['DJ Mix',...new Set(library.map(t=>t.genre).filter(Boolean))].map(x=>`<option>${esc(x)}</option>`).join('');
+ $('#pt_').value='';$('#pst').textContent='';pubAuth();$('#pub').showModal()};
+$('#pcx').onclick=()=>$('#pub').close();
+$('#pgo').onclick=async()=>{const st=m=>{$('#pst').textContent=m;$('#pst').style.color='var(--mu)'},er=m=>{$('#pst').textContent=m;$('#pst').style.color='#ff8da1'};
+ const title=$('#pt_').value.trim(),cf=$('#pc').files[0],priv=$('#pv_').value==='private';
+ if(!user)return er('Sign in first. Your mix stays here while you do.');
+ if(!title)return er('Add a title for your mix.');
+ if(cf&&(!/^image\//.test(cf.type)||cf.size>2097152))return er('Cover must be an image under 2 MB.');
+ if(!$('#pr').checked)return er('Confirm you have the right to share this mix.');
+ const tags=$('#ptg').value.split(',').map(s=>s.trim()).filter(Boolean).slice(0,10).map(s=>s.slice(0,30));
+ $('#pgo').disabled=true;
+ try{const ext=extOf(R.mime),ft=(R.blob.type||'audio/webm').split(';')[0];
+  st('Uploading audio…');const au=await upload(priv?BUCKETS.private:BUCKETS.public,new File([R.blob],mixName(),{type:ft}),mixName());
+  let cover=abs(R.cover);if(cf){st('Uploading cover…');cover=(await upload(BUCKETS.cover,cf,cf.name)).url}
+  st('Saving mix…');
+  await api('/api/mixes',{method:'POST',body:{title:title.slice(0,150),description:$('#pd').value.trim().slice(0,500),genre:$('#pg').value,tags,visibility:priv?'private':'public',
+   audio_url:priv?null:au.url,audio_path:au.path,cover_url:cover||null,duration:Math.round(R.dur),format:ext,track_a_id:R.tracks[0],track_b_id:R.tracks[1]}}); /* creator comes from the auth token server-side */
+  $('#pub').close();setSt(priv?'Saved privately to your YAPS account.':'Published to YAPS. Public mixes appear in YAPS DJ Mixes once that section is live.')}
+ catch(e){const m=e.status===404?'The server has no mixes endpoint yet (POST /api/mixes), so nothing was published. Your mix is safe here: Save or Download it.':e.status===0?e.message+' Your mix is safe here: Save or Download it.':'Couldn’t publish: '+e.message+'. Your mix is still here. Try again, or Save/Download it.';er(m)}
+ $('#pgo').disabled=!user};
+pubAuth();
+
+
+const _sv=window.saveMix;window.saveMix=async()=>{await _sv();updSaved()};updSaved();
+/* URL entry: studio.html?deck=A&track=ID (deck defaults to A; no track = empty decks) */
+(async function(){const p=new URLSearchParams(LOC.search),id=p.get('track');if(!id)return;
+ const L=(p.get('deck')||'A').toUpperCase()==='B'?'B':'A',find=()=>library.find(x=>String(x.id)===id);
+ await libReady;readShared();
+ if(!find())await loadRemote();const t=find();t?loadTrack(L,t):toast('Track “'+id+'” wasn’t found in the YAPS library. Choose one from YAPS Library.')})();
+loadRemote();
+
+/* ---------- render loop ---------- */
+function draw(d){const c=$('#wf'+d.L),w=c.clientWidth,h=c.clientHeight,r=devicePixelRatio||1;if(c.width!=w*r){c.width=w*r;c.height=h*r}const x=c.getContext('2d');x.setTransform(r,0,0,r,0,0);x.clearRect(0,0,w,h);
+ const n=d.pk.length,bw=w/n,p=d.pos/d.dur;d.pk.forEach((v,i)=>{x.fillStyle=i/n<p?d.c:d.dm;const a=v*h*.92;x.fillRect(i*bw+.4,(h-a)/2,Math.max(1,bw-1),a)});if(d.bpm&&d.dur){const sp=60/d.bpm,b0=d.beat0||0;if(sp/d.dur*w>=5){x.fillStyle='rgba(255,255,255,.22)';for(let t=b0,k=0;t<d.dur;t+=sp,k++)x.fillRect(t/d.dur*w,0,1,k%4?h*.2:h*.5)}}
+ if(d.src&&d.src.loop&&d.dur){x.fillStyle='rgba(255,211,92,.2)';x.fillRect(d.src.loopStart/d.dur*w,0,(d.src.loopEnd-d.src.loopStart)/d.dur*w,h)}
+ d.hc.forEach((t,i)=>{if(t!=null&&d.dur){x.fillStyle='#ffd35c';x.fillRect(t/d.dur*w,0,2,h);x.fillText(i+1,t/d.dur*w+3,10)}});
+ x.fillStyle='#fff';x.fillRect(p*w,0,2,h)}
+const lv=(d)=>{if(!C||!d.an)return 0;d.an.getByteTimeDomainData(d.buf2);let m=0;for(const v of d.buf2)m+=(v-128)*(v-128);return Math.min(1,Math.sqrt(m/d.buf2.length)/45)};
+let last=performance.now(),fr=0;
+(function tick(n){const dt=Math.min(.1,(n-last)/1e3);last=n;fr++;
+ D.forEach(d=>{if(d.on){d.pos+=dt*(d.src?d.src.playbackRate.value:1+d.pitch/100);if(d.pos>=d.dur){d.pos=0;if(d.buf)stopD(d)}d.ang+=dt*200*(1+d.pitch/100)}
+  $('#jog'+d.L).style.transform=`rotate(${d.ang%360}deg)`;$('#tm'+d.L).textContent=fmt(d.pos)+' / '+fmt(d.dur);
+  const l=lv(d)*(d.on?1:0)*100;$('#m'+d.L).style.height=l+'%';$('#m'+d.L+'2').style.height=Math.max(0,l*.9)+'%';if(fr%3==0)draw(d)});
+ requestAnimationFrame(tick)})(last);
+
+/* ---------- DJ console helpers (landscape mode) ---------- */
+const bodyC=document.body.classList,setTools=on=>bodyC.toggle('tools',on);
+$('#toolsBtn').onclick=()=>setTools(!bodyC.contains('tools'));
+$('#scrim').onclick=$('#toolsX').onclick=()=>setTools(false);
+addEventListener('keydown',e=>{if(e.key==='Escape')setTools(false)});
+$$('.src').forEach(b=>b.addEventListener('click',()=>setTools(false)));
+async function goLandscape(){if(self!==top){try{if(parent.__hostFS){parent.__hostFS();return}}catch(e){}}
+ try{if(!document.fullscreenElement&&document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen({navigationUI:'hide'})}catch(e){}
+ try{await screen.orientation.lock('landscape');$('#rot').hidden=true}catch(e){toast('Turn your phone sideways to open the DJ console')}}
+if(self!==top){const b=document.createElement('base');b.target='_top';document.head.append(b);addEventListener('pointerup',()=>{try{parent.__hostTap&&parent.__hostTap()}catch(e){}},{once:true})}
+$('#rotGo').onclick=goLandscape;$('#rotX').onclick=()=>{$('#rot').hidden=true};
+$('#fsBtn').onclick=()=>document.fullscreenElement?document.exitFullscreen():goLandscape();
+/* keep the screen awake while DJing */
+let wl=null;async function keepAwake(){try{if(navigator.wakeLock&&!wl)wl=await navigator.wakeLock.request('screen');if(wl)wl.addEventListener('release',()=>{wl=null})}catch(e){}}
+addEventListener('pointerdown',keepAwake,{once:true});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&wl===null&&bodyC)keepAwake()});
+/* ===== v3 UPGRADE: analysis, SYNC, seek, jog, AI DJ, modes, tutorial ===== */
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const loadErr=(e,t)=>{const m=String(e&&(e.message||e.name)||e);return /decode|EncodingError/i.test(m)?'YAPS couldn’t play “'+t+'”. This audio format isn’t supported. Try an MP3, M4A or WAV.':/HTTP 4/.test(m)?'YAPS couldn’t find “'+t+'”. Try another track.':/fetch|Network|Load failed/i.test(m)?'YAPS couldn’t reach “'+t+'”. Check your connection, or the file may block access (CORS).':'YAPS couldn’t load “'+t+'”. Try another audio file.'};
+addEventListener('unhandledrejection',e=>{console.warn(e.reason);e.preventDefault();toast('Something went wrong, but your decks are unaffected.')});
+/* Browser-only analysis: energy envelope -> onset autocorrelation (BPM), beat phase, intro/outro, loudness */
+function analyse(buf){const sr=buf.sampleRate,x=buf.getChannelData(0),hop=Math.round(sr*.01),n=Math.floor(x.length/hop),e=new Float32Array(n);
+ for(let i=0;i<n;i++){let s=0;for(let j=0;j<hop;j+=4){const v=x[i*hop+j]||0;s+=v*v}e[i]=Math.sqrt(s/(hop/4))}
+ let tot=0;for(const v of e)tot+=v;const avg=tot/n||1e-6;let mi=0,mo=n-1;while(mi<n-1&&e[mi]<avg*.5)mi++;while(mo>0&&e[mo]<avg*.5)mo--;
+ const o=new Float32Array(n);for(let i=1;i<n;i++)o[i]=Math.max(0,e[i]-e[i-1]);
+ const N=Math.min(n,6000),st=Math.max(0,Math.floor(n/2-N/2)),sc={};let best=0,bl=0;
+ for(let lag=32;lag<=101;lag++){let s=0;for(let i=st+lag;i<st+N;i++)s+=o[i]*o[i-lag];sc[lag]=s;if(s>best){best=s;bl=lag}}
+ let bpm=null,beat0=null;if(best>0&&bl>32&&bl<101){const a=sc[bl-1],c=sc[bl+1],dn=a-2*best+c,dl=dn?.5*(a-c)/dn:0;bpm=6000/(bl+clamp(dl,-.5,.5));while(bpm<80)bpm*=2;while(bpm>175)bpm/=2;bpm=Math.round(bpm*10)/10;
+  const sp=6000/bpm;let bp=0,bs=-1;for(let p=0;p<sp;p+=.5){let s=0;for(let k=st+p;k<st+N;k+=sp)s+=o[Math.round(k)]||0;if(s>bs){bs=s;bp=p}}beat0=(((st+bp)*.01)%(60/bpm))}
+ return{bpm,beat0,mixIn:mi*.01,mixOut:mo*.01,norm:clamp(.14/avg,.5,1.6)}}
+function postLoad(d){if(!d.buf)return;try{const r=analyse(d.buf);d.beat0=r.beat0;d.mixIn=r.mixIn;d.mixOut=r.mixOut;d.detected=false;if(!d.bpm&&r.bpm){d.bpm=r.bpm;d.detected=true}if(d.in)d.in.gain.value=r.norm}catch(e){console.warn(e)}d.sync=false;ui(d)}
+async function loadTrack(L,t){const d=dk(L),prev=d.buf;await loadTrack0(L,t);if(d.buf&&d.buf!==prev){postLoad(d);return true}return false}
+const bpmTxt=d=>d.bpm?(d.sync?'SYNC ':'BPM ')+(d.detected?'~':'')+d.bpm.toFixed(1)+' → '+(d.bpm*(1+d.pitch/100)).toFixed(1):'BPM n/a';
+function ui(d){ui0(d);const b=$('#bp'+d.L);if(b){b.textContent=bpmTxt(d);b.title='Tap to enter BPM manually';b.style.cursor='pointer'}const s=$('#deck'+d.L).querySelector('[data-a=sync]');if(s)s.classList.toggle('on',!!d.sync)}
+function setPitch(d){setPitch0(d);const o=D[1-D.indexOf(d)];if(o.sync&&!setPitch.b&&d.bpm&&o.bpm){setPitch.b=1;let r=eff(d)/o.bpm;if(r>1.5)r/=2;else if(r<.67)r*=2;o.pitch=clamp((r-1)*100,-16,16);setPitch0(o);setPitch.b=0}}
+function alignBeat(d,o){if(d.beat0==null||o.beat0==null||!o.on)return;const so=60/o.bpm,sd=60/d.bpm,ph=(((o.pos-o.beat0)/so)%1+1)%1,cu=(((d.pos-d.beat0)/sd)%1+1)%1;let dl=(ph-cu)*sd;if(dl>sd/2)dl-=sd;if(dl<-sd/2)dl+=sd;d.pos=clamp(d.pos+dl,0,d.dur);if(d.src){stopD(d);play(d)}}
+function doSync(d,keep){const o=D[1-D.indexOf(d)];if(!keep&&d.sync){d.sync=false;ui(d);toast('Sync off');return}
+ const t=eff(o);if(!t||!d.bpm){toast('SYNC needs a BPM on both decks. Tap the BPM badge to enter one.');return}
+ let r=t/d.bpm;if(r>1.5)r/=2;else if(r<.67)r*=2;const p=(r-1)*100;if(Math.abs(p)>16){toast('Those tempos are too far apart to sync within ±16% pitch.');return}
+ o.sync=false;d.sync=true;d.pitch=p;setPitch(d);alignBeat(d,o);ui(d);ui(o);toast('Deck '+d.L+' synced to '+t.toFixed(1)+' BPM')}
+document.addEventListener('click',e=>{const b=e.target.closest('em[id^=bp]');if(!b)return;const d=dk(b.id.slice(-1)),v=parseFloat(prompt('Original BPM of Deck '+d.L+' (60–200):',d.bpm||''));if(v>=60&&v<=200){d.bpm=v;d.detected=false;if(d.sync)doSync(d,1);ui(d)}});
+/* Waveform: click / drag to seek */
+D.forEach(d=>{const c=$('#wf'+d.L);let on=0,was=0;const at=e=>{const r=c.getBoundingClientRect();d.pos=clamp((e.clientX-r.left)/r.width,0,1)*d.dur};
+ c.addEventListener('pointerdown',e=>{if(!d.buf)return;c.setPointerCapture(e.pointerId);on=1;was=d.on;if(was)stopD(d);at(e)});c.addEventListener('pointermove',e=>{if(on)at(e)});
+ const up=()=>{if(!on)return;on=0;if(was)play(d)};c.addEventListener('pointerup',up);c.addEventListener('pointercancel',up)});
+/* Jog wheel: drag to pitch-bend while playing, scrub when stopped */
+D.forEach(d=>{const j=$('#jog'+d.L);let act=0,a0=0;const ang=e=>{const r=j.getBoundingClientRect();return Math.atan2(e.clientY-r.top-r.height/2,e.clientX-r.left-r.width/2)};
+ j.addEventListener('pointerdown',e=>{j.setPointerCapture(e.pointerId);act=1;a0=ang(e)});
+ j.addEventListener('pointermove',e=>{if(!act)return;const a=ang(e);let da=a-a0;a0=a;if(da>Math.PI)da-=2*Math.PI;if(da<-Math.PI)da+=2*Math.PI;d.ang+=da*57.3;
+  if(d.on&&d.src){d.src.playbackRate.value=clamp((1+d.pitch/100)*(1+da*3),.5,1.6);clearTimeout(j.t);j.t=setTimeout(()=>{if(d.src)d.src.playbackRate.value=1+d.pitch/100},80)}else if(d.dur)d.pos=clamp(d.pos+da*.9,0,d.dur)});
+ const up=()=>{act=0;if(d.src)d.src.playbackRate.value=1+d.pitch/100};j.addEventListener('pointerup',up);j.addEventListener('pointercancel',up)});
+/* Beginner / Pro mode */
+const mb=$('#modeBtn');function setMode(b){document.body.classList.toggle('beginner',b);mb.textContent=b?'BEGINNER':'PRO';try{localStorage.setItem('yapsMode',b?'b':'p')}catch(e){}}
+mb.onclick=()=>setMode(!document.body.classList.contains('beginner'));try{setMode(localStorage.getItem('yapsMode')==='b')}catch(e){setMode(false)}
+/* Tutorial */
+const TUT=['Load a song into Deck A (☰ Tools → YAPS Library).','Load another song into Deck B.','Press ▶ on a deck to play.','Press SYNC to match the tempo of both decks.','Move the crossfader to blend A and B.','Add effects like Echo, Reverb or Filter.','Press Record, mix, then stop to capture your set.','Publish your mix to YAPS to share it.'];
+let ti=0;const td=$('#tut'),tutShow=()=>{$('#tutT').textContent='Step '+(ti+1)+' of '+TUT.length;$('#tutB').textContent=TUT[ti];$('#tutN').textContent=ti==TUT.length-1?'Done':'Next'};
+const tutEnd=()=>{td.close();try{localStorage.setItem('yapsTut','1')}catch(e){}};
+$('#tutN').onclick=()=>{if(ti>=TUT.length-1)tutEnd();else{ti++;tutShow()}};$('#tutS').onclick=tutEnd;$('#helpBtn').onclick=()=>{ti=0;tutShow();td.showModal()};
+let seen=null;try{seen=localStorage.getItem('yapsTut')}catch(e){}if(!seen){tutShow();td.showModal()}
+/* AI DJ: analysed beat-aligned transitions, bass swap, styles, energy modes, manual override */
+const AI_STYLES={smooth:{b:16,n:'Smooth'},club:{b:8,n:'Club'},fast:{b:4,n:'Fast'},creative:{b:8,n:'Creative'},long:{b:32,n:'Long Mix'}},AI_EN={chill:{m:1.3,v:.7},normal:{m:1,v:.85},party:{m:.8,v:.92},high:{m:.65,v:.95}};
+let ai=null;const aiMsg=m=>{$('#aiSt').textContent=m},smooth=p=>p*p*(3-2*p);
+const aiLen=a=>clamp(AI_STYLES[$('#aiStyle').value].b*AI_EN[$('#aiEnergy').value].m*60/(eff(a)||120),3,45);
+function nextTrack(a){const pool0=library.filter(t=>t.audio&&!ai.used.has(String(t.id)));if(!pool0.length){ai.used.clear();return library.find(t=>t.audio)}const g=(a.g||'').toLowerCase(),s=pool0.filter(t=>(t.genre||'').toLowerCase()===g),p=s.length?s:pool0;return p[Math.random()*p.length|0]}
+async function aiTick(){if(!ai||ai.busy||ai.loading)return;const a=D[ai.cur],b=D[1-ai.cur];if(!a.on||!a.buf)return;
+ const len=aiLen(a),start=Math.max(a.pos+1,Math.min(Math.min(a.mixOut||a.dur,a.dur)-len,a.dur-len-2)),left=start-a.pos;
+ if(!ai.ready&&left<len+25){ai.loading=true;aiMsg('Preparing next track…');const t=nextTrack(a);if(!t){ai.loading=false;aiMsg('No tracks available');return}
+  ai.used.add(String(t.id));const ok=await loadTrack(b.L,t);if(!ai)return;ai.loading=false;if(ok){ai.ready=true;aiMsg('Next up: '+b.t)}else if(++ai.fail>=3){aiToggle();toast('AI DJ stopped: tracks couldn’t be loaded. Try another source.')}return}
+ if(ai.ready&&left<=.25){ai.busy=true;await aiTransition(a,b,len);if(ai)ai.busy=false}}
+function aiTransition(A,B,len){return new Promise(res=>{const o=eff(A),tr=Math.min(len,Math.max(2,A.dur-A.pos-.5));let r=1;if(o&&B.bpm){r=o/B.bpm;if(r>1.4)r/=2;else if(r<.7)r*=2}
+ B.pitch=Math.abs(r-1)<=.16?(r-1)*100:0;setPitch(B);B.pos=clamp(B.mixIn||0,0,B.dur-1);
+ if(B.beat0!=null&&B.bpm){const sb=60/B.bpm;B.pos=B.beat0+Math.ceil(Math.max(0,B.pos-B.beat0)/sb)*sb}
+ const spa=60/(o||120),wait=A.beat0!=null&&A.bpm?spa-((((A.pos-A.beat0)%spa)+spa)%spa):0,from=xv,to=ai.cur?0:1;
+ B.eq.lo=-1;applyEq(B);ai.tr={x:0};aiMsg('AI Transition: '+A.L+' → '+B.L+' ('+AI_STYLES[$('#aiStyle').value].n+')');$('#aiSt').classList.add('live');
+ function fin(c){A.fl.frequency.setTargetAtTime(22000,C.currentTime,.05);A.eq.lo=0;B.eq.lo=0;applyEq(A);applyEq(B);$('#aiSt').classList.remove('live');
+  if(!c){stopD(A);ai.cur=1-ai.cur;ai.ready=false;ai.tr=null;aiMsg('Now playing: '+B.t)}else if(ai){aiToggle();toast('Manual override: AI DJ stopped. You’re in control.')}res()}
+ setTimeout(()=>{if(!ai){res();return}play(B);const t0=performance.now();(function s(n){if(!ai||ai.tr.x){fin(true);return}
+  const p=Math.min(1,(n-t0)/(tr*1000));xv=from+(to-from)*smooth(p);$('#xf').value=xv*100;xfade();
+  B.eq.lo=p<.5?-1:-1+(p-.5)*2;A.eq.lo=p<.5?0:-(p-.5)*2;applyEq(A);applyEq(B);
+  if($('#aiStyle').value==='creative')A.fl.frequency.setTargetAtTime(22000*Math.pow(.03,p),C.currentTime,.05);
+  if(p<1)requestAnimationFrame(s);else fin(false)})(t0)},wait*1000)})}
+function aiToggle(){if(ai){clearInterval(ai.iv);ai=null;$('#aiGo').textContent='▶ Start AI DJ';$('#aiGo').classList.remove('live');$('#aiSt').classList.remove('live');aiMsg('AI DJ is off');return}
+ if(!D[0].buf&&!D[1].buf){toast('Load at least one track first');return}init();const cur=D[0].buf?0:1,a=D[cur],b=D[1-cur];
+ master.gain.value=Math.min(master.gain.value,AI_EN[$('#aiEnergy').value].v);$('#mvol').value=master.gain.value*100;xv=cur;$('#xf').value=xv*100;xfade();if(!a.on)play(a);
+ ai={cur,used:new Set(a.tid?[a.tid]:[]),ready:!!b.buf,fail:0,iv:setInterval(aiTick,500)};$('#aiGo').textContent='■ Stop AI DJ';$('#aiGo').classList.add('live');aiMsg('AI DJ is mixing')}
+$('#aiGo').onclick=aiToggle;$('#aiTop').onclick=aiToggle;
+document.addEventListener('input',e=>{if(ai&&ai.tr&&(e.target.id==='xf'||e.target.dataset.a==='vol'))ai.tr.x=1});
+
+</script>
+<script>
+/* Boot: normal pages run the app directly. On phones the app runs inside a frame (built from this
+   page's own HTML, so it also works when the file is downloaded) that is rotated to landscape. */
+(function(){
+ function run(){var s=document.createElement('script');s.textContent=document.getElementById('appjs').textContent;document.body.appendChild(s)}
+ var h=document.documentElement;
+ var phone=self===top&&!/[?&]nofs=1/.test(location.search)&&matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<=820;
+ if(!phone){run();return}
+ var src='<!DOCTYPE html>'+h.outerHTML+'</body></html>';   /* snapshot BEFORE touching the DOM */
+ var f=document.createElement('iframe');f.id='hf';f.title='YAPS Virtual DJ Studio';
+ f.setAttribute('allow','autoplay; microphone; fullscreen; web-share; clipboard-write');
+ f.srcdoc=src;h.classList.add('host');document.body.appendChild(f);
+ var pm=matchMedia('(orientation:portrait)');function fit(){h.classList.toggle('rot',pm.matches)}
+ fit();pm.addEventListener?pm.addEventListener('change',fit):pm.addListener(fit);addEventListener('resize',fit);
+ /* Android Chrome: real rotation lock (needs a tap). iOS can't lock, so the CSS rotation stays in charge. */
+ window.__hostFS=async function(){try{if(document.fullscreenElement){try{screen.orientation.unlock()}catch(e){}await document.exitFullscreen();return}
+  if(h.requestFullscreen)await h.requestFullscreen({navigationUI:'hide'});await screen.orientation.lock('landscape')}catch(e){}};
+ window.__hostTap=function(){if(!document.fullscreenElement&&pm.matches)window.__hostFS()};
+ /* safety net: if the frame did not come up, drop back to the normal page */
+ setTimeout(function(){var ok=false;try{ok=!!f.contentDocument.querySelector('#decks')}catch(e){}
+  if(!ok){h.classList.remove('host','rot');f.remove();run()}},3000);
+})();
+</script></body></html>
