@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en"><head><script>if(self===top){document.write('<link rel="prefetch" href="index.html">')}</script><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050b22">
 <script>
@@ -7,13 +7,14 @@
 (function(){
  var last='';
  /* Phones run the app inside a rotated frame (see boot script). Detect that up front so the outer page never lays out the whole UI. */
- window.__phoneHost=self===top&&!/[?&]nofs=1/.test(location.search)&&matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<=820;
+ window.__phoneHost=self===top&&!window.__yapsEmbedded&&!/[?&]nofs=1/.test(location.search)&&matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<=820;
  if(window.__phoneHost)document.documentElement.classList.add('host');
+ if(window.__yapsEmbedded)document.documentElement.classList.add('emb');
  var TC={neon:'#050712',ocean:'#050b22',crimson:'#0c0505',emerald:'#04120b',violet:'#0b0716',aurora:'#050814',gold:'#0d0a02',sunset:'#120704',rose:'#12050b',arctic:'#03111a'};
  function apply(){
-  var t='neon';
-  try{t=localStorage.getItem('yaps_theme')||'neon'}catch(e){}
-  if(!TC[t])t='neon';   /* every colour is free, same list and default (Neon) as index.html */
+  var t='aurora';
+  try{t=localStorage.getItem('yaps_theme')||'aurora'}catch(e){}
+  if(!TC[t])t='aurora';   /* every colour is free, same list and default (Neon) as index.html */
   var skin=t==='aurora'; /* Aurora 3D lettering + glow is free for everyone, like index.html */
   var light=false;try{light=JSON.parse(localStorage.getItem('yaps_settings_v2')||'{}').darkMode===false}catch(e){}
   var key=t+(skin?'1':'0')+(light?'L':'D');if(key===last)return;last=key; /* nothing changed: skip DOM writes + style recalc (focus/pageshow fire often on phones) */
@@ -457,7 +458,6 @@ footer b{color:var(--au);font-family:var(--serif);font-weight:800}
 #toast{border:1px solid var(--au);background:var(--s2);color:var(--au2);font-weight:600}
 
 /* ---- sidebar keeps index.html look, only lettering aligned ---- */
-nav#mainNav .sidebar-label{color:var(--au3)}
 
 /* ---- compact modes: keep serif sizes in check ---- */
 @media(max-width:820px){.logo{font-size:30px}.ttl{font-size:22px}}
@@ -908,13 +908,14 @@ dialog#tut::backdrop{background:none}
 @media(prefers-reduced-motion:reduce){#tutRing.on,.dhint{animation:none}}
 
 /* ===== Comfort settings ===== */
+
 html.cmf-big body{font-size:15px}
 html.cmf-big button,html.cmf-big select,html.cmf-big .sm,html.cmf-big .k{min-height:48px;font-size:15px}
 html.cmf-big .pad,html.cmf-big .tapb{min-height:56px}
 html.cmf-big input[type=range]{min-height:34px}
-html.cmf-calm *,html.cmf-calm *:before,html.cmf-calm *:after{animation:none!important;transition:none!important;text-shadow:none!important}
-html.cmf-calm .earth{display:none}
-html.cmf-calm :is(.aibtn,.ic,.logo,nav a.on,.pn){box-shadow:none!important;filter:none!important}
+html.cmf-calm *,html.cmf-calm *:before,html.cmf-calm *:after,html.cmf-lite *,html.cmf-lite *:before,html.cmf-lite *:after{animation:none!important;transition:none!important;text-shadow:none!important}
+html.cmf-calm .earth,html.cmf-lite .earth{display:none}
+html.cmf-calm :is(.aibtn,.ic,.logo,nav a.on,.pn),html.cmf-lite :is(.aibtn,.ic,.logo,nav a.on,.pn){box-shadow:none!important;filter:none!important}
 .cmf-row{display:flex;align-items:center;gap:10px;padding:10px 4px;border-top:1px solid var(--bd)}
 .cmf-row:first-of-type{border-top:0}
 .cmf-row b{display:block;font:700 15px 'Archivo Narrow',sans-serif}.cmf-row span span{font-size:12px;color:var(--mu)}
@@ -1005,16 +1006,154 @@ body.beginner #pro,body.beginner #proScrim,body.beginner .pro-open{display:none!
 #acctDlg .ac-act a,#acctDlg .ac-act button{flex:1;min-width:120px;text-align:center;text-decoration:none;cursor:pointer;font:700 13px Archivo,sans-serif;padding:11px 12px;border-radius:12px;border:1px solid var(--bd,rgba(255,255,255,.2));background:transparent;color:inherit}
 #acctDlg .ac-act a.pri{background:var(--accent,#19e68c);color:#04101a;border-color:transparent}
 </style>
+<script>(function(){function u(){var c=null;try{c=top.__yapsUnread&&top.__yapsUnread()}catch(e){}[["sbMsgBadge","msg"],["sbNotifBadge","notif"]].forEach(function(p){var e=document.getElementById(p[0]);if(!e)return;var n=c?c[p[1]]:0;e.textContent=n>99?"99+":n;e.style.display=n>0?"":"none"})}setInterval(u,3000);document.addEventListener("DOMContentLoaded",u)})();</script><style id="vdjSkin">
+body.vdj main{--pn:#1a1a1b;--bd:#333;--s0:#161616;--s1:#1d1d1d;--s2:#222;--s3:#2b2b2b}
+body.vdj .sc-teaser,body.vdj #toolsBtn{display:none!important}
+body.vdj main{padding:6px;gap:6px;display:flex;flex-direction:column;min-height:0;overflow:auto}
+body.vdj .pn{border-radius:2px;background:#1a1a1b;border:1px solid #333;box-shadow:none}
+body.vdj .row1{grid-template-columns:minmax(0,1fr) 210px minmax(0,1fr);gap:6px}
+body.vdj .deck{padding:0;display:flex;flex-direction:column;overflow:hidden}
+body.vdj .wfw{display:flex;background:#0b0b0c;border-bottom:1px solid #333;height:64px}
+body.vdj .wfw .tag{width:26px;height:auto;border-radius:0;box-shadow:none;font-size:15px;flex:none}
+body.vdj .deck.b .wfw{flex-direction:row-reverse}
+body.vdj .wfw canvas{height:100%;margin:0;flex:1;min-width:0}
+body.vdj .info{grid-template-columns:auto 1fr auto;padding:6px 8px;border-bottom:1px solid #2a2a2a}
+body.vdj .art{width:38px;height:38px;border-radius:2px}body.vdj .meta b{font-size:14px}body.vdj .tm em{border-radius:2px;margin-top:3px}
+body.vdj .ctl,body.vdj .deck.b .ctl{display:grid;grid-template-columns:minmax(0,1fr) 50px 50px;grid-template-areas:"jog pit vol" "btn btn btn";gap:8px;padding:8px;align-items:center}
+body.vdj .deck.b .ctl{grid-template-columns:50px 50px minmax(0,1fr);grid-template-areas:"vol pit jog" "btn btn btn"}
+body.vdj .ctl>.jog{grid-area:jog}body.vdj .ctl>.sl:nth-of-type(1),body.vdj .ctl>.sl:nth-child(3){grid-area:pit}body.vdj .ctl>.sl:nth-child(4){grid-area:vol}body.vdj .ctl>.btns{grid-area:btn}
+body.vdj .btns{flex-direction:row;gap:4px;width:100%}
+body.vdj .k,body.vdj .btns .k{flex:1;width:auto;max-height:none;padding:10px 4px;border-radius:2px;background:#2a2a2a;border:1px solid #444;box-shadow:none;font-size:13px;letter-spacing:.08em}
+body.vdj .k.pl{background:#3a3a3a;border-color:var(--ac)}body.vdj .k.pl.on,body.vdj .k[data-a=sync].on{background:var(--ac);color:#fff;box-shadow:none}
+body.vdj .disc{width:min(100%,170px);background:radial-gradient(circle,#1b1b1b 0 56%,#2c2c2c 57%);box-shadow:0 0 0 2px #444,0 0 0 4px #1a1a1a}
+body.vdj .hub{width:30%;font-size:0!important;letter-spacing:0;background:#1b1b1b;box-shadow:none;border-width:3px;text-shadow:none}
+body.vdj .hub:after{content:"";width:34%;aspect-ratio:1;border-radius:50%;background:var(--ac)}
+body.vdj .deck.empty .art{display:none}body.vdj .deck.empty .info{grid-template-columns:1fr auto}
+body.vdj .disc{max-width:150px;justify-self:center}body.vdj .meta{min-width:0}
+body.vdj .sl{height:130px}body.vdj input.v{writing-mode:vertical-lr!important;direction:rtl!important;height:90px!important;width:22px!important;flex:none}
+body.vdj .sl{flex-direction:column!important;width:auto!important}
+body.vdj .mix{padding:8px}body.vdj .knob{background:#262626;border:2px solid #555;box-shadow:none}body.vdj .meters i{background:linear-gradient(0deg,#2fc46a,#2fc46a 60%,#ffd35c 85%,#ff3b5c)!important}
+body.vdj .sm{border-radius:2px;background:#2a2a2a;border:1px solid #444;box-shadow:none;padding:8px 10px;font-size:13px}
+body.vdj .sm.on{background:var(--cy);color:#fff;box-shadow:none}
+body.vdj .go,body.vdj .rw{box-shadow:none}body.vdj .go{border-radius:2px;background:#2f7fc0;border-color:#4a9ad8}
+/* hidden features: one panel at a time, opened from the dock */
+body.vdj .row2,body.vdj #perf,body.vdj #pro,body.vdj .row3,body.vdj #proScrim,body.vdj #scrim,body.vdj .sheethd,body.vdj .pro-open{display:none!important}
+body.vdj .row3>section{display:none}
+body.vdj[data-vp=pads] .row2{display:grid!important;max-height:34vh;overflow:auto}
+body.vdj[data-vp=sampler] #perf{display:grid!important;max-height:34vh;overflow:auto}
+body.vdj[data-vp=pro] #pro{display:block!important;position:static!important;transform:none!important;visibility:visible!important;max-height:38vh;overflow:auto;border-radius:2px!important}
+body.vdj :is([data-vp=sources],[data-vp=ai],[data-vp=record],[data-vp=comfort],[data-vp=export]).row3{}
+body.vdj:is([data-vp=sources],[data-vp=ai],[data-vp=record],[data-vp=comfort],[data-vp=export]) .row3{display:block!important;position:static!important;transform:none!important;visibility:visible!important;max-height:38vh;overflow:auto;background:none;padding:0;border:0}
+body.vdj[data-vp=sources] .row3>section:nth-of-type(1),body.vdj[data-vp=ai] .row3>section:nth-of-type(2),body.vdj[data-vp=record] .row3>section:nth-of-type(3),body.vdj[data-vp=comfort] .row3>section:nth-of-type(4),body.vdj[data-vp=export] .row3>section:nth-of-type(5){display:block}
+body.vdj .ai{border:1px solid #333;box-shadow:none}
+#vidPanel{display:none}body.vdj[data-vp=video] #vidPanel{display:block!important;padding:8px}
+#vdock{display:flex;gap:2px;flex:none;background:#121213;border:1px solid #333;padding:2px;overflow-x:auto}
+#vdock button{flex:1;min-width:84px;padding:9px 8px;border:0;border-top:2px solid transparent;border-radius:0;background:#1e1e1f;color:#a8a8a8;font:700 12px 'Archivo Narrow',sans-serif;letter-spacing:.08em;white-space:nowrap}
+#vdock button:hover{background:#2a2a2b;color:#fff}#vdock button.on{background:#2e2e30;color:#fff;border-top-color:var(--cy)}
+body.beginner #vdock [data-vp=pads],body.beginner #vdock [data-vp=pro]{display:none}
+@media(max-width:820px) and (orientation:portrait){body.vdj .row1{grid-template-columns:1fr 1fr}body.vdj .mix{grid-column:1/-1}body.vdj .disc{width:min(100%,120px)}body.vdj .ctl,body.vdj .deck.b .ctl{grid-template-columns:minmax(0,1fr) 40px 40px}body.vdj .deck.b .ctl{grid-template-columns:40px 40px minmax(0,1fr)}body.vdj .art{display:none}}
+@media(orientation:landscape) and (max-height:520px){body.vdj .wfw{height:34px}body.vdj .row1{grid-template-columns:minmax(0,1fr) 150px minmax(0,1fr)}body.vdj .mix{grid-column:auto}body.vdj .row2,body.vdj #perf,body.vdj #pro,body.vdj .row3,body.vdj #vidPanel{max-height:46vh!important;overflow:auto}body.vdj .ctl,body.vdj .deck.b .ctl{gap:4px;padding:4px}body.vdj .info{display:none}body.vdj .disc{width:clamp(70px,22vh,110px)}body.vdj .sl{height:90px}body.vdj input.v{height:60px!important}body.vdj .k{padding:6px 2px}#vdock button{padding:6px;min-width:64px}}
+</style><style id="deckRedesign">/* DECK REDESIGN: neon glass decks, vinyl platter, glossy transport, styled faders */
+html body.vdj .deck{--tx:#eef3ff;--tx2:#c9d4f5;--mu:#97a4cf;color:var(--tx);border:2px solid transparent;border-radius:20px;background:linear-gradient(180deg,#151a36,#080a16) padding-box,linear-gradient(135deg,var(--ac),color-mix(in srgb,var(--ac) 18%,transparent) 55%,var(--ac)) border-box;box-shadow:0 0 28px -8px var(--gl),0 14px 30px -16px #000,inset 0 1px 0 rgba(255,255,255,.07)}
+html body.vdj .mix{border-radius:20px}
+html body.vdj .wfw{background:linear-gradient(180deg,#03040a,#0a0e20);border:1px solid color-mix(in srgb,var(--ac) 40%,transparent);border-radius:14px;overflow:hidden;box-shadow:inset 0 0 18px rgba(0,0,0,.85),0 0 14px -6px var(--gl)}
+@media(min-height:521px){html body.vdj .wfw{margin:8px 8px 0;height:68px}}
+html body.vdj .wfw .tag{border-radius:0;width:28px;background:var(--ac);color:#06030d;font-weight:900;text-shadow:none;box-shadow:none}
+html body.vdj .info{border-bottom:0}
+html body.vdj .art{border-radius:12px;box-shadow:0 0 0 2px var(--ac),0 0 16px -2px var(--gl)}
+html body.vdj .meta b{font:800 15px/1.2 var(--sans,'Archivo',sans-serif);letter-spacing:.01em}
+html body.vdj .meta span{color:var(--tx2)}
+html body.vdj .meta i{display:inline-block;margin-top:4px;padding:1px 8px;border-radius:99px;border:1px solid color-mix(in srgb,var(--ac) 55%,transparent);color:var(--ac);font:700 10px 'Archivo',sans-serif;letter-spacing:.06em;text-transform:uppercase}
+html body.vdj .meta i:empty{display:none}
+html body.vdj .tm span{font:800 13px/1 'Archivo Narrow',ui-monospace,sans-serif;letter-spacing:.08em;color:var(--tx)}
+html body.vdj .tm em{border-radius:99px;border:1px solid var(--ac);color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent);padding:3px 10px;font-weight:800;letter-spacing:.04em}
+html body.vdj .disc{border:4px solid var(--ac);background:radial-gradient(circle,transparent 0 30%,rgba(0,0,0,.35) 31%),repeating-radial-gradient(circle,#0b0c13 0 2px,#171a28 2px 4px);box-shadow:0 0 22px -2px var(--gl),inset 0 0 26px rgba(0,0,0,.9)}
+html body.vdj .disc:before{content:'';position:absolute;top:6%;left:50%;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;background:var(--ac);box-shadow:0 0 10px var(--ac)}
+html body.vdj .hub{width:34%;border:3px solid #090a11;background:radial-gradient(circle at 35% 28%,color-mix(in srgb,var(--ac) 55%,#fff),var(--ac) 48%,color-mix(in srgb,var(--ac) 45%,#000));box-shadow:0 0 16px var(--gl),inset 0 0 10px rgba(0,0,0,.35)}
+html body.vdj .hub:after{width:18%;background:#090a11;box-shadow:inset 0 0 0 2px rgba(255,255,255,.28)}
+html body.vdj .btns{padding:4px;border-radius:16px;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.06)}
+html body.vdj .k,html body.vdj .btns .k{border:1.5px solid color-mix(in srgb,var(--ac) 45%,transparent);border-radius:12px;color:var(--tx);text-shadow:none;font-weight:800;letter-spacing:.1em;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.02)),#10131f;box-shadow:0 3px 0 rgba(0,0,0,.6),0 0 12px -6px var(--gl)}
+html body.vdj .k:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.6)}
+html body.vdj .k.pl,html body.vdj .k.on,html body.vdj .k[data-a=sync].on{color:#06030d;border-color:color-mix(in srgb,var(--ac) 65%,#fff);background:linear-gradient(180deg,color-mix(in srgb,var(--ac) 65%,#fff),var(--ac) 55%,color-mix(in srgb,var(--ac) 70%,#000));box-shadow:0 3px 0 color-mix(in srgb,var(--ac) 50%,#000),0 0 18px var(--gl)}
+html body.vdj .btns .k.pl{flex:1.7}
+html body.vdj .k.pl.on{box-shadow:0 0 30px var(--gl),inset 0 0 14px rgba(255,255,255,.45)}
+html body.vdj .sl output{border-radius:99px;border:1px solid color-mix(in srgb,var(--ac) 45%,transparent);background:rgba(0,0,0,.4);color:var(--ac);padding:2px 8px;font-weight:800}
+html body.vdj .sl .sm{border-radius:8px;border-color:color-mix(in srgb,var(--ac) 40%,transparent);color:var(--tx2)}
+html body.vdj input.v{-webkit-appearance:none;appearance:none;background:transparent;accent-color:var(--ac)}
+html body.vdj input.v::-webkit-slider-runnable-track{width:8px;border-radius:99px;background:linear-gradient(0deg,var(--ac),rgba(255,255,255,.14) 70%);box-shadow:inset 0 0 4px rgba(0,0,0,.7),0 0 10px -3px var(--gl)}
+html body.vdj input.v::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:16px;margin-left:-10px;border-radius:6px;border:1px solid var(--ac);background:linear-gradient(180deg,#fff,#cfd3e2 45%,#8a90a8);box-shadow:0 2px 6px rgba(0,0,0,.7),0 0 10px var(--gl)}
+html body.vdj input.v::-moz-range-track{width:8px;border-radius:99px;background:linear-gradient(0deg,var(--ac),rgba(255,255,255,.14) 70%)}
+html body.vdj input.v::-moz-range-thumb{width:26px;height:14px;border-radius:6px;border:1px solid var(--ac);background:linear-gradient(180deg,#fff,#8a90a8)}</style><style id="embChrome">
+/* EMBEDDED IN THE APP: the app's own header, sidebar, player bar and bottom nav are used, so the Studio drops its own copies */
+html.emb header,html.emb nav#mainNav,html.emb #navScrim,html.emb footer,html.emb .rot{display:none!important}
+html.emb:root{padding:0!important;height:auto!important;overflow-x:hidden}
+html.emb:root body{height:auto!important;min-height:100%!important;overflow-y:auto!important;overflow-x:hidden!important}
+html.emb:root #app{display:block!important;height:auto!important;min-height:100dvh!important;padding:0!important}
+html.emb:root main{padding:10px 12px 22px}
+</style><style id="libInline">
+/* Song picker opens inline, right below the button you tapped (no popup page) */
+html body #libd.inl{position:static;inset:auto;float:none;width:100%;max-width:none;margin:8px 0 4px;grid-column:1/-1;flex:0 0 100%;box-shadow:none;max-height:none}
+html body #libd.inl[open]{height:min(62dvh,560px);min-height:300px}
+html body #libd.inl::backdrop{display:none}
+</style><style id="yapsSearchUnify">
+/* Library search — same look as the YAPS Music home search bar */
+.sbar{display:flex;align-items:center;margin:0 0 10px;background:var(--card,var(--s1));
+  border:2px solid var(--accent,var(--ac));border-radius:12px;overflow:hidden}
+.sbar>i{padding:0 8px 0 14px;color:var(--accent,var(--ac));font-size:16px}
+.sbar input[type=search]{flex:1;min-width:0;width:auto;min-height:46px;padding:0 14px 0 0;border:0;border-radius:0;
+  background:none;outline:0;color:var(--text,var(--tx));font-size:16px;font-family:'Archivo',system-ui,sans-serif}
+.sbar input[type=search]::placeholder{color:var(--dim,var(--mu))}
+.sbar input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+</style>
+<style id="yapsCompactBtns">
+/* Compact buttons — nothing stretches edge-to-edge any more */
+.go,.scw .go,.sc-teaser .go{display:block;width:auto!important;min-width:170px;max-width:260px;min-height:46px;padding:12px 28px;margin-left:auto;margin-right:auto}
+.sc-teaser .go{margin:0;justify-self:center;white-space:nowrap}
+@media(max-width:620px){.sc-teaser .go{justify-self:start}}
+#scToDJ,#upLater,#upDlg .go{flex:0 1 auto!important;min-width:130px}
+#upLater{padding-left:22px;padding-right:22px}
+#upDlg div[style*="display:flex"]{justify-content:center}
+#scCovGen{width:auto!important;min-width:150px;padding:12px 26px}
+dialog .k{flex:0 1 auto;min-width:110px;padding:12px 22px}
+.drow{justify-content:center;flex-wrap:wrap}
+#fxGo,#fxHold{flex:0 1 auto!important;min-width:100px;padding:12px 24px!important}
+#acctDlg .ac-act{justify-content:center}
+#acctDlg .ac-act a,#acctDlg .ac-act button{flex:0 1 auto;min-width:110px;padding:11px 22px}
+</style>
+<style id="sidebarMatchIndex">
+/* Sidebar = same colours as index.html, driven by the colour the user picked (yaps_theme) and Dark/Light mode */
+html[data-theme="neon"] nav#mainNav{--dim:#7682b6;--accent-dim:rgba(139,92,246,.18)}
+html[data-theme="aurora"] nav#mainNav{--dim:#7784b7;--accent-dim:rgba(139,92,246,.18)}
+html[data-theme="crimson"] nav#mainNav{--dim:#bc5f5f}
+html[data-theme="emerald"] nav#mainNav{--dim:#3f9f72}
+html[data-theme="violet"] nav#mainNav{--dim:#9277c0}
+html[data-mode="light"] nav#mainNav{background:var(--surface);
+ --muted:color-mix(in srgb,var(--accent) 40%,#1a2340);--dim:color-mix(in srgb,var(--accent) 30%,#3d4766);
+ --accent-light:color-mix(in srgb,var(--accent) 78%,#000);--accent-lighter:color-mix(in srgb,var(--accent) 62%,#000);--accent-dim:color-mix(in srgb,var(--accent) 14%,transparent);
+ box-shadow:0 1px 0 var(--border)}
+/* gradient icons (same as index.html) */
+nav#mainNav .sidebar-item i,nav#mainNav .sidebar-label i{background:linear-gradient(135deg,var(--accent-light),var(--accent) 45%,var(--accent-dark));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;filter:drop-shadow(0 0 3px var(--accent-dim));transition:filter .25s,transform .25s}
+nav#mainNav .sidebar-label i{font-size:12px;width:auto}
+nav#mainNav .sidebar-item.active i{background:linear-gradient(135deg,var(--accent-lighter),var(--accent-light) 45%,var(--accent));-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 6px var(--accent-glow));transform:scale(1.08)}
+nav#mainNav .sidebar-footer .logout-item i{background:none;-webkit-text-fill-color:#ff5c5c;color:#ff5c5c;filter:drop-shadow(0 0 3px rgba(255,92,92,.35))}
+nav#mainNav .sb-home-svg{filter:drop-shadow(0 0 3px var(--accent-dim));transition:filter .25s,transform .25s}
+nav#mainNav .sb-home-svg path{fill:url(#bnIconGrad)}
+nav#mainNav .sidebar-item.active .sb-home-svg{filter:drop-shadow(0 0 6px var(--accent-glow));transform:scale(1.08)}
+nav#mainNav .sidebar-item.active .sb-home-svg path{fill:url(#bnIconGradActive)}
+/* Neon: index.html shows the multi-colour active bar */
+html[data-theme="neon"] nav#mainNav .sidebar-item.active{background:linear-gradient(90deg,rgba(25,230,140,.16),rgba(139,92,246,.16),rgba(224,64,251,.10));color:#fff}
+html[data-theme="neon"] nav#mainNav .sidebar-item.active::before{background:linear-gradient(180deg,#19e68c,#22d3ee,#8b5cf6,#e040fb)}
+</style>
 </head>
-<body><div id="app">
+<body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="bnIconGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--accent-light)"/><stop offset="45%" style="stop-color:var(--accent)"/><stop offset="100%" style="stop-color:var(--accent-dark)"/></linearGradient><linearGradient id="bnIconGradActive" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--accent-lighter)"/><stop offset="45%" style="stop-color:var(--accent-light)"/><stop offset="100%" style="stop-color:var(--accent)"/></linearGradient></defs></svg><div id="app">
 <header><div class="earth"></div>
  <button class="ic" id="navBtn" aria-label="Open menu" aria-controls="mainNav" aria-expanded="false" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">MENU</button>
  <a class="logo" href="index.html" aria-label="YAPS Music home" style="text-decoration:none">YAPS<small>MUSIC</small></a>
  <div class="ttl">VIRTUAL <b>DJ STUDIO</b><p>Mix. Create. Record. Publish. Become a DJ.</p></div><div class="sp"></div>
  <button class="aibtn" id="aiTop"><span class="ic"><i class="fas fa-wand-magic-sparkles"></i></span><span><b>AI DJ</b><span>Automated mixing</span></span></button>
- <button class="ic" id="scTop" aria-label="Open AI Song Creator" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow"> SONG</button><button class="ic" id="helpBtn" aria-label="Show tutorial">?</button><button class="ic" id="modeBtn" aria-label="Switch Beginner or Pro mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">PRO</button><button class="ic" id="lmBtn" aria-label="Switch between dark and light mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">LIGHT</button><button class="ic hbtn" id="fsBtn" aria-label="Fullscreen and lock landscape"><i class="fas fa-expand"></i></button><button class="ic hbtn" id="toolsBtn" aria-label="Open tools: sources, AI DJ, record, export">☰</button>
+ <button class="ic" id="scTop" aria-label="Open AI Song Creator" style="white-space:nowrap;display:inline-flex;align-items:center;gap:4px;width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow"> SONG <small style="font-size:9px;letter-spacing:.08em;border:1px solid currentColor;border-radius:6px;padding:0 4px;margin-left:3px;vertical-align:middle">BETA</small></button><button class="ic" id="helpBtn" aria-label="Show tutorial">?</button><button class="ic" id="modeBtn" aria-label="Switch Beginner or Pro mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">PRO</button><button class="ic" id="lmBtn" aria-label="Switch between dark and light mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">LIGHT</button><button class="ic hbtn" id="fsBtn" aria-label="Fullscreen and lock landscape"><i class="fas fa-expand"></i></button><button class="ic hbtn" id="toolsBtn" aria-label="Open tools: sources, AI DJ, record, export">☰</button>
  <span class="ic" role="img" aria-label="Profile"><i class="fas fa-user"></i></span><span class="ic" role="img" aria-label="Settings"><i class="fas fa-gear"></i></span></header>
-<nav aria-label="Main" id="mainNav"><div class="sbw"><a class="sidebar-header" id="sbHead" href="index.html?page=profile"><div class="sidebar-header-art" id="sbArt">G</div><div class="sidebar-header-info"><div class="u-name" id="sbName">Guest · Tap to sign in</div><div class="u-plan" id="sbPlan"><i class="fas fa-star"></i> Free plan</div></div><i class="fas fa-chevron-right sidebar-header-caret"></i></a><div id="sidebarScroll"><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-user"></i> <span>Account</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-id-badge"></i> <span>My Profile</span></a><a class="sidebar-item" href="index.html?go=editprofile"><i class="fas fa-user-edit"></i> <span>Edit Profile</span></a><a class="sidebar-item" href="index.html?go=subscription"><i class="fas fa-crown"></i> <span>Subscription</span> <span class="badge" id="subNavBadge" style="margin-left:auto">Free</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-music"></i> <span>Music</span></div><a class="sidebar-item" href="index.html?page=home"><svg class="sb-home-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 2.5 11h2.4v9h5.4v-6h3.4v6h5.4v-9h2.4z"/></svg> <span>Home</span></a><a class="sidebar-item" href="index.html?page=stream"><i class="fas fa-fire"></i> <span>Trending Songs</span></a><a class="sidebar-item" href="index.html?go=newreleases"><i class="fas fa-star"></i> <span>New Releases</span></a><a class="sidebar-item" href="index.html?page=charts"><i class="fas fa-chart-bar"></i> <span>Top Charts</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-compact-disc"></i> <span>Albums</span></a><a class="sidebar-item" href="index.html?page=artists"><i class="fas fa-users"></i> <span>Artists</span></a><a class="sidebar-item" href="index.html?page=search"><i class="fas fa-th-large"></i> <span>Genres</span></a><a class="sidebar-item" href="index.html?page=podcasts"><i class="fas fa-podcast"></i> <span>Podcasts</span></a><a class="sidebar-item" href="index.html?page=video"><i class="fas fa-video"></i> <span>Videos</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-book"></i> <span>My Library</span></div><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-heart"></i> <span>Liked Songs</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-list"></i> <span>Playlists</span></a><a class="sidebar-item" href="index.html?page=library&amp;go=downloads"><i class="fas fa-download"></i> <span>Downloads</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-history"></i> <span>Recently Played</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-clock"></i> <span>History</span></a><a class="sidebar-item" href="index.html?go=queue"><i class="fas fa-stream"></i> <span>Queue</span></a><a class="sidebar-item" href="index.html?page=device"><i class="fas fa-mobile-alt"></i> <span>On This Device</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-microphone-alt"></i> <span>Creator Hub</span></div><a class="sidebar-item active" href="#" aria-current="page"><i class="fas fa-headphones"></i> <span>DJ Studio</span> </a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-upload"></i> <span>Upload Song</span></a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-folder-open"></i> <span>My Uploads</span></a><a class="sidebar-item" href="index.html?page=earnings"><i class="fas fa-coins"></i> <span>Earnings</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-users"></i> <span>Community</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-plus"></i> <span>Following</span></a><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-friends"></i> <span>Followers</span></a><a class="sidebar-item" href="index.html?page=messages"><i class="fas fa-comment-dots"></i> <span>Messages</span> <span class="badge">2</span></a><a class="sidebar-item" href="index.html?page=notifications"><i class="fas fa-bell"></i> <span>Notifications</span> <span class="badge">3</span></a><a class="sidebar-item" href="index.html?page=events"><i class="fas fa-calendar-alt"></i> <span>Events</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-cog"></i> <span>Settings</span></div><a class="sidebar-item" href="#" id="sbModeItem"><i class="fas fa-adjust"></i> <span>Dark / Light Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-sliders-h"></i> <span>Audio Quality</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-wifi"></i> <span>Offline Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-database"></i> <span>Data Saver</span></a><a class="sidebar-item" href="index.html?go=language"><i class="fas fa-globe"></i> <span>Language</span></a><a class="sidebar-item" href="index.html?go=privacy"><i class="fas fa-shield-alt"></i> <span>Privacy &amp; Security</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-life-ring"></i> <span>Support</span></div><a class="sidebar-item" href="index.html?go=help"><i class="fas fa-question-circle"></i> <span>Help Center</span></a><a class="sidebar-item" href="index.html?go=report"><i class="fas fa-bug"></i> <span>Report a Problem</span></a><a class="sidebar-item" href="index.html?go=feedback"><i class="fas fa-comment-alt"></i> <span>Send Feedback</span></a><a class="sidebar-item" href="index.html?go=about"><i class="fas fa-info-circle"></i> <span>About YAPS Music</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-share-alt"></i> <span>Share App</span></a><a class="sidebar-item" href="index.html?go=rate"><i class="fas fa-star-half-alt"></i> <span>Rate App</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-user-plus"></i> <span>Invite Friends</span></a></div></div><div class="sidebar-footer"><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-cog"></i> <span>Settings</span></a><a class="sidebar-item logout-item" href="index.html?go=logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></div></div></nav>
+<nav aria-label="Main" id="mainNav"><div class="sbw"><a class="sidebar-header" id="sbHead" href="index.html?page=profile"><div class="sidebar-header-art" id="sbArt">G</div><div class="sidebar-header-info"><div class="u-name" id="sbName">Guest · Tap to sign in</div><div class="u-plan" id="sbPlan"><i class="fas fa-star"></i> Free plan</div></div><i class="fas fa-chevron-right sidebar-header-caret"></i></a><div id="sidebarScroll"><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-user"></i> <span>Account</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-id-badge"></i> <span>My Profile</span></a><a class="sidebar-item" href="index.html?go=editprofile"><i class="fas fa-user-edit"></i> <span>Edit Profile</span></a><a class="sidebar-item" href="index.html?go=subscription"><i class="fas fa-crown"></i> <span>Subscription</span> <span class="badge" id="subNavBadge" style="margin-left:auto">Free</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-music"></i> <span>Music</span></div><a class="sidebar-item" href="index.html?page=home"><svg class="sb-home-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 2.5 11h2.4v9h5.4v-6h3.4v6h5.4v-9h2.4z"/></svg> <span>Home</span></a><a class="sidebar-item" href="index.html?page=stream"><i class="fas fa-fire"></i> <span>Trending Songs</span></a><a class="sidebar-item" href="index.html?go=newreleases"><i class="fas fa-star"></i> <span>New Releases</span></a><a class="sidebar-item" href="index.html?page=charts"><i class="fas fa-chart-bar"></i> <span>Top Charts</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-compact-disc"></i> <span>Albums</span></a><a class="sidebar-item" href="index.html?page=artists"><i class="fas fa-users"></i> <span>Artists</span></a><a class="sidebar-item" href="index.html?page=search"><i class="fas fa-th-large"></i> <span>Genres</span></a><a class="sidebar-item" href="index.html?page=podcasts"><i class="fas fa-podcast"></i> <span>Podcasts</span></a><a class="sidebar-item" href="index.html?page=video"><i class="fas fa-video"></i> <span>Videos</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-book"></i> <span>My Library</span></div><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-heart"></i> <span>Liked Songs</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-list"></i> <span>Playlists</span></a><a class="sidebar-item" href="index.html?page=library&amp;go=downloads"><i class="fas fa-download"></i> <span>Downloads</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-history"></i> <span>Recently Played</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-clock"></i> <span>History</span></a><a class="sidebar-item" href="index.html?go=queue"><i class="fas fa-stream"></i> <span>Queue</span></a><a class="sidebar-item" href="index.html?page=device"><i class="fas fa-mobile-alt"></i> <span>On This Device</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-microphone-alt"></i> <span>Creator Hub</span></div><a class="sidebar-item active" href="#" aria-current="page"><i class="fas fa-headphones"></i> <span>DJ Studio</span> </a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-upload"></i> <span>Upload Song</span></a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-folder-open"></i> <span>My Uploads</span></a><a class="sidebar-item" href="index.html?page=earnings"><i class="fas fa-coins"></i> <span>Earnings</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-users"></i> <span>Community</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-plus"></i> <span>Following</span></a><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-friends"></i> <span>Followers</span></a><a class="sidebar-item" href="index.html?page=messages"><i class="fas fa-comment-dots"></i> <span>Messages</span> <span class="badge" id="sbMsgBadge" style="margin-left:auto;display:none">0</span></a><a class="sidebar-item" href="index.html?page=notifications"><i class="fas fa-bell"></i> <span>Notifications</span> <span class="badge" id="sbNotifBadge" style="margin-left:auto;display:none">0</span></a><a class="sidebar-item" href="index.html?page=events"><i class="fas fa-calendar-alt"></i> <span>Events</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-cog"></i> <span>Settings</span></div><a class="sidebar-item" href="#" id="sbModeItem"><i class="fas fa-adjust"></i> <span>Dark / Light Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-sliders-h"></i> <span>Audio Quality</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-wifi"></i> <span>Offline Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-database"></i> <span>Data Saver</span></a><a class="sidebar-item" href="index.html?go=language"><i class="fas fa-globe"></i> <span>Language</span></a><a class="sidebar-item" href="index.html?go=privacy"><i class="fas fa-shield-alt"></i> <span>Privacy &amp; Security</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-life-ring"></i> <span>Support</span></div><a class="sidebar-item" href="index.html?go=help"><i class="fas fa-question-circle"></i> <span>Help Center</span></a><a class="sidebar-item" href="index.html?go=report"><i class="fas fa-bug"></i> <span>Report a Problem</span></a><a class="sidebar-item" href="index.html?go=feedback"><i class="fas fa-comment-alt"></i> <span>Send Feedback</span></a><a class="sidebar-item" href="index.html?go=about"><i class="fas fa-info-circle"></i> <span>About YAPS Music</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-share-alt"></i> <span>Share App</span></a><a class="sidebar-item" href="index.html?go=rate"><i class="fas fa-star-half-alt"></i> <span>Rate App</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-user-plus"></i> <span>Invite Friends</span></a></div></div><div class="sidebar-footer"><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-cog"></i> <span>Settings</span></a><a class="sidebar-item logout-item" href="index.html?go=logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></div></div></nav>
 <div id="navScrim"></div>
 <main>
  <div class="rot" id="rot"><span aria-hidden="true">↻</span><span>Tip: rotate your phone for bigger decks</span><button id="rotGo">Landscape</button><button class="q" id="rotX" aria-label="Dismiss">✕</button></div>
@@ -1026,7 +1165,7 @@ body.beginner #pro,body.beginner #proScrim,body.beginner .pro-open{display:none!
     <div class="meters" aria-hidden="true"><div><i id="mA"></i></div><div><i id="mA2"></i></div><div><i id="mB"></i></div><div><i id="mB2"></i></div></div>
     <div id="eqB"></div>
    </div>
-   <div class="cf">CROSSFADER<div>A<input type="range" id="xf" min="0" max="100" value="50" aria-label="Crossfader">B</div></div>
+   <div class="cf">CROSSFADER<div>A<input type="range" id="xf" min="0" max="100" value="50" aria-label="Crossfader">B</div><button class="k pl" id="mixNow" style="width:auto;height:auto;padding:9px 18px;margin-top:8px;letter-spacing:.1em" aria-label="Mix now: blend into the other deck">⇄ MIX NOW</button></div>
    <div class="mv">MASTER<input type="range" id="mvol" min="0" max="100" value="85" aria-label="Master volume"></div>
   </section>
   <div id="slotB" style="display:contents"></div>
@@ -1065,7 +1204,8 @@ body.beginner #pro,body.beginner #proScrim,body.beginner .pro-open{display:none!
    <button class="rw" id="svd">▤ <span style="flex:1">Saved Mixes</span><span id="svn">0 ›</span></button><div id="rst" class="mixes2" aria-live="polite"></div><div id="done" hidden style="margin-top:8px"><b style="font:700 18px Archivo Narrow;color:var(--cy)">MIX COMPLETE</b><audio id="mixAudio" controls preload="auto" style="width:100%;margin-top:6px"></audio></div></section>
     <section class="pn card" id="cmfCard"><div class="hd2"><span class="ic"><i class="fas fa-heart"></i></span><div><h4>COMFORT</h4><span>Make the studio easier on you</span></div></div>
    <div class="cmf-row"><span><b>Larger controls</b><span>Bigger buttons and text, easier to tap</span></span><button class="sm" id="cmfBig" aria-pressed="false">OFF</button></div>
-   <div class="cmf-row"><span><b>Calm mode</b><span>No glow or animation, gentler on the eyes</span></span><button class="sm" id="cmfCalm" aria-pressed="false">OFF</button></div></section>
+   <div class="cmf-row"><span><b>Calm mode</b><span>No glow or animation, gentler on the eyes</span></span><button class="sm" id="cmfCalm" aria-pressed="false">OFF</button></div>
+   <div class="cmf-row"><span><b>Lite mode</b><span>For cheaper phones: no animation, lighter waveforms. Turns on by itself for slow devices</span></span><button class="sm" id="cmfLite" aria-pressed="false">OFF</button></div></section>
 <section class="pn card"><div class="hd2"><span class="ic">⇪</span><div><h4>EXPORT / SHARE</h4><span>Save your mix or share it</span></div></div>
    <button class="rw" id="exS">Save Mix</button><button class="rw" id="exH">⤴ Share</button><button class="rw" id="exD">Download</button><button class="rw" id="exP">Publish to YAPS</button></section>
  </div>
@@ -1080,7 +1220,7 @@ body.beginner #pro,body.beginner #proScrim,body.beginner .pro-open{display:none!
  <div class="scin">
   <div class="sc-top">
    <span class="ic" aria-hidden="true" style="font-size:22px"></span>
-   <div><h2 id="scTitleH">AI SONG CREATOR</h2><p>Idea → Lyrics → Music → Vocals → Mix → Master → Preview → DJ Studio → Publish</p></div>
+   <div><h2 id="scTitleH">AI SONG CREATOR <small style="font-size:11px;border:1px solid currentColor;border-radius:6px;padding:1px 6px;vertical-align:middle">BETA</small></h2><p>Idea → Lyrics → Music → Vocals → Mix → Master → Preview → DJ Studio → Publish</p></div>
    <button class="x" id="scX" aria-label="Close AI Song Creator">✕</button>
   </div>
   <div class="sc-vs">
@@ -1226,8 +1366,24 @@ body.beginner #pro,body.beginner #proScrim,body.beginner .pro-open{display:none!
 
 <div id="scrim"></div><dialog id="libd" aria-label="Library"><div class="lh"><b>SELECT MUSIC</b><button class="x" id="libx" aria-label="Close">✕</button></div>
 <div class="tabs"><button class="on" data-s="lib">YAPS Library</button><button data-s="offline">Offline</button><button data-s="device">My Device</button><button data-s="saved">Saved Mixes</button></div>
-<div class="libtools" id="libTools"><button class="sm" id="libSug" aria-pressed="false">SUGGEST NEXT</button><button class="sm" id="libAn">ANALYSE LIBRARY</button><span id="libSt" aria-live="polite"></span></div>
-<input type="search" id="q" placeholder="Search title, artist or genre" aria-label="Search library"><div id="list" aria-live="polite"></div></dialog>
+<div class="libtools" id="libTools"><button class="sm" id="libSug" aria-pressed="false">SUGGEST NEXT</button><button class="sm" id="libSort" aria-pressed="false">SORT: OFF</button><button class="sm" id="libAn">ANALYSE LIBRARY</button><span id="libSt" aria-live="polite"></span></div>
+<div class="sbar"><i class="fas fa-search" aria-hidden="true"></i><input type="search" id="q" placeholder="Search title, artist or genre" aria-label="Search library"></div><div id="list" aria-live="polite"></div></dialog>
+<style id="mobilePolish">
+/* MOBILE POLISH (placed last so it wins): readable dock labels, finger-sized controls */
+#vdock button{flex:1 0 auto!important;min-width:max-content!important}
+@media(orientation:landscape) and (max-height:520px){body.vdj #vdock button{padding:9px 12px!important}}
+#vdock{-webkit-overflow-scrolling:touch;scrollbar-width:none}#vdock::-webkit-scrollbar{display:none}
+@media(pointer:coarse){
+ body.vdj header :is(.ic,.aibtn,button,a.logo){height:auto!important;min-height:38px!important}
+ body.vdj header .ic:not(#scTop):not(#modeBtn):not(#lmBtn){min-width:38px!important}
+ body.vdj .sm,body.vdj .k{min-height:38px!important}
+ body.vdj input.v{width:34px!important}
+ body.vdj input[type=range]:not(.v){min-height:30px!important}
+ body.vdj #xf,body.vdj #mvol{height:30px!important}
+ body.vdj .tabs button,body.vdj .ld{min-height:40px!important}
+}
+@media(pointer:coarse) and (max-height:430px){body.vdj header :is(.ic,.aibtn,button,a.logo){min-height:34px!important}}
+</style>
 <dialog id="pub" aria-labelledby="pubh"><h2 id="pubh">Publish to YAPS</h2>
  <div id="pauth" style="margin-bottom:10px;font-size:13px"></div>
  <label class="f">Title *<input type="text" id="pt_" maxlength="150" placeholder="Name your mix"></label>
@@ -1241,7 +1397,23 @@ body.beginner #pro,body.beginner #proScrim,body.beginner .pro-open{display:none!
  <div class="drow"><button class="k" id="pcx">Cancel</button><button class="k pl" id="pgo">Publish</button></div></dialog>
 <dialog id="tut" aria-label="Quick tutorial"><h2>Welcome to YAPS DJ Studio</h2><div id="tutDots" aria-hidden="true"></div><div id="tutT" style="color:var(--cy);font-weight:700"></div><p id="tutB" style="margin:10px 0 14px;font-size:15px"></p><div id="tutNote"></div><div class="drow"><button class="k" id="tutS">Skip</button><button class="k" id="tutP">Back</button><button class="k pl" id="tutN">Next</button></div></dialog><div id="tutRing" aria-hidden="true"></div>
 <script>(function(){if(window.__phoneHost)return;var e=document.createElement('script');e.id='sbLib';e.async=true;e.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';document.head.appendChild(e)})()</script>
-<div id="toast" role="status" aria-live="polite"></div>
+<script>(function(){var b=document.body,m=document.querySelector('main');if(!m)return;b.classList.add('vdj');b.classList.remove('tools','proOn');
+var T=[['sources','♪ SOURCES'],['pads','▦ LOOP · CUES · FX'],['sampler','◉ SAMPLER'],['ai','✦ AI DJ'],['record','● RECORD'],['export','⇪ EXPORT'],['video','▶ VIDEO'],['pro','⚙ PRO'],['comfort','♥ COMFORT']];
+var od=document.getElementById('vdock');if(od)od.remove();var d=document.createElement('div');d.id='vdock';d.innerHTML=T.map(function(t){return '<button type="button" data-vp="'+t[0]+'">'+t[1]+'</button>'}).join('')+'<button type="button" data-song="1">♫ SONG</button>';var dk0=document.getElementById('decks');if(dk0&&dk0.parentNode===m)m.insertBefore(d,dk0.nextSibling);else m.appendChild(d);
+d.insertAdjacentHTML('beforeend','<button type=button data-px=helpBtn title="Replay the quick tour">? TOUR</button><button type=button data-px=modeBtn id=vdMode2 title="Switch between Beginner and Pro">MODE</button>');
+var mb2=document.getElementById('modeBtn'),vm2=document.getElementById('vdMode2');
+function vdModeTxt(){if(vm2&&mb2)vm2.textContent='MODE · '+mb2.textContent}
+if(mb2&&window.MutationObserver)new MutationObserver(vdModeTxt).observe(mb2,{childList:true,characterData:true,subtree:true});vdModeTxt();
+/* bring the opened panel into view (it opens right under the dock) */
+function reveal(){if(!b.dataset.vp)return;setTimeout(function(){var e=d.nextElementSibling;while(e){if(e.offsetHeight>0&&getComputedStyle(e).position!=='fixed'){try{e.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(x){}return}e=e.nextElementSibling}},80)}
+function sync(){[].forEach.call(d.children,function(x){x.classList.toggle('on',!!x.dataset.vp&&x.dataset.vp===b.dataset.vp)})}
+d.addEventListener('click',function(e){var t=e.target.closest('button');if(!t)return;if(t.dataset.song){var s=document.getElementById('scTop');if(s)s.click();return}
+if(t.dataset.px){var pe=document.getElementById(t.dataset.px);if(pe)pe.click();return}
+ var v=t.dataset.vp;if(b.dataset.vp===v)delete b.dataset.vp;else b.dataset.vp=v;sync();reveal()});
+var ai=document.getElementById('aiTop');if(ai)ai.addEventListener('click',function(){b.dataset.vp='ai';sync();reveal()});
+document.querySelectorAll('.src').forEach(function(x){x.addEventListener('click',function(){delete b.dataset.vp;sync()})});
+addEventListener('keydown',function(e){if(e.key==='Escape'&&b.dataset.vp){delete b.dataset.vp;sync()}});
+})();</script><div id="toast" role="status" aria-live="polite"></div>
 <script type="text/plain" id="appjs">
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);/* longer messages stay longer so they can be read; tap the message to dismiss */toast.t=setTimeout(()=>t.classList.remove('show'),Math.min(9000,Math.max(2600,1500+String(m).length*55)))};
@@ -1254,7 +1426,7 @@ D.forEach(d=>{d.pitch=0;d.pos=0;d.on=false;d.hc=[null,null,null,null];d.loop=0;d
  let s=d.seed*997;d.pk=Array.from({length:240},(_,i)=>{s=(s*16807)%2147483647;return Math.min(1,.14+(s/2147483647)*.55*(.55+.45*Math.sin(i*.06+d.seed))+.2*Math.abs(Math.sin(i*.31)))})});
 function applyThemeColors(){const cs=getComputedStyle(document.documentElement),g=n=>cs.getPropertyValue(n).trim();const lt=document.documentElement.getAttribute('data-mode')==='light';D.forEach(d=>{const a=d.id=='a';d.c=lt?(a?'#19c3ff':'#a98bff'):(g(a?'--cy':'--pu')||(a?'#19c3ff':'#8b5cf6'));d.dm=lt?(a?'rgba(25,195,255,.34)':'rgba(169,139,255,.4)'):'rgba('+(g(a?'--cy-rgb':'--pu-rgb')||(a?'25,195,255':'139,92,246'))+','+(a?.3:.38)+')'})}
 applyThemeColors();window.__themeChanged=applyThemeColors;
-const deckHTML=d=>`<section class="pn deck ${d.id}" id="deck${d.L}"><div class="info"><div class="tag">${d.L}</div><div class="art" id="art${d.L}"></div><div class="meta"><b id="t${d.L}"></b><span id="ar${d.L}"></span><i id="g${d.L}"></i></div><div class="tm"><span id="tm${d.L}"></span><em id="bp${d.L}"></em></div><canvas id="wf${d.L}"></canvas></div>
+const deckHTML=d=>`<section class="pn deck ${d.id}" id="deck${d.L}"><div class="wfw"><div class="tag">${d.L}</div><canvas id="wf${d.L}"></canvas></div><div class="info"><div class="art" id="art${d.L}"></div><div class="meta"><b id="t${d.L}"></b><span id="ar${d.L}"></span><i id="g${d.L}"></i></div><div class="tm"><span id="tm${d.L}"></span><em id="bp${d.L}"></em></div></div>
 <div class="ctl"><div class="btns"><button class="k" data-a="cue">CUE</button><button class="k pl" data-a="play" aria-label="Play or pause">▶ / ❚❚</button><button class="k" data-a="sync">SYNC</button></div>
 <div class="jog"><div class="disc" id="jog${d.L}"><div class="hub">YAPS</div></div></div>
 <div class="sl">+<input type="range" class="v" min="-16" max="16" step=".1" value="0" data-a="pitch" aria-label="Pitch deck ${d.L}"><output id="pt${d.L}">0.0%</output>PITCH<button class="sm" data-a="rp" aria-label="Reset pitch" style="min-width:0;padding:6px 8px;font-size:11px">RESET</button></div>
@@ -1310,7 +1482,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&
  const l=e.target.closest('[data-loop]');if(l){const v=+l.dataset.loop;D.forEach(d=>{d.loop=v;applyLoop(d)});$$('[data-loop]').forEach(x=>x.classList.toggle('on',+x.dataset.loop==v&&v>0));if(v&&!D.some(d=>d.src))toast('Loop armed — applies to loaded audio files')}
  const f=e.target.closest('[data-fx]');if(f){f.classList.toggle('on');fx()}
  const h=e.target.closest('[data-hc]');if(h){const d=dk(h.dataset.hc[0]),i=+h.dataset.hc[1];if(d.hc[i]==null){d.hc[i]=d.pos;h.classList.add('on');toast('Hot cue '+(i+1)+' set at '+fmt(d.pos))}else{d.pos=d.hc[i];if(d.src){stopD(d);play(d)}}}
- const s=e.target.closest('[data-src]');if(s)srcPick(s.dataset.src)});
+ const s=e.target.closest('[data-src]');if(s)srcPick(s.dataset.src,s)});
 document.addEventListener('contextmenu',e=>{const h=e.target.closest('[data-hc]');if(h){e.preventDefault();dk(h.dataset.hc[0]).hc[+h.dataset.hc[1]]=null;h.classList.remove('on')}});
 function setPitch0(d){const L=d.L,v=$('#deck'+L).querySelector('[data-a=pitch]');v.value=d.pitch;$('#pt'+L).textContent=d.pitch.toFixed(1)+'%';if(d.src)d.src.playbackRate.value=1+d.pitch/100;ui(d)}
 document.addEventListener('input',e=>{const r=e.target;if(r.dataset.a=='pitch'){const d=dk(r.closest('.deck').id.slice(-1));d.pitch=+r.value;setPitch(d)}
@@ -1330,7 +1502,7 @@ $('#file').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)r
 
 /* ══════ YAPS integration (real library, recording, save, publish) ══════
    Reused from index.html: catalogue shape (tracks[]), Supabase project/session, FastAPI /api/* endpoints. */
-const LOC=(()=>{try{return self!==top?parent.location:location}catch(e){return location}})();
+const LOC=(()=>{try{return self!==top?top.location:location}catch(e){return location}})();
 /* ===== DEVELOPER CONFIG: edit only this block =====
    API_URL: your FastAPI base URL (empty = server features off; localhost uses :8000).
    SUPABASE_URL / SUPABASE_ANON_KEY: public client values. Safe in the browser ONLY with RLS enabled. NEVER put a service_role key here.
@@ -1378,7 +1550,7 @@ async function readDeviceUploads(){
 readShared();
 /* ══════ Stay inside the YAPS Music app: on phones Studio runs in a rotated frame, so links to the app must open in the whole window ══════ */
 document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a||self===top)return;const h=a.getAttribute('href')||'';if(!/^index\.html/.test(h))return;
- e.preventDefault();try{top.location.href=new URL(h,top.location.href).href}catch(x){location.href=h}},true);
+ e.preventDefault();try{if(top.__closeStudio){top.__closeStudio(h);return}top.location.href=new URL(h,top.location.href).href}catch(x){location.href=h}},true);
 /* ══════ Offline songs: audio saved in this browser (IndexedDB 'yaps_offline_v1'), details in localStorage ══════ */
 const offIds=new Set(),offBusy=new Set();
 const offMeta=()=>{try{return JSON.parse(localStorage.getItem('yaps_offline_meta')||'{}')||{}}catch(e){return{}}};
@@ -1478,9 +1650,34 @@ $('#list').addEventListener('click',async e=>{
 $('#devFile').addEventListener('change',async e=>{const fs=Array.from(e.target.files||[]);e.target.value='';await devImport(fs)});
 
 /* Library dialog */
-function openLib(){$$('.tabs button').forEach(x=>x.classList.toggle('on',x.dataset.s===mode));$('#libd').showModal();render();readDownloads().then(()=>{if($('#libd').open)render()})}
-function srcPick(k){if(k==='file'){mode='device';openLib()}else if(k==='lib'){mode='lib';openLib()}else if(k==='saved'){mode='saved';openLib()}else{mode='uploads';openLib()}}
-$('#libx').onclick=()=>$('#libd').close();
+let libAnchor=null;
+function openLib(a){const d=$('#libd');
+ if(a&&d.open&&libAnchor===a){closeLib();return}               /* tap the same button again = fold it away */
+ libAnchor=a||libAnchor;
+ const dock=document.getElementById('vdock');
+ if(dock){dock.insertAdjacentElement('afterend',d);d.classList.add('inl');   /* shows in the open field under the tool tabs */
+  if(document.body.dataset.vp){delete document.body.dataset.vp;dock.querySelectorAll('.on').forEach(x=>x.classList.remove('on'))}}
+ else if(libAnchor&&libAnchor.isConnected){libAnchor.insertAdjacentElement('afterend',d);d.classList.add('inl')}
+ $$('.tabs button').forEach(x=>x.classList.toggle('on',x.dataset.s===mode));
+ if(!d.open){try{d.show()}catch(e){d.setAttribute('open','')}}
+ render();readDownloads().then(()=>{if($('#libd').open)render()});
+ try{d.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}}
+function closeLib(){const d=$('#libd');try{d.close()}catch(e){d.removeAttribute('open')}}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#libd').open&&$('#libd').classList.contains('inl'))closeLib()});
+/* opening one of the tool tabs (Loop, Sampler, AI DJ, Record...) replaces the song list in the same field */
+let libDismissed=false;
+try{new MutationObserver(()=>{const d=$('#libd');
+ if(document.body.dataset.vp){libDismissed=false;if(d.open)closeLib()}
+ else if(!d.open&&!libDismissed)openLib()}).observe(document.body,{attributes:true,attributeFilter:['data-vp']})}catch(e){}
+/* The field under the tool tabs is never empty: the song library shows there by default, on the last source you used */
+try{const m=localStorage.getItem('yapsLibMode');if(m)mode=m}catch(e){}
+const _open0=openLib;openLib=function(a){try{localStorage.setItem('yapsLibMode',mode)}catch(e){}return _open0(a)};
+setTimeout(()=>{if(!window.__phoneHost&&!document.body.dataset.vp&&!$('#libd').open)openLib()},900);
+/* L = show / hide the song library */
+addEventListener('keydown',e=>{if(e.key.toLowerCase()!=='l'||e.ctrlKey||e.metaKey||e.altKey||/INPUT|TEXTAREA|SELECT/.test((e.target.tagName||'')))return;
+ if(document.querySelector('dialog[open]:not(#libd)'))return;e.preventDefault();$('#libd').open?(libDismissed=true,closeLib()):openLib()});
+function srcPick(k,a){if(k==='file'){mode='device'}else if(k==='lib'){mode='lib'}else if(k==='saved'){mode='saved'}else{mode='uploads'}openLib(a)}
+$('#libx').onclick=()=>{libDismissed=true;closeLib()};
 function render(){if(mode==='device')return renderDevice();if(mode==='saved')return renderSaved();const q=$('#q').value.trim().toLowerCase();
  let rows=library.filter(t=>(mode!=='uploads'||t.up)&&(mode!=='offline'||isOff(t.id))&&(!q||[t.title,t.artist,t.genre].join(' ').toLowerCase().includes(q)));if(typeof libRank==='function')rows=libRank(rows);
  $('#list').innerHTML=rows.length?rows.map(t=>`<div class="it"><img loading="lazy" alt="" src="${esc(src(t.cover||''))}" onerror="this.removeAttribute('src')"><div><b>${esc(t.title)}</b><span>${esc(t.artist)}${t.genre?' · '+esc(t.genre):''}${t.duration?' · '+esc(t.duration):''}</span>${typeof libBadge==='function'?libBadge(t):''}</div>
@@ -1536,7 +1733,7 @@ $('#exH').onclick=async()=>{if(!need())return;const f=new File([R.blob],mixName(
   else{$('#exD').click();setSt('This browser can’t share files, so the mix was downloaded. Share the file from your device.')}}
  catch(e){e.name==='AbortError'?setSt('Share cancelled. Your mix is still here.'):setSt('Couldn’t share ('+e.message+'). Use Download instead.',1)}};
 $('#exS').onclick=()=>{if(need())saveMix()};
-$('#svd').onclick=()=>{mode='saved';openLib()};
+$('#svd').onclick=function(){mode='saved';openLib(this)};
 async function updSaved(){try{$('#svn').textContent=(await idbDo('readonly',s=>s.count()))+' ›'}catch(e){}}
 
 /* ── Phase 4: Save (this device) + Publish (account) ──
@@ -1624,6 +1821,13 @@ pubAuth();
 
 
 /* ── Cloud mixes: FastAPI if configured, otherwise straight to Supabase (table `mixes`, see yaps-mixes-setup.sql) ── */
+/* Credit the DJ by name: index.html's DJ Mixes row shows `creator_name`. If the table has no such column yet, publish retries without it. */
+{const _cn=saveMixRow;saveMixRow=async function(row){
+ if(!row||row.creator_name||!user)return _cn(row);
+ const m=user.user_metadata||{},nm=(m.username||m.full_name||m.name||(user.email?user.email.split('@')[0]:'')||'').toString().slice(0,60);
+ if(!nm)return _cn(row);
+ try{return await _cn(Object.assign({},row,{creator_name:nm}))}
+ catch(e){if(e&&(e.code==='PGRST204'||e.code==='42703'||/creator_name/i.test(String(e.message||'')))){return _cn(row)}throw e}}}
 async function saveMixRow(row){
  if(YAPS_API_URL){try{return await api('/api/mixes',{method:'POST',body:row})}catch(e){if(e.status!==404&&e.status!==0)throw e}}
  const {error}=await sb.from('mixes').insert({...row,user_id:user.id});if(error)throw error}
@@ -1651,8 +1855,8 @@ $('#list').addEventListener('click',async e=>{const b=e.target.closest('[data-ci
 
 const _sv=window.saveMix;window.saveMix=async()=>{await _sv();updSaved();try{window.__yapsPost&&__yapsPost('mix-saved')}catch(e){}};updSaved();
 /* URL entry: studio.html?deck=A&track=ID (deck defaults to A; no track = empty decks) */
-(async function(){const p=new URLSearchParams(LOC.search),id=p.get('track');if(!id)return;
- const L=(p.get('deck')||'A').toUpperCase()==='B'?'B':'A',find=()=>library.find(x=>String(x.id)===id);
+(async function(){const A=window.__yapsStudioArgs||{},p=new URLSearchParams(A.track?'':LOC.search),id=A.track||p.get('track');if(!id)return;
+ const L=String(A.deck||p.get('deck')||'A').toUpperCase()==='B'?'B':'A',find=()=>library.find(x=>String(x.id)===id);
  await libReady;readShared();
  if(!find())await loadRemote();const t=find();t?loadTrack(L,t):toast('Track “'+id+'” wasn’t found in the YAPS library. Choose one from YAPS Library.')})();
 loadRemote();
@@ -1676,7 +1880,7 @@ function draw(v){const d=v.d,w=v.w,h=v.h,r=v.r;if(!w||!h)return;
   d.hc.forEach((t,i)=>{if(t!=null&&d.dur){x.fillStyle='#ffd35c';x.fillRect(t/d.dur*w,0,2,h);x.fillText(i+1,t/d.dur*w+3,10)}});
   x.fillStyle='#fff';x.fillRect(p*w,0,2,h)}
 const lv=(d)=>{if(!C||!d.an)return 0;d.an.getByteTimeDomainData(d.buf2);let m=0;for(const v of d.buf2)m+=(v-128)*(v-128);return Math.min(1,Math.sqrt(m/d.buf2.length)/45)};
-let last=performance.now(),fr=0;
+const LITE=document.documentElement.classList;let last=performance.now(),fr=0;
 (function tick(n){requestAnimationFrame(tick);const dt=Math.min(.1,(n-last)/1e3);last=n;fr++;
   for(const v of V){const d=v.d;
    if(d.on){d.pos+=dt*(d.src?d.src.playbackRate.value:1+d.pitch/100);if(d.pos>=d.dur){d.pos=0;if(d.buf)stopD(d)}d.ang+=dt*200*(1+d.pitch/100)}
@@ -1685,7 +1889,7 @@ let last=performance.now(),fr=0;
    const l=d.on?lv(d)*100:0,q1=Math.round(l)/100,q2=Math.round(Math.max(0,l*.9))/100;
    if(q1!==v.l1){v.l1=q1;v.m1.style.transform='scaleY('+q1+')'}
    if(q2!==v.l2){v.l2=q2;v.m2.style.transform='scaleY('+q2+')'}
-   if(fr%3==0)draw(v)}})(last);
+   if(fr%(LITE.contains('cmf-lite')?6:3)==0)draw(v)}})(last);
 
 /* ---------- DJ console helpers (landscape mode) ---------- */
 const bodyC=document.body.classList,setTools=on=>bodyC.toggle('tools',on);
@@ -1744,7 +1948,7 @@ $('#scrim').onclick=$('#toolsX').onclick=()=>setTools(false);
  },250);
 }catch(e){}})();
 $$('#mainNav [data-share]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();
- const d={title:'YAPS Music',text:'Check out YAPS Music — Music to the World, from Uganda',url:new URL('index.html',location.href).href};
+ const d={title:'YAPS Music',text:'Check out YAPS Music — Music to the World, from Uganda',url:new URL('index.html',(()=>{try{return top.location.href}catch(e){return location.href}})()).href};
  if(navigator.share)navigator.share(d).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(d.url);}));
 $('#mainNav .sidebar-item.active').addEventListener('click',e=>e.preventDefault());
 (()=>{const nav=$('#mainNav'),btn=$('#navBtn'),sc=$('#navScrim');
@@ -1838,16 +2042,17 @@ if(!seen)setTimeout(tutOpen,400);
 /* Empty-deck hints: dashed outline + "Tap to choose a song"; tapping an empty deck opens the library. */
 D.forEach(d=>{const m=$('#deck'+d.L+' .meta');if(m&&!m.querySelector('.dhint')){const h=document.createElement('div');h.className='dhint';h.textContent='Tap here to choose a song';m.appendChild(h)}});
 const emptyChk=()=>D.forEach(d=>{const e=$('#deck'+d.L);if(e)e.classList.toggle('empty',!d.buf)});emptyChk();setInterval(emptyChk,500);
-$('#decks').addEventListener('click',e=>{const dc=e.target.closest('.deck.empty .info');if(dc&&!e.target.closest('canvas'))srcPick('lib')});
+$('#decks').addEventListener('click',e=>{const dc=e.target.closest('.deck.empty .info');if(dc&&!e.target.closest('canvas'))srcPick('lib',dc.closest('.deck')||dc)});
 /* Plain-language tooltips (hover on desktop, long-press on phones) */
 const TIPS={'[data-a=cue]':'Cue: jump back to the start point','[data-a=play]':'Play or pause (Q = Deck A, P = Deck B)','[data-a=sync]':'Match this deck to the speed of the other deck','[data-a=rp]':'Put the speed back to normal','[data-a=pitch]':'Speed the song up or slow it down','[data-a=vol]':'Volume of this deck','#xf':'Crossfader: slide between Deck A and Deck B','#mvol':'Master volume: the overall loudness','#sgv':'Volume of the sampler pads','#tapB':'Tap to the beat to find a song\u2019s tempo (key T)','#limB':'Limiter: protects your ears and speakers from sudden loud peaks','#keyB':'See keyboard shortcuts (or press ?)','#rec':'Record everything you play','#aiGo':'Let AI DJ mix the two decks for you. Tap again to stop','#aiTop':'AI DJ: automatic mixing','#modeBtn':'BEGINNER shows fewer controls. PRO shows everything','#helpBtn':'Replay the quick tour','#fsBtn':'Fullscreen and landscape','#toolsBtn':'Music sources, AI DJ, recording and export','#navBtn':'Open the menu','#scTop':'Create a brand-new song with AI','[data-fx=echo]':'Echo: repeats the sound','[data-fx=rev]':'Reverb: adds room ambience','[data-fx=fil]':'Filter: muffles or brightens the sound','[data-loop]':'Loop a few beats. Tap the \u27f2 button to exit','[data-hc]':'Hot cue: tap to jump to a saved spot (tap again on an empty one to save it)','#exS':'Save this mix on your device','#exH':'Share this mix','#exD':'Download this mix','#exP':'Publish this mix to YAPS (sign in required)'};
 Object.keys(TIPS).forEach(q=>$$(q).forEach(e=>{if(!e.title)e.title=TIPS[q]}));
 
 /* Comfort settings: remembered between visits */
-[['cmfBig','cmf-big','yapsBig'],['cmfCalm','cmf-calm','yapsCalm']].forEach(([id,cls,key])=>{const b=$('#'+id),h=document.documentElement;
+[['cmfBig','cmf-big','yapsBig'],['cmfCalm','cmf-calm','yapsCalm'],['cmfLite','cmf-lite','yapsLite']].forEach(([id,cls,key])=>{const b=$('#'+id),h=document.documentElement;
  const set=on=>{h.classList.toggle(cls,on);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on);b.textContent=on?'ON':'OFF';try{localStorage.setItem(key,on?'1':'0')}catch(e){}};
  let v=null;try{v=localStorage.getItem(key)}catch(e){}
  if(v===null&&id==='cmfCalm'){try{v=matchMedia('(prefers-reduced-motion:reduce)').matches?'1':'0'}catch(e){}}
+ if(v===null&&id==='cmfLite'){try{v=((navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4))?'1':'0'}catch(e){}}
  set(v==='1');b.onclick=()=>set(!h.classList.contains(cls))});
 /* Remember AI DJ choices between visits */
 ['aiStyle','aiEnergy'].forEach(id=>{const e=$('#'+id);try{const v=localStorage.getItem('yaps_'+id);if(v&&[...e.options].some(o=>o.value===v))e.value=v}catch(x){}e.addEventListener('change',()=>{try{localStorage.setItem('yaps_'+id,e.value)}catch(x){}})});
@@ -1893,6 +2098,36 @@ function aiToggle(){if(ai){clearInterval(ai.iv);ai=null;$('#aiGo').textContent='
  if(!D[0].buf&&!D[1].buf){toast('Load at least one track first');return}init();const cur=D[0].buf?0:1,a=D[cur],b=D[1-cur];
  master.gain.value=Math.min(master.gain.value,AI_EN[$('#aiEnergy').value].v);$('#mvol').value=master.gain.value*100;xv=cur;$('#xf').value=xv*100;xfade();if(!a.on)play(a);
  ai={cur,used:new Set(a.tid?[a.tid]:[]),ready:!!b.buf,fail:0,iv:setInterval(aiTick,500)};$('#aiGo').textContent='■ Stop AI DJ';$('#aiGo').classList.add('live');aiMsg('AI DJ is mixing')}
+/* MIX NOW: one tap blends the playing deck into the other one (tempo-matched, beat-aligned, bass swap), using the AI DJ style + energy. */
+const MN={busy:false,stop:false};
+$('#xf').addEventListener('input',()=>{if(MN.busy)MN.stop=true});
+$('#mixNow').onclick=()=>{
+ if(MN.busy){MN.stop=true;return}
+ if(ai){toast('The AI DJ is already mixing. Stop it to use Mix Now.');return}
+ const loaded=D.filter(d=>d.buf);
+ if(!loaded.length){toast('Load a song into Deck A and Deck B first');return}
+ init();
+ let A=D.find(d=>d.on),B;
+ if(!A){const d=D[0].buf?D[0]:D[1];xv=d===D[0]?0:1;$('#xf').value=xv*100;xfade();play(d);
+  toast(D[1-D.indexOf(d)].buf?'Playing Deck '+d.L+'. Tap MIX NOW to blend into the other song.':'Playing Deck '+d.L+'. Load a song into the other deck, then tap MIX NOW.');return}
+ B=D[1-D.indexOf(A)];
+ if(D[0].on&&D[1].on){A=xv<.5?D[0]:D[1];B=D[1-D.indexOf(A)]}
+ if(!B.buf){toast('Load a song into Deck '+B.L+' first');return}
+ const bothOn=B.on,len=aiLen(A),tr=Math.min(len,Math.max(2,A.dur-A.pos-.5)),to=B===D[1]?1:0,from=xv;
+ if(!bothOn){const o=eff(A);let r=1;if(o&&B.bpm){r=o/B.bpm;if(r>1.4)r/=2;else if(r<.7)r*=2}
+  B.pitch=Math.abs(r-1)<=.16?(r-1)*100:0;setPitch(B);B.pos=clamp(B.mixIn||0,0,B.dur-1);
+  if(B.beat0!=null&&B.bpm){const sb=60/B.bpm;B.pos=B.beat0+Math.ceil(Math.max(0,B.pos-B.beat0)/sb)*sb}}
+ const spa=60/(eff(A)||120),wait=!bothOn&&A.beat0!=null&&A.bpm?spa-((((A.pos-A.beat0)%spa)+spa)%spa):0;
+ MN.busy=true;MN.stop=false;const btn=$('#mixNow');btn.textContent='■ MIXING…';aiMsg('Mix Now: '+A.L+' → '+B.L);$('#aiSt').classList.add('live');
+ const done=ok=>{A.fl.frequency.setTargetAtTime(22000,C.currentTime,.05);A.eq.lo=0;B.eq.lo=0;applyEq(A);applyEq(B);
+  if(ok)stopD(A);$('#aiSt').classList.remove('live');aiMsg(ok?'Now playing: '+B.t:'Mix stopped. You’re in control.');btn.textContent='⇄ MIX NOW';MN.busy=false;MN.stop=false};
+ if(!bothOn){B.eq.lo=-1;applyEq(B)}
+ setTimeout(()=>{if(MN.stop){done(false);return}
+  if(!B.on)play(B);const t0=performance.now();
+  (function st(n){if(MN.stop){done(false);return}
+   const p=Math.min(1,(n-t0)/(tr*1000));xv=from+(to-from)*smooth(p);$('#xf').value=xv*100;xfade();
+   B.eq.lo=p<.5?-1:-1+(p-.5)*2;A.eq.lo=p<.5?0:-(p-.5)*2;applyEq(A);applyEq(B);
+   if(p<1)requestAnimationFrame(st);else done(true)})(t0)},wait*1000)};
 async function apWake(on){try{if(on){if(!AP.wl&&navigator.wakeLock){AP.wl=await navigator.wakeLock.request('screen');AP.wl.addEventListener('release',()=>{AP.wl=null})}}else if(AP.wl){const w=AP.wl;AP.wl=null;await w.release()}}catch(e){AP.wl=null}}
 async function apStart(){if(AP.busy)return;
  if(ai){aiToggle();apWake(false);return}
@@ -2456,6 +2691,12 @@ function hcBtn(d,i){if(i<4){const b=$('[data-hc="'+d.L+i+'"]');if(b)b.classList.
 /* ---------- one-shot transitions ---------- */
 function brake(d){if(!d.on||!d.src)return;const s=d.src,t=C.currentTime;s.playbackRate.cancelScheduledValues(t);s.playbackRate.setValueAtTime(s.playbackRate.value,t);s.playbackRate.linearRampToValueAtTime(.03,t+1.3);
  setTimeout(()=>{if(d.src===s)stopD(d)},1350)}
+function revPlay(d){if(!d.on||!d.buf)return;init();const sr=d.buf.sampleRate,rt=1+d.pitch/100,Ls=Math.min(d.bpm?4*60/d.bpm:2,d.pos),n=Math.floor(Ls*sr);if(n<1000)return;
+ const bf=C.createBuffer(d.buf.numberOfChannels,n,sr),st=Math.floor((d.pos-Ls)*sr);
+ for(let c=0;c<bf.numberOfChannels;c++){const s=d.buf.getChannelData(c),o=bf.getChannelData(c);for(let i=0;i<n;i++)o[i]=s[st+n-1-i]||0}
+ const dur=Ls/rt,back=P.slip?d.pos+Ls:Math.max(0,d.pos-Ls);stopD(d);
+ const s=C.createBufferSource(),t=C.currentTime;s.buffer=bf;s.playbackRate.value=rt;s.connect(d.in);s.start(t);s.stop(t+dur);
+ setTimeout(()=>{d.pos=clamp(back,0,d.dur-.1);play(d)},dur*1000)}
 function spin(d){if(!d.on||!d.buf)return;init();const sr=d.buf.sampleRate,L=Math.min(1.2,d.pos),n=Math.floor(L*sr);if(n<1000)return;
  const b=C.createBuffer(d.buf.numberOfChannels,n,sr),st=Math.floor((d.pos-L)*sr);
  for(let c=0;c<b.numberOfChannels;c++){const s=d.buf.getChannelData(c),o=b.getChannelData(c);for(let i=0;i<n;i++)o[i]=s[st+n-1-i]||0}
@@ -2636,7 +2877,7 @@ root.innerHTML='<div class="pro-bar"><button class="pro-t" id="proTgl" aria-expa
 '<div class="pro-pane" data-p="wave"><div class="pz"><canvas id="pzc" aria-label="Scrolling waveforms for both decks"></canvas></div>'+
  '<div class="prow"><span class="pl">ZOOM</span><input type="range" id="pzoom" min="2" max="30" value="8" aria-label="Waveform zoom" style="flex:0 1 150px"><output id="pzo">8 s</output><span class="pl">PHASE</span><div class="phm" aria-hidden="true"><b></b><i id="phi"></i></div><output id="pph">—</output></div>'+
  '<div class="pgrid"><div class="pcard"><div class="hd">KEY &amp; TEMPO</div>'+both(L=>deckRow(L,'<button class="sm" data-act="kbadge" data-d="'+L+'" id="kb'+L+'">KEY —</button><button class="sm" data-act="kl" data-d="'+L+'" id="kl'+L+'">KEY LOCK</button><button class="sm" data-act="ks" data-d="'+L+'" data-v="-1" aria-label="Key down">−</button><output id="ks'+L+'">0</output><button class="sm" data-act="ks" data-d="'+L+'" data-v="1" aria-label="Key up">+</button><button class="sm" data-act="ksync" data-d="'+L+'">KEY SYNC</button>'))+'<div class="pnote" id="kcomp">Load two tracks to see harmonic compatibility.</div></div>'+
- '<div class="pcard"><div class="hd">BEAT GRID &amp; MODES</div>'+both(L=>deckRow(L,'<button class="sm" data-act="grid" data-d="'+L+'" data-v="half">½</button><button class="sm" data-act="grid" data-d="'+L+'" data-v="dbl">×2</button><button class="sm" data-act="grid" data-d="'+L+'" data-v="l" aria-label="Nudge grid earlier">◂ GRID</button><button class="sm" data-act="grid" data-d="'+L+'" data-v="r" aria-label="Nudge grid later">GRID ▸</button><button class="sm" data-act="grid" data-d="'+L+'" data-v="set">SET 1</button>'))+
+ '<div class="pcard"><div class="hd">BEAT JUMP &amp; PITCH RANGE</div>'+both(L=>deckRow(L,[-16,-4,-1,1,4,16].map(n=>'<button class="sm" data-act="bj" data-d="'+L+'" data-v="'+n+'" aria-label="Jump '+n+' beats">'+(n>0?'+':'')+n+'</button>').join('')+'<button class="sm" data-act="rev" data-d="'+L+'">⟲ REVERSE</button>'))+'<div class="prow"><span class="pl">PITCH RANGE</span>'+[8,16,50].map(n=>'<button class="sm" data-act="prange" data-v="'+n+'" id="pr'+n+'" aria-pressed="'+(n==16)+'">±'+n+'%</button>').join('')+'</div><div class="pnote">Beat jump moves the playhead by whole beats. Pitch range sets how far the tempo fader can go, from fine ±8% up to ±50% for big tempo changes.</div></div>'+'<div class="pcard"><div class="hd">BEAT GRID &amp; MODES</div>'+both(L=>deckRow(L,'<button class="sm" data-act="grid" data-d="'+L+'" data-v="half">½</button><button class="sm" data-act="grid" data-d="'+L+'" data-v="dbl">×2</button><button class="sm" data-act="grid" data-d="'+L+'" data-v="l" aria-label="Nudge grid earlier">◂ GRID</button><button class="sm" data-act="grid" data-d="'+L+'" data-v="r" aria-label="Nudge grid later">GRID ▸</button><button class="sm" data-act="grid" data-d="'+L+'" data-v="set">SET 1</button>'))+
   '<div class="prow"><button class="sm" id="pQ" data-act="q" aria-pressed="true">QUANTIZE</button><button class="sm" id="pSl" data-act="slip" aria-pressed="true">SLIP</button></div><div class="pnote">SET 1 puts the first beat at the playhead. Quantize snaps cues, loops and jumps to the beat grid. Slip lets the track carry on underneath loops and spins.</div></div></div></div>'+
 /* STEMS */
 '<div class="pro-pane" data-p="stems"><div class="pgrid"><div class="pcard"><div class="hd">STEMS · LIVE SPLIT</div>'+
@@ -2702,6 +2943,8 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)retur
  switch(a){
   case'kbadge':{const c=prompt('Key of Deck '+d.L+' in Camelot code (e.g. 8A, 11B). Leave empty to re-detect:',d.key2?camelot(d.key2):'');if(c===null)break;
    if(c.trim()===''&&d.buf){const k=detectKey(d.buf);if(k)d.key2={t:k.t,minor:k.minor,est:true}}else{const k=parseCam(c);if(k)d.key2={t:k.t,minor:k.minor,est:false};else toast('Use a code like 8A or 11B')}if(window.libStore)libStore(d);break}
+  case'bj':{if(needBpm(d))break;const was=d.on,np=clamp(d.pos+ +v*60/d.bpm,0,Math.max(0,d.dur-.1));if(was)stopD(d);d.pos=np;if(was)play(d);else ui(d);break}
+  case'prange':{const r=+v;D.forEach(k=>{const el=$('#deck'+k.L).querySelector('[data-a=pitch]');el.min=-r;el.max=r;k.pitch=clamp(k.pitch,-r,r);setPitch(k)});[8,16,50].forEach(n=>{const e=$('#pr'+n);if(e)e.setAttribute('aria-pressed',n==r)});toast('Pitch range ±'+r+'%');break}
   case'kl':if(needWk())break;d.kl=!d.kl;applyKey(d);break;
   case'ks':if(needWk())break;d.ks=clamp(d.ks+ +v,-6,6);applyKey(d);break;
   case'ksync':keySync(d);break;
@@ -2725,7 +2968,7 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)retur
   case'loff':loopOff(d);break;
   case'fxt':init();P.fx.tg=v;if(P.fx.on)fxWire();break;
   case'fxgo':fxOn(!P.fx.on);break;
-  case'brake':brake(d);break;case'spin':spin(d);break;case'eout':echoOut(d);break;
+  case'brake':brake(d);break;case'rev':revPlay(d);break;case'spin':spin(d);break;case'eout':echoOut(d);break;
   case'fltc':d.flt=0;{const r=$p('[data-in=flt][data-d="'+d.L+'"]');r.value=0}applyMixer(d);break;
   case'kill':init();kill(d,b.dataset.b);break;
   case'xc':window.proXf.curve=v;xfade();break;
@@ -2937,7 +3180,18 @@ let M={};try{M=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){M={}}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(M))}catch(e){}};
 const id=t=>String(t.id),meta=t=>{const m=M[id(t)];return m&&!m.x?m:(t.bpm?{b:t.bpm}:null)};
 const rer=()=>{try{if($('#libd').open)render()}catch(e){}};
-window.libStore=function(d){if(!d.tid||!d.key2||!window.proApi)return;M[String(d.tid)]={b:d.bpm?Math.round(d.bpm*10)/10:null,k:proApi.camelot(d.key2),t:Date.now()};save();rer()};
+window.libStore=function(d){if(!d.tid||!d.key2||!window.proApi)return;M[String(d.tid)]={b:d.bpm?Math.round(d.bpm*10)/10:null,k:proApi.camelot(d.key2),t:Date.now()};save();rer();try{autoMatch(d)}catch(e){}};
+/* AUTOMATIC matching: once a song is on a deck, (1) Suggest Next switches on by itself, (2) a few more songs are analysed quietly in the background,
+   (3) a song loaded next to a playing one is tempo-synced when the tempos are close, and the harmonic fit is announced */
+let autoSug=false,autoRun=0;
+function autoMatch(d){const o=D[1-D.indexOf(d)];
+ if(!autoSug){autoSug=true;L.sug=true;const b=$('#libSug');if(b){b.classList.add('on');b.setAttribute('aria-pressed','true')}}
+ const ok=(()=>{try{const c=navigator.connection||{};return!c.saveData&&c.type!=='cellular'&&!/(^|-)2g$|3g/.test(c.effectiveType||'')}catch(e){return true}})();
+ if(ok&&!L.run&&Date.now()-autoRun>60000){autoRun=Date.now();setTimeout(()=>analyseAll(5,true),1500)}
+ if(o&&o.buf&&d.buf){const a=window.proApi.effKey(o),b=window.proApi.effKey(d),c=a&&b?proApi.compat(a.code,b.code):null;
+  if(o.on&&!d.on&&d.bpm&&eff(o)&&!d.sync&&ratio(d.bpm,eff(o))<.08){doSync(d)}
+  if(c)setTimeout(()=>toast('Deck '+d.L+' + Deck '+o.L+': '+(a.code+' → '+b.code)+' · '+c[0]),900)}
+ rer()}
 function refDeck(){const a=D.filter(d=>d.on&&d.buf),b=D.filter(d=>d.buf);const d=a[0]||b[0];if(!d)return null;
  const ek=proApi.effKey(d);return{d,bpm:d.bpm?eff(d):null,key:ek?ek.code:null}}
 function ratio(a,b){let best=9;[1,2,.5].forEach(m=>{const r=Math.abs(a*m/b-1);if(r<best)best=r});return best}
@@ -2945,7 +3199,8 @@ function score(t,r){const m=meta(t);if(!m||(!m.b&&!m.k))return null;let bp=null,
  if(m.b&&r.bpm){bp=Math.max(0,100-ratio(m.b,r.bpm)*100*8)}
  if(m.k&&r.key){cmp=proApi.compat(m.k,r.key);kp=({PERFECT:100,GOOD:85,OK:60,ENERGY:55}[cmp[0].split(' ')[0]]);if(kp==null)kp=0}
  if(bp==null&&kp==null)return null;const s=bp!=null&&kp!=null?.6*bp+.4*kp:(bp!=null?bp*.8:kp*.7);return{s:Math.round(s),cmp:cmp&&cmp[1]}}
-window.libRank=function(rows){L.sc.clear();if(!L.sug)return rows;const r=refDeck();L.ref=r;if(!r||(!r.bpm&&!r.key))return rows;
+const kn=c=>{const m=/^(\d+)([AB])$/.exec(c||'');return m?+m[1]*2+(m[2]==='B'?1:0):999};const SO=['','bpm','key','title'];function srt(rows){if(!L.so)return rows;const g=t=>meta(t)||{},r=rows.slice();if(L.so==='bpm')r.sort((a,b)=>(g(a).b||1e9)-(g(b).b||1e9));else if(L.so==='key')r.sort((a,b)=>kn(g(a).k)-kn(g(b).k));else r.sort((a,b)=>String(a.title).localeCompare(String(b.title)));return r}
+window.libRank=function(rows){L.sc.clear();if(!L.sug)return srt(rows);const r=refDeck();L.ref=r;if(!r||(!r.bpm&&!r.key))return rows;
  const busy=new Set(D.map(d=>d.tid&&String(d.tid)).filter(Boolean)),sc=[],un=[];
  rows.forEach(t=>{if(busy.has(id(t)))return;const s=score(t,r);if(s){L.sc.set(id(t),s);sc.push(t)}else un.push(t)});
  sc.sort((a,b)=>L.sc.get(id(b)).s-L.sc.get(id(a)).s);return sc.concat(un)};
@@ -2953,12 +3208,12 @@ window.libBadge=function(t){const m=meta(t),s=L.sc.get(id(t));let h='';
  if(m&&(m.b||m.k))h=(m.b?Math.round(m.b)+' BPM':'')+(m.b&&m.k?' · ':'')+(m.k||'');else h='not analysed';
  if(s)h+=' · '+s.s+'% match';return'<em class="mt '+(s&&s.cmp?s.cmp:(m&&(m.b||m.k)?'':'dim'))+'">'+h+'</em>'};
 function st(msg){const e=$('#libSt');if(e)e.textContent=msg||''}
-async function analyseAll(){const b=$('#libAn');
+async function analyseAll(cap,quiet){const b=$('#libAn');cap=+cap||25;
  if(L.run){L.run=false;st('Stopping…');return}
  try{if(navigator.connection&&navigator.connection.saveData){toast('Data Saver is on. Turn it off to analyse the library.');return}}catch(e){}
  const phone=matchMedia('(pointer:coarse)').matches,max=phone?360:600,
-  todo=library.filter(t=>{const m=M[id(t)];if(m&&(m.x||m.k))return false;if(t.duration){const p=String(t.duration).split(':').map(Number);if((p[0]||0)*60+(p[1]||0)>max)return false}return true}).slice(0,25);
- if(!todo.length){toast('Every track here is already analysed');return}
+  todo=library.filter(t=>{const m=M[id(t)];if(m&&(m.x||m.k))return false;if(t.duration){const p=String(t.duration).split(':').map(Number);if((p[0]||0)*60+(p[1]||0)>max)return false}return true}).slice(0,cap);
+ if(!todo.length){if(!quiet)toast('Every track here is already analysed');return}
  L.run=true;b.textContent='STOP';let n=0;
  for(const t of todo){if(!L.run)break;n++;st('Analysing '+n+' of '+todo.length+': '+t.title);
   try{const raw=await getBuf(t,()=>{});init();const ab=await C.decodeAudioData(raw),r=analyse(ab),k=proApi.detectKey(ab);
@@ -2967,9 +3222,9 @@ async function analyseAll(){const b=$('#libAn');
   await new Promise(r=>setTimeout(r,30))}
  L.run=false;b.textContent='ANALYSE LIBRARY';st(n<todo.length?'Stopped':'Done · '+n+' track'+(n>1?'s':'')+' analysed');rer()}
 const bar=$('#libTools');if(!bar)return;
-$('#libSug').onclick=()=>{L.sug=!L.sug;$('#libSug').classList.toggle('on',L.sug);$('#libSug').setAttribute('aria-pressed',L.sug);
+$('#libSort').onclick=()=>{L.so=SO[(SO.indexOf(L.so||'')+1)%SO.length];const b=$('#libSort');b.textContent='SORT: '+(L.so==='title'?'A–Z':(L.so||'off').toUpperCase());b.classList.toggle('on',!!L.so);b.setAttribute('aria-pressed',!!L.so);rer()};$('#libSug').onclick=()=>{L.sug=!L.sug;$('#libSug').classList.toggle('on',L.sug);$('#libSug').setAttribute('aria-pressed',L.sug);
  if(L.sug){const r=refDeck();st(r?'Best matches for Deck '+r.d.L+(r.bpm?' · '+r.bpm.toFixed(0)+' BPM':'')+(r.key?' · '+r.key:''):'Load a track on a deck first')}else st('');render()};
-$('#libAn').onclick=analyseAll;
+$('#libAn').onclick=()=>analyseAll();
 })();
 
 /* Dark / Light toggle (shares the saved mode with index.html) */
@@ -3008,6 +3263,29 @@ $('#libAn').onclick=analyseAll;
  addEventListener('storage',e=>{if(e.key==='yaps_shared_catalogue')refresh()});
  let lastDev=0;document.addEventListener('visibilitychange',()=>{if(document.hidden||Date.now()-lastDev<5000)return;lastDev=Date.now();refresh();readDeviceUploads().then(()=>{if($('#libd')&&$('#libd').open)render()})});
 })();
+
+/* ===== VIDEO MIXER panel: crossfaded deck artwork + spectrum, with fullscreen ===== */
+(function(){
+const m=document.querySelector('main');if(!m)return;
+const s=document.createElement('section');s.id='vidPanel';s.className='pn';
+s.innerHTML='<div style="display:flex;gap:6px;align-items:center;margin-bottom:6px"><b style="letter-spacing:.1em;font-size:12px">VIDEO MIXER</b><span style="flex:1"></span><button class="sm" id="vdMode">ART + BARS</button><button class="sm" id="vdFs">⛶ FULLSCREEN</button></div><canvas id="vdCv" width="960" height="540" style="width:100%;max-height:30vh;aspect-ratio:16/9;background:#000;display:block;margin:0 auto;border-radius:2px"></canvas><div class="pnote">The two decks\' artwork and spectrum, crossfaded with the crossfader. Go fullscreen to use it as a screen for your audience.</div>';
+{const dkv=document.getElementById('vdock');m.insertBefore(s,dkv?dkv.nextSibling:null)}
+const cv=document.getElementById('vdCv'),x=cv.getContext('2d'),modes=['ART + BARS','BARS ONLY','ART ONLY'],imgs={},fa=new Uint8Array(128);let mi=0;
+function img(d){const mm=/url\("?([^")]+)"?\)/.exec(d.art||'');if(!mm)return null;const u=mm[1];if(!imgs[u]){const i=new Image();i.src=u;imgs[u]=i}const i=imgs[u];return i.complete&&i.naturalWidth?i:null}
+function layer(d,a,side){if(a<=.01||!d.buf)return;const W=cv.width,H=cv.height,im=mi!==1?img(d):null;
+ if(im){const r=Math.max(W/im.naturalWidth,H/im.naturalHeight);x.globalAlpha=a*.3;x.drawImage(im,(W-im.naturalWidth*r)/2,(H-im.naturalHeight*r)/2,im.naturalWidth*r,im.naturalHeight*r);
+  const S=H*.5,cx=W*(side?.75:.25)-S/2,sr=Math.min(im.naturalWidth,im.naturalHeight);x.globalAlpha=a;x.drawImage(im,(im.naturalWidth-sr)/2,(im.naturalHeight-sr)/2,sr,sr,cx,H*.2,S,S)}
+ if(mi!==2&&d.an){d.an.getByteFrequencyData(fa);const n=64,bw=W/n;x.globalAlpha=a*.8;x.fillStyle=d.c;for(let i=0;i<n;i++){const h=fa[i]/255*H*.55;x.fillRect(i*bw+1,H-h,bw-2,h)}}
+ x.globalAlpha=a;x.fillStyle='#fff';x.font='bold 28px sans-serif';x.textAlign=side?'right':'left';x.fillText(String(d.t||'').slice(0,40),side?W-20:20,44)}
+function f(){requestAnimationFrame(f);if(document.body.dataset.vp!=='video'&&!document.fullscreenElement)return;
+ x.globalAlpha=1;x.fillStyle='#000';x.fillRect(0,0,cv.width,cv.height);
+ let v=typeof xv!=='undefined'?xv:.5;if((window.proXf||{}).rev)v=1-v;
+ layer(D[0],Math.min(1,2*(1-v)),0);layer(D[1],Math.min(1,2*v),1);x.globalAlpha=1}
+requestAnimationFrame(f);
+document.getElementById('vdMode').onclick=function(){mi=(mi+1)%3;this.textContent=modes[mi]};
+document.getElementById('vdFs').onclick=()=>{if(cv.requestFullscreen)cv.requestFullscreen();else toast('Fullscreen is not supported here')};
+})();
+
 </script>
 <script>
 /* Boot: normal pages run the app directly. On phones the app runs inside a frame (built from this
