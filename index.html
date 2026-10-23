@@ -4349,6 +4349,38 @@ html[data-mode="light"] { --yai-art-bg: #fdfefe; --yai-art: url("images/yaps-ai-
 .djx-tl button:hover { background:var(--card); }
 .djx-tl b { color:var(--accent-light); min-width:52px; font-variant-numeric:tabular-nums; }
 @media (max-width:480px){ .djx-card{width:136px;} }
+
+/* ══ DJ PROFILE = same size & layout as the ARTIST profile (banner 180px, avatar 88px, 22px name, 15px stats) ══ */
+#djx-profile.djx-wrap { max-width:none; padding:0 0 24px; }
+#djx-profile .djx-top { padding:14px 24px 10px; margin:0; }
+#djx-profile .djx-hero { border:0; border-radius:0; background:none; overflow:visible; margin-bottom:0; }
+#djx-profile .djx-cover { height:180px; position:relative; background-position:center; }
+#djx-profile .djx-cover::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(5,11,34,0) 30%, var(--bg)); }
+#djx-profile .djx-hero-body { padding:0 24px 16px; margin-top:-60px; position:relative; z-index:1; }
+#djx-profile .djx-info { display:flex; align-items:flex-end; gap:16px; padding-bottom:16px; }
+#djx-profile .djx-hero .djx-av-img, #djx-profile .djx-hero .djx-av-ph { width:88px; height:88px; margin:0; flex-shrink:0; border:4px solid var(--bg); box-shadow:none; font-size:32px; font-weight:900; }
+#djx-profile .djx-metaw { flex:1; min-width:0; padding-bottom:4px; }
+#djx-profile .djx-name { font-size:22px; font-weight:900; letter-spacing:-0.5px; line-height:1.2; }
+#djx-profile .djx-meta { font-size:13px; color:var(--muted); margin:2px 0 8px; }
+#djx-profile .djx-stats { display:flex; gap:20px; flex-wrap:wrap; margin:0; }
+#djx-profile .djx-stats > div { text-align:center; }
+#djx-profile .djx-stats b { font-size:15px; font-weight:800; color:var(--accent); }
+#djx-profile .djx-stats span { font-size:11px; }
+#djx-profile .djx-acts { gap:10px; }
+#djx-profile > .djx-tabs, #djx-profile > .djx-list, #djx-profile > .djx-about, #djx-profile > .djx-empty { margin-left:24px; margin-right:24px; }
+@media (max-width:768px){ #djx-profile .djx-name { font-size:18px; } #djx-profile .djx-info { gap:12px; } }
+@media (max-width:480px){
+  #djx-profile .djx-cover { height:120px; }
+  #djx-profile .djx-info { flex-direction:column; align-items:flex-start; gap:10px; }
+  #djx-profile .djx-hero .djx-av-img, #djx-profile .djx-hero .djx-av-ph { width:64px; height:64px; font-size:22px; border-width:3px; }
+  #djx-profile .djx-stats { gap:16px; }
+  #djx-profile .djx-acts .djx-btn { flex:1 1 auto; }
+}
+@media (max-width:380px){
+  #djx-profile .djx-cover { height:100px; }
+  #djx-profile .djx-hero .djx-av-img, #djx-profile .djx-hero .djx-av-ph { width:52px; height:52px; font-size:18px; }
+  #djx-profile .djx-name { font-size:18px; }
+}
 #page-ai-dj .dj-msg-avatar {
   width:28px; height:28px; margin-top:3px;
   background: radial-gradient(circle at 32% 28%, var(--accent-light), var(--accent) 60%, var(--accent-dark));
@@ -26846,9 +26878,9 @@ h1, h2, h3, h4, h5, h6,
     }
     host.innerHTML = `<div class="djx-top"><button type="button" class="djx-back" data-back aria-label="Back"><i class="fas fa-chevron-left"></i></button><h2>DJ profile</h2></div>
       <div class="djx-hero"><div class="djx-cover" ${d.cover?`style="background-image:url('${esc(d.cover)}')"`:''}></div>
-      <div class="djx-hero-body">${avatar(d)}<div class="djx-name">${esc(d.name)}${ver(d)}</div>
+      <div class="djx-hero-body"><div class="djx-info">${avatar(d)}<div class="djx-metaw"><div class="djx-name">${esc(d.name)}${ver(d)}</div>
       <div class="djx-meta">${[d.crew,d.city||'Uganda'].filter(Boolean).map(esc).join(' · ')}</div>
-      <div class="djx-stats"><div><b>${d.count}</b><span>Mixes</span></div><div><b>${num(d.plays)}</b><span>Plays</span></div>${d.followers?`<div><b>${num(d.followers)}</b><span>Followers</span></div>`:''}</div>
+      <div class="djx-stats"><div><b>${d.count}</b><span>Mixes</span></div><div><b>${num(d.plays)}</b><span>Plays</span></div>${d.followers?`<div><b>${num(d.followers)}</b><span>Followers</span></div>`:''}</div></div></div>
       <div class="djx-acts"><button type="button" class="djx-btn pri ${isF?'on':''}" data-follow>${isF?'Following':'Follow'}</button>
       <button type="button" class="djx-btn" data-shareDJ>Share</button>${list.length?'<button type="button" class="djx-btn" data-playall>▶ Play latest</button>':''}</div>
       ${links?`<div class="djx-links">${links}</div>`:''}</div></div>
