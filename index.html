@@ -2537,15 +2537,15 @@ body {
 .ppl-chip:hover { color:var(--text); border-color:var(--accent); }
 .ppl-chip.active { color:#fff; border-color:transparent; background:linear-gradient(135deg,var(--accent-light),var(--accent) 55%,var(--accent-dark)); box-shadow:0 4px 14px var(--accent-dim); }
 .ppl-row {
-  display:flex; gap:14px; overflow-x:auto; padding:2px 16px 18px; scroll-snap-type:x proximity; scroll-padding-left:16px;
+  display:flex; gap:12px; overflow-x:auto; padding:2px 16px 14px; scroll-snap-type:x proximity; scroll-padding-left:16px;
   scrollbar-width:none; -webkit-overflow-scrolling:touch;
 }
 .ppl-row::-webkit-scrollbar { display:none; }
 .ppl-card {
   --g1:#2f8eff; --g2:#7a4cf0;
-  position:relative; flex:0 0 auto; width:172px; height:226px; border-radius:20px; overflow:hidden; cursor:pointer;
+  position:relative; flex:0 0 auto; width:128px; height:168px; border-radius:16px; overflow:hidden; cursor:pointer;
   scroll-snap-align:start; isolation:isolate; background:linear-gradient(150deg,var(--g1),var(--g2));
-  box-shadow:0 10px 24px rgba(0,0,0,.35); transition:transform .25s ease, box-shadow .25s ease;
+  box-shadow:0 6px 16px rgba(0,0,0,.32); transition:transform .25s ease, box-shadow .25s ease;
   -webkit-tap-highlight-color:transparent;
 }
 .ppl-card:hover { transform:translateY(-5px); box-shadow:0 16px 34px rgba(0,0,0,.45), 0 0 0 1.5px rgba(255,255,255,.18); }
@@ -2554,31 +2554,31 @@ body {
 .ppl-card:hover .ppl-bg { transform:scale(1.12); }
 .ppl-card::before { content:''; position:absolute; inset:0; z-index:-2; background:linear-gradient(150deg,var(--g1),var(--g2)); opacity:.55; mix-blend-mode:multiply; }
 .ppl-card::after  { content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.15) 38%,rgba(0,0,0,.88) 100%); }
-.ppl-top { position:absolute; top:12px; left:12px; right:12px; display:flex; align-items:center; justify-content:space-between; }
+.ppl-top { position:absolute; top:9px; left:9px; right:9px; display:flex; align-items:center; justify-content:space-between; }
 .ppl-stack { display:flex; }
 .ppl-stack img, .ppl-stack span {
-  width:24px; height:24px; border-radius:50%; object-fit:cover; border:2px solid rgba(255,255,255,.9);
-  margin-left:-9px; background:var(--card2); box-shadow:0 2px 6px rgba(0,0,0,.35);
+  width:18px; height:18px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(255,255,255,.9);
+  margin-left:-7px; background:var(--card2); box-shadow:0 2px 6px rgba(0,0,0,.35);
 }
 .ppl-stack img:first-child, .ppl-stack span:first-child { margin-left:0; }
 .ppl-count {
-  font-size:10.5px; font-weight:800; letter-spacing:.3px; color:#fff; padding:4px 9px; border-radius:999px; white-space:nowrap; flex-shrink:0;
+  font-size:9px; font-weight:800; letter-spacing:.2px; color:#fff; padding:3px 7px; border-radius:999px; white-space:nowrap; flex-shrink:0;
   background:rgba(0,0,0,.38); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.2);
 }
-.ppl-info { position:absolute; left:14px; right:14px; bottom:14px; color:#fff; }
-.ppl-tag { font-size:9.5px; font-weight:800; letter-spacing:1.6px; text-transform:uppercase; color:rgba(255,255,255,.8); margin-bottom:4px; }
-.ppl-title { font-size:17px; font-weight:900; line-height:1.12; letter-spacing:-.3px; text-shadow:0 2px 10px rgba(0,0,0,.5); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-.ppl-desc { font-size:11px; line-height:1.3; color:rgba(255,255,255,.72); margin:5px 48px 0 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.ppl-info { position:absolute; left:10px; right:10px; bottom:10px; color:#fff; }
+.ppl-tag { font-size:8px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:rgba(255,255,255,.8); margin-bottom:3px; }
+.ppl-title { font-size:14px; font-weight:900; line-height:1.12; letter-spacing:-.3px; text-shadow:0 2px 10px rgba(0,0,0,.5); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.ppl-desc { font-size:9.5px; line-height:1.3; color:rgba(255,255,255,.72); margin:3px 36px 0 0; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
 .ppl-play {
-  position:absolute; right:12px; bottom:12px; width:38px; height:38px; border-radius:50%; border:0; cursor:pointer;
-  display:grid; place-items:center; color:#111; background:#fff; box-shadow:0 6px 16px rgba(0,0,0,.45), 0 0 0 4px rgba(255,255,255,.18);
+  position:absolute; right:9px; bottom:9px; width:30px; height:30px; border-radius:50%; border:0; cursor:pointer;
+  display:grid; place-items:center; color:#111; background:#fff; box-shadow:0 4px 12px rgba(0,0,0,.45), 0 0 0 3px rgba(255,255,255,.18);
   transition:transform .2s, box-shadow .2s;
 }
-.ppl-play svg { width:18px; height:18px; fill:currentColor; margin-left:2px; }
+.ppl-play svg { width:14px; height:14px; fill:currentColor; margin-left:2px; }
 .ppl-play:hover { transform:scale(1.1); box-shadow:0 8px 20px rgba(0,0,0,.55), 0 0 0 6px rgba(255,255,255,.22); }
 .ppl-empty { padding:18px 16px; font-size:13px; color:var(--muted); }
-@media (min-width:768px)  { .ppl-chips{padding:0 24px 14px} .ppl-row{padding:2px 24px 20px;gap:16px;scroll-padding-left:24px} .ppl-card{width:200px;height:262px} .ppl-title{font-size:19px} .ppl-desc{font-size:12px} }
-@media (min-width:1200px) { .ppl-card{width:224px;height:290px} .ppl-title{font-size:20px} .ppl-play{width:42px;height:42px} }
+@media (min-width:768px)  { .ppl-chips{padding:0 24px 14px} .ppl-row{padding:2px 24px 16px;gap:14px;scroll-padding-left:24px} .ppl-card{width:150px;height:196px} .ppl-title{font-size:15px} .ppl-desc{font-size:10px} }
+@media (min-width:1200px) { .ppl-card{width:168px;height:218px} .ppl-title{font-size:16px} .ppl-play{width:32px;height:32px} }
 @media (prefers-reduced-motion:reduce) { .ppl-card,.ppl-bg,.ppl-play{transition:none} }
 
 /* ── LIBRARY PLAYLIST GRID CARDS ── */
@@ -4268,13 +4268,10 @@ html[data-mode="light"] { --yai-art-bg: #fdfefe; --yai-art: url("images/yaps-ai-
   width:100%; height:100%; border-radius:50%;
   background: var(--yai-art) center / cover no-repeat;
 }
-/* Chat area background */
+/* Chat area background: plain theme surface (brand art removed so messages stay clean) */
 #page-ai-dj .dj-chat-area {
-  background-color: var(--yai-art-bg);
-  background-image: var(--yai-art-veil), var(--yai-art);
-  background-position: center, center;
-  background-size: cover, contain;
-  background-repeat: no-repeat, no-repeat;
+  background: var(--surface);
+  background-image: none;
 }
 
 /* ══ UGANDAN DJs — home rows, DJs page, DJ profile, mix sheet (theme-aware, uses app CSS variables) ══ */
@@ -4485,6 +4482,22 @@ html[data-mode="light"] { --yai-art-bg: #fdfefe; --yai-art: url("images/yaps-ai-
 .yai-send:hover { background: var(--accent-light); }
 
 #page-ai-dj :is(button, .dj-msg-track):focus-visible { outline:2px solid var(--accent-light); outline-offset:2px; }
+
+/* ══ YAPS AI, borderless assistant look: no frames or outlines, like a real AI assistant ══ */
+#page-ai-dj .dj-chat-area { border:0; border-radius:0; background:none; padding:4px 2px; box-shadow:none; }
+#page-ai-dj .dj-message:not(.user) .dj-msg-bubble { background:transparent; border:0; border-radius:0; padding:4px 0; font-size:15px; line-height:1.65; }
+#page-ai-dj .dj-message.user .dj-msg-bubble { border:0; }
+#page-ai-dj .yai-cap { border:0; background:var(--card); }
+#page-ai-dj .yai-cap:hover { background:var(--card2); }
+#page-ai-dj .dj-msg-track { border:0; background:var(--card); }
+#page-ai-dj .dj-msg-track:hover, #page-ai-dj .dj-msg-track:focus-visible { border:0; background:var(--card2); }
+#page-ai-dj .dj-prompt-chip, #page-ai-dj .yai-follow .dj-prompt-chip { border:0; background:var(--card); }
+#page-ai-dj .dj-prompt-chip:hover, #page-ai-dj .yai-chips .dj-prompt-chip.new { border:0; background:var(--card2); }
+#page-ai-dj .yai-btn { border:0; }
+#page-ai-dj .yai-icon-btn { border:0; }
+#page-ai-dj .yai-dna { border-top:0; }
+#page-ai-dj .yai-composer { border:0; background:var(--card); box-shadow:0 2px 14px rgba(0,0,0,.18); }
+#page-ai-dj .yai-composer:focus-within { border:0; box-shadow:0 2px 14px rgba(0,0,0,.18), 0 0 0 2px var(--accent-dim); }
 
 @media (max-width: 480px) {
   #page-ai-dj .yai-wrap { padding: 10px 12px 14px; }
@@ -11216,7 +11229,7 @@ let _hasPlayedOnce = false;
 // home page, and only after a track has actually been played.
 function _updatePlayerBarVisibility() {
   const _pb = document.getElementById('player-bar');
-  const show = currentPage === 'home' && _hasPlayedOnce;
+  const show = currentPage === 'home' && _hasPlayedOnce && !window.__studioOpen;
   if (_pb) _pb.style.display = show ? 'flex' : 'none';
   document.documentElement.style.setProperty('--player-h', show ? '72px' : '0px');
   _updateMiniBubbleVisibility();
@@ -11229,7 +11242,7 @@ function _updatePlayerBarVisibility() {
 function _updateMiniBubbleVisibility() {
   const bubble = document.getElementById('miniBubble');
   if (!bubble) return;
-  const show = _hasPlayedOnce && currentPage !== 'home';
+  const show = _hasPlayedOnce && currentPage !== 'home' && !window.__studioOpen;
   bubble.style.display = show ? 'flex' : 'none';
   if (show) _mbSyncNowPlaying();
 }
@@ -29271,7 +29284,9 @@ window.__STUDIO_SRC = null;   // the DJ Studio page now lives in studio.html and
     addEventListener('resize',fit);addEventListener('orientationchange',function(){setTimeout(fit,250)});
     try{if(window.ResizeObserver){var ro=new ResizeObserver(fit);['main','topbar','layout'].forEach(function(id){var e=document.getElementById(id);if(e)ro.observe(e)})}}catch(e){}
   }
-  function show(){ov.style.display='block';fit();setActive(true);try{if(typeof closeSidebar==='function')closeSidebar()}catch(e){}
+  /* the mini player (docked bar / floating bubble) is not needed while the Studio is open: hide it, bring it back on close */
+  function studioFlag(on){window.__studioOpen=!!on;try{if(typeof _updatePlayerBarVisibility==='function')_updatePlayerBarVisibility()}catch(e){}if(on)fit()}
+  function show(){ov.style.display='block';studioFlag(true);fit();setActive(true);try{if(typeof closeSidebar==='function')closeSidebar()}catch(e){}
     document.documentElement.style.overflow='hidden';
     if(!pushed){try{history.pushState({yapsStudio:1},'')}catch(e){}pushed=true}}
   var loading=false;
@@ -29294,7 +29309,7 @@ window.__STUDIO_SRC = null;   // the DJ Studio page now lives in studio.html and
         if(!a||!a.ok){if(typeof showToast==='function')showToast('That song could not be loaded into the Studio')}});
   };
   /* keep=true when leaving through an app link: the Studio's history entry is turned into a normal one (no history.back(), which would race with pages that push their own entry right after navigate()) */
-  window._studioClose=function(keep){if(!ov||ov.style.display==='none')return;ov.style.display='none';document.documentElement.style.overflow='';setActive(false);
+  window._studioClose=function(keep){if(!ov||ov.style.display==='none')return;ov.style.display='none';studioFlag(false);document.documentElement.style.overflow='';setActive(false);
     if(pushed){pushed=false;try{if(history.state&&history.state.yapsStudio){if(keep===true)history.replaceState(null,'');else history.back()}}catch(e){}}};
   /* the app's own sidebar, bottom nav and links leave the Studio by navigating: close it first so the page underneath shows */
   var _nav=window.navigate;
@@ -29306,7 +29321,7 @@ window.__STUDIO_SRC = null;   // the DJ Studio page now lives in studio.html and
       else if(typeof navigate==='function'&&!u.search){navigate('home');if(typeof updateBottomNav==='function')updateBottomNav('home')}}catch(e){}
   };
   /* phone Back button closes the Studio instead of leaving the app */
-  addEventListener('popstate',function(){if(ov&&ov.style.display!=='none'){pushed=false;ov.style.display='none';document.documentElement.style.overflow='';setActive(false)}});
+  addEventListener('popstate',function(){if(ov&&ov.style.display!=='none'){pushed=false;ov.style.display='none';studioFlag(false);document.documentElement.style.overflow='';setActive(false)}});
   /* Preload: once the app is idle, fetch studio.html and build the Studio frame hidden, so opening it is instant (skipped on Data Saver / slow links) */
   function warm(){
     try{var c=navigator.connection||{};if(c.saveData||/(^|-)2g$/.test(c.effectiveType||''))return}catch(e){}
@@ -30265,5 +30280,58 @@ window.YapsCall = { start, accept, decline, end:() => finish(true, 'ended'), get
 })();
 </script>
 
+
+<!-- ═══ SIDEBAR PAGES OPEN IN THE CONTENT AREA ═══
+     Settings, Edit Profile, Subscription, Language, Help, About, Privacy/Legal, Rate and Feedback inbox used to cover
+     the whole screen. They now fill only the content area (right of the sidebar, under the header, above the player
+     and bottom nav), so the header buttons, the sidebar and the player always stay visible and tappable. -->
+<style id="contentAreaOverlays">
+html body #yset,
+html body :is(#modalLanguage,#modalEditProfile,#modalHelp,#modalAbout,#modalLegal,#modalRate,#modalSubscription,#modalFeedbackInbox).modal-overlay{
+  position:fixed!important;
+  top:var(--topbar-h)!important;
+  left:var(--sidebar-w)!important;
+  right:0!important;
+  bottom:calc(var(--player-h) + var(--mnav-h))!important;
+  width:auto!important;height:auto!important;
+  border-left:0!important;box-shadow:none!important;
+}
+html body #yset{z-index:120!important}
+html body :is(#modalLanguage,#modalEditProfile,#modalHelp,#modalAbout,#modalLegal,#modalRate,#modalSubscription,#modalFeedbackInbox).modal-overlay{z-index:125!important}
+/* top padding no longer needs the phone notch inset: the header already sits above */
+html body #yset .ys-head{padding-top:12px!important}
+html body :is(#modalLanguage,#modalEditProfile,#modalHelp,#modalAbout,#modalLegal,#modalRate) .modal-head{padding-top:10px!important}
+/* the two centred cards must fit inside the smaller area and scroll inside it */
+html body :is(#modalSubscription,#modalFeedbackInbox) .modal{max-height:calc(100% - 24px)!important}
+html body :is(#modalSubscription,#modalFeedbackInbox) .modal-body{max-height:none!important;flex:1 1 auto;min-height:0;overflow-y:auto!important}
+/* queue panel: stay between header and player, never cover the bottom nav */
+html body .queue-panel{bottom:calc(var(--player-h) + var(--mnav-h))!important;z-index:130!important}
+/* "On this device" keeps its pinned 220px sidebar on tablets */
+@media (min-width:640px) and (max-width:768px) and (min-height:521px){
+  html body[data-page="device"] #yset,
+  html body[data-page="device"] :is(#modalLanguage,#modalEditProfile,#modalHelp,#modalAbout,#modalLegal,#modalRate,#modalSubscription,#modalFeedbackInbox).modal-overlay{left:220px!important}
+}
+</style>
+<script id="contentAreaOverlaysJs">
+(function(){
+  var IDS=['modalLanguage','modalEditProfile','modalHelp','modalAbout','modalLegal','modalRate','modalSubscription','modalFeedbackInbox'];
+  /* close whatever page-style overlay is open (modals just lose .open, exactly like closeModal does) */
+  function closeAll(keepSettings){
+    IDS.forEach(function(id){var e=document.getElementById(id);if(e&&e.classList.contains('open'))e.classList.remove('open')});
+    if(!keepSettings){var y=document.getElementById('yset');if(y&&y.classList.contains('open')&&typeof window.closeSettings==='function')window.closeSettings()}
+  }
+  /* the sidebar is now visible while one of these is open: tapping another sidebar item replaces it.
+     Capture phase = runs before the item's own onclick, which then opens the next page. */
+  document.addEventListener('click',function(e){
+    var it=e.target.closest&&e.target.closest('#sidebar .sidebar-item,#sidebar .sidebar-header');
+    if(!it)return;
+    var h=it.getAttribute('onclick')||'';
+    closeAll(/openSettings/.test(h));   /* tapping Settings again must not close-then-reopen (close has a timer) */
+  },true);
+  /* any page change (header buttons, bottom nav, links) also clears them so the new page is not hidden behind one */
+  var _nav=window.navigate;
+  if(typeof _nav==='function')window.navigate=function(){closeAll(false);return _nav.apply(this,arguments)};
+})();
+</script>
 </body>
 </html>

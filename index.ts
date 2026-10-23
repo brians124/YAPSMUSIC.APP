@@ -1,65 +1,72 @@
 // Supabase Edge Function: send-push
-// Trigger: Database Webhook on INSERT into public.yaps_notifications (see push-setup.md).
-// Sends a Web Push to the recipient's devices (user_id), or to everyone when user_id is null.
-import { createClient } from "npm:@supabase/supabase-js@2";
+// Deploy:  supabase functions deploy send-push --no-verify-jwt
+// Secrets: supabase secrets set VAPID_PUBLIC_KEY=... VAPID_PRIVATE_KEY=... VAPID_SUBJECT=mailto:you@example.com PUSH_SECRET=<long random string>
+//
+// Call it with:  POST <project>/functions/v1/send-push
+//   header  x-push-secret: <PUSH_SECRET>
+//   body    { "user_id": "<uuid>" }  or  { "user_ids": ["<uuid>", ...] }  or  { "broadcast": true }
+//           plus { "title": "...", "body": "...", "url": "/?page=...", "icon": "images/...", "tag": "..." }
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import webpush from "npm:web-push@3.6.7";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const VAPID_PUBLIC = Deno.env.get("VAPID_PUBLIC_KEY")!;
-const VAPID_PRIVATE = Deno.env.get("VAPID_PRIVATE_KEY")!;
-const VAPID_SUBJECT = Deno.env.get("VAPID_SUBJECT") ?? "mailto:you@example.com";
-const WEBHOOK_SECRET = Deno.env.get("PUSH_WEBHOOK_SECRET") ?? "";
+const SB_URL = Deno.env.get("SUPABASE_URL")!;
+const SB_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const PUSH_SECRET = Deno.env.get("PUSH_SECRET") ?? "";
 
-webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC, VAPID_PRIVATE);
-const sb = createClient(SUPABASE_URL, SERVICE_KEY);
+webpush.setVapidDetails(
+  Deno.env.get("VAPID_SUBJECT") ?? "mailto:admin@example.com",
+  Deno.env.get("VAPID_PUBLIC_KEY")!,
+  Deno.env.get("VAPID_PRIVATE_KEY")!,
+);
 
-function message(n: any) {
-  const who = n.actor_name || "Someone";
-  switch (n.type) {
-    case "like":    return { title: "New like", body: `${who} liked ${n.track_title || "your track"}` };
-    case "comment": return { title: "New comment", body: n.body || `${who} commented on ${n.track_title || "your track"}` };
-    case "follow":  return { title: "New follower", body: `${who} started following you` };
-    case "repost":  return { title: "Reposted", body: `${who} reposted ${n.track_title || "your track"}` };
-    case "mention": return { title: "You were mentioned", body: n.body || `${who} mentioned you` };
-    case "release": return { title: "New release", body: `${who} released ${n.track_title || "a new track"}` };
-    case "message": return { title: who, body: n.body || "Sent you a message" };
-    default:        return { title: "YAPS Music", body: n.body || "You have a new notification" };
-  }
-}
+const sb = createClient(SB_URL, SB_KEY);
+const json = (o: unknown, status = 200) =>
+  new Response(JSON.stringify(o), { status, headers: { "Content-Type": "application/json" } });
 
 Deno.serve(async (req) => {
-  if (WEBHOOK_SECRET && req.headers.get("x-webhook-secret") !== WEBHOOK_SECRET) {
-    return new Response("unauthorized", { status: 401 });
+  if (req.method !== "POST") return json({ error: "POST only" }, 405);
+  if (!PUSH_SECRET || req.headers.get("x-push-secret") !== PUSH_SECRET) return json({ error: "unauthorized" }, 401);
+
+  let p: any;
+  try { p = await req.json(); } catch { return json({ error: "bad json" }, 400); }
+  if (!p.title) return json({ error: "title required" }, 400);
+
+  const payload = JSON.stringify({
+    title: String(p.title).slice(0, 100),
+    body: String(p.body ?? "").slice(0, 300),
+    url: p.url ?? "/",
+    icon: p.icon,
+    tag: p.tag,
+  });
+
+  const ids: string[] | null = p.broadcast ? null : (p.user_ids ?? (p.user_id ? [p.user_id] : []));
+  if (ids && !ids.length) return json({ error: "no target: pass user_id, user_ids or broadcast" }, 400);
+
+  let sent = 0, removed = 0, failed = 0, from = 0;
+  const PAGE = 500;
+  while (true) {
+    let q = sb.from("push_subscriptions").select("endpoint,p256dh,auth").range(from, from + PAGE - 1);
+    if (ids) q = q.in("user_id", ids);
+    const { data, error } = await q;
+    if (error) return json({ error: error.message }, 500);
+    if (!data || !data.length) break;
+
+    const results = await Promise.allSettled(
+      data.map((s) =>
+        webpush.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, payload, { TTL: 86400 })
+      ),
+    );
+    const dead: string[] = [];
+    results.forEach((r, i) => {
+      if (r.status === "fulfilled") sent++;
+      else {
+        const code = (r.reason as any)?.statusCode;
+        if (code === 404 || code === 410) dead.push(data[i].endpoint); else failed++;
+      }
+    });
+    if (dead.length) { await sb.from("push_subscriptions").delete().in("endpoint", dead); removed += dead.length; }
+    if (data.length < PAGE) break;
+    from += PAGE;
   }
-  const payload = await req.json().catch(() => null);
-  const n = payload?.record;
-  if (!n) return new Response("no record", { status: 400 });
-
-  let q = sb.from("push_subscriptions").select("endpoint,p256dh,auth");
-  if (n.user_id) q = q.eq("user_id", n.user_id);
-  const { data: subs, error } = await q.limit(5000);
-  if (error) return new Response(error.message, { status: 500 });
-
-  const m = message(n);
-  const body = JSON.stringify({
-    title: m.title, body: m.body, icon: n.actor_avatar || n.track_img || "images/yaps-cover.png",
-    tag: `${n.type}-${n.id}`, url: "./?page=notifications",
-  });
-
-  const dead: string[] = [];
-  await Promise.all((subs ?? []).map(async (s) => {
-    try {
-      await webpush.sendNotification(
-        { endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, body, { TTL: 86400 },
-      );
-    } catch (e: any) {
-      if (e?.statusCode === 404 || e?.statusCode === 410) dead.push(s.endpoint);
-    }
-  }));
-  if (dead.length) await sb.from("push_subscriptions").delete().in("endpoint", dead);
-
-  return new Response(JSON.stringify({ sent: (subs?.length ?? 0) - dead.length, removed: dead.length }), {
-    headers: { "content-type": "application/json" },
-  });
+  return json({ sent, removed, failed });
 });

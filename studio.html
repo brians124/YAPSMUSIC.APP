@@ -1145,6 +1145,72 @@ html[data-theme="neon"] nav#mainNav .sidebar-item.active{background:linear-gradi
 html[data-theme="neon"] nav#mainNav .sidebar-item.active::before{background:linear-gradient(180deg,#19e68c,#22d3ee,#8b5cf6,#e040fb)}
 </style>
 </head>
+<style id="pinnedDecks">
+/* PINNED CONSOLE (embedded in the app, desktop/tablet height): the decks + mixer and the tool tabs stay put and never scroll;
+   the space underneath is used by the song picker (or whichever tool tab is open), and only that area scrolls. */
+@media (min-width:700px) and (min-height:600px){
+ html.emb:root{height:100%!important;overflow:hidden!important}
+ html.emb:root body{height:100%!important;min-height:0!important;overflow:hidden!important}
+ html.emb:root #app{display:flex!important;flex-direction:column!important;height:100%!important;min-height:0!important}
+ html.emb:root body.vdj main{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding:8px 12px 10px}
+ html.emb body.vdj main>#decks,html.emb body.vdj main>#vdock{flex:none}
+ html.emb body.vdj #libd.inl[open]{flex:1 1 0;min-height:0;height:auto;max-height:none;margin:0}
+ html.emb body.vdj #libd.inl #list{min-height:0;overflow-y:auto;overscroll-behavior:contain}
+ html.emb body.vdj :is(.row2,#perf,#pro,.row3,#vidPanel){flex:1 1 0;min-height:0;max-height:none!important;overflow:auto!important}
+}
+/* smaller screens keep the old page scroll, but the decks + mixer and the tool tabs stay stuck at the top while you scroll the song list */
+@media not all and (min-width:700px) and (min-height:600px){
+ html.emb body.vdj main>#decks{position:sticky;top:0;z-index:30;background:var(--bg,#050712);padding-bottom:6px}
+}
+</style>
+<style id="studioLight">
+/* LIGHT MODE for the whole Studio (Settings > Appearance > Mode). The Aurora skin and deck redesign hard-coded dark colours; these rules come last and win in light mode only. */
+html[data-mode="light"][data-prem="1"],html[data-mode="light"][data-prem="1"][data-theme]{color-scheme:light;
+ --bg:#eef3fb;--surface:#fff;--card:#fff;--card2:#e9f0fb;--border:#c9d6ee;--text:#0b1a3d;--muted:#46557c;--dim:#6a7799;
+ --s0:#f4f7fd;--s1:#fff;--s2:#f1f5fc;--s3:#e6edf8;--bg-rgb:238,243,251;--surface-rgb:255,255,255;--card-rgb:255,255,255;--card2-rgb:233,240,251;
+ --pn:rgba(255,255,255,.96);--bd:rgba(11,26,61,.16);--tx:#0b1a3d;--tx2:#26365f;--mu:#4a5d8a;
+ --cy:#0a8f63;--cy-rgb:10,143,99;--pu:#9b2fc0;--au:#0a8f63;--au2:#07724e;--au3:#07724e;--hero-ink:#fff}
+html[data-mode="light"][data-prem="1"] body,html[data-mode="light"] body{background:radial-gradient(900px 520px at 88% -8%,rgba(139,92,246,.10),transparent 60%),radial-gradient(700px 460px at 0 100%,rgba(25,230,140,.12),transparent 60%),#eef3fb}
+html[data-mode="light"] body.vdj main{--pn:#fff;--bd:rgba(11,26,61,.16);--s0:#f4f7fd;--s1:#fff;--s2:#f1f5fc;--s3:#e6edf8}
+html[data-mode="light"] body.vdj .pn{background:#fff;border:1px solid rgba(11,26,61,.16);box-shadow:0 8px 24px -14px rgba(11,26,61,.35);color:var(--tx)}
+html[data-mode="light"] body.vdj .deck{--ac:#0ea66b;--gl:rgba(14,166,107,.28);--tx:#0b1a3d;--tx2:#26365f;--mu:#4a5d8a;color:#0b1a3d;background:linear-gradient(180deg,#fff,#eaf1fc) padding-box,linear-gradient(135deg,var(--ac),color-mix(in srgb,var(--ac) 25%,#fff) 55%,var(--ac)) border-box;box-shadow:0 10px 26px -14px rgba(11,26,61,.4)}
+html[data-mode="light"] body.vdj .deck.b{--ac:#a62fd0;--gl:rgba(166,47,208,.28);background:linear-gradient(180deg,#fff,#f3eafc) padding-box,linear-gradient(135deg,var(--ac),color-mix(in srgb,var(--ac) 25%,#fff) 55%,var(--ac)) border-box}
+html[data-mode="light"] body.vdj .mix{background:#fff;color:#0b1a3d}
+html[data-mode="light"] body.vdj :is(.deck,.mix) :is(h3,h4,.hd,.cf,.meta b,.meta span,.tm span,.sl output){color:#0b1a3d;-webkit-text-fill-color:#0b1a3d;background:none;filter:none;text-shadow:none}
+html[data-mode="light"] body.vdj .deck .hd,html[data-mode="light"] body.vdj .mix h3{color:var(--ac,#0a8f63);-webkit-text-fill-color:var(--ac,#0a8f63)}
+html[data-mode="light"] body.vdj .mix h3{color:#0a8f63;-webkit-text-fill-color:#0a8f63}
+html[data-mode="light"] body.vdj .meta i,html[data-mode="light"] body.vdj .tm em,html[data-mode="light"] body.vdj .sl output{color:var(--ac);-webkit-text-fill-color:var(--ac);background:color-mix(in srgb,var(--ac) 10%,#fff);border-color:var(--ac)}
+html[data-mode="light"] body.vdj .deck.empty .info,html[data-mode="light"] body.vdj .deck .info{color:#0b1a3d}
+html[data-mode="light"] body.vdj .deck .ctl label,html[data-mode="light"] body.vdj .sl,html[data-mode="light"] body.vdj .sl span,html[data-mode="light"] body.vdj .cf,html[data-mode="light"] body.vdj .mv{color:#26365f}
+html[data-mode="light"] body.vdj .btns{background:rgba(11,26,61,.05);border-color:rgba(11,26,61,.10)}
+html[data-mode="light"] body.vdj :is(.k,.btns .k,.sm,.ic,.pad,.tapb,.src){color:#0b1a3d;-webkit-text-fill-color:#0b1a3d;text-shadow:none;background:linear-gradient(180deg,#fff,#e4ebf7);border:1.5px solid rgba(11,26,61,.22);box-shadow:0 2px 0 rgba(11,26,61,.18)}
+html[data-mode="light"] body.vdj :is(.k.pl,.k.on,.k[data-a=sync].on,.sm.on,.tabs .on,.go){color:#fff;-webkit-text-fill-color:#fff;background:linear-gradient(180deg,color-mix(in srgb,var(--ac,#0ea66b) 80%,#fff),var(--ac,#0ea66b));border-color:var(--ac,#0ea66b);box-shadow:0 2px 0 color-mix(in srgb,var(--ac,#0ea66b) 60%,#000)}
+html[data-mode="light"] body.vdj .tabs .on{--ac:#0ea66b}
+html[data-mode="light"] body.vdj #vdock{background:#fff;border-color:rgba(11,26,61,.16)}
+html[data-mode="light"] body.vdj #vdock button{background:#eef3fc;color:#26365f;-webkit-text-fill-color:#26365f}
+html[data-mode="light"] body.vdj #vdock button:hover{background:#e0e9f8;color:#0b1a3d;-webkit-text-fill-color:#0b1a3d}
+html[data-mode="light"] body.vdj #vdock button.on{background:#fff;color:#0a8f63;-webkit-text-fill-color:#0a8f63;border-top-color:#0a8f63}
+html[data-mode="light"] body.vdj .knob{background:#eef3fc;border-color:#9fb0d0}
+html[data-mode="light"] body.vdj .meters div{background:rgba(11,26,61,.12)}
+html[data-mode="light"] body.vdj input.v::-webkit-slider-runnable-track{background:linear-gradient(0deg,var(--ac),rgba(11,26,61,.14) 70%)}
+html[data-mode="light"] body.vdj input.v::-webkit-slider-thumb{background:linear-gradient(180deg,#fff,#cfd7ea 60%,#98a4c4)}
+html[data-mode="light"] #libd,html[data-mode="light"] dialog{background:#fff;color:#0b1a3d;border-color:rgba(11,26,61,.16)}
+html[data-mode="light"] #libd :is(.lh,.lh b){color:#0a8f63;-webkit-text-fill-color:#0a8f63;background:none;text-shadow:none;filter:none}
+html[data-mode="light"] #libd :is(.x,.tabs button){color:#26365f;-webkit-text-fill-color:#26365f;background:#fff;border-color:rgba(11,26,61,.22);box-shadow:none}
+html[data-mode="light"] #libd .tabs button.on{background:#0ea66b;color:#fff;-webkit-text-fill-color:#fff;border-color:#0ea66b}
+html[data-mode="light"] #libd .sbar{background:#f4f7fd;border-color:#0ea66b}
+html[data-mode="light"] #libd .sbar input{color:#0b1a3d;-webkit-text-fill-color:#0b1a3d;background:none}
+html[data-mode="light"] #libd #list{color:#0b1a3d}
+html[data-mode="light"] #libd #list :is(.tr,.row,.song,.t,li,.item){color:#0b1a3d}
+html[data-mode="light"] #libd #list :is(b,strong,.ti,.tt){color:#0b1a3d;-webkit-text-fill-color:#0b1a3d}
+html[data-mode="light"] #libd #list :is(span,small,.ar,.sub){color:#4a5d8a}
+html[data-mode="light"] dialog h2,html[data-mode="light"] #tut #tutT{color:#0a8f63;-webkit-text-fill-color:#0a8f63;background:none;text-shadow:none;filter:none}
+html[data-mode="light"] #tut{color:#0b1a3d}
+html[data-mode="light"] .rot,html[data-mode="light"] #toast{color:#0b1a3d}
+html[data-mode="light"][data-prem="1"] :is(.mix h3,.lh,.lh b,.ai h4,dialog h2,#done b,.hd,.cf,.sheethd,#tutT){background:none!important;filter:none!important;text-shadow:none!important;color:#0a8f63!important;-webkit-text-fill-color:#0a8f63!important}
+html[data-mode="light"][data-prem="1"] :is(.deck.b .hd,.ai h4){color:#a62fd0!important;-webkit-text-fill-color:#a62fd0!important}
+html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-webkit-text-fill-color:#26365f!important}
+</style>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="bnIconGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--accent-light)"/><stop offset="45%" style="stop-color:var(--accent)"/><stop offset="100%" style="stop-color:var(--accent-dark)"/></linearGradient><linearGradient id="bnIconGradActive" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--accent-lighter)"/><stop offset="45%" style="stop-color:var(--accent-light)"/><stop offset="100%" style="stop-color:var(--accent)"/></linearGradient></defs></svg><div id="app">
 <header><div class="earth"></div>
  <button class="ic" id="navBtn" aria-label="Open menu" aria-controls="mainNav" aria-expanded="false" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">MENU</button>
