@@ -35,8 +35,8 @@
  document.addEventListener('visibilitychange',function(){if(!document.hidden)apply()});
 })();
 </script>
-<title>YAPS Music · Virtual DJ Studio</title>
-<meta name="description" content="Mix two songs like a DJ, record your mix and publish it to YAPS Music. Free virtual DJ studio with Ugandan and African music.">
+<title>YAPSMusic · Virtual DJ Studio</title>
+<meta name="description" content="Mix two songs like a DJ, record your mix and publish it to YAPSMusic. Free virtual DJ studio with Ugandan and African music.">
 <link rel="canonical" href="https://brians124.github.io/YAPSMUSIC.APP/studio.html">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -563,7 +563,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 @media(prefers-reduced-motion:reduce){.pad,.mtr i{transition:none}}
 
 /* =====================================================================
-   YAPS NEON PREMIUM — colours + 3D lettering from the YAPS Music promo art
+   YAPS NEON PREMIUM — colours + 3D lettering from the YAPSMusic promo art
    Only applies when yaps_premium==='true' (html[data-prem="1"]).
    Neon green / cyan / purple / magenta on deep black-violet.
    Deck A = green-cyan, Deck B = purple-magenta (still easy to tell apart).
@@ -601,7 +601,7 @@ html[data-prem="1"] header{border-image:linear-gradient(90deg,#19e68c,#19c3ff 35
 
 /* =====================================================================
    PREMIUM v2 — glossy 3D buttons, neon gradient rims, extruded letters
-   (modelled on the YAPS Music promo art)
+   (modelled on the YAPSMusic promo art)
    ===================================================================== */
 html[data-prem="1"]{
  --rimA:linear-gradient(135deg,#19e68c,#19c3ff 55%,#8b5cf6);
@@ -1117,7 +1117,7 @@ html body #libd.inl{position:static;inset:auto;float:none;width:100%;max-width:n
 html body #libd.inl[open]{height:min(62dvh,560px);min-height:300px}
 html body #libd.inl::backdrop{display:none}
 </style><style id="yapsSearchUnify">
-/* Library search — same look as the YAPS Music home search bar */
+/* Library search — same look as the YAPSMusic home search bar */
 .sbar{display:flex;align-items:center;margin:0 0 10px;background:var(--card,var(--s1));
   border:2px solid var(--accent,var(--ac));border-radius:12px;overflow:hidden}
 .sbar>i{padding:0 8px 0 14px;color:var(--accent,var(--ac));font-size:16px}
@@ -1235,12 +1235,12 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="bnIconGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--accent-light)"/><stop offset="45%" style="stop-color:var(--accent)"/><stop offset="100%" style="stop-color:var(--accent-dark)"/></linearGradient><linearGradient id="bnIconGradActive" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--accent-lighter)"/><stop offset="45%" style="stop-color:var(--accent-light)"/><stop offset="100%" style="stop-color:var(--accent)"/></linearGradient></defs></svg><div id="app">
 <header><div class="earth"></div>
  <button class="ic" id="navBtn" aria-label="Open menu" aria-controls="mainNav" aria-expanded="false" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">MENU</button>
- <a class="logo" href="index.html" aria-label="YAPS Music home" style="text-decoration:none">YAPS<small>MUSIC</small></a>
+ <a class="logo" href="index.html" aria-label="YAPSMusic home" style="text-decoration:none">YAPS<small>MUSIC</small></a>
  <div class="ttl">VIRTUAL <b>DJ STUDIO</b><p>Mix. Create. Record. Publish. Become a DJ.</p></div><div class="sp"></div>
  <button class="aibtn" id="aiTop"><span class="ic"><i class="fas fa-wand-magic-sparkles"></i></span><span><b>AI DJ</b><span>Automated mixing</span></span></button>
  <button class="ic" id="scTop" aria-label="Open AI Song Creator" style="white-space:nowrap;display:inline-flex;align-items:center;gap:4px;width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow"> SONG <small style="font-size:9px;letter-spacing:.08em;border:1px solid currentColor;border-radius:6px;padding:0 4px;margin-left:3px;vertical-align:middle">BETA</small></button><button class="ic" id="helpBtn" aria-label="Show tutorial">?</button><button class="ic" id="modeBtn" aria-label="Switch Beginner or Pro mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">PRO</button><button class="ic" id="lmBtn" aria-label="Switch between dark and light mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">LIGHT</button><button class="ic hbtn" id="fsBtn" aria-label="Fullscreen and lock landscape"><i class="fas fa-expand"></i></button><button class="ic hbtn" id="toolsBtn" aria-label="Open tools: sources, AI DJ, record, export">☰</button>
  <span class="ic" role="img" aria-label="Profile"><i class="fas fa-user"></i></span><span class="ic" role="img" aria-label="Settings"><i class="fas fa-gear"></i></span></header>
-<nav aria-label="Main" id="mainNav"><div class="sbw"><a class="sidebar-header" id="sbHead" href="index.html?page=profile"><div class="sidebar-header-art" id="sbArt">G</div><div class="sidebar-header-info"><div class="u-name" id="sbName">Guest · Tap to sign in</div><div class="u-plan" id="sbPlan"><i class="fas fa-star"></i> Free plan</div></div><i class="fas fa-chevron-right sidebar-header-caret"></i></a><div id="sidebarScroll"><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-user"></i> <span>Account</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-id-badge"></i> <span>My Profile</span></a><a class="sidebar-item" href="index.html?go=editprofile"><i class="fas fa-user-edit"></i> <span>Edit Profile</span></a><a class="sidebar-item" href="index.html?go=subscription"><i class="fas fa-crown"></i> <span>Subscription</span> <span class="badge" id="subNavBadge" style="margin-left:auto">Free</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-music"></i> <span>Music</span></div><a class="sidebar-item" href="index.html?page=home"><svg class="sb-home-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 2.5 11h2.4v9h5.4v-6h3.4v6h5.4v-9h2.4z"/></svg> <span>Home</span></a><a class="sidebar-item" href="index.html?page=stream"><i class="fas fa-fire"></i> <span>Trending Songs</span></a><a class="sidebar-item" href="index.html?go=newreleases"><i class="fas fa-star"></i> <span>New Releases</span></a><a class="sidebar-item" href="index.html?page=charts"><i class="fas fa-chart-bar"></i> <span>Top Charts</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-compact-disc"></i> <span>Albums</span></a><a class="sidebar-item" href="index.html?page=artists"><i class="fas fa-users"></i> <span>Artists</span></a><a class="sidebar-item" href="index.html?page=search"><i class="fas fa-th-large"></i> <span>Genres</span></a><a class="sidebar-item" href="index.html?page=podcasts"><i class="fas fa-podcast"></i> <span>Podcasts</span></a><a class="sidebar-item" href="index.html?page=video"><i class="fas fa-video"></i> <span>Videos</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-book"></i> <span>My Library</span></div><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-heart"></i> <span>Liked Songs</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-list"></i> <span>Playlists</span></a><a class="sidebar-item" href="index.html?page=library&amp;go=downloads"><i class="fas fa-download"></i> <span>Downloads</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-history"></i> <span>Recently Played</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-clock"></i> <span>History</span></a><a class="sidebar-item" href="index.html?go=queue"><i class="fas fa-stream"></i> <span>Queue</span></a><a class="sidebar-item" href="index.html?page=device"><i class="fas fa-mobile-alt"></i> <span>On This Device</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-microphone-alt"></i> <span>Creator Hub</span></div><a class="sidebar-item active" href="#" aria-current="page"><i class="fas fa-headphones"></i> <span>DJ Studio</span> </a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-upload"></i> <span>Upload Song</span></a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-folder-open"></i> <span>My Uploads</span></a><a class="sidebar-item" href="index.html?page=earnings"><i class="fas fa-coins"></i> <span>Earnings</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-users"></i> <span>Community</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-plus"></i> <span>Following</span></a><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-friends"></i> <span>Followers</span></a><a class="sidebar-item" href="index.html?page=messages"><i class="fas fa-comment-dots"></i> <span>Messages</span> <span class="badge" id="sbMsgBadge" style="margin-left:auto;display:none">0</span></a><a class="sidebar-item" href="index.html?page=notifications"><i class="fas fa-bell"></i> <span>Notifications</span> <span class="badge" id="sbNotifBadge" style="margin-left:auto;display:none">0</span></a><a class="sidebar-item" href="index.html?page=events"><i class="fas fa-calendar-alt"></i> <span>Events</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-cog"></i> <span>Settings</span></div><a class="sidebar-item" href="#" id="sbModeItem"><i class="fas fa-adjust"></i> <span>Dark / Light Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-sliders-h"></i> <span>Audio Quality</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-wifi"></i> <span>Offline Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-database"></i> <span>Data Saver</span></a><a class="sidebar-item" href="index.html?go=language"><i class="fas fa-globe"></i> <span>Language</span></a><a class="sidebar-item" href="index.html?go=privacy"><i class="fas fa-shield-alt"></i> <span>Privacy &amp; Security</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-life-ring"></i> <span>Support</span></div><a class="sidebar-item" href="index.html?go=help"><i class="fas fa-question-circle"></i> <span>Help Center</span></a><a class="sidebar-item" href="index.html?go=report"><i class="fas fa-bug"></i> <span>Report a Problem</span></a><a class="sidebar-item" href="index.html?go=feedback"><i class="fas fa-comment-alt"></i> <span>Send Feedback</span></a><a class="sidebar-item" href="index.html?go=about"><i class="fas fa-info-circle"></i> <span>About YAPS Music</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-share-alt"></i> <span>Share App</span></a><a class="sidebar-item" href="index.html?go=rate"><i class="fas fa-star-half-alt"></i> <span>Rate App</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-user-plus"></i> <span>Invite Friends</span></a></div></div><div class="sidebar-footer"><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-cog"></i> <span>Settings</span></a><a class="sidebar-item logout-item" href="index.html?go=logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></div></div></nav>
+<nav aria-label="Main" id="mainNav"><div class="sbw"><a class="sidebar-header" id="sbHead" href="index.html?page=profile"><div class="sidebar-header-art" id="sbArt">G</div><div class="sidebar-header-info"><div class="u-name" id="sbName">Guest · Tap to sign in</div><div class="u-plan" id="sbPlan"><i class="fas fa-star"></i> Free plan</div></div><i class="fas fa-chevron-right sidebar-header-caret"></i></a><div id="sidebarScroll"><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-user"></i> <span>Account</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-id-badge"></i> <span>My Profile</span></a><a class="sidebar-item" href="index.html?go=editprofile"><i class="fas fa-user-edit"></i> <span>Edit Profile</span></a><a class="sidebar-item" href="index.html?go=subscription"><i class="fas fa-crown"></i> <span>Subscription</span> <span class="badge" id="subNavBadge" style="margin-left:auto">Free</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-music"></i> <span>Music</span></div><a class="sidebar-item" href="index.html?page=home"><svg class="sb-home-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 2.5 11h2.4v9h5.4v-6h3.4v6h5.4v-9h2.4z"/></svg> <span>Home</span></a><a class="sidebar-item" href="index.html?page=stream"><i class="fas fa-fire"></i> <span>Trending Songs</span></a><a class="sidebar-item" href="index.html?go=newreleases"><i class="fas fa-star"></i> <span>New Releases</span></a><a class="sidebar-item" href="index.html?page=charts"><i class="fas fa-chart-bar"></i> <span>Top Charts</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-compact-disc"></i> <span>Albums</span></a><a class="sidebar-item" href="index.html?page=artists"><i class="fas fa-users"></i> <span>Artists</span></a><a class="sidebar-item" href="index.html?page=search"><i class="fas fa-th-large"></i> <span>Genres</span></a><a class="sidebar-item" href="index.html?page=podcasts"><i class="fas fa-podcast"></i> <span>Podcasts</span></a><a class="sidebar-item" href="index.html?page=video"><i class="fas fa-video"></i> <span>Videos</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-book"></i> <span>My Library</span></div><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-heart"></i> <span>Liked Songs</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-list"></i> <span>Playlists</span></a><a class="sidebar-item" href="index.html?page=library&amp;go=downloads"><i class="fas fa-download"></i> <span>Downloads</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-history"></i> <span>Recently Played</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-clock"></i> <span>History</span></a><a class="sidebar-item" href="index.html?go=queue"><i class="fas fa-stream"></i> <span>Queue</span></a><a class="sidebar-item" href="index.html?page=device"><i class="fas fa-mobile-alt"></i> <span>On This Device</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-microphone-alt"></i> <span>Creator Hub</span></div><a class="sidebar-item active" href="#" aria-current="page"><i class="fas fa-headphones"></i> <span>DJ Studio</span> </a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-upload"></i> <span>Upload Song</span></a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-folder-open"></i> <span>My Uploads</span></a><a class="sidebar-item" href="index.html?page=earnings"><i class="fas fa-coins"></i> <span>Earnings</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-users"></i> <span>Community</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-plus"></i> <span>Following</span></a><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-friends"></i> <span>Followers</span></a><a class="sidebar-item" href="index.html?page=messages"><i class="fas fa-comment-dots"></i> <span>Messages</span> <span class="badge" id="sbMsgBadge" style="margin-left:auto;display:none">0</span></a><a class="sidebar-item" href="index.html?page=notifications"><i class="fas fa-bell"></i> <span>Notifications</span> <span class="badge" id="sbNotifBadge" style="margin-left:auto;display:none">0</span></a><a class="sidebar-item" href="index.html?page=events"><i class="fas fa-calendar-alt"></i> <span>Events</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-cog"></i> <span>Settings</span></div><a class="sidebar-item" href="#" id="sbModeItem"><i class="fas fa-adjust"></i> <span>Dark / Light Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-sliders-h"></i> <span>Audio Quality</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-wifi"></i> <span>Offline Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-database"></i> <span>Data Saver</span></a><a class="sidebar-item" href="index.html?go=language"><i class="fas fa-globe"></i> <span>Language</span></a><a class="sidebar-item" href="index.html?go=privacy"><i class="fas fa-shield-alt"></i> <span>Privacy &amp; Security</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-life-ring"></i> <span>Support</span></div><a class="sidebar-item" href="index.html?go=help"><i class="fas fa-question-circle"></i> <span>Help Center</span></a><a class="sidebar-item" href="index.html?go=report"><i class="fas fa-bug"></i> <span>Report a Problem</span></a><a class="sidebar-item" href="index.html?go=feedback"><i class="fas fa-comment-alt"></i> <span>Send Feedback</span></a><a class="sidebar-item" href="index.html?go=about"><i class="fas fa-info-circle"></i> <span>About YAPSMusic</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-share-alt"></i> <span>Share App</span></a><a class="sidebar-item" href="index.html?go=rate"><i class="fas fa-star-half-alt"></i> <span>Rate App</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-user-plus"></i> <span>Invite Friends</span></a></div></div><div class="sidebar-footer"><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-cog"></i> <span>Settings</span></a><a class="sidebar-item logout-item" href="index.html?go=logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></div></div></nav>
 <div id="navScrim"></div>
 <main>
  <div class="rot" id="rot"><span aria-hidden="true">↻</span><span>Tip: rotate your phone for bigger decks</span><button id="rotGo">Landscape</button><button class="q" id="rotX" aria-label="Dismiss">✕</button></div>
@@ -1301,7 +1301,7 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
  <p id="upMsg" style="color:var(--tx2);font-size:14px;line-height:1.5;margin-bottom:10px"></p>
  <ul class="up-list"><li>Ad-free listening, everywhere</li><li>Support Ugandan artists directly</li></ul>
  <div style="display:flex;gap:8px;margin-top:14px"><button class="sm" id="upLater" style="flex:1;min-height:42px">Maybe later</button><a class="go" href="index.html?go=subscription" style="flex:1;min-height:42px;display:grid;place-items:center;text-decoration:none">Upgrade</a></div></dialog>
-<footer><span>▮▮▯ <b>YAPS Music</b> Music to the World, from Uganda</span><span>Mix your world • Be a DJ • Be You</span></footer>
+<footer><span>▮▮▯ <b>YAPSMusic</b> YOUR AUDIO PLAYLIST STATION</span><span>Mix your world • Be a DJ • Be You</span></footer>
 </div><!-- ===== AI SONG CREATOR overlay (opened from the header button or the teaser card) ===== -->
 <div id="scWrap" class="scw" role="dialog" aria-modal="true" aria-labelledby="scTitleH" hidden>
  <div class="scin">
@@ -1603,13 +1603,13 @@ const src=u=>/^(https?:|blob:|data:)/.test(u)?u:encodeURI(u);
 let library=CATALOGUE.slice(),mode='lib';
 const load=(L,t)=>loadTrack(L,t);
 
-/* ── Connect to index.html: same songs as the YAPS Music app ──
+/* ── Connect to index.html: same songs as the YAPSMusic app ──
    1) yaps_shared_catalogue (localStorage) = live song list that index.html keeps up to date.
    2) IndexedDB 'YapsMusicDB' = songs the user uploaded on this device (same origin as index.html).
    3) /api/tracks = shared uploads from the server (see loadRemote). Built-in CATALOGUE stays as fallback. */
 function addTracks(rows){rows.forEach(x=>{if(!x||!x.audio)return;const i=library.findIndex(t=>String(t.id)===String(x.id));if(i<0)library.push(x);else library[i]=Object.assign({},library[i],x)})}
 function readShared(){try{const a=JSON.parse(localStorage.getItem('yaps_shared_catalogue')||'[]');if(Array.isArray(a))addTracks(a)}catch(e){console.warn('Shared catalogue unavailable',e)}}
-/* Songs downloaded for offline in YAPS Music (IndexedDB 'YapsMusicDB' / store 'downloads', keyed by the song's audio path).
+/* Songs downloaded for offline in YAPSMusic (IndexedDB 'YapsMusicDB' / store 'downloads', keyed by the song's audio path).
    They play from the saved copy, so Studio works with no internet. */
 const dlBlobs=new Map(),dlIds=new Set();
 const nk=u=>{try{return decodeURIComponent(String(u))}catch(e){return String(u)}};
@@ -1636,7 +1636,7 @@ async function readDeviceUploads(){
   addTracks(meta.filter(m=>A[m.id]).map(m=>({id:String(m.id),title:m.title,artist:m.artist,cover:C[m.id]?URL.createObjectURL(C[m.id]):'',audio:URL.createObjectURL(A[m.id]),genre:m.genre||'',duration:m.duration||'',tags:m.tags||[],local:true,up:true})))}
  catch(e){console.warn('Device uploads unavailable:',e&&e.message)}}
 readShared();
-/* ══════ Stay inside the YAPS Music app: on phones Studio runs in a rotated frame, so links to the app must open in the whole window ══════ */
+/* ══════ Stay inside the YAPSMusic app: on phones Studio runs in a rotated frame, so links to the app must open in the whole window ══════ */
 document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a||self===top)return;const h=a.getAttribute('href')||'';if(!/^index\.html/.test(h))return;
  e.preventDefault();try{if(top.__closeStudio){top.__closeStudio(h);return}top.location.href=new URL(h,top.location.href).href}catch(x){location.href=h}},true);
 /* ══════ Offline songs: audio saved in this browser (IndexedDB 'yaps_offline_v1'), details in localStorage ══════ */
@@ -1665,7 +1665,7 @@ async function getBuf(t,onP){const id=String(t.id),au=String(t.audio||'');
  if(!navigator.onLine)throw new Error('OFFLINE');
  return await netBuf(src(t.audio),onP)}
 async function toggleOff(id){const t=library.find(x=>String(x.id)===String(id));if(!t)return;id=String(t.id);
- if(dlIds.has(id)&&!offIds.has(id)){toast('Saved offline from YAPS Music. Remove it there under Downloads.');return}
+ if(dlIds.has(id)&&!offIds.has(id)){toast('Saved offline from YAPSMusic. Remove it there under Downloads.');return}
  if(offIds.has(id)){try{await offTx('readwrite',s=>s.delete(id))}catch(e){}offIds.delete(id);const m=offMeta();delete m[id];setMeta(m);toast('Removed from offline: '+t.title);if($('#libd').open)render();return}
  if(t.local||/^blob:/.test(t.audio||'')){toast('This song is already on your device');return}
  if(!navigator.onLine){toast('Go online to save this song for offline');return}
@@ -1693,7 +1693,7 @@ async function loadTrack0(L,t){const d=dk(L);
  catch(e){console.warn(e);toast(loadErr(e,t.title))}}
 
 /* ══════ My Device — songs and videos picked once, kept in this browser, shared with index.html ══════
-   Same IndexedDB as the YAPS Music "On This Device" page: 'yaps_device_v1' / store 'tracks'. */
+   Same IndexedDB as the YAPSMusic "On This Device" page: 'yaps_device_v1' / store 'tracks'. */
 const DEV_AUDIO_RE=/\.(mp3|aac|ogg|oga|opus|flac|wav|m4a|wma|amr)$/i,DEV_VIDEO_RE=/\.(mp4|m4v|mov|webm|mkv|3gp|3g2|avi)$/i;
 const devKind=f=>/^video\//.test(f.type)||DEV_VIDEO_RE.test(f.name)?'video':(/^audio\//.test(f.type)||DEV_AUDIO_RE.test(f.name)?'audio':null);
 const devIsVid=r=>(r.kind||(r.blob&&/^video\//.test(r.blob.type)?'video':'audio'))==='video';
@@ -1730,7 +1730,7 @@ function renderDevice(){
  if(!devFresh){$('#list').innerHTML=head+'<div class="empty">Loading your device library…</div>';devRefresh().then(()=>{if($('#libd').open&&mode==='device')renderDevice()});return}
  const q=$('#q').value.trim().toLowerCase(),rows=devRows.filter(r=>!q||[r.name,r.artist].join(' ').toLowerCase().includes(q));
  $('#list').innerHTML=head+(rows.length?rows.map(r=>{const v=devIsVid(r);return `<div class="it" style="grid-template-columns:44px 1fr auto auto auto"><div class="dv${v?' v':''}" aria-hidden="true">${v?'▶':'♪'}</div><div><b>${esc(r.name)}</b><span>${esc(r.artist)}${r.duration&&r.duration!=='—'?' · '+esc(r.duration):''}${v?' · video':''}</span></div>
-  <button class="ld" data-did="${r.id}" data-d="A" aria-label="Load ${esc(r.name)} into Deck A">A</button><button class="ld b" data-did="${r.id}" data-d="B" aria-label="Load ${esc(r.name)} into Deck B">B</button><button class="dx" data-del="${r.id}" aria-label="Remove ${esc(r.name)} from My Device">✕</button></div>`}).join(''):'<div class="empty">'+(q?'No files match “'+esc(q)+'”. Try a different search.':'Nothing here yet. Tap “Add songs and videos” and pick files from your phone. They stay saved in this browser and also show in YAPS Music.')+'</div>')}
+  <button class="ld" data-did="${r.id}" data-d="A" aria-label="Load ${esc(r.name)} into Deck A">A</button><button class="ld b" data-did="${r.id}" data-d="B" aria-label="Load ${esc(r.name)} into Deck B">B</button><button class="dx" data-del="${r.id}" aria-label="Remove ${esc(r.name)} from My Device">✕</button></div>`}).join(''):'<div class="empty">'+(q?'No files match “'+esc(q)+'”. Try a different search.':'Nothing here yet. Tap “Add songs and videos” and pick files from your phone. They stay saved in this browser and also show in YAPSMusic.')+'</div>')}
 $('#list').addEventListener('click',async e=>{
  const a=e.target.closest('[data-dev]');if(a){if(a.dataset.dev==='add')$('#devFile').click();else devFolder();return}
  const l=e.target.closest('.ld[data-did]');if(l){const r=devRows.find(x=>String(x.id)===l.dataset.did);if(r)devLoad(l.dataset.d,r);return}
@@ -1770,7 +1770,7 @@ function render(){if(mode==='device')return renderDevice();if(mode==='saved')ret
  let rows=library.filter(t=>(mode!=='uploads'||t.up)&&(mode!=='offline'||isOff(t.id))&&(!q||[t.title,t.artist,t.genre].join(' ').toLowerCase().includes(q)));if(typeof libRank==='function')rows=libRank(rows);
  $('#list').innerHTML=rows.length?rows.map(t=>`<div class="it"><img loading="lazy" alt="" src="${esc(src(t.cover||''))}" onerror="this.removeAttribute('src')"><div><b>${esc(t.title)}</b><span>${esc(t.artist)}${t.genre?' · '+esc(t.genre):''}${t.duration?' · '+esc(t.duration):''}</span>${typeof libBadge==='function'?libBadge(t):''}</div>
   <button class="ld" data-d="A" data-id="${esc(t.id)}" aria-label="Load ${esc(t.title)} into Deck A">A</button><button class="ld b" data-d="B" data-id="${esc(t.id)}" aria-label="Load ${esc(t.title)} into Deck B">B</button>${t.local&&!t.dl?'':`<button class="ld sv${isOff(t.id)?' on':''}" data-save="${esc(t.id)}" aria-label="${isOff(t.id)?'Remove offline copy of ':'Save offline: '}${esc(t.title)}"${offBusy.has(String(t.id))?' disabled':''}>${offBusy.has(String(t.id))?'…':isOff(t.id)?'<i class="fas fa-check"></i>':'<i class="fas fa-download"></i>'}</button>`}</div>`).join('')
- :'<div class="empty">'+(mode==='offline'&&!q?'No offline songs yet. Download songs in YAPS Music, or tap the download icon next to a song here while online.':mode==='uploads'&&!q?'No uploads yet. Upload a song in YAPS Music and it shows up here.':library.length?'No tracks match “'+esc(q)+'”. Try a different search.':'The library is empty.')+'</div>'}
+ :'<div class="empty">'+(mode==='offline'&&!q?'No offline songs yet. Download songs in YAPSMusic, or tap the download icon next to a song here while online.':mode==='uploads'&&!q?'No uploads yet. Upload a song in YAPSMusic and it shows up here.':library.length?'No tracks match “'+esc(q)+'”. Try a different search.':'The library is empty.')+'</div>'}
 $('#list').addEventListener('click',e=>{const sv=e.target.closest('[data-save]');if(sv){toggleOff(sv.dataset.save);return}const b=e.target.closest('.ld[data-id]');if(!b)return;const t=library.find(x=>String(x.id)===b.dataset.id);if(t)loadTrack(b.dataset.d,t)});
 {let qt;$('#q').addEventListener('input',()=>{clearTimeout(qt);qt=setTimeout(render,120)})}
 async function loadRemote(){if(!YAPS_API_URL)return;
@@ -1817,7 +1817,7 @@ addEventListener('beforeunload',e=>{if(R.blob||(R.rec&&R.rec.state==='recording'
 const need=()=>R.blob?true:(toast('Record a mix first'),false);
 $('#exD').onclick=()=>{if(!need())return;const a=document.createElement('a');a.href=R.url;a.download=mixName();document.body.appendChild(a);a.click();a.remove()};
 $('#exH').onclick=async()=>{if(!need())return;const f=new File([R.blob],mixName(),{type:R.blob.type});
- try{if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],title:'My YAPS Mix',text:'Made in YAPS Music DJ Studio'});
+ try{if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],title:'My YAPS Mix',text:'Made in YAPSMusic DJ Studio'});
   else{$('#exD').click();setSt('This browser can’t share files, so the mix was downloaded. Share the file from your device.')}}
  catch(e){e.name==='AbortError'?setSt('Share cancelled. Your mix is still here.'):setSt('Couldn’t share ('+e.message+'). Use Download instead.',1)}};
 $('#exS').onclick=()=>{if(need())saveMix()};
@@ -1832,7 +1832,7 @@ const BUCKETS=YAPS_CONFIG.BUCKETS; // BACKEND NEEDS: 'mixes-private' bucket, tab
 let sb=null,user=null;
 function initSb(){if(sb||!window.supabase)return;try{sb=supabase.createClient(SB_URL,SB_KEY);sb.auth.getSession().then(({data})=>{user=data.session&&data.session.user;pubAuth()});sb.auth.onAuthStateChange((_e,s)=>{user=s&&s.user;pubAuth()})}catch(e){sb=null;console.warn('Supabase unavailable',e)}}
 initSb();if(!sb){const sl=document.getElementById('sbLib');if(sl)sl.addEventListener('load',initSb);else{let k=0;const iv=setInterval(()=>{initSb();if(sb||++k>40)clearInterval(iv)},250)}}
-function pubAuth(){const a=$('#pauth');a.innerHTML=user?'Signed in as '+esc(user.email||'your YAPS account'):(sb?'Sign in to publish. <a href="index.html" style="color:var(--cy)">Open YAPS Music</a>, sign in, then come back. Your mix stays here.':'Sign-in is unavailable right now. Check your connection and reload.');$('#pgo').disabled=!user}
+function pubAuth(){const a=$('#pauth');a.innerHTML=user?'Signed in as '+esc(user.email||'your YAPS account'):(sb?'Sign in to publish. <a href="index.html" style="color:var(--cy)">Open YAPSMusic</a>, sign in, then come back. Your mix stays here.':'Sign-in is unavailable right now. Check your connection and reload.');$('#pgo').disabled=!user}
 async function api(path,o={}){if(!YAPS_API_URL)throw Object.assign(new Error('The YAPS API URL isn’t set up yet.'),{status:0});
  const h={'Content-Type':'application/json'},{data}=await sb.auth.getSession();if(data.session)h.Authorization='Bearer '+data.session.access_token;
  const r=await fetch(YAPS_API_URL+path,{method:o.method||'GET',headers:h,body:o.body&&JSON.stringify(o.body)});
@@ -1902,7 +1902,7 @@ $('#pgo').onclick=async()=>{const st=m=>{$('#pst').textContent=m;$('#pst').style
   st('Saving mix…');
   await saveMixRow({title:title.slice(0,150),description:withTracklist($('#pd').value.trim()),setlist:setlistJson(),genre:$('#pg').value,tags,visibility:priv?'private':'public',
    audio_url:priv?null:au.url,audio_path:au.path,cover_url:cover||null,duration:Math.round(R.dur),format:ext,track_a_id:R.tracks[0],track_b_id:R.tracks[1]}); /* creator comes from the auth token server-side */
-  $('#pub').close();setSt(priv?'Saved privately to your YAPS account.':'Published to YAPS. It now appears under DJ Mixes in YAPS Music.')}
+  $('#pub').close();setSt(priv?'Saved privately to your YAPS account.':'Published to YAPS. It now appears under DJ Mixes in YAPSMusic.')}
  catch(e){const m=e.code==='42P01'?'The mixes table isn’t set up in Supabase yet. Run yaps-mixes-setup.sql once. Your mix is safe here: Save or Download it.':e.status===404?'The server has no mixes endpoint yet (POST /api/mixes), so nothing was published. Your mix is safe here: Save or Download it.':e.status===0?e.message+' Your mix is safe here: Save or Download it.':'Couldn’t publish: '+e.message+'. Your mix is still here. Try again, or Save/Download it.';er(m)}
  $('#pgo').disabled=!user};
 pubAuth();
@@ -2036,7 +2036,7 @@ $('#scrim').onclick=$('#toolsX').onclick=()=>setTools(false);
  },250);
 }catch(e){}})();
 $$('#mainNav [data-share]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();
- const d={title:'YAPS Music',text:'Check out YAPS Music — Music to the World, from Uganda',url:new URL('index.html',(()=>{try{return top.location.href}catch(e){return location.href}})()).href};
+ const d={title:'YAPSMusic',text:'Check out YAPSMusic — Your Audio Playlist Station',url:new URL('index.html',(()=>{try{return top.location.href}catch(e){return location.href}})()).href};
  if(navigator.share)navigator.share(d).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(d.url);}));
 $('#mainNav .sidebar-item.active').addEventListener('click',e=>e.preventDefault());
 (()=>{const nav=$('#mainNav'),btn=$('#navBtn'),sc=$('#navScrim');
@@ -2418,7 +2418,7 @@ const MSG={
  CANCELLED:'Generation cancelled. Nothing was created.',
  API_DOWN:d=>d?'The AI service had a problem ('+d+'). Nothing was created. Try again in a moment.':'The AI service is unavailable right now (it didn’t respond, or the browser was blocked from reaching it). Nothing was created. Check the API URL and that your backend allows requests from this site (CORS).',
  API_ERR:d=>'The AI service rejected the request'+(d?': '+d:'.')+' Nothing was created.',
- AUTH:'The AI service needs you to be signed in. Open YAPS Music, sign in, then come back. Your settings here are kept.',
+ AUTH:'The AI service needs you to be signed in. Open YAPSMusic, sign in, then come back. Your settings here are kept.',
  NOT_FOUND:'The AI service address wasn’t found (404). Check the API URL in AI Music Settings.',
  RATE:'The AI service is busy or you’ve hit its limit (429). Wait a minute and try again.',
  BAD_RESPONSE:'The AI service replied, but not in a format YAPS understands, so no song was created. It should return audio, or JSON with an audio_url.',
@@ -2486,7 +2486,7 @@ function placeholderCover(title,genre,seed){
  x.fillStyle='rgba(0,0,0,.35)';x.fillRect(0,440,600,160);
  x.fillStyle='#fff';x.textBaseline='alphabetic';x.font='800 40px Archivo,system-ui,sans-serif';
  let t=title;while(x.measureText(t).width>540&&t.length>3)t=t.slice(0,-2);if(t!==title)t=t.trim()+'…';x.fillText(t,30,505);
- x.font='700 22px Archivo,system-ui,sans-serif';x.fillStyle='rgba(255,255,255,.8)';x.fillText((genre||'Music').toUpperCase()+'  ·  YAPS MUSIC',30,548);
+ x.font='700 22px Archivo,system-ui,sans-serif';x.fillStyle='rgba(255,255,255,.8)';x.fillText((genre||'Music').toUpperCase()+'  ·  YAPSMUSIC',30,548);
  return c.toDataURL('image/jpeg',.88)}
 function setCover(c){st.cover=c;const u=c.url?'url("'+c.url+'")':'';$s('scCover').style.backgroundImage=u;$s('scResCov').style.backgroundImage=u;
  $s('scCovNote').textContent=c.ai?'AI-generated artwork from your connected image service.':'YAPS placeholder artwork (generated on this device, not AI). Connect an AI Image API in settings for AI covers.'}
@@ -2620,7 +2620,7 @@ async function saveSong(){if(!needSong())return;const s=st.song;
  try{const cb=await coverBlob();await sTx('songs','readwrite',x=>x.put({id:s.id,meta:toMeta(s),blob:s.blob,mime:s.mime,cover:cb,coverAi:st.cover.ai,prompt:s.prompt,saved:Date.now()}));mark('save');msg('Saved on this device in My Creations.','ok');renderMine()}
  catch(e){msg('Couldn’t save on this device (storage is full or blocked). Use Download so you don’t lose the song.','err')}}
 async function shareSong(){if(!needSong())return;const s=st.song,f=new File([s.blob],slug(s.title)+'.'+extFor(s.mime),{type:s.mime});
- try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:s.title,text:'Created with YAPS Music AI Song Creator'});msg('Shared.','ok')}
+ try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:s.title,text:'Created with YAPSMusic AI Song Creator'});msg('Shared.','ok')}
   else{dlSong();msg('This browser can’t share files, so the song was downloaded. Share the file from your device.','')}}
  catch(e){if(e&&e.name==='AbortError')msg('Share cancelled. Your song is still here.','');else msg('Couldn’t share ('+(e&&e.message||'error')+'). Use Download instead.','err')}}
 async function addLib(){if(!needSong())return;const s=st.song;
@@ -2634,7 +2634,7 @@ async function toDJ(){if(!needSong())return;const s=st.song;let L=$s('scDeck').v
  if(ok){mark('dj');closeSc();toast('“'+s.title+'” is in Deck '+L+'. Mix it, add effects, record and export.')}
  else msg('Couldn’t load the song into Deck '+L+'. Try downloading it and loading the file from Phone / Device.','err')}
 function showPub(){if(!needSong())return;
- if(typeof user==='undefined'||!user){msg(typeof sb!=='undefined'&&sb?'Sign in to publish. Open YAPS Music, sign in, then come back. Your song stays here.':'Sign-in is unavailable right now. Check your connection and reload. Your song stays here.','err');return}
+ if(typeof user==='undefined'||!user){msg(typeof sb!=='undefined'&&sb?'Sign in to publish. Open YAPSMusic, sign in, then come back. Your song stays here.':'Sign-in is unavailable right now. Check your connection and reload. Your song stays here.','err');return}
  const b=$s('scPubBox');b.hidden=!b.hidden}
 async function doPub(){const s=st.song;if(!s)return;
  if(!$s('scPubR').checked){msg('Confirm you have the right to share this song.','err');return}
@@ -3414,28 +3414,28 @@ $('#libAn').onclick=()=>analyseAll();
  const o=window.__themeChanged;window.__themeChanged=function(){if(o)o();sync()};sync();})();
 
 /* ══════ YAPS bridge: live link with index.html (same origin) ══════
-   app-play      YAPS Music started a song         -> decks pause (never while recording)
-   studio-play   a deck started here               -> YAPS Music pauses its player
-   mix-published a public mix was published here    -> DJ Mixes row refreshes in YAPS Music
-   load-deck     YAPS Music sends a song to a deck  -> loaded live, answered with studio-ack */
+   app-play      YAPSMusic started a song         -> decks pause (never while recording)
+   studio-play   a deck started here               -> YAPSMusic pauses its player
+   mix-published a public mix was published here    -> DJ Mixes row refreshes in YAPSMusic
+   load-deck     YAPSMusic sends a song to a deck  -> loaded live, answered with studio-ack */
 (function(){
  if(window.__yapsBridge)return;window.__yapsBridge=1;
  let bc=null,me='studio';try{bc=new BroadcastChannel('yaps_bridge')}catch(e){}
  const post=(type,data)=>{const m=Object.assign({type,from:me,t:Date.now(),n:Math.random()},data||{});try{if(bc)bc.postMessage(m);else localStorage.setItem('yaps_bridge_msg',JSON.stringify(m))}catch(e){}};
  const recording=()=>typeof R!=='undefined'&&R.rec&&R.rec.state==='recording';
  async function onMsg(m){if(!m||m.from===me)return;
-  if(m.type==='app-play'){if(!recording()&&!ai&&D.some(d=>d.on)){D.forEach(stopD);toast('Studio paused: YAPS Music is playing '+(m.title?'“'+m.title+'”':'a song'))}}
+  if(m.type==='app-play'){if(!recording()&&!ai&&D.some(d=>d.on)){D.forEach(stopD);toast('Studio paused: YAPSMusic is playing '+(m.title?'“'+m.title+'”':'a song'))}}
   else if(m.type==='load-deck'){const L=String(m.deck).toUpperCase()==='B'?'B':'A',id=String(m.id);
    const find=()=>library.find(x=>String(x.id)===id);
    try{readShared();if(!find())await readDeviceUploads();if(!find())await loadRemote()}catch(e){}
    const t=find();if(!t){post('studio-ack',{ok:false,deck:L});return}
-   loadTrack(L,t);toast('YAPS Music sent “'+t.title+'” to Deck '+L);post('studio-ack',{ok:true,deck:L,title:t.title})}}
+   loadTrack(L,t);toast('YAPSMusic sent “'+t.title+'” to Deck '+L);post('studio-ack',{ok:true,deck:L,title:t.title})}}
  window.__yapsPost=post;
  if(bc)bc.onmessage=e=>onMsg(e.data);
  else addEventListener('storage',e=>{if(e.key==='yaps_bridge_msg'&&e.newValue){try{onMsg(JSON.parse(e.newValue))}catch(x){}}});
- /* a deck starts playing -> tell YAPS Music */
+ /* a deck starts playing -> tell YAPSMusic */
  const _p=play;play=function(d){const was=d&&d.on;const r=_p.apply(this,arguments);if(d&&d.on&&!was)post('studio-play',{title:d.t||'',artist:d.ar||''});return r};
- /* a public mix is published -> tell YAPS Music */
+ /* a public mix is published -> tell YAPSMusic */
  const _s=saveMixRow;saveMixRow=async function(row){const r=await _s.apply(this,arguments);if(row&&row.visibility==='public')post('mix-published',{title:row.title||''});return r};
  /* live song list: index.html rewrote yaps_shared_catalogue, or the user came back from adding songs there */
  const refresh=()=>{try{readShared()}catch(e){}if($('#libd')&&$('#libd').open)render()};
