@@ -805,6 +805,27 @@ html[data-prem="1"] .plan-note{border-color:rgba(25,230,140,.5);box-shadow:0 0 1
 
 .sc-pane{display:grid;gap:12px;min-width:0}
 .sc-pane>*{min-width:0}
+/* workspace: clickable stages */
+.sc-flow{position:sticky;top:-10px;z-index:5;background:var(--bg);padding:8px 0}
+.sc-flow button{flex:none;display:flex;align-items:center;gap:5px;padding:9px 13px;min-height:40px;border-radius:99px;border:1px solid var(--bd);background:none;font:700 12px var(--sans);color:var(--mu);white-space:nowrap;cursor:pointer}
+.sc-flow button.done{background:var(--hero-g);border-color:var(--au2);color:var(--hero-ink)}
+.sc-flow button.cur{border-color:var(--cy);box-shadow:0 0 14px rgba(var(--cy-rgb),.45);color:var(--tx);background:rgba(var(--cy-rgb),.18)}
+.sc-card .f input[type=range]{width:100%}
+.sc-card .f b[data-v]{float:right;color:var(--cy)}
+.sc-chip.on{background:var(--cy)!important;color:#032!important;border-color:var(--cy)!important}
+@media(min-width:1000px){.scin{max-width:1180px}}
+#scP-create[data-cur="idea"] [data-stg]:not([data-stg~="idea"]){display:none!important}
+#scP-create[data-cur="lyrics"] [data-stg]:not([data-stg~="lyrics"]){display:none!important}
+#scP-create[data-cur="music"] [data-stg]:not([data-stg~="music"]){display:none!important}
+#scP-create[data-cur="vocals"] [data-stg]:not([data-stg~="vocals"]){display:none!important}
+#scP-create[data-cur="mix"] [data-stg]:not([data-stg~="mix"]){display:none!important}
+#scP-create[data-cur="master"] [data-stg]:not([data-stg~="master"]){display:none!important}
+#scP-create[data-cur="preview"] [data-stg]:not([data-stg~="preview"]){display:none!important}
+#scP-create[data-cur="edit"] [data-stg]:not([data-stg~="edit"]){display:none!important}
+#scP-create[data-cur="dj"] [data-stg]:not([data-stg~="dj"]){display:none!important}
+#scP-create[data-cur="save"] [data-stg]:not([data-stg~="save"]){display:none!important}
+#scP-create[data-cur="download"] [data-stg]:not([data-stg~="download"]){display:none!important}
+#scP-create[data-cur="publish"] [data-stg]:not([data-stg~="publish"]){display:none!important}
 </style><style id="compactFix">
 /* ===== SMALL-PHONE LANDSCAPE FIX (height up to 430px) =====
    Everything is compacted so nothing overlaps: one-line header, taller deck/mixer row,
@@ -1304,12 +1325,12 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
   <div id="scP-create" class="sc-pane">
    <div class="sc-msg" id="scMsg" role="status" aria-live="polite" hidden></div>
 
-   <section class="pn sc-card">
+   <section class="pn sc-card" data-stg="idea">
     <h3>What do you want to create?</h3>
     <div class="sc-chips" id="scChips"></div>
    </section>
 
-   <section class="pn sc-card">
+   <section class="pn sc-card" data-stg="idea">
     <h3>Song details</h3>
     <label class="f">Song title<input type="text" id="scTitle" maxlength="120" placeholder="Name your song" autocomplete="off"></label>
     <label class="f">Describe your song *<textarea id="scPrompt" maxlength="1200" placeholder="Example: Create an emotional Afrobeat song about never giving up."></textarea></label>
@@ -1330,7 +1351,7 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
     <label class="ck"><input type="checkbox" id="scInstr"><span>Instrumental only (no vocals)</span></label>
    </section>
 
-   <section class="pn sc-card">
+   <section class="pn sc-card" data-stg="lyrics edit">
     <h3>AI lyrics creator</h3>
     <div class="sub">Sections: Intro, Verse 1, Pre-Chorus, Chorus, Verse 2, Bridge, Final Chorus, Outro. Shorter songs use fewer sections.</div>
     <button class="go" id="scLyGen"> GENERATE LYRICS</button>
@@ -1344,7 +1365,7 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
     </div>
    </section>
 
-   <section class="pn sc-card">
+   <section class="pn sc-card" data-stg="edit">
     <h3>Cover artwork (optional)</h3>
     <div class="sc-covrow">
      <div class="sc-cov" id="scCover" role="img" aria-label="Cover artwork preview"></div>
@@ -1352,7 +1373,7 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
     </div>
    </section>
 
-   <button class="go" id="scCreate"> CREATE SONG</button>
+   <button class="go" id="scCreate" data-stg="idea lyrics music vocals mix master"> CREATE SONG</button>
 
    <section class="pn sc-card sc-prog" id="scProg" hidden aria-live="polite">
     <h3 id="scProgH">Creating your song…</h3>
@@ -1362,7 +1383,8 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
     <div class="sc-row"><button class="k" id="scCancel">Cancel</button><button class="k pl" id="scRetry" hidden>Try again</button></div>
    </section>
 
-   <section class="pn sc-card sc-res" id="scRes" hidden>
+   <section class="pn sc-card" id="scNoSong" data-stg="preview dj save download publish"><h3>No song yet</h3><div class="sub">Go through Idea to Master, then tap CREATE SONG. Preview, DJ Studio, Save, Download and Publish open here once your song exists.</div><button class="k pl" id="scNoSongGo" type="button">Start with an idea</button></section>
+   <section class="pn sc-card sc-res" id="scRes" data-stg="preview dj save download publish" hidden>
     <h3>YOUR NEW SONG</h3>
     <div class="sc-resg">
      <div class="sc-cov" id="scResCov" role="img" aria-label="Song cover"></div>
@@ -2406,7 +2428,7 @@ const MSG={
 const humanize=e=>{if(e instanceof ScErr){const m=MSG[e.code];return typeof m==='function'?m(e.detail):(m||'Something went wrong.')}return 'Something unexpected went wrong ('+(e&&e.message||e)+').'};
 
 /* ---------- state ---------- */
-const st={song:null,cover:{url:'',ai:false,blob:null},seed:0,busy:false,lyBusy:false,covBusy:false,ac:null,flow:new Set(),lyDirty:false,bpmTouched:false,tab:'create',opener:null,lyLocked:false};
+const st={song:null,cover:{url:'',ai:false,blob:null},seed:0,busy:false,lyBusy:false,covBusy:false,ac:null,flow:new Set(),lyDirty:false,bpmTouched:false,tab:'create',cur:'idea',opener:null,lyLocked:false};
 const sleep=(ms,sig)=>new Promise((res,rej)=>{const t=setTimeout(res,ms);if(sig)sig.addEventListener('abort',()=>{clearTimeout(t);rej(new ScErr('CANCELLED'))},{once:true})});
 const num=v=>{const n=parseFloat(v);return isFinite(n)?n:null};
 const clampN=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -2446,12 +2468,12 @@ function parseLyrics(t){const out=[];let cur=null;String(t||'').split(/\r?\n/).f
 function readForm(){const dur=lenSec(),b=num($s('scBpm').value),lang=$s('scLang').selectedIndex===0?'auto':$s('scLang').value;
  return{title:$s('scTitle').value.trim()||'Untitled Song',prompt:$s('scPrompt').value.trim(),genre:$s('scGenre').value,mood:$s('scMood').value,
   bpm:b?clampN(Math.round(b),40,220):null,key:keyStr(),duration_seconds:dur,language:lang,instrumental:$s('scInstr').checked,
-  lyrics:$s('scLyrics').value.trim(),lyrics_sections:parseLyrics($s('scLyrics').value),structure:structureFor(dur)}}
+  lyrics:$s('scLyrics').value.trim(),lyrics_sections:parseLyrics($s('scLyrics').value),structure:structureFor(dur),options:readOpts()}}
 
 /* ---------- workflow strip ---------- */
 function mark(k){st.flow.add(k);renderFlow()}
 function renderFlow(){const f=$s('scFlow');if(!f)return;const done=new Set(st.flow);if($s('scPrompt').value.trim())done.add('idea');if($s('scLyrics').value.trim())done.add('lyrics');
- f.innerHTML=FLOW.map(x=>'<span class="'+(done.has(x[0])?'done':'')+'">'+(done.has(x[0])?'✓ ':'')+x[1]+'</span>').join('')}
+ f.innerHTML=FLOW.map(x=>'<button type="button" data-s="'+x[0]+'" class="'+(done.has(x[0])?'done ':'')+(st.cur===x[0]?'cur':'')+'">'+(done.has(x[0])?'✓ ':'')+x[1]+'</button>').join('')}
 
 /* ---------- cover artwork ---------- */
 function placeholderCover(title,genre,seed){
@@ -2555,6 +2577,7 @@ async function requestSong(url,f,sig){
  const a=await fetchAudio(res.url,url,sig);return{blob:a.blob,meta:res.meta,href:a.href}}
 async function createSong(){
  if(st.busy)return;const f=readForm();
+ if(f.prompt&&!cfgUrl('song'))return createLocal(f);
  try{if(!f.prompt)throw new ScErr('EMPTY_PROMPT');const url=cfgUrl('song');if(!url)throw new ScErr('NOT_CONNECTED');if(!validUrl(url))throw new ScErr('BAD_URL');if(!navigator.onLine)throw new ScErr('OFFLINE')}
  catch(e){msg(humanize(e),'err');return}
  msg('');st.busy=true;$s('scCreate').disabled=true;$s('scRes').hidden=true;pauseAud();startProg();const ac=st.ac=new AbortController();
@@ -2569,7 +2592,7 @@ async function createSong(){
   if(ly&&ly!==f.lyrics){$s('scLyrics').value=ly;lockLy(true)}
   setSong({id:'sc'+Date.now(),title:f.title,genre:f.genre,mood:f.mood,bpm:bpm,key:(typeof m.key==='string'&&m.key)||f.key,duration:Math.round(dur),lyrics:ly,
    audioUrl:got.href||'',coverUrl:st.cover.url,createdAt:new Date().toISOString(),creator:creatorName(),prompt:f.prompt,blob,mime:blob.type});
-  ['music','vocals','mix','master'].forEach(k=>st.flow.add(k));renderFlow();endProg('ok');msg('Your song was created by your AI service. Preview it below.','ok')}
+  ['music','vocals','mix','master'].forEach(k=>st.flow.add(k));renderFlow();endProg('ok');setStage('preview');msg('Your song was created by your AI service. Preview it below.','ok')}
  catch(e){const cancel=e instanceof ScErr&&e.code==='CANCELLED';endProg(cancel?'cancel':'fail');msg(humanize(e),cancel?'':'err')}
  st.busy=false;st.ac=null;$s('scCreate').disabled=false}
 
@@ -2578,7 +2601,7 @@ function toMeta(s){return{title:s.title,genre:s.genre,mood:s.mood,bpm:s.bpm,key:
 let audUrl='';
 function setSong(s){st.song=s;if(audUrl){try{URL.revokeObjectURL(audUrl)}catch(e){}}audUrl=URL.createObjectURL(s.blob);s.blobUrl=audUrl;if(!s.audioUrl)s.audioUrl=audUrl;
  const a=$s('scAud');a.src=audUrl;a.volume=$s('scVol').value/100;$s('scSeek').value=0;$s('scPlay').textContent='▶';
- $s('scRes').hidden=false;$s('scResT').textContent=s.title;$s('scResCov').style.backgroundImage=st.cover.url?'url("'+st.cover.url+'")':'';
+ $s('scRes').hidden=false;$s('scNoSong').hidden=true;$s('scResT').textContent=s.title;$s('scResCov').style.backgroundImage=st.cover.url?'url("'+st.cover.url+'")':'';
  $s('scResTags').innerHTML=[s.genre,s.mood,s.bpm?Math.round(s.bpm)+' BPM':'',s.key,fmtT(s.duration)].filter(Boolean).map(x=>'<span>'+esc(x)+'</span>').join('');
  $s('scTime').textContent='0:00 / '+fmtT(s.duration);renderFlow()}
 function pauseAud(){const a=$s('scAud');if(a&&!a.paused)a.pause()}
@@ -2683,12 +2706,102 @@ function openSc(tab){const w=$s('scWrap');st.opener=document.activeElement;try{i
  w.hidden=false;setTab(tab||st.tab||'create');renderFlow();setTimeout(()=>{try{$s('scX').focus({preventScroll:true})}catch(e){}},30)}
 function closeSc(){const w=$s('scWrap');if(w.hidden)return;pauseAud();w.hidden=true;try{st.opener&&st.opener.focus&&st.opener.focus()}catch(e){}}
 
+/* ---------- workspace: one panel per stage (Music / Vocals / Mix / Master) ---------- */
+const NAV=FLOW.map(x=>x[0]);
+const THEMES=['love and heartbreak','never giving up','a Kampala night out','faith and hope','friendship','a summer road trip','celebrating success'];
+const OPT={
+ music:['Music','Shape the sound. These choices are sent to your AI service with the song request.',[
+  ['instruments','chips','Instruments',['Drums','Bass','Guitar','Piano','Synth','Strings','Percussion','Horns','Pads'],['Drums','Bass','Percussion']],
+  ['energy','range','Energy',60],['groove','sel','Groove',['Straight','Swing','Syncopated','Laid-back']],
+  ['intro','sel','Intro',['Short','Build-up','Drum-only','Melody-first']],['hook','sel','Hook',['Catchy chorus','Instrumental riff','Call and response','Big drop']]]],
+ vocals:['Vocals','Choose who sings and how.',[
+  ['voice','sel','Voice',['Female','Male','Duet','Choir','Rap / spoken']],['style','sel','Singing style',['Smooth','Powerful','Soft','Gritty','Energetic']],
+  ['extras','chips','Extras',['Backing vocals','Harmonies','Ad-libs','Vocal chops'],['Backing vocals']],['tune','range','Pitch correction',30]]],
+ mix:['Mix','Balance the song. Levels are sent with the request; the preview tone controls change what you hear in Preview.',[
+  ['preset','sel','Mix preset',['Balanced','Vocal-forward','Club bass','Warm and soft']],
+  ['vocals','range','Vocals level',75],['drums','range','Drums level',70],['bass','range','Bass level',65],['melody','range','Melody level',60],['space','range','Space / reverb',30],
+  ['bass_db','range','Preview bass (dB)',0,-12,12],['mid_db','range','Preview mid (dB)',0,-12,12],['treble_db','range','Preview treble (dB)',0,-12,12]]],
+ master:['Master','Final polish. Sent with the request, and applied live while you listen in Preview. The downloaded file is the one your AI service returns.',[
+  ['preset','sel','Master preset',['Off','Clean','Warm','Club','Radio']],['loudness','range','Loudness',50]]]};
+const PRE={'Balanced':[75,70,65,60],'Vocal-forward':[90,60,55,55],'Club bass':[65,80,90,55],'Warm and soft':[70,55,60,70]};
+const PM={Off:{th:0,ra:1,gn:0,lo:0,hi:0},Clean:{th:-18,ra:3,gn:1,lo:0,hi:1},Warm:{th:-20,ra:3,gn:1,lo:2,hi:-2},Club:{th:-24,ra:6,gn:2,lo:4,hi:1},Radio:{th:-22,ra:5,gn:2,lo:1,hi:2}};
+function optHtml(p,f){const k=f[0],t=f[1],l=f[2],a=f[3],b=f[4],c=f[5];
+ if(t==='sel')return '<label class="f">'+l+'<select data-p="'+p+'" data-o="'+k+'">'+a.map(x=>'<option>'+x+'</option>').join('')+'</select></label>';
+ if(t==='range')return '<label class="f">'+l+' <b data-v>'+a+'</b><input type="range" data-p="'+p+'" data-o="'+k+'" min="'+(b==null?0:b)+'" max="'+(c==null?100:c)+'" value="'+a+'"></label>';
+ return '<div class="f" style="grid-column:1/-1"><span>'+l+'</span><div class="sc-chips" data-oc="'+k+'">'+a.map(x=>'<button type="button" class="sm sc-chip'+(b.includes(x)?' on':'')+'">'+x+'</button>').join('')+'</div></div>'}
+function buildOpts(){const ref=$s('scCreate');Object.keys(OPT).forEach(p=>{const o=OPT[p],s=document.createElement('section');s.className='pn sc-card';s.id='scO-'+p;s.dataset.stg=p;
+ s.innerHTML='<h3>'+o[0]+'</h3><div class="sub">'+o[1]+'</div><div class="sc-grid">'+o[2].map(f=>optHtml(p,f)).join('')+'</div>'+(p==='vocals'?'<label class="ck"><input type="checkbox" id="scInstr2"><span>Instrumental only (no vocals)</span></label>':'');
+ ref.parentNode.insertBefore(s,ref)})}
+function readOpts(){const o={};Object.keys(OPT).forEach(p=>{const s=document.getElementById('scO-'+p);if(!s)return;o[p]={};
+ s.querySelectorAll('[data-o]').forEach(e=>{o[p][e.dataset.o]=e.type==='range'?+e.value:e.value});
+ s.querySelectorAll('[data-oc]').forEach(e=>{o[p][e.dataset.oc]=[].map.call(e.querySelectorAll('.on'),b=>b.textContent)})});return o}
+function setO(p,k,v){const e=document.querySelector('#scO-'+p+' [data-o="'+k+'"]');if(!e)return;e.value=v;const b=e.parentNode.querySelector('[data-v]');if(b)b.textContent=v}
+/* live preview chain: EQ + compressor + gain on the preview player */
+let fx=null;
+function fxInit(){if(fx!==null)return fx;try{const C=new (window.AudioContext||window.webkitAudioContext)(),src=C.createMediaElementSource($s('scAud')),lo=C.createBiquadFilter(),md=C.createBiquadFilter(),hi=C.createBiquadFilter(),cp=C.createDynamicsCompressor(),g=C.createGain();
+ lo.type='lowshelf';lo.frequency.value=120;md.type='peaking';md.frequency.value=1500;md.Q.value=.8;hi.type='highshelf';hi.frequency.value=6000;
+ src.connect(lo);lo.connect(md);md.connect(hi);hi.connect(cp);cp.connect(g);g.connect(C.destination);fx={C:C,lo:lo,md:md,hi:hi,cp:cp,g:g}}catch(e){fx=false}return fx}
+function fxApply(){if(!fx)return;const o=readOpts(),m=o.mix||{},k=o.master||{},p=PM[k.preset]||PM.Off,t=fx.C.currentTime,T=.05;
+ fx.lo.gain.setTargetAtTime((m.bass_db||0)+p.lo,t,T);fx.md.gain.setTargetAtTime(m.mid_db||0,t,T);fx.hi.gain.setTargetAtTime((m.treble_db||0)+p.hi,t,T);
+ fx.cp.threshold.setTargetAtTime(p.th,t,T);fx.cp.ratio.setTargetAtTime(p.ra,t,T);fx.g.gain.setTargetAtTime(Math.pow(10,(((k.loudness==null?50:k.loudness)-50)/50*6+p.gn)/20),t,T)}
+function setStage(s){if(NAV.indexOf(s)<0)s='idea';st.cur=s;$s('scP-create').dataset.cur=s;const i=NAV.indexOf(s),b=$s('scBack'),n=$s('scNext');if(b)b.hidden=i===0;if(n)n.hidden=i===NAV.length-1;renderFlow();
+ if(st.tab!=='create')setTab('create');else try{$s('scWrap').scrollTo({top:0,behavior:'smooth'})}catch(e){}}
+function initWork(){buildOpts();const P=$s('scP-create'),nv=document.createElement('div');nv.className='sc-row';nv.innerHTML='<button class="k" id="scBack" type="button">‹ Back</button><button class="k pl" id="scNext" type="button" style="margin-left:auto">Next ›</button>';P.appendChild(nv);
+ $s('scBack').onclick=()=>setStage(NAV[NAV.indexOf(st.cur)-1]);$s('scNext').onclick=()=>setStage(NAV[NAV.indexOf(st.cur)+1]);
+ $s('scFlow').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(b)setStage(b.dataset.s)});$s('scNoSongGo').onclick=()=>setStage('idea');
+ P.addEventListener('click',e=>{const b=e.target.closest('[data-oc] button');if(b)b.classList.toggle('on')});
+ P.addEventListener('input',e=>{const r=e.target;if(r.dataset&&r.dataset.o){const v=r.parentNode.querySelector('[data-v]');if(v&&r.type==='range')v.textContent=r.value;fxApply()}});
+ P.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.p==='mix'&&t.dataset.o==='preset'){const v=PRE[t.value];['vocals','drums','bass','melody'].forEach((k,i)=>setO('mix',k,v[i]))}fxApply()});
+ $s('scInstr2').onchange=()=>{$s('scInstr').checked=$s('scInstr2').checked};$s('scInstr').addEventListener('change',()=>{$s('scInstr2').checked=$s('scInstr').checked});
+ $s('scAud').addEventListener('play',()=>{if(fxInit()){try{fx.C.resume()}catch(e){}fxApply()}})}
+
+/* ---------- built-in generator: free, on this device, instrumental only (used when no Song API URL is set) ---------- */
+function encWav(b){const n=b.length,ch=b.numberOfChannels,sr=b.sampleRate,d=new DataView(new ArrayBuffer(44+n*ch*2)),w=(o,t)=>{for(let i=0;i<t.length;i++)d.setUint8(o+i,t.charCodeAt(i))};
+ w(0,'RIFF');d.setUint32(4,36+n*ch*2,true);w(8,'WAVEfmt ');d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,ch,true);d.setUint32(24,sr,true);d.setUint32(28,sr*ch*2,true);d.setUint16(32,ch*2,true);d.setUint16(34,16,true);w(36,'data');d.setUint32(40,n*ch*2,true);
+ const c=[];for(let k=0;k<ch;k++)c.push(b.getChannelData(k));let o=44;for(let i=0;i<n;i++)for(let k=0;k<ch;k++){const v=Math.max(-1,Math.min(1,c[k][i]));d.setInt16(o,v<0?v*32768:v*32767,true);o+=2}return new Blob([d.buffer],{type:'audio/wav'})}
+async function renderLocal(f){
+ const mu=(f.options&&f.options.music)||{},ins=mu.instruments&&mu.instruments.length?mu.instruments:['Drums','Bass','Piano'],has=x=>ins.indexOf(x)>=0,en=.6+(mu.energy==null?60:mu.energy)/150;
+ const dur=Math.min(f.duration_seconds,240),bpm=f.bpm||BPM_DEF[f.genre]||100,beat=60/bpm,bar=beat*4,sr=24000,C=new OfflineAudioContext(2,Math.ceil(sr*dur),sr);
+ let h=hashS(f.prompt+f.title+f.genre);const rnd=()=>{h=(Math.imul(h,1664525)+1013904223)>>>0;return h/4294967296};
+ const km=(f.key||'A minor').split(' '),root=Math.max(0,KEYN.indexOf(km[0])),minor=km[1]!=='major',sc=minor?[0,2,3,5,7,8,10]:[0,2,4,5,7,9,11],prog=minor?[0,5,2,6]:[0,4,5,3];
+ const fq=m=>440*Math.pow(2,(m-69)/12),nt=(dg,oc)=>12*(oc+1+Math.floor(dg/7))+root+sc[((dg%7)+7)%7];
+ const mst=C.createGain(),cp=C.createDynamicsCompressor();mst.gain.setValueAtTime(.8,0);mst.gain.setValueAtTime(.8,Math.max(0,dur-2));mst.gain.linearRampToValueAtTime(0,dur);mst.connect(cp);cp.connect(C.destination);
+ const nb=C.createBuffer(1,sr,sr),nd=nb.getChannelData(0);for(let i=0;i<sr;i++)nd[i]=rnd()*2-1;
+ const env=(g,t,a,d,pk)=>{g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(pk,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+a+d)};
+ const osc=(ty,fr,t,a,d,pk,lp)=>{const x=C.createOscillator(),g=C.createGain();x.type=ty;x.frequency.value=fr;env(g,t,a,d,pk);let n=x;if(lp){const l=C.createBiquadFilter();l.type='lowpass';l.frequency.value=lp;x.connect(l);n=l}n.connect(g);g.connect(mst);x.start(t);x.stop(t+a+d+.05)};
+ const noise=(t,d,pk,hp)=>{const s=C.createBufferSource(),g=C.createGain(),q=C.createBiquadFilter();s.buffer=nb;q.type='highpass';q.frequency.value=hp;env(g,t,.002,d,pk);s.connect(q);q.connect(g);g.connect(mst);s.start(t);s.stop(t+d+.05)};
+ const kick=t=>{const x=C.createOscillator(),g=C.createGain();x.frequency.setValueAtTime(150,t);x.frequency.exponentialRampToValueAtTime(42,t+.12);g.gain.setValueAtTime(.9,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);x.connect(g);g.connect(mst);x.start(t);x.stop(t+.32)};
+ const PT={four:{k:[0,4,8,12],s:[4,12],h:[2,6,10,14]},afro:{k:[0,7,10],s:[4,12],h:[0,2,3,6,8,10,11,14]},hop:{k:[0,7,10],s:[4,12],h:[0,2,4,6,8,10,12,14]},reg:{k:[8],s:[8],h:[0,2,4,6,8,10,12,14]}};
+ const P=PT[{'EDM':'four','Pop':'four','Amapiano':'four','Hip-Hop':'hop','R&B':'hop','Lo-fi':'hop','Reggae':'reg'}[f.genre]||'afro'];
+ const names=f.structure,nbars=Math.max(1,Math.floor(dur/bar)),sec=i=>names[Math.min(names.length-1,Math.floor(i/nbars*names.length))];
+ const lay=n=>/Intro/.test(n)?{d:0,b:0,l:0}:/Outro|Bridge/.test(n)?{d:0,b:1,l:0}:/Chorus/.test(n)?{d:1,b:1,l:1}:{d:1,b:1,l:0},sw=mu.groove==='Swing'||mu.groove==='Laid-back',mot={};
+ for(let i=0;i<nbars;i++){const t0=i*bar,L=lay(sec(i)),dg=prog[i%4],cd=[0,2,4].map(x=>nt(dg+x,3)),T=s=>t0+s*beat/4+(s%2&&sw?beat*.055:0);
+  if(has('Pads')||has('Strings'))cd.forEach(m=>osc('sawtooth',fq(m),t0,.4,bar,.035,900));
+  if(has('Piano')||has('Guitar'))for(let s=0;s<16;s+=2){const m=cd[[0,1,2,1][(s/2)%4]]+12;osc(has('Guitar')&&!has('Piano')?'sawtooth':'triangle',fq(m),T(s),.005,.4,.11,2200)}
+  if(has('Bass')&&L.b)P.k.forEach(s=>{const m=nt(dg,1);osc('triangle',fq(m),T(s),.01,beat*.8,.38,350);osc('sine',fq(m-12),T(s),.01,beat*.8,.3)});
+  if(has('Drums')&&L.d){P.k.forEach(s=>kick(T(s)));P.s.forEach(s=>{noise(T(s),.16,.3,1500);osc('triangle',190,T(s),.002,.1,.2)});P.h.forEach(s=>noise(T(s),.04,.12*en,7000))}
+  if(has('Percussion'))for(let s=1;s<16;s+=2)noise(T(s),.03,.07*en,9000);
+  if(L.l&&(has('Synth')||has('Horns')||!has('Pads'))){const m=mot[dg]||(mot[dg]=Array.from({length:8},()=>rnd()<.3?null:[0,2,4,1,3][rnd()*5|0]));m.forEach((x,k)=>{if(x==null)return;osc(has('Horns')&&!has('Synth')?'sawtooth':'square',fq(nt(dg+x,5)),T(k*2),.01,.3,.06,2400)})}}
+ return C.startRendering()}
+async function createLocal(f){
+ st.busy=true;$s('scCreate').disabled=true;$s('scRes').hidden=true;pauseAud();startProg();const ac=st.ac=new AbortController();msg('');
+ try{if(typeof OfflineAudioContext==='undefined')throw new Error('This browser has no audio engine for the built-in generator.');
+  pBackend=20;setProg(20,'Building the song on this device');await sleep(80,ac.signal);
+  const buf=await renderLocal(f);if(ac.signal.aborted)throw new ScErr('CANCELLED');setProg(92,'Encoding');
+  const blob=encWav(buf),pd=await probe(blob);
+  setSong({id:'sc'+Date.now(),title:f.title,genre:f.genre,mood:f.mood,bpm:f.bpm||BPM_DEF[f.genre]||100,key:f.key||'A minor',duration:Math.round(pd||buf.duration),lyrics:f.lyrics,audioUrl:'',coverUrl:st.cover.url,createdAt:new Date().toISOString(),creator:creatorName(),prompt:f.prompt,blob:blob,mime:'audio/wav'});
+  ['music','vocals','mix','master'].forEach(k=>st.flow.add(k));renderFlow();endProg('ok');setStage('preview');
+  msg('Made by the free built-in generator: an instrumental, no singing. Add an AI service in AI Music Settings for full songs with vocals.','ok')}
+ catch(e){const c=e instanceof ScErr&&e.code==='CANCELLED';endProg(c?'cancel':'fail');msg(e instanceof ScErr?humanize(e):'Couldn’t build the song: '+(e&&e.message||'error'),c?'':'err')}
+ st.busy=false;st.ac=null;$s('scCreate').disabled=false}
+
 /* ---------- boot ---------- */
 function boot(){
  const fill=(id,arr)=>{$s(id).innerHTML=arr.map(x=>'<option>'+esc(x)+'</option>').join('')};
  fill('scGenre',GENRES);fill('scMood',MOODS);fill('scLang',LANGS);$s('scKey').innerHTML='<option>Auto</option>'+KEYN.map(x=>'<option>'+x+'</option>').join('');$s('scKey').value='A';$s('scScale').value='Minor';
  $s('scMood').value='Inspirational';
  $s('scChips').innerHTML=SUGGEST.map((x,i)=>'<button class="sm sc-chip" data-sug="'+i+'">'+esc(x.t)+'</button>').join('');
+ $s('scChips').insertAdjacentHTML('beforeend','<button type="button" class="sm sc-chip" id="scSurp">✦ Surprise me</button>');$s('scSurp').onclick=()=>{const x=SUGGEST[Math.random()*SUGGEST.length|0];$s('scPrompt').value=x.p.replace(/\.$/,'')+', about '+THEMES[Math.random()*THEMES.length|0]+'.';if(x.g)$s('scGenre').value=x.g;if(x.m)$s('scMood').value=x.m;refreshPlaceholder();renderFlow()};
  $s('scChips').addEventListener('click',e=>{const b=e.target.closest('[data-sug]');if(!b)return;const x=SUGGEST[+b.dataset.sug];$s('scPrompt').value=x.p;if(x.g){$s('scGenre').value=x.g;if(!st.bpmTouched){$s('scBpm').value=$s('scBpmR').value=BPM_DEF[x.g]}}if(x.m)$s('scMood').value=x.m;if(!$s('scTitle').value.trim())$s('scTitle').placeholder=x.t;refreshPlaceholder();renderFlow();try{$s('scPrompt').focus({preventScroll:true})}catch(e2){}});
  $s('scOpen').onclick=()=>openSc('create');$s('scTop').onclick=()=>openSc('create');$s('scX').onclick=closeSc;
  $s('scTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-t]');if(b)setTab(b.dataset.t)});
@@ -2707,12 +2820,12 @@ function boot(){
  $s('scCovGen').onclick=genCover;$s('scCreate').onclick=createSong;
  $s('scCancel').onclick=()=>{if(st.ac)st.ac.abort()};$s('scRetry').onclick=createSong;
  $s('scToDJ').onclick=toDJ;$s('scDl').onclick=dlSong;$s('scSave').onclick=saveSong;$s('scShare').onclick=shareSong;$s('scLib').onclick=addLib;$s('scPub').onclick=showPub;$s('scPubX').onclick=()=>{$s('scPubBox').hidden=true};$s('scPubGo').onclick=doPub;
- wirePlayer();
+ wirePlayer();initWork();
  $s('scMineS').addEventListener('click',mineClick);$s('scMineL').addEventListener('click',mineClick);
  $s('scCfgSave').onclick=saveCfg;$s('scCfgTest').onclick=testCfg;$s('scCfgReset').onclick=()=>{Object.values(KEYS).forEach(k=>LS.set(k,''));fillCfg()};
  $s('scReqCopy').onclick=async()=>{fillCfg();$s('scApiSt').textContent=(await copyText($s('scReqPre').textContent))?'Request JSON copied.':'Couldn’t copy automatically. Select the text and copy it.'};
  addEventListener('offline',()=>{if(!$s('scWrap').hidden)msg(humanize(new ScErr('OFFLINE')),'err')});
- lockLy(false);refreshPlaceholder();renderFlow();
+ lockLy(false);refreshPlaceholder();setStage('idea');
  try{const q=new URLSearchParams(location.search);if(q.get('creator')==='1'||q.get('songcreator')==='1')openSc('create')}catch(e){}
  /* Public hooks so you can wire the Song Creator into other YAPS pages later (Supabase etc.) */
  window.YAPS_SC={open:openSc,close:closeSc,buildRequest:readForm,config:()=>({song:cfgUrl('song'),lyrics:cfgUrl('lyrics'),image:cfgUrl('image')}),currentSong:()=>st.song?toMeta(st.song):null,createSong}}
