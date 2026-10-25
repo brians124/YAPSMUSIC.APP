@@ -7,7 +7,7 @@
 (function(){
  var last='';
  /* Phones run the app inside a rotated frame (see boot script). Detect that up front so the outer page never lays out the whole UI. */
- window.__phoneHost=self===top&&!window.__yapsEmbedded&&!/[?&]nofs=1/.test(location.search)&&matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<=820;
+ window.__phoneHost=self===top&&!window.__yapsEmbedded&&/[?&]landscape=1/.test(location.search)&&matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<=820; /* forced-landscape frame is now opt-in only: phones use the responsive layout in any orientation */
  if(window.__phoneHost)document.documentElement.classList.add('host');
  if(window.__yapsEmbedded)document.documentElement.classList.add('emb');
  var TC={neon:'#050712',ocean:'#050b22',crimson:'#0c0505',emerald:'#04120b',violet:'#0b0716',aurora:'#050814',gold:'#0d0a02',sunset:'#120704',rose:'#12050b',arctic:'#03111a'};
@@ -35,8 +35,16 @@
  document.addEventListener('visibilitychange',function(){if(!document.hidden)apply()});
 })();
 </script>
-<title>YAPSMusic · Virtual DJ Studio</title>
-<meta name="description" content="Mix two songs like a DJ, record your mix and publish it to YAPSMusic. Free virtual DJ studio with Ugandan and African music.">
+<title>YAPS DJ Studio: Free Virtual DJ Mixer | YAPS Music</title>
+<meta name="description" content="YAPS DJ Studio by YAPS Music: free virtual DJ mixer. Mix two songs like a DJ, record your mix and publish it to YAPSMusic. Ugandan and African music.">
+<meta name="keywords" content="YAPS, YAPS AI, YAPS DJ, YAPS Studio, YAPS Music, YAPSMusic, virtual DJ, free DJ mixer, Ugandan music, African music">
+<meta property="og:title" content="YAPS DJ Studio: Free Virtual DJ Mixer | YAPS Music">
+<meta property="og:description" content="Mix two songs like a DJ, record your mix and publish it to YAPS Music.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="YAPS Music">
+<meta property="og:url" content="https://brians124.github.io/YAPSMUSIC.APP/studio.html">
+<meta property="og:image" content="https://brians124.github.io/YAPSMUSIC.APP/images/yaps-cover.png?v=2">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"YAPS DJ Studio","alternateName":["YAPS Studio","YAPS DJ"],"url":"https://brians124.github.io/YAPSMUSIC.APP/studio.html","applicationCategory":"MusicApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isPartOf":{"@type":"WebSite","name":"YAPS Music","url":"https://brians124.github.io/YAPSMUSIC.APP/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"UGX"}}</script>
 <link rel="canonical" href="https://brians124.github.io/YAPSMUSIC.APP/studio.html">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -1165,6 +1173,7 @@ nav#mainNav .sidebar-item.active .sb-home-svg path{fill:url(#bnIconGradActive)}
 html[data-theme="neon"] nav#mainNav .sidebar-item.active{background:linear-gradient(90deg,rgba(25,230,140,.16),rgba(139,92,246,.16),rgba(224,64,251,.10));color:#fff}
 html[data-theme="neon"] nav#mainNav .sidebar-item.active::before{background:linear-gradient(180deg,#19e68c,#22d3ee,#8b5cf6,#e040fb)}
 </style>
+<link rel="stylesheet" href="yaps-colors.css">
 </head>
 <style id="pinnedDecks">
 /* PINNED CONSOLE (embedded in the app, desktop/tablet height): the decks + mixer and the tool tabs stay put and never scroll;
@@ -1472,6 +1481,93 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
 }
 @media(pointer:coarse) and (max-height:430px){body.vdj header :is(.ic,.aibtn,button,a.logo){min-height:34px!important}}
 </style>
+<style id="responsiveAll">
+/* RESPONSIVE LAYER: phones (portrait + landscape), tablets, desktop. Loaded last so it wins. */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+img,video,svg,canvas{max-width:100%}
+main,.row1,.deck,.mix,.pn{min-width:0}
+/* notch / rounded-corner safe areas when held sideways */
+@media(max-width:1180px){main{padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}header{padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}}
+
+/* finger-sized controls + no iOS focus-zoom on any touch device */
+@media(pointer:coarse){
+ button,.sm,.k,.x,.ld,.src,.rw,select{min-height:44px}
+ input[type=text],input[type=search],input[type=number],input[type=url],textarea,select{font-size:16px!important}
+ input[type=range]{min-height:34px}
+ #vdock button{min-height:44px!important}
+ nav#mainNav .sidebar-item{min-height:48px}
+}
+
+/* ---------- PHONE, PORTRAIT ---------- */
+@media(orientation:portrait) and (max-width:820px){
+ header{flex-wrap:wrap;row-gap:6px;overflow:visible}
+ header .sp{flex:1 1 0;min-width:0}
+ header>.ic,header>.aibtn{flex:none}
+ .ttl{display:none}
+ .rot{margin:0}
+ /* the decks stay side by side but get breathing room; knobs and buttons never overflow */
+ .row1{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .deck,.mix{overflow:hidden}
+ .meta b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .btns .k{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .disc{width:min(100%,clamp(96px,34vw,170px))}
+ .mx{grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr)}
+ .meters{height:96px}
+ .cf div,.mv{min-width:0}
+ #xf,#mvol{min-width:0;width:100%}
+ /* loop / cues / fx wrap into tidy rows instead of overflowing */
+ .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;padding:10px}
+ .row2>div{border:0!important;padding:0!important}
+ .row2>div:nth-child(2){grid-column:1/-1}
+ .row2 .bs,.row2 .hcw{flex-wrap:wrap;justify-content:flex-start}
+ .row2 .hd{margin-bottom:6px;text-align:left}
+ .row3{grid-template-columns:1fr}
+ .row4{grid-template-columns:1fr!important}
+ /* dock scrolls sideways with snap so every panel button stays reachable */
+ #vdock{scroll-snap-type:x proximity;overscroll-behavior-x:contain}
+ #vdock button{scroll-snap-align:start}
+ /* dialogs become comfortable bottom-anchored sheets */
+ dialog{width:calc(100% - 16px);max-width:560px;max-height:92dvh;margin:auto auto max(8px,env(safe-area-inset-bottom,0px));padding:14px}
+ #libd[open]{height:min(90dvh,720px)}
+ .tabs{-webkit-overflow-scrolling:touch;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+ .it{grid-template-columns:44px minmax(0,1fr) auto auto}
+ #toast{max-width:92vw;bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+}
+
+/* ---------- SMALL PHONES (<=380px wide) ---------- */
+@media(orientation:portrait) and (max-width:380px){
+ .logo{font-size:20px}
+ .aibtn b{font-size:11px}
+ .btns{flex-wrap:wrap}
+ .btns .k{flex:1 1 40%;font-size:11px;padding:10px 0}
+ .row2{grid-template-columns:1fr}
+ .hcw .sm{min-width:36px;padding:6px 9px}
+}
+/* very narrow: stack the decks so nothing is squeezed */
+@media(orientation:portrait) and (max-width:340px){
+ .row1{grid-template-columns:minmax(0,1fr)}
+ .mix{order:0}
+}
+
+/* ---------- TABLET, PORTRAIT ---------- */
+@media(orientation:portrait) and (min-width:601px) and (max-width:1180px){
+ .row1{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .mix{grid-column:1/-1;order:2}
+ .row2{grid-template-columns:1fr 1.6fr 1.2fr}
+ .row3{grid-template-columns:1fr 1fr}
+ .disc{width:min(100%,220px)}
+ .rot{display:none}
+}
+
+/* ---------- TABLET / LAPTOP, LANDSCAPE ---------- */
+@media(orientation:landscape) and (min-height:521px) and (max-width:1180px){
+ .row2{grid-template-columns:1fr 1.6fr 1.2fr}
+ .disc{width:min(100%,200px)}
+}
+
+/* ---------- LARGE SCREENS: keep lines readable ---------- */
+@media(min-width:1600px){main{max-width:1500px;width:100%;margin-inline:auto}}
+</style>
 <dialog id="pub" aria-labelledby="pubh"><h2 id="pubh">Publish to YAPS</h2>
  <div id="pauth" style="margin-bottom:10px;font-size:13px"></div>
  <label class="f">Title *<input type="text" id="pt_" maxlength="150" placeholder="Name your mix"></label>
@@ -1760,7 +1856,7 @@ try{new MutationObserver(()=>{const d=$('#libd');
 /* The field under the tool tabs is never empty: the song library shows there by default, on the last source you used */
 try{const m=localStorage.getItem('yapsLibMode');if(m)mode=m}catch(e){}
 const _open0=openLib;openLib=function(a){try{localStorage.setItem('yapsLibMode',mode)}catch(e){}return _open0(a)};
-setTimeout(()=>{if(!window.__phoneHost&&!document.body.dataset.vp&&!$('#libd').open)openLib()},900);
+setTimeout(()=>{if(!window.__phoneHost&&!matchMedia('(pointer:coarse) and (max-width:820px)').matches&&!document.body.dataset.vp&&!$('#libd').open)openLib()},900);
 /* L = show / hide the song library */
 addEventListener('keydown',e=>{if(e.key.toLowerCase()!=='l'||e.ctrlKey||e.metaKey||e.altKey||/INPUT|TEXTAREA|SELECT/.test((e.target.tagName||'')))return;
  if(document.querySelector('dialog[open]:not(#libd)'))return;e.preventDefault();$('#libd').open?(libDismissed=true,closeLib()):openLib()});

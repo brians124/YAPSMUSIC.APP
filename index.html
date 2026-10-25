@@ -4,7 +4,7 @@
 <script>window.__yapsInitialSearch=location.search;</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>YAPSMusic: Your Audio Playlist Station | Stream, Discover &amp; Share</title>
+<title>YAPS Music (YAPSMusic) &amp; YAPS AI: Stream Ugandan &amp; African Music Free</title>
 
 <!-- PWA: makes the site installable as a phone app -->
 <meta name="theme-color" content="#050814">
@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="YAPSMusic">
 <!-- Apple launch screen images (shown when app opens from home screen) -->
 <link rel="apple-touch-startup-image" href="images/yaps-cover.png?v=2">
-<meta name="description" content="Stream, discover and share music from Uganda, Africa and around the world: Afrobeats, Gospel, Hip-Hop, Pop and more. Upload your own music free.">
+<meta name="description" content="YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Gospel, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.">
 <link rel="manifest" href="manifest.json">
 
 <!-- Loading screen only on the first open of the app (per app session). Coming back from
@@ -59,8 +59,10 @@
 
 <!-- ── SEO: primary meta tags ── -->
 <link rel="canonical" href="https://brians124.github.io/YAPSMUSIC.APP/">
-<meta name="keywords" content="YAPSMusic, music streaming, discover music, African music, Ugandan music, Afrobeats, Bongo Flava, Gospel music, Hip-Hop, upload music free, Kampala">
-<meta name="author" content="YAPSMusic">
+<!-- Google Search Console: paste your token below, uncomment, then click Verify -->
+<!-- <meta name="google-site-verification" content="PASTE_YOUR_TOKEN_HERE"> -->
+<meta name="keywords" content="YAPS, YAPS AI, YAPS AI DJ, YAPSAI, YAPS Music, YAPS Music app, YAPSMusic, YAPS MUSIC, YAPS app, YAPS Uganda, YAPS music app, YAPSMUSIC.APP, YAPSMusic, music streaming, discover music, African music, Ugandan music, Afrobeats, Bongo Flava, Gospel music, Hip-Hop, upload music free, Kampala">
+<meta name="author" content="YAPS Tech Solutions">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="googlebot" content="index, follow">
 <meta name="application-name" content="YAPSMusic">
@@ -78,12 +80,13 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png?v=3">
 
 <!-- Open Graph for sharing (Facebook, WhatsApp, LinkedIn, etc.) -->
-<meta property="og:title" content="YAPSMusic: Your Audio Playlist Station">
-<meta property="og:description" content="Stream, discover and share music from Uganda, Africa and around the world: Afrobeats, Gospel, Hip-Hop, Pop and more. Upload your own music free.">
+<meta property="og:title" content="YAPS Music (YAPSMusic): Stream Ugandan &amp; African Music Free">
+<meta property="og:description" content="YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Gospel, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://brians124.github.io/YAPSMUSIC.APP/">
 <meta property="og:site_name" content="YAPSMusic">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="en_UG">
+<meta property="og:locale:alternate" content="en_US">
 <meta property="og:image" content="https://brians124.github.io/YAPSMUSIC.APP/images/yaps-cover.png?v=2">
 <meta property="og:image:width" content="1024">
 <meta property="og:image:height" content="1024">
@@ -91,29 +94,49 @@
 
 <!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="YAPSMusic: Your Audio Playlist Station">
-<meta name="twitter:description" content="Stream, discover and share music from Uganda, Africa and around the world: Afrobeats, Gospel, Hip-Hop, Pop and more. Upload your own music free.">
+<meta name="twitter:title" content="YAPS Music (YAPSMusic): Stream Ugandan &amp; African Music Free">
+<meta name="twitter:description" content="YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Gospel, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.">
 <meta name="twitter:image" content="https://brians124.github.io/YAPSMUSIC.APP/images/yaps-cover.png?v=2">
 
 <!-- Structured data for Google rich results -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "YAPSMusic",
-  "alternateName": "YAPS",
-  "url": "https://brians124.github.io/YAPSMUSIC.APP/",
-  "description": "Stream, discover and share music from Uganda, Africa and around the world.",
-  "inLanguage": "en"
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "YAPSMusic",
-  "url": "https://brians124.github.io/YAPSMUSIC.APP/",
-  "logo": "https://brians124.github.io/YAPSMUSIC.APP/icons/apple-touch-icon.png?v=3"
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://brians124.github.io/YAPSMUSIC.APP/#website",
+      "name": "YAPS Music",
+      "alternateName": ["YAPS", "YAPS Music", "YAPSMusic", "YAPS MUSIC", "YAPS AI", "YAPS Music App", "YAPSMUSIC.APP", "Your Audio Playlist Station"],
+      "url": "https://brians124.github.io/YAPSMUSIC.APP/",
+      "description": "Free music streaming app for Ugandan and African music.",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://brians124.github.io/YAPSMUSIC.APP/#org" }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://brians124.github.io/YAPSMUSIC.APP/#org",
+      "name": "YAPS Music",
+      "alternateName": ["YAPS", "YAPSMusic", "YAPS Tech Solutions"],
+      "url": "https://brians124.github.io/YAPSMUSIC.APP/",
+      "logo": { "@type": "ImageObject", "url": "https://brians124.github.io/YAPSMUSIC.APP/icons/icon-512.png?v=3", "width": 512, "height": 512 }
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://brians124.github.io/YAPSMUSIC.APP/#app",
+      "name": "YAPS Music",
+      "alternateName": ["YAPS", "YAPS AI", "YAPSMusic", "YAPS Music App"],
+      "url": "https://brians124.github.io/YAPSMUSIC.APP/",
+      "applicationCategory": "MusicApplication",
+      "operatingSystem": "Any (Android, iOS, Windows, macOS, Linux) - installable PWA",
+      "browserRequirements": "Requires JavaScript",
+      "description": "YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Gospel, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.",
+      "image": "https://brians124.github.io/YAPSMUSIC.APP/images/yaps-cover.png?v=2",
+      "inLanguage": "en",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "UGX" },
+      "publisher": { "@id": "https://brians124.github.io/YAPSMUSIC.APP/#org" }
+    }
+  ]
 }
 </script>
 <!-- Preconnect to font origins to reduce DNS/TCP handshake latency -->
@@ -6651,8 +6674,9 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
      ══════════════════════════════════════════════════════════ -->
 <noscript>
   <main style="max-width:900px;margin:0 auto;padding:24px;font-family:sans-serif;color:#eef6ff;background:#050b22;">
-    <h1>YAPSMusic: Stream Music from Uganda and Around the World</h1>
-    <p>YAPSMusic is a platform to stream, discover and share music from Uganda, Africa and around the world. The catalogue includes Afrobeats, Bongo Flava, Luganda Pop, Gospel, Afropop, Dancehall and R&amp;B from Kampala and across Uganda. Browse trending songs and featured artists below.</p>
+    <h1>YAPS Music (YAPSMusic): Stream Music from Uganda and Around the World</h1>
+    <p>YAPS Music, also known as YAPS, YAPSMusic or YAPS AI, is a free app and platform to stream, discover and share music from Uganda, Africa and around the world. The catalogue includes Afrobeats, Bongo Flava, Luganda Pop, Gospel, Afropop, Dancehall and R&amp;B from Kampala and across Uganda. Browse trending songs and featured artists below.</p>
+    <p><a href="songs.html">Browse all YAPS Music songs and artists</a></p>
     <h2 data-i18n="h_trending_songs">Trending Songs on YAPSMusic</h2>
     <ul>
       <li>"Nigina" by Hoozambe D.Star (Afrobeats)</li>
@@ -7309,7 +7333,9 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
 
     <!-- GREETING -->
     <div class="home-greeting" id="homeGreeting" style="padding:18px 16px 4px;">
-      <h1 id="homeGreetingText" style="font-size:22px;font-weight:800;margin:0 0 2px;">Good afternoon</h1>
+      <h1 style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">YAPS Music (YAPSMusic): Stream Ugandan &amp; African Music Free</h1>
+      <p style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">YAPS, YAPS Music, YAPSMusic and YAPS AI: stream Ugandan and African music, chat with the YAPS AI DJ, watch YAPS videos, mix in YAPS DJ Studio and upload your own songs free.</p>
+      <h2 id="homeGreetingText" style="font-size:22px;font-weight:800;margin:0 0 2px;">Good afternoon</h2>
       <p style="font-size:14px;color:var(--muted);margin:0;">What do you want to listen to?</p>
     </div>
 
