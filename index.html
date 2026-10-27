@@ -9922,7 +9922,7 @@ let _demoUser = null; // kept as the same variable name so the rest of the app s
 // in, cleared as soon as there's no active session (including right after
 // signing out). The intro/splash screen has been removed from the app.
 function _markHasAccount() {
-  try { localStorage.setItem('yaps_has_account', '1'); } catch (e) {}
+  try { localStorage.setItem('yaps_has_account', '1'); localStorage.removeItem('yaps_guest_snooze'); } catch (e) {}
 }
 function _clearHasAccount() {
   try { localStorage.removeItem('yaps_has_account'); } catch (e) {}
@@ -9967,7 +9967,7 @@ async function _initAuth() {
   _subscribeVideoFeed();
   _refreshOwner(); _loadRemoteTracks();
   if (_demoUser) { _loadNotifications(); _subscribeNotifications(); _markHasAccount(); _refreshPremiumFromServer(); }
-  else { _clearHasAccount(); }
+  else { _clearHasAccount(); setTimeout(_guestWelcomePrompt, 3000); }
   setTimeout(() => { try { yapsPushSync(); } catch (e) {} }, 1500);
   sb.auth.onAuthStateChange((_event, session) => {
     _demoUser = _userFromSession(session);
@@ -16393,31 +16393,59 @@ function selectVis(el) {
   el.classList.add('selected');
 }
 
-// ── GUEST GUARD — nudge to sign up for account-required actions ──
-function requireAuth(action) {
-  if (_demoUser) { action(); return; }
-  const existing = document.getElementById('authNudgeModal');
-  if (existing) { existing.remove(); }
+// ── GUEST GUARD — ask people without an account to create one ──
+// One bottom sheet, used both when a guest taps an account-only action (like, upload, playlist…)
+// and as a friendly welcome prompt when a guest opens the app (see _guestWelcomePrompt).
+function _showAuthSheet(opts) {
+  opts = opts || {};
+  const old = document.getElementById('authNudgeModal'); if (old) old.remove();
   const el = document.createElement('div');
   el.id = 'authNudgeModal';
-  el.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);';
-  el.innerHTML = `
-    <div style="background:var(--card);border-radius:24px 24px 0 0;padding:28px 24px 36px;width:100%;max-width:480px;text-align:center;border-top:1.5px solid var(--border);">
-      <div style="font-size:36px;margin-bottom:12px;"></div>
-      <div style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:8px;">Create a free account</div>
-      <div style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6;">
-        Like songs, save playlists and upload your music<br>it\'s free and takes 30 seconds.
-      </div>
-      <button onclick="document.getElementById(\'authNudgeModal\').remove();openModal(\'auth\')" style="width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:\'Archivo\',sans-serif;margin-bottom:10px;">
-        Create Free Account
-      </button>
-      <button onclick="document.getElementById(\'authNudgeModal\').remove()" style="width:100%;padding:12px;background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:\'Archivo\',sans-serif;">
-        Maybe later
-      </button>
-    </div>
-  `;
-  el.addEventListener('click', e => { if (e.target === el) el.remove(); });
+  el.style.cssText = 'position:fixed;inset:0;z-index:10060;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);';
+  el.innerHTML =
+    '<div role="dialog" aria-modal="true" aria-labelledby="anTitle" style="background:var(--card);border-radius:24px 24px 0 0;padding:28px 24px 30px;width:100%;max-width:480px;text-align:center;border-top:1.5px solid var(--border);">' +
+      '<div style="font-size:36px;margin-bottom:12px;"><i class="fas fa-user-circle" style="color:var(--accent)"></i></div>' +
+      '<div id="anTitle" style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:8px;">' + (opts.title || 'Create a free account') + '</div>' +
+      '<div style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6;">' + (opts.text || 'Like songs, save playlists and upload your music.<br>It\u2019s free and takes 30 seconds.') + '</div>' +
+      '<button type="button" id="anCreate" style="width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:\'Archivo\',sans-serif;margin-bottom:10px;">Create Free Account</button>' +
+      '<button type="button" id="anSignin" style="width:100%;padding:12px;background:transparent;color:var(--accent);border:1.5px solid var(--accent);border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:\'Archivo\',sans-serif;margin-bottom:10px;">I already have an account</button>' +
+      '<button type="button" id="anLater" style="width:100%;padding:10px;background:transparent;color:var(--muted);border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:\'Archivo\',sans-serif;">Maybe later</button>' +
+    '</div>';
+  const close = () => { el.remove(); };
+  const go = (side) => { close(); openModal('auth'); try { authFlip(side); } catch (e) {} };
+  el.querySelector('#anCreate').onclick = () => go('signup');
+  el.querySelector('#anSignin').onclick = () => go('signin');
+  el.querySelector('#anLater').onclick = () => { close(); if (opts.onLater) opts.onLater(); };
+  el.addEventListener('click', e => { if (e.target === el) { close(); if (opts.onLater) opts.onLater(); } });
   document.body.appendChild(el);
+}
+function requireAuth(action) {
+  if (_demoUser) { action(); return; }
+  _showAuthSheet();
+}
+
+// Welcome prompt for guests: when the app opens with no signed-in account, offer to create one.
+// Shown once per visit; "Maybe later" snoozes it for 3 days. Waits until no other dialog is open.
+function _guestWelcomePrompt() {
+  if (!sb || _demoUser) return;
+  try { if (sessionStorage.getItem('yaps_guest_prompted') === '1') return; } catch (e) {}
+  let snoozeUntil = 0;
+  try { snoozeUntil = parseInt(localStorage.getItem('yaps_guest_snooze') || '0', 10) || 0; } catch (e) {}
+  if (Date.now() < snoozeUntil) return;
+  let tries = 0;
+  const t = setInterval(() => {
+    if (_demoUser || ++tries > 40) { clearInterval(t); return; }          // signed in meanwhile, or gave up
+    const welcome = document.getElementById('welcomeThemeModal');
+    if (document.querySelector('.modal-overlay.open') || document.getElementById('authNudgeModal') ||
+        (welcome && welcome.classList.contains('open'))) return;          // something else is on screen: wait
+    clearInterval(t);
+    try { sessionStorage.setItem('yaps_guest_prompted', '1'); } catch (e) {}
+    _showAuthSheet({
+      title: 'Welcome to YAPS Music',
+      text: 'Create a free account to like songs, build playlists, follow artists and keep your library on every device.',
+      onLater: () => { try { localStorage.setItem('yaps_guest_snooze', String(Date.now() + 3 * 864e5)); } catch (e) {} }
+    });
+  }, 1500);
 }
 
 // ── LIKE / REPOST TRACK ──
