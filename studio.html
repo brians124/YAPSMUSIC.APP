@@ -1683,9 +1683,40 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
 </div>
 
 <div id="scrim"></div><dialog id="libd" aria-label="Library"><div class="lh"><b>SELECT MUSIC</b><button class="x" id="libx" aria-label="Close">✕</button></div>
-<div class="tabs"><button class="on" data-s="lib">YAPS Library</button><button data-s="offline">Offline</button><button data-s="device">My Device</button><button data-s="saved">Saved Mixes</button></div>
-<div class="libtools" id="libTools"><button class="sm" id="libSug" aria-pressed="false">SUGGEST NEXT</button><button class="sm" id="libSort" aria-pressed="false">SORT: OFF</button><button class="sm" id="libAn">ANALYSE LIBRARY</button><span id="libSt" aria-live="polite"></span></div>
+<div class="libnav"><div class="navrow"><div class="tabs libmain"><button data-s="offline">Offline</button><button data-s="device">Device</button><button class="on" data-s="lib">YAPS Library</button></div><button type="button" class="x" id="libMore" aria-expanded="false" aria-controls="libMoreBox" aria-label="More: saved mixes, uploads and DJ tools" title="More">⋯</button></div><div class="libmore" id="libMoreBox" hidden><div class="tabs"><button data-s="saved">Saved Mixes</button><button data-s="uploads">My Uploads</button></div><div class="libtools" id="libTools"><button class="sm" id="libSug" aria-pressed="false">SUGGEST NEXT</button><button class="sm" id="libSort" aria-pressed="false">SORT: OFF</button><button class="sm" id="libAn">ANALYSE LIBRARY</button><span id="libSt" aria-live="polite"></span></div></div></div>
 <div class="sbar"><i class="fas fa-search" aria-hidden="true"></i><input type="search" id="q" placeholder="Search title, artist or genre" aria-label="Search library"></div><div id="list" aria-live="polite"></div></dialog>
+<style id="libSections">
+/* Library: three song sections (Offline | Device | YAPS Library); the other buttons live behind the ... button */
+html body #libd[open]{grid-template-rows:auto auto auto minmax(0,1fr)}
+#libd .libnav{display:grid;gap:8px;min-width:0}
+#libd .navrow{display:flex;gap:8px;align-items:center;min-width:0}
+#libd .navrow .tabs{flex:1;min-width:0}
+#libd .navrow .x{flex:none;font-size:20px;line-height:1;font-weight:800}
+#libMore[aria-expanded="true"],#libMore.on{background:var(--cy);color:#032;border-color:var(--cy)}
+#libd .libmore{display:grid;gap:8px;padding:8px;border:1px solid var(--bd);border-radius:12px}
+#libd .libmore[hidden]{display:none}
+#list.secs{overflow:hidden}
+#list.secs .libsec{display:none;min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;align-content:start;gap:6px}
+#list.secs .libsec.cur{display:grid}
+.libsec>h5{position:sticky;top:0;z-index:2;margin:0;padding:8px 4px 6px;display:flex;justify-content:space-between;align-items:center;font:700 12px 'Archivo Narrow',sans-serif;letter-spacing:.14em;color:var(--cy);background:var(--s1,#111);text-transform:uppercase}
+.libsec>h5 em{font-style:normal;color:var(--mu);letter-spacing:.04em}
+html[data-mode="light"] #libd .libsec>h5{background:#fff;color:#0a8f63}
+.libsec .empty{padding:14px 6px}
+#list .it{cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#list .it img{-webkit-user-drag:none;pointer-events:none}
+#list .it.dragging{opacity:.45}
+.dragghost{position:fixed;z-index:99999;pointer-events:none;max-width:260px;padding:9px 14px;border-radius:12px;background:var(--cy,#19c3ff);color:#032;font:800 13px 'Archivo Narrow',sans-serif;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 8px 26px rgba(0,0,0,.5)}
+body.dragsong #deckA,body.dragsong #deckB{outline:2px dashed rgba(255,255,255,.35);outline-offset:-4px}
+body.dragsong #deckA.dropT{outline:3px solid #19c3ff;box-shadow:0 0 28px rgba(25,195,255,.65)}
+body.dragsong #deckB.dropT{outline:3px solid #8b5cf6;box-shadow:0 0 28px rgba(139,92,246,.7)}
+@media(max-width:899px){.libsec>h5{display:none}}
+@media(min-width:900px){
+ #libd:has(#list.secs) .libmain{display:none}
+ #libd:has(#list.secs) .navrow{justify-content:flex-end}
+ #list.secs{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:10px}
+ #list.secs .libsec{display:grid;border:1px solid var(--bd);border-radius:12px;padding:0 8px 8px}
+}
+</style>
 <style id="mobilePolish">
 /* MOBILE POLISH (placed last so it wins): readable dock labels, finger-sized controls */
 #vdock button{flex:1 0 auto!important;min-width:max-content!important}
@@ -1814,6 +1845,7 @@ function reveal(){if(!b.dataset.vp)return;setTimeout(function(){var e=d.nextElem
 function sync(){[].forEach.call(d.children,function(x){x.classList.toggle('on',!!x.dataset.vp&&x.dataset.vp===b.dataset.vp)})}
 d.addEventListener('click',function(e){var t=e.target.closest('button');if(!t)return;if(t.dataset.song){var s=document.getElementById('scTop');if(s)s.click();return}
 if(t.dataset.px){var pe=document.getElementById(t.dataset.px);if(pe)pe.click();return}
+ if(t.dataset.vp==='sources'){try{libDismissed=false}catch(x){}delete b.dataset.vp;sync();try{if(!document.getElementById('libd').open)openLib()}catch(x){}return}
  var v=t.dataset.vp;if(b.dataset.vp===v)delete b.dataset.vp;else b.dataset.vp=v;sync();reveal()});
 var ai=document.getElementById('aiTop');if(ai)ai.addEventListener('click',function(){b.dataset.vp='ai';sync();reveal()});
 document.querySelectorAll('.src').forEach(function(x){x.addEventListener('click',function(){delete b.dataset.vp;sync()})});
@@ -4492,6 +4524,74 @@ setInterval(refresh,250);refresh();
 window.YAPS_LOOPTOOLS={state:LT,loopSize,loopIn,loopOut,loopExit,reloop,rollStart,rollStop,stutStart,stutStop,resetDeck,trGo,trStop,setBpm,get transition(){return TR.run}};
 })();
 
+
+/* ===== Library sections: Offline | Device | YAPS Library, every song can be dragged onto Deck A or B ===== */
+(function(){
+ const MAIN=['offline','device','lib'];
+ const _r0=render;
+ const libRow=t=>`<div class="it" title="Drag onto Deck A or B"><img loading="lazy" alt="" src="${esc(src(t.cover||''))}" onerror="this.removeAttribute('src')"><div><b>${esc(t.title)}</b><span>${esc(t.artist)}${t.genre?' · '+esc(t.genre):''}${t.duration?' · '+esc(t.duration):''}</span>${typeof libBadge==='function'?libBadge(t):''}</div>
+  <button class="ld" data-d="A" data-id="${esc(t.id)}" aria-label="Load ${esc(t.title)} into Deck A">A</button><button class="ld b" data-d="B" data-id="${esc(t.id)}" aria-label="Load ${esc(t.title)} into Deck B">B</button>${t.local&&!t.dl?'':`<button class="ld sv${isOff(t.id)?' on':''}" data-save="${esc(t.id)}" aria-label="${isOff(t.id)?'Remove offline copy of ':'Save offline: '}${esc(t.title)}"${offBusy.has(String(t.id))?' disabled':''}>${offBusy.has(String(t.id))?'…':isOff(t.id)?'<i class="fas fa-check"></i>':'<i class="fas fa-download"></i>'}</button>`}</div>`;
+ const devRow=r=>{const v=devIsVid(r);return `<div class="it" title="Drag onto Deck A or B" style="grid-template-columns:44px 1fr auto auto auto"><div class="dv${v?' v':''}" aria-hidden="true">${v?'▶':'♪'}</div><div><b>${esc(r.name)}</b><span>${esc(r.artist)}${r.duration&&r.duration!=='—'?' · '+esc(r.duration):''}${v?' · video':''}</span></div>
+  <button class="ld" data-did="${r.id}" data-d="A" aria-label="Load ${esc(r.name)} into Deck A">A</button><button class="ld b" data-did="${r.id}" data-d="B" aria-label="Load ${esc(r.name)} into Deck B">B</button><button class="dx" data-del="${r.id}" aria-label="Remove ${esc(r.name)} from My Device">✕</button></div>`};
+ render=function(){
+  const l=$('#list');
+  if(!MAIN.includes(mode)){l.classList.remove('secs');return _r0()}
+  l.classList.add('secs');
+  const keep={};l.querySelectorAll('.libsec').forEach(e=>keep[e.dataset.sec]=e.scrollTop);
+  const q=$('#q').value.trim().toLowerCase(),hit=a=>!q||a.join(' ').toLowerCase().includes(q);
+  let all=library.filter(t=>hit([t.title,t.artist,t.genre]));if(typeof libRank==='function')all=libRank(all);
+  const off=all.filter(t=>isOff(t.id));
+  const head='<div class="drow" style="margin:4px 0 2px"><button class="k pl" data-dev="add">Add songs and videos</button>'+(window.showDirectoryPicker?'<button class="k" data-dev="dir">Add a folder</button>':'')+'</div>';
+  let devBody,devN=0;
+  if(!devFresh){devBody=head+'<div class="empty">Loading your device library…</div>';devRefresh().then(()=>{if($('#libd').open&&MAIN.includes(mode))render()})}
+  else{const rows=devRows.filter(r=>hit([r.name,r.artist]));devN=rows.length;devBody=head+(rows.length?rows.map(devRow).join(''):'<div class="empty">'+(q?'No files match “'+esc(q)+'”.':'Nothing here yet. Tap “Add songs and videos” and pick files from your phone.')+'</div>')}
+  const sec=(k,title,n,body)=>`<div class="libsec${mode===k?' cur':''}" data-sec="${k}"><h5><span>${title}</span><em>${n}</em></h5>${body}</div>`;
+  l.innerHTML=
+   sec('offline','Offline songs',off.length,off.length?off.map(libRow).join(''):'<div class="empty">'+(q?'No offline songs match “'+esc(q)+'”.':'No offline songs yet. Tap the download icon next to a song in YAPS Library while you are online.')+'</div>')+
+   sec('device','Device songs',devN,devBody)+
+   sec('lib','YAPS Library',all.length,all.length?all.map(libRow).join(''):'<div class="empty">'+(library.length?'No tracks match “'+esc(q)+'”. Try a different search.':'The library is empty.')+'</div>');
+  l.querySelectorAll('.libsec').forEach(e=>{if(keep[e.dataset.sec])e.scrollTop=keep[e.dataset.sec]});
+ };
+ /* the ... button: Saved Mixes, My Uploads and the DJ helper buttons (Suggest next, Sort, Analyse) */
+ const mb=$('#libMore'),box=$('#libMoreBox'),ld=$('#libd');
+ const syncMore=()=>{const on=!!box.querySelector('.tabs .on');mb.classList.toggle('on',on&&box.hidden)};
+ mb.addEventListener('click',()=>{box.hidden=!box.hidden;mb.setAttribute('aria-expanded',String(!box.hidden));syncMore()});
+ try{new MutationObserver(syncMore).observe(ld,{subtree:true,attributes:true,attributeFilter:['class']})}catch(e){}
+ /* drag any song onto Deck A or Deck B (mouse: drag; touch: press and hold, then drag) */
+ const list=$('#list');let pend=null,dg=null,ghost=null;
+ const deckAt=(x,y)=>{for(const L of['A','B']){const e=document.getElementById('deck'+L);if(!e)continue;const r=e.getBoundingClientRect();if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return L}return null};
+ const scroller=()=>{let e=ld.parentElement;while(e&&e!==document.body&&e!==document.documentElement){const c=getComputedStyle(e);if(/(auto|scroll)/.test(c.overflowY)&&e.scrollHeight>e.clientHeight+4)return e;e=e.parentElement}return window};
+ const loadBtn=(row,L)=>row.querySelector('.ld[data-d="'+L+'"],.ld[data-act="'+L+'"]');
+ function clean(){if(pend){clearTimeout(pend.t);pend=null}
+  if(dg){cancelAnimationFrame(dg.raf);dg.row.classList.remove('dragging')}
+  if(ghost){ghost.remove();ghost=null}dg=null;document.body.classList.remove('dragsong');
+  ['A','B'].forEach(L=>{const e=document.getElementById('deck'+L);if(e)e.classList.remove('dropT')})}
+ function begin(){if(!pend)return;const row=pend.row;clearTimeout(pend.t);
+  dg={row,x:pend.x,y:pend.y,sc:scroller(),raf:0};pend=null;
+  const nm=row.querySelector('b');ghost=document.createElement('div');ghost.className='dragghost';ghost.textContent='♪ '+(nm?nm.textContent:'Song')+'  →  drop on Deck A or B';document.body.appendChild(ghost);
+  row.classList.add('dragging');document.body.classList.add('dragsong');try{navigator.vibrate&&navigator.vibrate(15)}catch(e){}
+  place();tick()}
+ function place(){if(!ghost)return;ghost.style.left=Math.min(dg.x+14,innerWidth-ghost.offsetWidth-6)+'px';ghost.style.top=Math.max(4,dg.y-8)+'px';
+  const L=deckAt(dg.x,dg.y);['A','B'].forEach(k=>{const e=document.getElementById('deck'+k);if(e)e.classList.toggle('dropT',k===L)})}
+ function tick(){if(!dg)return;const h=innerHeight,y=dg.y;let v=0;if(y<80)v=-(80-y)/4;else if(y>h-80)v=(y-(h-80))/4;
+  if(v){try{dg.sc.scrollBy(0,v)}catch(e){}place()}dg.raf=requestAnimationFrame(tick)}
+ list.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;
+  const row=e.target.closest('.it');if(!row||e.target.closest('button'))return;if(!loadBtn(row,'A')||!loadBtn(row,'B'))return;
+  clean();const touch=e.pointerType!=='mouse';pend={row,x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,id:e.pointerId,touch,t:0};
+  if(touch)pend.t=setTimeout(begin,260)});
+ document.addEventListener('pointermove',e=>{
+  if(dg){dg.x=e.clientX;dg.y=e.clientY;place();return}
+  if(!pend||e.pointerId!==pend.id)return;pend.x=e.clientX;pend.y=e.clientY;
+  const m=Math.hypot(e.clientX-pend.x0,e.clientY-pend.y0);
+  if(pend.touch){if(m>10){clearTimeout(pend.t);pend=null}}else if(m>6)begin()});
+ const end=e=>{if(dg){const L=deckAt(e.clientX,e.clientY),row=dg.row;clean();if(L&&e.type==='pointerup'){const b=loadBtn(row,L);if(b)b.click()}}else if(pend)clean()};
+ document.addEventListener('pointerup',end);document.addEventListener('pointercancel',end);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&dg)clean()});
+ document.addEventListener('touchmove',e=>{if(dg&&e.cancelable)e.preventDefault()},{passive:false});
+ list.addEventListener('dragstart',e=>e.preventDefault());
+ list.addEventListener('contextmenu',e=>{if(e.target.closest('.it')&&(dg||pend))e.preventDefault()});
+ if($('#libd').open)render();
+})();
 </script>
 <script id="yapsProducer">
 /* ===== YAPS PRODUCER · PHASE 2: MULTITRACK TIMELINE =====
