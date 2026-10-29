@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><link rel="prefetch" href="studio.html" as="document">
+<head>
 <script>window.__yapsInitialSearch=location.search;</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -12774,9 +12774,12 @@ function renderLibrary() {
     list.innerHTML = summary + bulkLikedBtn + (rows.length ? rows.join('') :
       emptyLibState('fa-arrow-down','No downloads yet','Tap the download icon on any track to save it for offline listening.'));
   } else {
-    list.innerHTML = tracks.map((t,i) => trackRowHTML(t, i)).join('');
+    const lim = _libAllLimit || 40;
+    list.innerHTML = tracks.slice(0, lim).map((t,i) => trackRowHTML(t, i)).join('') +
+      (tracks.length > lim ? `<div style="text-align:center;padding:14px 0 22px;"><button class="btn-primary" style="padding:9px 20px;" onclick="_libAllLimit+=40;renderLibrary()">Show more (${tracks.length - lim} left)</button></div>` : '');
   }
 }
+var _libAllLimit = 40;   // "All songs" tab shows 40 rows at a time (var: safe if renderLibrary runs before this line)
 
 function renderLibraryPlaylists(list) {
   if (_userPlaylists.length === 0) {
@@ -23407,7 +23410,9 @@ window.addEventListener('online', () => { _probeInternet().then(ok => { _offline
 window.addEventListener('offline', () => { _offlineAlertDismissed = false; _applyNetState(false); });
 // Wi-Fi/data connected but no real internet: re-check when the app comes back to the screen and every minute
 document.addEventListener('visibilitychange', () => { if (!document.hidden) _probeInternet().then(_applyNetState); });
-setInterval(() => { if (!document.hidden) _probeInternet().then(_applyNetState); }, 60000);
+/* Poll every minute only while we think we're offline (to notice recovery); when online, probe every 5th minute. */
+let _probeTick = 0;
+setInterval(() => { if (document.hidden) return; if (_netDown || ++_probeTick % 5 === 0) _probeInternet().then(_applyNetState); }, 60000);
 setTimeout(() => { _probeInternet().then(_applyNetState); }, 2500);
 document.addEventListener('DOMContentLoaded', _updateOfflineBanner);
 _updateOfflineBanner();
@@ -23725,22 +23730,40 @@ function _applyLazyLoadingToImages(root) {
     img.decoding = 'async';
   });
 }
+function _lazyOneImg(img) {
+  if (img.hasAttribute('loading') || img.id === 'npCover') return;
+  img.loading = 'lazy';
+  img.decoding = 'async';
+}
+/* Only look at the nodes that were just added (was: re-scan every image under #main for every mutation). */
 new MutationObserver((mutations) => {
   for (const m of mutations) {
-    if (m.addedNodes.length) _applyLazyLoadingToImages(document.getElementById('main'));
+    for (const n of m.addedNodes) {
+      if (n.nodeType !== 1) continue;
+      if (n.tagName === 'IMG') _lazyOneImg(n);
+      else if (n.querySelectorAll) n.querySelectorAll('img:not([loading])').forEach(_lazyOneImg);
+    }
   }
 }).observe(document.getElementById('main') || document.body, { childList: true, subtree: true });
+
+/* Warm the cache with the DJ Studio page only on a fast, non-metered connection and when the browser is idle.
+   (Replaces an unconditional <link rel="prefetch"> that downloaded ~600 KB on every launch, even on mobile data.) */
+window.addEventListener('load', () => {
+  const c = navigator.connection || {};
+  if (c.saveData || c.type === 'cellular' || (c.effectiveType && c.effectiveType !== '4g')) return;
+  (window.requestIdleCallback || (f => setTimeout(f, 4000)))(() => { try { fetch('studio.html', { priority: 'low' }).catch(() => {}); } catch (e) {} });
+});
 
 // Without sw.js, offline/PWA caching will not function (error is caught silently).
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js')
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
       .then(reg => {
         console.log('[YAPS] Service Worker registered');
         // If a new version is already waiting, offer to reload into it.
         if (reg.waiting && navigator.serviceWorker.controller) promptSwUpdate(reg.waiting);
         // Look for a new version on open, when the app comes back to the foreground, and every 30 min.
-        const _chk = () => { try { reg.update(); } catch (e) {} };
+        const _chk = () => { try { reg.update().catch(() => {}); } catch (e) {} };   // .catch: update() rejects while offline
         document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') _chk(); });
         setInterval(_chk, 30 * 60 * 1000);
         reg.addEventListener('updatefound', () => {
@@ -27621,7 +27644,7 @@ const CATS=[
  ac('DJ preferences','Reset what the DJ has learned',async()=>{if(await dlg({title:'Reset DJ preferences?',msg:'The DJ will forget your liked/muted artists and genres.',ok:'Reset',danger:true})){localStorage.removeItem('yaps_ai_prefs');localStorage.removeItem('yaps_ai_muted');toast('DJ preferences reset')}}),
  tg('voice','Voice commands',(window.SpeechRecognition||window.webkitSpeechRecognition)?'Control YAPS by voice':'Not supported on this browser',{dis:!(window.SpeechRecognition||window.webkitSpeechRecognition)}),tg('djAuto','Auto DJ','Auto-mix tracks together')]},
 {id:'app',n:'App',s:'Install, updates, share',it:[
- ac('Install YAPSMusic',null,async()=>{if(window._pwaInstallPrompt){_pwaInstallPrompt.prompt();}else dlg({title:'Install YAPSMusic',msg:/iphone|ipad/i.test(navigator.userAgent)?'Tap Share, then “Add to Home Screen”.':'Use your browser menu → “Install app”. (Already installed? You are all set.)',ok:'OK',info:1})},{f:()=>matchMedia('(display-mode: standalone)').matches?'Installed':''}),
+ ac('Install YAPSMusic',null,async()=>{if(typeof _pwaInstallPrompt!=='undefined'&&_pwaInstallPrompt){pwaInstall();}else dlg({title:'Install YAPSMusic',msg:/iphone|ipad/i.test(navigator.userAgent)?'Tap Share, then “Add to Home Screen”.':'Use your browser menu → “Install app”. (Already installed? You are all set.)',ok:'OK',info:1})},{f:()=>matchMedia('(display-mode: standalone)').matches?'Installed':''}),
  ac('Check for Updates',null,async()=>{try{const r=await navigator.serviceWorker.getRegistration();if(!r){toast('Offline support is not active on this device');return}await r.update();await new Promise(z=>setTimeout(z,1500));if(r.waiting||r.installing){toast('Update found, tap Update on the banner');if(r.waiting&&typeof promptSwUpdate==='function'){_swUpdateDismissed=false;promptSwUpdate(r.waiting)}}else toast('You are on the latest version')}catch(e){toast('Could not check, try later')}}),
  inf('App Version',()=>'v1.0'),ac('Share YAPSMusic',null,()=>share()),ac('Invite Friends',null,()=>share('Join me on YAPSMusic, Your Audio Playlist Station.')),ac('Rate YAPSMusic',null,A(()=>openRateAppModal()))]},
 {id:'support',n:'Support',s:'Help, feedback, contact',it:[
@@ -28744,7 +28767,8 @@ async function runOfflineCheck() {
     $('genre-detail-meta').textContent = SCOPES[g.scope] + ' · ' + list.length + (list.length === 1 ? ' track' : ' tracks');
     var title = document.querySelector('#genre-detail-view .genre-detail-section-title');
     if (title) title.innerHTML = esc(SCOPES[g.scope]) + ' · <span id="genre-track-count">' + list.length + '</span> catalogue tracks ' + pill('cat');
-    var html = list.length ? list.map(function (t) { return trackRowHTML(t, tracks.indexOf(t)); }).join('') :
+    window._genreShown = Math.min(list.length, 40); window._genreList = list;
+    var html = list.length ? list.slice(0, 40).map(function (t) { return trackRowHTML(t, tracks.indexOf(t)); }).join('') + (list.length > 40 ? '<div id="genre-more-wrap" style="text-align:center;padding:14px 0 22px"><button class="btn-primary" style="padding:9px 20px" onclick="_genreMore()">Show more (' + (list.length - 40) + ' left)</button></div>' : '') :
       '<div style="padding:24px 0;text-align:center;color:var(--dim)"><i class="fas fa-music" style="font-size:30px;display:block;margin-bottom:10px"></i>No ' + esc(g.name) + ' tracks from ' + esc(SCOPES[g.scope]) + ' in the catalogue yet.</div>';
     if (samples.length) html += head('Sample content', 'smp', 'Placeholders only. They cannot be played and are not real releases.') + samples.map(sampleRow).join('');
     $('genre-tracks-list').innerHTML = html;
@@ -28753,6 +28777,14 @@ async function runOfflineCheck() {
     $('genre-detail-view').classList.add('active');
     var m = $('main'); if (m) m.scrollTop = 0;
   }
+
+  window._genreMore = function () {
+    var l = window._genreList || [], from = window._genreShown || 0, to = Math.min(l.length, from + 40);
+    var wrap = $('genre-more-wrap'); if (!wrap) return;
+    wrap.insertAdjacentHTML('beforebegin', l.slice(from, to).map(function (t) { return trackRowHTML(t, tracks.indexOf(t)); }).join(''));
+    window._genreShown = to;
+    if (to >= l.length) wrap.remove(); else wrap.querySelector('button').textContent = 'Show more (' + (l.length - to) + ' left)';
+  };
 
   function onAct(el) {
     var a = el.getAttribute('data-act');
