@@ -1709,13 +1709,40 @@ html[data-mode="light"] #libd .libsec>h5{background:#fff;color:#0a8f63}
 body.dragsong #deckA,body.dragsong #deckB{outline:2px dashed rgba(255,255,255,.35);outline-offset:-4px}
 body.dragsong #deckA.dropT{outline:3px solid #19c3ff;box-shadow:0 0 28px rgba(25,195,255,.65)}
 body.dragsong #deckB.dropT{outline:3px solid #8b5cf6;box-shadow:0 0 28px rgba(139,92,246,.7)}
-@media(max-width:899px){.libsec>h5{display:none}}
-@media(min-width:900px){
- #libd:has(#list.secs) .libmain{display:none}
- #libd:has(#list.secs) .navrow{justify-content:flex-end}
- #list.secs{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(0,1fr);gap:10px}
- #list.secs .libsec{display:grid;border:1px solid var(--bd);border-radius:12px;padding:0 8px 8px}
+/* Sources = three side-by-side boxes (Offline | My Device | YAPS Library) at every width */
+#libd:has(#list.secs) .libmain{display:none}
+#libd:has(#list.secs) .navrow{justify-content:flex-end}
+#list.secs{display:flex!important;flex-direction:row;gap:10px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;height:100%;min-height:0}
+#list.secs .libsec,#list.secs .libsec.cur{display:grid;flex:1 1 0;min-width:min(100%,260px);height:100%;scroll-snap-align:start;border:1px solid var(--bd);border-radius:12px;padding:0 8px 8px;align-content:start}
+#list.secs .libsec>h5{display:flex}
+html body.vdj[data-vp=sources] .row3{display:none!important}
+html body #libd[open]:has(#list.secs){display:flex;flex-direction:column;overflow:hidden}
+html body #libd[open]:has(#list.secs)>*{flex:none}
+html body #libd[open]:has(#list.secs)>#list{flex:1 1 0;min-height:0;height:auto}
+/* one compact header row: title | search | ... | close, at every size */
+html body #libd[open]:has(#list.secs){display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;grid-template-rows:auto minmax(0,1fr);gap:8px 10px;align-items:center;overflow:hidden;max-height:min(62dvh,560px)!important}
+html body #libd[open]:has(#list.secs)>.lh{display:contents}
+html body #libd[open]:has(#list.secs)>.lh b{grid-column:1;grid-row:1;font-size:15px;white-space:nowrap;color:var(--cy,#19e68c);-webkit-text-fill-color:currentColor;background:none;filter:none}
+html body #libd[open]:has(#list.secs)>.sbar{grid-column:2;grid-row:1;min-width:0;margin:0}
+html body #libd[open]:has(#list.secs)>.sbar input{padding-top:8px;padding-bottom:8px;font-size:14px}
+html body #libd[open]:has(#list.secs)>.libnav{grid-column:3;grid-row:1}
+html body #libd[open]:has(#list.secs)>.lh .x{grid-column:4;grid-row:1;color:var(--cy,#19e68c);-webkit-text-fill-color:currentColor}
+html body #libd[open]:has(#list.secs)>#list{grid-column:1/-1;grid-row:2;min-height:0;height:100%}
+html body #libd[open]:has(#list.secs) .libnav .libmore:not([hidden]){position:absolute;right:10px;top:56px;z-index:5;background:var(--s1,#111);min-width:240px}
+@media(orientation:landscape) and (max-height:520px){
+html body #libd.inl[open]:has(#list.secs){height:max(300px,calc(100vh - 56px))!important;max-height:max(300px,calc(100vh - 56px))!important;min-height:0!important;padding:8px 10px}
+html body #libd[open]:has(#list.secs)>.lh b{display:none}
+#list.secs .libsec{min-width:min(46vw,300px)}
 }
+html.emb body.vdj #libd.inl #list.secs{overflow-y:hidden}
+</style>
+<style id="dragZones">
+.dzones{position:fixed;z-index:99998;left:8px;right:8px;top:calc(8px + env(safe-area-inset-top,0px));display:flex;gap:10px;pointer-events:none}
+.dzones>div{flex:1;display:grid;place-items:center;height:64px;border-radius:14px;font:800 14px 'Archivo Narrow',sans-serif;letter-spacing:.1em;color:#fff;border:2px dashed rgba(255,255,255,.5);background:rgba(10,20,30,.88)}
+.dzones>div[data-z=A]{border-color:#19e68c;background:rgba(10,60,40,.9)}
+.dzones>div[data-z=B]{border-color:#8b5cf6;background:rgba(40,20,80,.9)}
+.dzones>div.dropT{transform:scale(1.04);box-shadow:0 0 28px currentColor;background:#19c3ff;color:#032}
+.dzones>div[data-z=B].dropT{background:#8b5cf6;color:#fff}
 </style>
 <style id="mobilePolish">
 /* MOBILE POLISH (placed last so it wins): readable dock labels, finger-sized controls */
@@ -2097,7 +2124,7 @@ function openLib(a){const d=$('#libd');
  $$('.tabs button').forEach(x=>x.classList.toggle('on',x.dataset.s===mode));
  if(!d.open){try{d.show()}catch(e){d.setAttribute('open','')}}
  render();readDownloads().then(()=>{if($('#libd').open)render()});
- try{d.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}}
+ try{const r=d.getBoundingClientRect();const seen=Math.min(r.bottom,innerHeight)-Math.max(r.top,0),need=Math.min(340,r.height);if(seen<need)scrollBy({top:r.top>0?need-seen:r.top-8,behavior:'smooth'})}catch(e){}}   /* keep the decks in view; only scroll when the panel is off screen */
 function closeLib(){const d=$('#libd');try{d.close()}catch(e){d.removeAttribute('open')}}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#libd').open&&$('#libd').classList.contains('inl'))closeLib()});
 /* opening one of the tool tabs (Loop, Sampler, AI DJ, Record...) replaces the song list in the same field */
@@ -3271,6 +3298,8 @@ document.addEventListener('input',e=>{if(ai&&ai.tr&&!AP.lock()&&(e.target.id==='
  document.addEventListener('visibilitychange',()=>{if(document.hidden)act.forEach(v=>{try{v.g.gain.value=0}catch(e){}})});
  (async()=>{try{tracks=await all('tracks');lists=await all('lists')}catch(e){say('Your saved library couldn’t be opened: '+err(e),1)}setOn(on,true);if(on)say('Celebration Mode is ON.');draw()})();
  window.yapsCelebration={stopAll};
+ /* opening the CELEBRATE tab switches Celebration Mode on, so the pads are live straight away */
+ try{new MutationObserver(()=>{if(document.body.dataset.vp==='celeb'&&!on)setOn(true)}).observe(document.body,{attributes:true,attributeFilter:['data-vp']});if(document.body.dataset.vp==='celeb')setOn(true)}catch(e){}
 })();
 
 
@@ -4559,20 +4588,27 @@ window.YAPS_LOOPTOOLS={state:LT,loopSize,loopIn,loopOut,loopExit,reloop,rollStar
  try{new MutationObserver(syncMore).observe(ld,{subtree:true,attributes:true,attributeFilter:['class']})}catch(e){}
  /* drag any song onto Deck A or Deck B (mouse: drag; touch: press and hold, then drag) */
  const list=$('#list');let pend=null,dg=null,ghost=null;
- const deckAt=(x,y)=>{for(const L of['A','B']){const e=document.getElementById('deck'+L);if(!e)continue;const r=e.getBoundingClientRect();if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return L}return null};
+ let zones=null;
+ const vis=e=>{const r=e.getBoundingClientRect(),h=Math.min(r.bottom,innerHeight)-Math.max(r.top,0);return h>Math.min(120,r.height*.5)};
+ const mkZones=()=>{rmZones();if(['A','B'].every(L=>{const e=document.getElementById('deck'+L);return e&&vis(e)}))return;
+  zones=document.createElement('div');zones.className='dzones';
+  zones.innerHTML='<div data-z="A">DROP → DECK A</div><div data-z="B">DROP → DECK B</div>';document.body.appendChild(zones)};
+ const rmZones=()=>{if(zones){zones.remove();zones=null}};
+ const deckAt=(x,y)=>{if(zones){for(const z of zones.children){const r=z.getBoundingClientRect();if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)return z.dataset.z}}
+  for(const L of['A','B']){const e=document.getElementById('deck'+L);if(!e)continue;const r=e.getBoundingClientRect();if(x>=r.left&&x<=r.right&&y>=Math.max(r.top,0)&&y<=Math.min(r.bottom,innerHeight))return L}return null};
  const scroller=()=>{let e=ld.parentElement;while(e&&e!==document.body&&e!==document.documentElement){const c=getComputedStyle(e);if(/(auto|scroll)/.test(c.overflowY)&&e.scrollHeight>e.clientHeight+4)return e;e=e.parentElement}return window};
  const loadBtn=(row,L)=>row.querySelector('.ld[data-d="'+L+'"],.ld[data-act="'+L+'"]');
  function clean(){if(pend){clearTimeout(pend.t);pend=null}
   if(dg){cancelAnimationFrame(dg.raf);dg.row.classList.remove('dragging')}
-  if(ghost){ghost.remove();ghost=null}dg=null;document.body.classList.remove('dragsong');
+  if(ghost){ghost.remove();ghost=null}rmZones();dg=null;document.body.classList.remove('dragsong');
   ['A','B'].forEach(L=>{const e=document.getElementById('deck'+L);if(e)e.classList.remove('dropT')})}
  function begin(){if(!pend)return;const row=pend.row;clearTimeout(pend.t);
   dg={row,x:pend.x,y:pend.y,sc:scroller(),raf:0};pend=null;
-  const nm=row.querySelector('b');ghost=document.createElement('div');ghost.className='dragghost';ghost.textContent='♪ '+(nm?nm.textContent:'Song')+'  →  drop on Deck A or B';document.body.appendChild(ghost);
+  const nm=row.querySelector('b');ghost=document.createElement('div');ghost.className='dragghost';ghost.textContent='♪ '+(nm?nm.textContent:'Song')+'  →  drop on Deck A or B';document.body.appendChild(ghost);mkZones();
   row.classList.add('dragging');document.body.classList.add('dragsong');try{navigator.vibrate&&navigator.vibrate(15)}catch(e){}
   place();tick()}
  function place(){if(!ghost)return;ghost.style.left=Math.min(dg.x+14,innerWidth-ghost.offsetWidth-6)+'px';ghost.style.top=Math.max(4,dg.y-8)+'px';
-  const L=deckAt(dg.x,dg.y);['A','B'].forEach(k=>{const e=document.getElementById('deck'+k);if(e)e.classList.toggle('dropT',k===L)})}
+  const L=deckAt(dg.x,dg.y);['A','B'].forEach(k=>{const e=document.getElementById('deck'+k);if(e)e.classList.toggle('dropT',k===L)});if(zones)for(const z of zones.children)z.classList.toggle('dropT',z.dataset.z===L)}
  function tick(){if(!dg)return;const h=innerHeight,y=dg.y;let v=0;if(y<80)v=-(80-y)/4;else if(y>h-80)v=(y-(h-80))/4;
   if(v){try{dg.sc.scrollBy(0,v)}catch(e){}place()}dg.raf=requestAnimationFrame(tick)}
  list.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;

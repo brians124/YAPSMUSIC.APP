@@ -1,0 +1,233 @@
+--- a/index.html	2026-10-29 09:31:17.352834996 +0000
++++ b/index.html	2026-10-29 09:31:26.963063575 +0000
+@@ -14224,6 +14224,7 @@
+ 
+ function setVolume(e, bar) {
+   const rect = bar.getBoundingClientRect();
++  if (!rect.width || !isFinite(e.clientX)) return;   // hidden bar / synthetic click: avoid NaN volume (throws)
+   const vol = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+   document.getElementById('volFill').style.width = vol + '%';
+   audioEngine.volume = vol / 100;
+@@ -16487,11 +16488,21 @@
+     ? `${location.origin}${location.pathname}?track=${encodeURIComponent(trackId)}`
+     : location.href;
+ 
++  // Copy fallback: navigator.clipboard is undefined on non-HTTPS pages and some in-app browsers.
++  const copyFallback = () => {
++    try {
++      if (navigator.clipboard && navigator.clipboard.writeText) {
++        return navigator.clipboard.writeText(shareUrl).then(() => showToast('Link copied!'), () => showToast(shareUrl));
++      }
++    } catch (e) {}
++    showToast(shareUrl);   // last resort: show the link so it can be copied by hand
++  };
++
+   if (navigator.share) {
+     navigator.share({ title: `${title} by ${artist}`, text: `Listen to ${title} by ${artist} on YAPSMusic`, url: shareUrl })
+-      .catch(() => {});
++      .catch(err => { if (!err || err.name !== 'AbortError') copyFallback(); });
+   } else {
+-    navigator.clipboard.writeText(shareUrl).then(() => showToast('Link copied!')).catch(() => showToast('Link copied!'));
++    copyFallback();
+   }
+ }
+ 
+@@ -19183,7 +19194,7 @@
+     const preview = t.track_data ? `Shared a track` : (t.last_msg || '');
+     const timeStr = t.last_time ? _relTime(t.last_time) : '';
+     const tick = t.is_mine && t.last ? _msgTicks(t.last, false).replace(/ onclick="[^"]*"/, '') : '';
+-    return `<div class="msg-thread ${t.unread > 0 ? 'unread' : ''}" onclick="openChatView('${t.conversation_id}','${t.other_id}','${t.other_name.replace(/'/g,"\\'")}')">
++    return `<div class="msg-thread ${t.unread > 0 ? 'unread' : ''}" onclick="openChatView(${_jsArg(t.conversation_id)},${_jsArg(t.other_id)},${_jsArg(t.other_name)})">
+       <div class="msg-avatar" style="background:${color};overflow:hidden;">${_avatarInner(_avatarCache[t.other_id], t.other_name)}</div>
+       <div class="msg-thread-info">
+         <div class="msg-thread-name">${_escHtml(t.other_name)}</div>
+@@ -19857,11 +19868,11 @@
+       const color  = _nameColor(name);
+       const badge  = u.account_type === 'artist' ? '<span style="font-size:10px;background:var(--accent-dim);color:var(--accent);border-radius:8px;padding:2px 7px;margin-left:6px;">Artist</span>' : '';
+       const handle = u.username ? `@${u.username}` : 'YAPS listener';
+-      return `<div class="msg-thread" onclick="startChatWithUser('${u.id}','${name.replace(/'/g,"\\'")}')">
++      return `<div class="msg-thread" onclick="startChatWithUser(${_jsArg(u.id)},${_jsArg(name)})">
+         <div class="msg-avatar" style="background:${color};overflow:hidden;">${_avatarInner(u.avatar_url, name)}</div>
+         <div class="msg-thread-info">
+-          <div class="msg-thread-name">${name}${badge}</div>
+-          <div class="msg-thread-preview">${handle}</div>
++          <div class="msg-thread-name">${_escHtml(name)}${badge}</div>
++          <div class="msg-thread-preview">${_escHtml(handle)}</div>
+         </div>
+         <i class="fas fa-chevron-right" style="color:var(--dim);font-size:12px;"></i>
+       </div>`;
+@@ -19912,6 +19923,9 @@
+    Numbers are sent over HTTPS to /api/contacts/match, compared and
+    discarded by the server. Nothing from your contacts is stored.
+    ═══════════════════════════════════════════════════════════════ */
++// Safe argument for an inline on*="" handler: a JSON string literal that is then HTML-escaped for the attribute.
++// (Escaping only ' is NOT enough: " closes the attribute, \ escapes the quote, and &#39; is decoded back to ' before the JS runs.)
++function _jsArg(v) { return _escHtml(JSON.stringify(String(v == null ? '' : v))); }
+ function _escHtml(v) {
+   return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ }
+@@ -20059,7 +20073,7 @@
+     <div id="upCounts" style="display:flex;justify-content:center;gap:28px;margin:16px 0;font-size:13px;color:var(--muted);"></div>
+     <div style="display:flex;gap:10px;">
+       <button class="btn-ghost pymk-follow${following ? ' on' : ''}" data-id="${_escHtml(u.id)}" style="flex:1;justify-content:center;padding:11px;" onclick="toggleFollowUser(this)">${following ? 'Following' : 'Follow'}</button>
+-      <button class="btn-primary" style="flex:1;justify-content:center;padding:11px;" onclick="closeModal('userProfile');pymkMessage('${_escHtml(u.id)}','${_escHtml(name).replace(/'/g, "\\'")}')"><i class="fas fa-comment-dots"></i>&nbsp; Message</button>
++      <button class="btn-primary" style="flex:1;justify-content:center;padding:11px;" onclick="closeModal('userProfile');pymkMessage(${_jsArg(u.id)},${_jsArg(name)})"><i class="fas fa-comment-dots"></i>&nbsp; Message</button>
+     </div>
+     <div style="margin-top:14px;"><a href="#" data-id="${_escHtml(u.id)}" data-name="${_escHtml(name)}" onclick="event.preventDefault();yapsUserMenu(this.dataset.id,this.dataset.name)" style="font-size:12px;color:var(--dim);text-decoration:underline;">Report or block</a></div></div>`;
+   try { _tipAddProfileBtn(u.id, name, u.avatar_url); } catch (e) {}
+@@ -22445,10 +22459,10 @@
+   }
+   list.innerHTML = items.map(c => `
+     <div class="yv-comment-item">
+-      <div class="yv-comment-avatar"><img loading="lazy" decoding="async" src="${c.avatar}" alt="${c.name}"></div>
++      <div class="yv-comment-avatar"><img loading="lazy" decoding="async" src="${_escHtml(_safeUrl(c.avatar) || 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==')}" alt="${_escHtml(c.name)}"></div>
+       <div class="yv-comment-body">
+-        <div class="yv-comment-name">${c.name}</div>
+-        <div class="yv-comment-text">${c.text}</div>
++        <div class="yv-comment-name">${_escHtml(c.name)}</div>
++        <div class="yv-comment-text">${_escHtml(c.text)}</div>
+         <div class="yv-comment-meta">
+           <span>${c.time}</span>
+           ${c.likes != null ? `<span class="yv-comment-like" onclick="showToast('Liked comment')">${c.likes} likes</span>` : ''}
+@@ -22479,7 +22493,7 @@
+       _renderCommentsList([]);
+     }
+   } else {
+-    _renderCommentsList(_yvCommentsDataDemo);
++    _renderCommentsList([]);
+   }
+ }
+ function yvCloseComments() {
+@@ -22498,17 +22512,21 @@
+   el.innerHTML = `
+     <div class="yv-comment-avatar" style="background:linear-gradient(135deg,#2f8eff,#1a6bb5);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;overflow:hidden;">${_demoUser ? _avatarInner(_demoUser.avatar, _demoUser.name) : 'Y'}</div>
+     <div class="yv-comment-body">
+-      <div class="yv-comment-name">${_demoUser ? '@' + _demoUser.name.replace(/\s+/g, '') : '@You'}</div>
+-      <div class="yv-comment-text">${text}</div>
++      <div class="yv-comment-name">${_escHtml(_demoUser ? '@' + _demoUser.name.replace(/\s+/g, '') : '@You')}</div>
++      <div class="yv-comment-text">${_escHtml(text)}</div>
+       <div class="yv-comment-meta"><span>Just now</span></div>
+     </div>`;
+   list.prepend(el);
+   inp.value = '';
+-  showToast('Comment posted!');
+-
+-  if (v && v._id && sb && _demoUser) {
++  if (!(v && v._id && sb && _demoUser)) {
++    // Not stored on the server (demo item, or not signed in): say so instead of claiming it was posted.
++    showToast(_demoUser ? 'Comment shown on this device only' : 'Sign in to post a comment others can see');
++    return;
++  }
++  {
+     try {
+       await api('/api/videos/' + v._id + '/comments', { method: 'POST', body: { body: String(text).slice(0, 500) } });
++      showToast('Comment posted!');
+       v._commentsCount = (v._commentsCount || 0) + 1;
+       v.comments = _formatCount(v._commentsCount);
+       const label = document.querySelector(`#yv-card-${_yvCommentsOpenIdx} .yv-action-label`);
+@@ -22517,7 +22535,11 @@
+         sendNotification({ toUserId: v._uploaderId, type: 'comment', body: `${_demoUser.name} commented on your video` });
+       }
+       notifyMentions(text, '');
+-    } catch (err) { console.error('Comment send failed:', err); }
++    } catch (err) {
++      console.error('Comment send failed:', err);
++      el.remove(); inp.value = text;   // roll back the optimistic row so the UI matches what was saved
++      showToast('Could not post your comment. Please try again.');
++    }
+   }
+ }
+ 
+@@ -22540,7 +22562,7 @@
+   const userAdded = _stComments[tIdx] || [];
+   document.getElementById('yv-comments-title').textContent = (fc.comments + userAdded.length) + ' Comments';
+   drawer.classList.add('open');
+-  _renderCommentsList([...userAdded, ..._stCommentsDataDemo]);
++  _renderCommentsList(userAdded);
+ }
+ 
+ function stCloseComments() {
+@@ -22571,8 +22593,8 @@
+   if (titleEl) titleEl.textContent = total + ' Comments';
+   const label = document.getElementById('st-ccount-' + tIdx);
+   if (label) label.textContent = total;
+-  _renderCommentsList([..._stComments[tIdx], ..._stCommentsDataDemo]);
+-  showToast('Comment posted!');
++  _renderCommentsList(_stComments[tIdx]);
++  showToast('Comment saved on this device');
+ }
+ 
+ function yvTab(el, tab) {
+@@ -26374,6 +26396,7 @@
+   'use strict';
+   const MIN = 50000, MAX = 5000000, CUR = 'UGX';
+   const NET = { mtn: { name: 'MTN Mobile Money', pre: ['76', '77', '78'] }, airtel: { name: 'Airtel Money', pre: ['70', '74', '75'] } };
++  const netOf = k => NET[k] || { name: 'Mobile Money', pre: [] };   // tolerate unknown/legacy network values
+   const E = { balance: 0, pending: 0, lifetime: 0, method: null, split: [], periods: {}, tracks: [], tx: [], wd: {}, hasData: false, loading: false, error: '' };
+   const $ = id => document.getElementById(id);
+   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+@@ -26502,7 +26525,7 @@
+     const open = Object.values(E.wd).find(w => w.status === 'pending' || w.status === 'processing');
+     body.innerHTML = `
+       ${E.hasData ? '' : '<div class="ern-note"><i class="fas fa-circle-info"></i><span><b>No earnings yet.</b> Tips, streams and subscriptions will show up here as soon as you earn them.</span></div>'}
+-      ${open ? `<div class="ern-note"><i class="fas fa-hourglass-half"></i><span><b>Withdrawal in progress.</b> ${CUR} ${n(open.amount)} is being sent to your ${esc(E.method ? NET[E.method.network].name : 'Mobile Money')}. Usually within 24 hours.</span></div>` : ''}
++      ${open ? `<div class="ern-note"><i class="fas fa-hourglass-half"></i><span><b>Withdrawal in progress.</b> ${CUR} ${n(open.amount)} is being sent to your ${esc(E.method ? netOf(E.method.network).name : 'Mobile Money')}. Usually within 24 hours.</span></div>` : ''}
+       <div class="ern-hero">
+         <div class="ern-lab">Available balance <button type="button" class="ern-eye" data-act="eye" aria-label="${S.hide ? 'Show' : 'Hide'} amounts"><i class="fas fa-eye${S.hide ? '' : '-slash'}"></i></button></div>
+         <div class="ern-bal"><small>${CUR}</small>${money(E.balance)}</div>
+@@ -26530,7 +26553,7 @@
+         ${E.tx.length ? E.tx.map(t => `<div class="ern-row"><div class="ern-ic"><i class="fas fa-${icons[t.kind] || 'coins'}"></i></div><div class="ern-rt"><b>${esc(t.title)}</b><span>${fmtD(t.created_at)}${t.status === 'pending' ? ' · pending' : ''} ${t.kind === 'payout' ? wdPill(t.ref) : ''}</span></div><div class="ern-amt${t.amount < 0 ? ' out' : ''}">${t.amount < 0 ? '' : '+'}${money(t.amount)}<small>${CUR}</small></div></div>`).join('') : '<div class="ern-empty">No activity yet.</div>'}
+       </div>
+       <div class="ern-card"><h2><i class="fas fa-building-columns"></i>Payout method</h2>
+-        <div class="ern-row"><div class="ern-ic"><i class="fas fa-mobile-screen"></i></div><div class="ern-rt">${E.method ? `<b>${esc(NET[E.method.network].name)}</b><span>${esc(showPhone(E.method.phone))} · ${esc(E.method.account_name)}</span>` : '<b>No payout number yet</b><span>Add your MTN or Airtel number to withdraw</span>'}</div><button type="button" class="ern-btn mini" data-act="method">${E.method ? 'Change' : 'Add'}</button></div>
++        <div class="ern-row"><div class="ern-ic"><i class="fas fa-mobile-screen"></i></div><div class="ern-rt">${E.method ? `<b>${esc(netOf(E.method.network).name)}</b><span>${esc(showPhone(E.method.phone))} · ${esc(E.method.account_name)}</span>` : '<b>No payout number yet</b><span>Add your MTN or Airtel number to withdraw</span>'}</div><button type="button" class="ern-btn mini" data-act="method">${E.method ? 'Change' : 'Add'}</button></div>
+         <div class="ern-fine">Minimum withdrawal ${CUR} ${n(MIN)} · Maximum ${CUR} ${n(MAX)} per request</div>
+       </div>`;
+   }
+@@ -26565,7 +26588,7 @@
+   function openWithdraw() {
+     if (!E.method) { openMethod(); return; }
+     M.mode = 'withdraw'; M.amt = Math.min(Math.max(0, Math.floor(E.balance)), MAX);
+-    const net = NET[E.method.network];
++    const net = netOf(E.method.network);
+     bg.innerHTML = `<div class="ern-msheet">
+       <div class="ern-mh"><h3>Withdraw earnings</h3><button type="button" class="ern-x" data-m="close" aria-label="Close"><i class="fas fa-times"></i></button></div>
+       <div class="ern-dest"><div class="ern-ic"><i class="fas fa-mobile-screen"></i></div><div class="ern-rt"><b>${esc(net.name)}</b><span>${esc(maskPhone(E.method.phone))} · ${esc(E.method.account_name)}</span></div><button type="button" class="ern-link" data-m="change">Change</button></div>
+@@ -28094,6 +28117,37 @@
+     };
+     return ok(await sb.from('yaps_videos').insert(row).select('*').single());
+   }
++  if ((m = p.match(/^\/api\/videos\/([^\/]+)\/like$/))) {
++    need();
++    if (method === 'POST') {
++      const r = await sb.from('yaps_video_likes').insert({ video_id: m[1], user_id: uid });
++      if (r.error) { if (r.error.code === '23505') return { ok: true }; throw r.error; }   // 23505 = already liked
++      try { await sb.rpc('increment_video_likes', { p_video_id: m[1], p_delta: 1 }); } catch (e) {}
++      return { ok: true };
++    }
++    if (method === 'DELETE') {
++      const r = await sb.from('yaps_video_likes').delete().eq('video_id', m[1]).eq('user_id', uid).select('id');
++      if (r.error) throw r.error;
++      if (r.data && r.data.length) { try { await sb.rpc('increment_video_likes', { p_video_id: m[1], p_delta: -1 }); } catch (e) {} }
++      return { ok: true };
++    }
++  }
++  if ((m = p.match(/^\/api\/videos\/([^\/]+)\/comments$/))) {
++    if (method === 'GET') {
++      return ok(await sb.from('yaps_video_comments').select('*').eq('video_id', m[1]).order('created_at', { ascending: false }).limit(lim)) || [];
++    }
++    if (method === 'POST') {
++      need();
++      const text = _safeText(body && body.body, 500);
++      if (!text) throw new Error('Comment is empty');
++      const row = ok(await sb.from('yaps_video_comments').insert({
++        video_id: m[1], user_id: uid, user_name: _safeText(_demoUser.name || 'YAPS User', 60) || 'YAPS User',
++        user_avatar: _safeUrl(_demoUser.avatar) || null, body: text
++      }).select('*').single());
++      try { await sb.rpc('increment_video_comments', { p_video_id: m[1], p_delta: 1 }); } catch (e) {}
++      return row;
++    }
++  }
+   if (p === '/api/moderation/queue') {
+     need();
+     const t = ok(await sb.from('tracks').select('*').eq('status', 'pending').order('created_at', { ascending: true })) || [];
