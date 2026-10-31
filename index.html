@@ -13579,7 +13579,7 @@ function trackRowHTML(t, i) {
     ? (isDownloading(t)
         ? `<div class="tr-dl-progress" id="dlbtn-${i}" style="--pct:${_downloadProgress.get(_downloadKey(t)) || 0};" title="Downloading…"><span>${_downloadProgress.get(_downloadKey(t)) || 0}</span></div>`
         : isDownloaded(t)
-          ? `<div class="tr-action-btn" onclick="event.stopPropagation();removeDownload(${i})" title="Downloaded (${_fmtBytes((_downloadedMeta.get(_downloadKey(t))||{}).size)}), tap to remove" style="color:var(--accent);"><i class="fas fa-circle-check"></i></div>`
+          ? `<div class="tr-action-btn" onclick="event.stopPropagation();saveTrackToPhone(${i})" title="Save to phone storage"><i class="fas fa-mobile-screen-button"></i></div><div class="tr-action-btn" onclick="event.stopPropagation();removeDownload(${i})" title="Downloaded (${_fmtBytes((_downloadedMeta.get(_downloadKey(t))||{}).size)}), tap to remove" style="color:var(--accent);"><i class="fas fa-circle-check"></i></div>`
           : `<div class="tr-action-btn" onclick="event.stopPropagation();downloadTrack(${i})" title="Download for offline"><i class="fas fa-arrow-down"></i></div>`)
     : '';
   const html = `
@@ -15942,6 +15942,37 @@ function _paintDownloadProgress(idx, pct) {
   if (label) label.textContent = pct;
 }
 
+// ── Save a song as a real file in the phone's own storage (Downloads folder) ──
+function _songFileName(t, blob) {
+  const mime = ((blob && blob.type) || '').toLowerCase();
+  const byMime = { 'audio/mpeg':'mp3','audio/mp3':'mp3','audio/mp4':'m4a','audio/x-m4a':'m4a','audio/aac':'aac','audio/wav':'wav','audio/x-wav':'wav','audio/ogg':'ogg','audio/opus':'opus','audio/flac':'flac','audio/webm':'webm' };
+  let ext = byMime[mime.split(';')[0]];
+  if (!ext) { const m = String(_downloadKey(t) || '').split('?')[0].match(/\.(mp3|m4a|aac|wav|ogg|opus|flac|webm)$/i); ext = m ? m[1].toLowerCase() : 'mp3'; }
+  const clean = x => String(x || '').replace(/[\\/:*?"<>|\u0000-\u001f]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const name = [clean(t && t.artist), clean(t && t.title)].filter(Boolean).join(' - ') || 'YAPS Music song';
+  return name.slice(0, 120) + '.' + ext;
+}
+function saveSongToDevice(blob, t) {
+  try {
+    const a = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    a.href = url; a.download = _songFileName(t, blob); a.rel = 'noopener'; a.style.display = 'none';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { try { a.remove(); URL.revokeObjectURL(url); } catch (e) {} }, 60000);
+    return true;
+  } catch (e) { console.log('[YAPS] Save to phone failed', e); return false; }
+}
+// For a song that is already downloaded in the app: put a copy in the phone's storage too
+async function saveTrackToPhone(idx) {
+  const t = tracks[idx]; const key = _downloadKey(t);
+  const url = key && _downloadedBlobUrls.get(key);
+  if (!url) { showToast('Download the song first'); return; }
+  try {
+    const blob = await (await fetch(url)).blob();
+    showToast(saveSongToDevice(blob, t) ? '"' + t.title + '" is being saved to your phone\'s Downloads folder' : 'Could not save to your phone, try again');
+  } catch (e) { showToast('Could not save to your phone, try again'); }
+}
+
 async function downloadTrack(idx) {
   const t = tracks[idx];
   const key = _downloadKey(t);
@@ -16004,7 +16035,8 @@ async function downloadTrack(idx) {
     });
     _downloadedBlobUrls.set(key, URL.createObjectURL(blob));
     _downloadedMeta.set(key, { title: t.title, artist: t.artist, img: t.img, duration: t.duration, genre: t.genre, downloadedAt: Date.now(), size: blob.size });
-    showToast('"' + t.title + '" available offline (' + _fmtBytes(blob.size) + ')');
+    const _savedToPhone = _yS('saveToPhone', true) && saveSongToDevice(blob, t);
+    showToast(_savedToPhone ? '"' + t.title + '" saved to your phone\'s Downloads folder (' + _fmtBytes(blob.size) + ')' : '"' + t.title + '" available offline (' + _fmtBytes(blob.size) + ')');
     _requestPersistence();
   } catch (e) {
     console.log('[YAPS] Download failed', e);
@@ -27535,7 +27567,7 @@ i.ys-r.fa-chevron-right{font-size:12px;opacity:.7}
 'use strict';
 const KEY='yaps_settings_v2',$=id=>document.getElementById(id),
 D={darkMode:true,reduceMotion:false,anim:true,gapless:false,normalize:false,continuePlay:true,resume:true,lockscreen:true,
-dlQ:'standard',wifiDl:true,autoDlLiked:false,offline:false,dataSaver:false,dsQuality:true,dsVideo:true,dsImages:false,dsWifiVideo:true,
+dlQ:'standard',wifiDl:true,autoDlLiked:false,saveToPhone:true,offline:false,dataSaver:false,dsQuality:true,dsVideo:true,dsImages:false,dsWifiVideo:true,
 n_releases:true,n_artists:true,n_followers:true,n_likes:true,n_comments:true,n_messages:true,n_events:true,n_podcasts:true,n_yaps:true,
 region:'UG',content:'all',priv:false,whoFollow:'everyone',whoMsg:'everyone',listenAct:true,recentVis:true,
 ownership:false,aiDj:true,aiRecs:true,vibe:'chill',djAuto:false,voice:false};
@@ -27609,7 +27641,7 @@ const CATS=[
  tg('gapless','Gapless Playback'),tg('normalize','Normalize Volume','Even out loudness between tracks'),tg('continuePlay','Continue Playing','Keep the queue going when it ends'),
  tg('resume','Resume From Last Position'),tg('lockscreen','Lock-screen controls','Media keys & lock-screen player')]},
 {id:'downloads',n:'Downloads & Storage',s:'Offline, cache, storage',it:[
- sel('dlQ','Download Quality',QL.map(q=>[q[0],q[1]]),{}),tg('wifiDl','Wi-Fi Only Downloads'),tg('autoDlLiked','Auto-download Liked Songs'),
+ sel('dlQ','Download Quality',QL.map(q=>[q[0],q[1]]),{}),tg('wifiDl','Wi-Fi Only Downloads'),tg('autoDlLiked','Auto-download Liked Songs'),tg('saveToPhone','Save songs to my phone storage'),
  tg('offline','Offline Mode','Play only downloaded music'),inf('Download Location',()=>'This device (browser storage)'),
  inf('Storage Used',async()=>{try{const e=await navigator.storage.estimate();return(e.usage/1048576).toFixed(1)+' MB of '+(e.quota/1048576/1024).toFixed(1)+' GB'}catch(x){return'Unavailable'}}),
  ac('Offline Check','Test downloads, storage and updates on this phone',()=>runOfflineCheck()),

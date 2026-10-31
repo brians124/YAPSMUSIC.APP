@@ -5,11 +5,11 @@
  * Bump VERSION on every deploy that changes index.html or other shell files —
  * that is what triggers the in-app "update available" bar.
  */
-const VERSION = 'v4';
+const VERSION = 'v5';
 const SHELL_CACHE   = 'yaps-shell-'   + VERSION;
 const RUNTIME_CACHE = 'yaps-runtime-' + VERSION;
 const IMAGE_CACHE   = 'yaps-images-'  + VERSION;
-const CDN_CACHE     = 'yaps-cdn-'     + VERSION;
+const CDN_CACHE     = 'yaps-cdn';   // not versioned: keeps cached libraries (e.g. Supabase) across app updates
 const ALL_CACHES = [SHELL_CACHE, RUNTIME_CACHE, IMAGE_CACHE, CDN_CACHE];
 
 const MAX_IMAGES  = 400;   // cover art + artist photos
