@@ -5,7 +5,7 @@
  * Bump VERSION on every deploy that changes index.html or other shell files —
  * that is what triggers the in-app "update available" bar.
  */
-const VERSION = 'v3';
+const VERSION = 'v4';
 const SHELL_CACHE   = 'yaps-shell-'   + VERSION;
 const RUNTIME_CACHE = 'yaps-runtime-' + VERSION;
 const IMAGE_CACHE   = 'yaps-images-'  + VERSION;

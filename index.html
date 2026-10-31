@@ -69,15 +69,15 @@
 <meta name="format-detection" content="telephone=no">
 
 <!-- Favicon / app icons -->
-<link rel="icon" type="image/x-icon" href="favicon.ico?v=3">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png?v=3">
-<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png?v=3">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png?v=3">
-<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png?v=3">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=3">
-<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png?v=3">
-<link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png?v=3">
-<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png?v=3">
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=4">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png?v=4">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png?v=4">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png?v=4">
+<link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png?v=4">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=4">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png?v=4">
+<link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png?v=4">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png?v=4">
 
 <!-- Open Graph for sharing (Facebook, WhatsApp, LinkedIn, etc.) -->
 <meta property="og:title" content="YAPS Music (YAPSMusic): Stream Ugandan &amp; African Music Free">
@@ -119,7 +119,7 @@
       "name": "YAPS Music",
       "alternateName": ["YAPS", "YAPSMusic", "YAPS Tech Solutions"],
       "url": "https://brians124.github.io/YAPSMUSIC.APP/",
-      "logo": { "@type": "ImageObject", "url": "https://brians124.github.io/YAPSMUSIC.APP/icons/icon-512.png?v=3", "width": 512, "height": 512 }
+      "logo": { "@type": "ImageObject", "url": "https://brians124.github.io/YAPSMUSIC.APP/icons/icon-512.png?v=4", "width": 512, "height": 512 }
     },
     {
       "@type": "WebApplication",
@@ -7099,6 +7099,9 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
       <!-- Creator Hub -->
       <div class="sidebar-section">
         <div class="sidebar-label"><svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><rect class="f" x="9" y="3" width="6" height="11" rx="3"/><path class="s" d="M5.5 11a6.5 6.5 0 0 0 13 0"/><rect class="f" x="11" y="17.5" width="2" height="3.5" rx="0"/><rect class="f" x="8" y="20" width="8" height="1.8" rx="0.9"/></svg> <span data-i18n="lbl_creator">Creator Hub</span></div>
+        <div class="sidebar-item" id="nav-yaps-ai" onclick="location.href='yaps-ai.html'">
+          <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M10 3c.7 4.6 2.3 7.3 6 8.5-3.7 1.2-5.3 3.9-6 8.5-.7-4.6-2.3-7.3-6-8.5 3.7-1.2 5.3-3.9 6-8.5z"/><path class="f" d="M18 14c.4 2.3 1.2 3.5 3 4.1-1.8.6-2.6 1.8-3 4.1-.4-2.3-1.2-3.5-3-4.1 1.8-.6 2.6-1.8 3-4.1z"/></svg> <span>YAPS AI</span>
+        </div>
         <div class="sidebar-item" id="nav-dj-studio" onclick="openStudio()">
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect class="f" x="3" y="14" width="4.5" height="7" rx="1.8"/><rect class="f" x="16.5" y="14" width="4.5" height="7" rx="1.8"/></svg> <span>DJ Studio</span>
         </div>
@@ -15902,7 +15905,7 @@ async function loadDownloads() {
       // track is no longer in the catalog) have no matching entry in `tracks`
       // — recreate a lightweight one so it still shows up in Downloads/plays.
       if (!tracks.some(t => _downloadKey(t) === rec.id)) {
-        tracks.push({ title: rec.title, artist: rec.artist, img: rec.img || 'icons/icon-192.png?v=3', duration: rec.duration || '', genre: rec.genre || 'Shared', plays: '0', likes: 0, tags: [rec.genre || 'Shared'], audioSrc: rec.id });
+        tracks.push({ title: rec.title, artist: rec.artist, img: rec.img || 'icons/icon-192.png?v=4', duration: rec.duration || '', genre: rec.genre || 'Shared', plays: '0', likes: 0, tags: [rec.genre || 'Shared'], audioSrc: rec.id });
       }
     });
     if (saved.length) _requestPersistence();
@@ -23142,7 +23145,7 @@ function _p2pStartSend() {
     <div class="p2p-track-list">
       ${items.map((it, i) => `
         <div class="p2p-track-row" id="p2pTr-${i}" onclick="_p2pSelectTrack(${i})">
-          <img loading="lazy" decoding="async" src="${it.meta.img || 'icons/icon-192.png?v=3'}" alt="">
+          <img loading="lazy" decoding="async" src="${it.meta.img || 'icons/icon-192.png?v=4'}" alt="">
           <div class="info"><div class="t">${_p2pEsc(it.meta.title)}</div><div class="a">${_p2pEsc(it.meta.artist)}</div></div>
           <div class="check"></div>
         </div>`).join('')}
@@ -23377,7 +23380,7 @@ async function _p2pFinishReceive() {
     _downloadedBlobUrls.set(key, URL.createObjectURL(blob));
     _downloadedMeta.set(key, { title: meta.title, artist: meta.artist, img: '', duration: '', genre: 'Shared', downloadedAt: Date.now(), size: blob.size });
     if (!tracks.some(t => _downloadKey(t) === key)) {
-      tracks.push({ title: meta.title, artist: meta.artist, img: 'icons/icon-192.png?v=3', duration: '', genre: 'Shared', plays: '0', likes: 0, tags: ['Shared'], audioSrc: key });
+      tracks.push({ title: meta.title, artist: meta.artist, img: 'icons/icon-192.png?v=4', duration: '', genre: 'Shared', plays: '0', likes: 0, tags: ['Shared'], audioSrc: key });
     }
     if (typeof renderLibrary === 'function') renderLibrary();
     _p2pShowReceiveDone(meta.title, meta.artist);
