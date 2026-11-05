@@ -2555,7 +2555,7 @@ body {
 .pc-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
 .pc-count { font-size: 12px; color: var(--muted); }
 
-/* ── POPULAR PLAYLISTS (home) — big gradient cover cards ── */
+/* ── POPULAR PLAYLISTS (home) — radio-style cards: coloured square, 3 round artist photos, caption below ── */
 .ppl-chips { display:flex; gap:8px; overflow-x:auto; padding:0 16px 14px; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
 .ppl-chips::-webkit-scrollbar { display:none; }
 .ppl-chip {
@@ -2566,49 +2566,53 @@ body {
 .ppl-chip:hover { color:var(--text); border-color:var(--accent); }
 .ppl-chip.active { color:#fff; border-color:transparent; background:linear-gradient(135deg,var(--accent-light),var(--accent) 55%,var(--accent-dark)); box-shadow:0 4px 14px var(--accent-dim); }
 .ppl-row {
-  display:flex; gap:12px; overflow-x:auto; padding:2px 16px 14px; scroll-snap-type:x proximity; scroll-padding-left:16px;
-  scrollbar-width:none; -webkit-overflow-scrolling:touch;
+  display:flex; gap:14px; overflow-x:auto; padding:2px 16px 14px; scroll-snap-type:x proximity; scroll-padding-left:16px;
+  scrollbar-width:none; -webkit-overflow-scrolling:touch; align-items:flex-start;
 }
 .ppl-row::-webkit-scrollbar { display:none; }
+.ppl-item { flex:0 0 auto; width:158px; cursor:pointer; scroll-snap-align:start; -webkit-tap-highlight-color:transparent; outline:none; }
 .ppl-card {
-  --g1:#2f8eff; --g2:#7a4cf0;
-  position:relative; flex:0 0 auto; width:128px; height:168px; border-radius:16px; overflow:hidden; cursor:pointer;
-  scroll-snap-align:start; isolation:isolate; background:linear-gradient(150deg,var(--g1),var(--g2));
-  box-shadow:0 6px 16px rgba(0,0,0,.32); transition:transform .25s ease, box-shadow .25s ease;
-  -webkit-tap-highlight-color:transparent;
+  --bg:#d4f56b; font-family:inherit;
+  position:relative; width:100%; aspect-ratio:1/1; border-radius:8px; overflow:hidden; background:var(--bg); color:#101010;
+  container-type:inline-size; box-shadow:0 6px 16px rgba(0,0,0,.28); transition:transform .25s ease, box-shadow .25s ease;
 }
-.ppl-card:hover { transform:translateY(-5px); box-shadow:0 16px 34px rgba(0,0,0,.45), 0 0 0 1.5px rgba(255,255,255,.18); }
-.ppl-card:active { transform:scale(.97); }
-.ppl-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-3; transform:scale(1.02); transition:transform .6s ease; }
-.ppl-card:hover .ppl-bg { transform:scale(1.12); }
-.ppl-card::before { content:''; position:absolute; inset:0; z-index:-2; background:linear-gradient(150deg,var(--g1),var(--g2)); opacity:.55; mix-blend-mode:multiply; }
-.ppl-card::after  { content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.15) 38%,rgba(0,0,0,.88) 100%); }
-.ppl-top { position:absolute; top:9px; left:9px; right:9px; display:flex; align-items:center; justify-content:space-between; }
-.ppl-stack { display:flex; }
-.ppl-stack img, .ppl-stack span {
-  width:18px; height:18px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(255,255,255,.9);
-  margin-left:-7px; background:var(--card2); box-shadow:0 2px 6px rgba(0,0,0,.35);
+.ppl-item:hover .ppl-card, .ppl-item:focus-visible .ppl-card { transform:translateY(-4px); box-shadow:0 14px 28px rgba(0,0,0,.4); }
+.ppl-item:focus-visible .ppl-card { outline:2px solid var(--accent); outline-offset:2px; }
+.ppl-item:active .ppl-card { transform:scale(.97); }
+.ppl-brand {
+  position:absolute; top:5cqw; left:5cqw; width:11cqw; height:11cqw; border-radius:50%; background:#101010; color:var(--bg);
+  display:grid; place-items:center; z-index:3;
 }
-.ppl-stack img:first-child, .ppl-stack span:first-child { margin-left:0; }
-.ppl-count {
-  font-size:9px; font-weight:800; letter-spacing:.2px; color:#fff; padding:3px 7px; border-radius:999px; white-space:nowrap; flex-shrink:0;
-  background:rgba(0,0,0,.38); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.2);
+.ppl-brand svg { width:60%; height:60%; fill:currentColor; }
+.ppl-kind { position:absolute; top:6cqw; right:5cqw; z-index:3; font-size:6.2cqw; font-weight:900; letter-spacing:.18em; text-transform:uppercase; line-height:1; }
+.ppl-pic {
+  position:absolute; border-radius:50%; overflow:hidden; background:rgba(0,0,0,.18); display:grid; place-items:center;
+  font-weight:900; font-size:14cqw; color:rgba(0,0,0,.55);
 }
-.ppl-info { position:absolute; left:10px; right:10px; bottom:10px; color:#fff; }
-.ppl-tag { font-size:8px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase; color:rgba(255,255,255,.8); margin-bottom:3px; }
-.ppl-title { font-size:14px; font-weight:900; line-height:1.12; letter-spacing:-.3px; text-shadow:0 2px 10px rgba(0,0,0,.5); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-.ppl-desc { font-size:9.5px; line-height:1.3; color:rgba(255,255,255,.72); margin:3px 36px 0 0; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
+.ppl-pic img { width:100%; height:100%; object-fit:cover; display:block; }
+.ppl-pic.c { width:52cqw; height:52cqw; left:24cqw; top:15cqw; z-index:2; box-shadow:0 0 0 1.1cqw rgba(255,255,255,.4), 0 2cqw 6cqw rgba(0,0,0,.25); }
+.ppl-pic.l { width:35cqw; height:35cqw; left:-8cqw; top:23cqw; z-index:1; }
+.ppl-pic.r { width:35cqw; height:35cqw; right:-8cqw; top:23cqw; z-index:1; }
+.ppl-title {
+  position:absolute; left:5cqw; right:5cqw; bottom:5cqw; z-index:3; font-family:'Archivo',system-ui,sans-serif !important; font-size:9.2cqw; font-weight:900; line-height:1.05; letter-spacing:-.02em;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; padding-right:12cqw;
+}
 .ppl-play {
-  position:absolute; right:9px; bottom:9px; width:30px; height:30px; border-radius:50%; border:0; cursor:pointer;
-  display:grid; place-items:center; color:#111; background:#fff; box-shadow:0 4px 12px rgba(0,0,0,.45), 0 0 0 3px rgba(255,255,255,.18);
-  transition:transform .2s, box-shadow .2s;
+  position:absolute; right:4.5cqw; bottom:4.5cqw; z-index:4; width:12cqw; height:12cqw; min-width:30px; min-height:30px; border-radius:50%; border:0; cursor:pointer;
+  display:grid; place-items:center; color:var(--bg); background:#101010; box-shadow:0 4px 12px rgba(0,0,0,.4);
+  opacity:0; transform:translateY(6px); transition:opacity .2s, transform .2s;
 }
-.ppl-play svg { width:14px; height:14px; fill:currentColor; margin-left:2px; }
-.ppl-play:hover { transform:scale(1.1); box-shadow:0 8px 20px rgba(0,0,0,.55), 0 0 0 6px rgba(255,255,255,.22); }
+.ppl-play svg { width:45%; height:45%; fill:currentColor; margin-left:8%; }
+.ppl-item:hover .ppl-play, .ppl-item:focus-within .ppl-play { opacity:1; transform:none; }
+.ppl-play:hover { transform:scale(1.1) !important; }
+.ppl-sub {
+  margin-top:10px; font-size:13px; line-height:1.45; font-weight:500; color:var(--muted);
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word;
+}
 .ppl-empty { padding:18px 16px; font-size:13px; color:var(--muted); }
-@media (min-width:768px)  { .ppl-chips{padding:0 24px 14px} .ppl-row{padding:2px 24px 16px;gap:14px;scroll-padding-left:24px} .ppl-card{width:150px;height:196px} .ppl-title{font-size:15px} .ppl-desc{font-size:10px} }
-@media (min-width:1200px) { .ppl-card{width:168px;height:218px} .ppl-title{font-size:16px} .ppl-play{width:32px;height:32px} }
-@media (prefers-reduced-motion:reduce) { .ppl-card,.ppl-bg,.ppl-play{transition:none} }
+@media (min-width:768px)  { .ppl-chips{padding:0 24px 14px} .ppl-row{padding:2px 24px 16px;gap:16px;scroll-padding-left:24px} .ppl-item{width:178px} }
+@media (min-width:1200px) { .ppl-item{width:200px} .ppl-sub{font-size:14px} }
+@media (prefers-reduced-motion:reduce) { .ppl-card,.ppl-play{transition:none} }
 
 /* ── LIBRARY PLAYLIST GRID CARDS ── */
 .lib-playlist-grid {
@@ -6527,6 +6531,193 @@ html[data-theme="aurora"] #page-community .cc-btn,html:not([data-theme]) #page-c
 </style>
 </head>
 <body>
+<!-- Header styles up-front so the header looks right while the loading screen is up (copy of studio-chrome below, which still applies last) -->
+<style id="studio-chrome-early">
+/* ══ STUDIO HEADER + SIDEBAR CHROME — ported from studio.html (champagne-gold on navy, Playfair + Archivo) ══ */
+:root{--serif:'Playfair Display',Georgia,'Times New Roman',serif;--sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --au:#ffc94d;--au2:#ffe7a8;--au3:#b9861f;--au-rgb:255,201,77;
+ --logo-g:linear-gradient(180deg,#fff3c9 0,#ffc94d 48%,#b9861f 100%);--topbar-h:68px}
+html[data-theme="crimson"]{--au:#ff5c6b;--au2:#ffc2c8;--au3:#b3121f;--au-rgb:255,92,107;--logo-g:linear-gradient(180deg,#ffe3e6 0,#ff5c6b 48%,#b3121f 100%)}
+html[data-theme="emerald"]{--au:#22e08a;--au2:#b8ffdb;--au3:#159e5f;--au-rgb:34,224,138;--logo-g:linear-gradient(180deg,#e4fff0 0,#22e08a 48%,#159e5f 100%)}
+html[data-theme="violet"]{--au:#a96bff;--au2:#e0ccff;--au3:#6a2fd6;--au-rgb:169,107,255;--logo-g:linear-gradient(180deg,#f1e8ff 0,#a96bff 48%,#6a2fd6 100%)}
+html[data-theme="aurora"]{--au:#19e68c;--au2:#9bffd0;--au3:#0ea66b;--au-rgb:25,230,140;--logo-g:linear-gradient(100deg,#19e68c,#19c3ff 40%,#8b5cf6 70%,#e040fb)}
+html[data-mode="light"]{--au:#9a6700;--au2:#7a5200;--au3:#8a5d00;--au-rgb:154,103,0;--logo-g:linear-gradient(180deg,#d9a21b 0,#9a6700 55%,#6b4600 100%)}
+
+/* header bar */
+html:root #topbar{position:fixed;overflow:visible;height:var(--topbar-h);padding:0 18px;gap:18px;
+ background:linear-gradient(90deg,color-mix(in srgb,var(--bg) 96%,transparent),color-mix(in srgb,var(--bg) 45%,transparent)),var(--bg);
+ border-bottom:1px solid transparent!important;
+ border-image:linear-gradient(90deg,var(--au3),rgba(var(--au-rgb),.15) 40%,var(--border) 70%,transparent) 1!important}
+#topbar .earth-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+#topbar .earth{position:absolute;right:18%;top:-190px;width:420px;height:420px;border-radius:50%;pointer-events:none;
+ background:radial-gradient(circle at 40% 70%,rgba(var(--au-rgb),.18),color-mix(in srgb,var(--accent) 20%,transparent) 45%,transparent 70%)}
+#topbar>*:not(.earth-wrap){position:relative}
+
+/* logo */
+#topbar .topbar-logo{display:block;padding:0;cursor:pointer;text-decoration:none;letter-spacing:0}
+#topbar .topbar-logo .logo{display:block;font:900 42px/1 var(--serif);letter-spacing:.01em;background:var(--logo-g);
+ -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 14px rgba(var(--au-rgb),.35))}
+#topbar .topbar-logo .logo small{display:block;font:700 10.5px var(--sans);letter-spacing:.42em;color:var(--au2);
+ -webkit-text-fill-color:var(--au2);margin-top:3px;padding-left:2px}
+
+/* title block — same as studio.html .ttl (replaces the search bar) */
+#topbar .ttl{flex:0 1 auto;min-width:0;font:800 30px/1.05 var(--serif);letter-spacing:.005em;text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:2px}
+#topbar .ttl b{color:var(--au);font-weight:800}
+#topbar .ttl p{font:500 14px var(--sans);letter-spacing:.02em;color:var(--muted);margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#topbar .sp{flex:1 1 0;min-width:0}
+#topbar .topbar-logo,#topbar .topbar-nav,#hamburgerBtn{flex:none}
+
+/* round gold icon buttons (.ic) */
+#topbar .topbar-nav{gap:12px}
+#topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:42px;height:42px;border-radius:50%;padding:0;
+ border:1.5px solid rgba(var(--au-rgb),.55);background:rgba(var(--au-rgb),.07);color:var(--au);font-size:18px;flex:none;display:grid;place-items:center;cursor:pointer;transition:all .2s}
+#topbar .topbar-avatar{font-size:13px;font-weight:800;background:linear-gradient(135deg,rgba(var(--au-rgb),.35),rgba(var(--au-rgb),.1))}
+#topbar .topbar-icon-btn:hover,#topbar .topbar-guest-avatar:hover,#topbar .topbar-avatar:hover{border-color:var(--au);background:rgba(var(--au-rgb),.16);color:var(--au2)}
+#topbar .topbar-bell-btn{position:relative}
+#topbar .tb-ico{width:1.2em;height:1.2em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block}
+#topbar .topbar-bell-badge{top:-3px;right:-3px;background:var(--au);color:#1a1204;border-color:var(--bg)}
+
+/* AI DJ + Upload pills (.aibtn) */
+#topbar .aibtn,#topbar .btn-upload-tiktok.aibtn{position:relative;display:flex;align-items:center;gap:12px;padding:8px 16px;border-radius:16px;
+ border:1.5px solid var(--au);text-align:left;cursor:pointer;color:var(--au2);transform:none;
+ background:linear-gradient(180deg,rgba(var(--au-rgb),.16),rgba(var(--au-rgb),.05));
+ box-shadow:0 0 22px rgba(var(--au-rgb),.22),inset 0 0 14px rgba(var(--au-rgb),.10)}
+#topbar .aibtn:hover{background:linear-gradient(180deg,rgba(var(--au-rgb),.26),rgba(var(--au-rgb),.1));transform:none}
+#topbar .aibtn b{display:block;font:800 15px var(--sans);letter-spacing:.02em;color:var(--au2)}
+#topbar .aibtn>span>span{display:block;font-size:11.5px;color:var(--muted);font-weight:500}
+#topbar .aibtn .ic{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--au);background:rgba(var(--au-rgb),.08);color:var(--au);display:grid;place-items:center;font-size:15px;flex:none}
+#topbar .btn-upload-arrow{width:34px;height:34px;font-size:18px;background:rgba(var(--au-rgb),.08);border:1.5px solid var(--au);color:var(--au)}
+
+/* MENU button (drawer toggle) */
+#hamburgerBtn{height:34px;width:auto;padding:0 12px;border-radius:12px;border:1.5px solid rgba(var(--au-rgb),.55);background:rgba(var(--au-rgb),.07);
+ color:var(--au);font:700 13px 'Archivo Narrow',var(--sans);letter-spacing:.04em;place-items:center}
+#hamburgerBtn:hover{border-color:var(--au);background:rgba(var(--au-rgb),.16);color:var(--au2)}
+
+/* sidebar lettering (rest of the sidebar already identical to studio) */
+#sidebar .sidebar-label{color:var(--au3)}
+#sidebar .sidebar-header{padding-top:max(20px,env(safe-area-inset-top))}
+
+/* compact header sizes — same steps as studio */
+@media(max-width:1280px){#topbar .ttl{font-size:24px}#topbar .ttl p{display:none}}
+@media(max-width:820px){
+ #topbar .ttl{font-size:20px}
+ :root{--topbar-h:56px}
+ html:root #topbar{padding:0 10px;gap:8px}
+ #topbar .topbar-logo .logo{font-size:30px}
+ #topbar .aibtn,#topbar .btn-upload-tiktok.aibtn{padding:3px 10px;border-radius:12px;gap:8px}
+ #topbar .aibtn .ic,#topbar .btn-upload-arrow{width:26px;height:26px;font-size:13px}
+ #topbar .aibtn b{font-size:13px}#topbar .aibtn>span>span{display:none}
+ #topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:34px;height:34px;font-size:15px}
+ #topbar .topbar-nav{gap:8px}
+ #topbar .earth-wrap{display:none}
+}
+@media(max-width:560px){#topbar .ttl{display:none}}
+@media(orientation:portrait) and (max-width:820px){#topbar .topbar-logo .logo{font-size:26px}#topbar .topbar-logo .logo small{display:none}}
+/* Small phones: keep AI DJ, Upload, Sign-in, Notifications and Settings ALL visible.
+   Nothing is hidden any more - the buttons just shrink (labels turn into icons) so the row always fits. */
+@media(max-width:480px){
+ :root{--topbar-h:50px}
+ html:root #topbar{padding:0 8px;gap:6px}
+ #topbar #fsBtn{display:none}                       /* fullscreen is not supported on most phones */
+ #topbar #aiTop{display:flex}                       /* AI DJ stays visible (was display:none) */
+ #topbar #aiTop>span:last-child{display:none}       /* ...as an icon-only button */
+ #topbar #aiTop{padding:3px;border-radius:50%}
+ #topbar .btn-upload-tiktok.aibtn b{font-size:12px}
+ #topbar .topbar-nav{gap:5px;min-width:0;flex:0 0 auto}
+ #hamburgerBtn{height:32px;padding:0 9px;font-size:12px;border-radius:10px}
+ #topbar .topbar-logo .logo{font-size:23px}
+ #topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:32px;height:32px;font-size:14px}
+}
+@media(max-width:400px){
+ #topbar .btn-upload-tiktok.aibtn>span:last-child{display:none}   /* Upload becomes icon-only */
+ #topbar .btn-upload-tiktok.aibtn{padding:3px;border-radius:50%}
+ #topbar .aibtn .ic,#topbar .btn-upload-arrow{width:24px;height:24px;font-size:12px}
+ #topbar .topbar-nav{gap:4px}
+ #topbar .topbar-logo .logo{font-size:21px}
+}
+@media(max-width:340px){
+ html:root #topbar{padding:0 6px;gap:4px}
+ #topbar .topbar-logo .logo{font-size:19px}
+ #topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:30px;height:30px}
+ #topbar .aibtn .ic,#topbar .btn-upload-arrow{width:22px;height:22px}
+ #hamburgerBtn{padding:0 7px}
+}
+@media(orientation:landscape) and (max-height:520px){
+ :root{--topbar-h:46px}
+ #topbar .ttl{font-size:17px}
+ #topbar .topbar-logo .logo{font-size:24px}#topbar .topbar-logo .logo small{display:none}
+}
+
+/* sidebar = slide-in drawer (opened by MENU) — studio breakpoints, full height, above header */
+@media(max-width:899px),(orientation:landscape) and (max-height:520px){
+ html #hamburgerBtn{display:grid}
+ html #sidebar{position:fixed;top:0;bottom:0;left:0;width:min(80vw,300px);z-index:310;display:flex!important;
+  box-shadow:4px 0 24px rgba(0,0,0,.5);transform:translateX(-105%);visibility:hidden;
+  transition:transform .28s cubic-bezier(.4,0,.2,1),visibility 0s .28s}
+ html #sidebar.open{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.4,0,.2,1)}
+ html #sidebarOverlay.open{display:block;z-index:300;background:rgba(0,0,0,.6)}
+ #layout{margin-left:0}
+}
+@media(min-width:900px) and (min-height:521px){html #hamburgerBtn{display:none}}
+
+/* ===== PREMIUM / AURORA skin — same extruded 3D lettering as studio.html ===== */
+html[data-theme="aurora"] #topbar .topbar-logo .logo{display:inline-flex;align-items:center;gap:.2em;font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:40px;font-weight:900;letter-spacing:.005em;line-height:1;
+ background:linear-gradient(180deg,#fff 0%,#fff 45%,#d4c4ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+ filter:drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c) drop-shadow(4px 4px 0 #2c1470) drop-shadow(0 8px 10px rgba(0,0,0,.7)) drop-shadow(0 0 16px rgba(224,64,251,.45))}
+html[data-theme="aurora"] #topbar .topbar-logo .logo::before{content:"";flex:none;width:1.05em;height:1.05em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2319e68c'/%3E%3Cstop offset='.5' stop-color='%2319c3ff'/%3E%3Cstop offset='1' stop-color='%23e040fb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M16 10 54 32 16 54Z' fill='url(%23g)' stroke='url(%23g)' stroke-width='11' stroke-linejoin='round'/%3E%3Cpath d='M30 42a5 5 0 1 1-3-4.6V23l15-3.4v14.6a5 5 0 1 1-3-4.6V26l-9 2Z' fill='%23fff'/%3E%3C/svg%3E") center/contain no-repeat;-webkit-text-fill-color:initial}
+html[data-theme="aurora"] #topbar .topbar-logo .logo small{display:inline;margin:0;padding:0;font:900 1em var(--sans);letter-spacing:.005em;
+ background:linear-gradient(100deg,#19e68c,#19c3ff 35%,#8b5cf6 68%,#e040fb);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+html[data-theme="aurora"] #topbar .ttl{font-family:'Archivo',system-ui,sans-serif;font-weight:900;letter-spacing:.04em;
+ background:linear-gradient(180deg,#fff,#e9e0ff 60%,#b9a2ff);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+ filter:drop-shadow(1px 1px 0 #6a3fe0) drop-shadow(2px 2px 0 #4a28b0) drop-shadow(3px 3px 0 #301a80) drop-shadow(0 6px 8px rgba(0,0,0,.65))}
+html[data-theme="aurora"] #topbar .ttl b{background:linear-gradient(180deg,#cfffe9 0%,#19e68c 45%,#19c3ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:900}
+@media(max-width:820px){html[data-theme="aurora"] #topbar .topbar-logo .logo{font-size:30px}}
+@media(orientation:portrait) and (max-width:820px){html[data-theme="aurora"] #topbar .topbar-logo .logo{font-size:21px}html[data-theme="aurora"] #topbar .ttl{display:none}}
+@media(orientation:landscape) and (max-height:520px){html[data-theme="aurora"] #topbar .topbar-logo .logo{font-size:24px}}
+
+/* ===== HERO: shorter carousel + same extruded 3D lettering as the YAPSMUSIC header ===== */
+.hero-carousel { --hero-h: 180px; }
+.hero-content { padding: 12px 18px; }
+@media (min-width: 768px)  { .hero-carousel { --hero-h: 240px; } .hero-content { padding: 18px 36px; } }
+@media (min-width: 1024px) { .hero-carousel { --hero-h: 290px; } .hero-content { padding: 26px 52px; } }
+@media (min-width: 1440px) { .hero-carousel { --hero-h: 350px; } .hero-content { padding: 34px 68px; } }
+@media (min-width: 1920px) { .hero-carousel { --hero-h: 410px; } }
+@media (min-width: 768px) and (max-height: 700px) { .hero-carousel { --hero-h: 230px; } }
+
+html .hero-title, html[data-theme] .hero-title {
+  font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+  font-weight: 900 !important; text-transform: uppercase; letter-spacing: .005em; line-height: 1.04;
+  font-size: 20px; margin-bottom: 6px;
+  background: linear-gradient(180deg,#fff 0%,#fff 45%,#d4c4ff 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c)
+          drop-shadow(0 6px 8px rgba(0,0,0,.7)) drop-shadow(0 0 14px rgba(224,64,251,.4));
+}
+html .hero-title em, html[data-theme] .hero-title em {
+  font-style: normal; padding-right: .06em;
+  background: linear-gradient(100deg,#19e68c,#19c3ff 35%,#8b5cf6 68%,#e040fb);
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+}
+html .hero-sub { margin-bottom: 8px; }
+html .hero-btn { padding: 7px 16px; font-size: 12px; }
+@media (min-width: 768px) {
+  html .hero-title, html[data-theme] .hero-title { font-size: 27px; margin-bottom: 8px;
+    filter: drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c) drop-shadow(4px 4px 0 #2c1470)
+            drop-shadow(0 8px 10px rgba(0,0,0,.7)) drop-shadow(0 0 16px rgba(224,64,251,.45)); }
+  html .hero-sub { margin-bottom: 10px; }
+  html .hero-btn { padding: 8px 18px; font-size: 13px; }
+}
+@media (min-width: 1024px) { html .hero-title, html[data-theme] .hero-title { font-size: 34px; } }
+@media (min-width: 1440px) { html .hero-title, html[data-theme] .hero-title { font-size: 42px; } }
+@media (min-width: 1920px) { html .hero-title, html[data-theme] .hero-title { font-size: 48px; } }
+@media (min-width: 768px) and (max-height: 700px) { html .hero-title, html[data-theme] .hero-title { font-size: 26px; } }
+
+/* ===== HOME: search bar above the hero (reuses .search-big from the Search page) ===== */
+.home-search { padding: 12px 16px 12px; }
+.home-search .search-big { margin-bottom: 0; }
+.home-search .search-big input { min-width: 0; }
+@media (min-width: 768px) { .home-search { padding: 14px 24px 14px; } .home-search .search-big { max-width: 720px; } }
+</style>
 <!-- ═══════════════════════════════════════════════════════════
      YAPS LOADING SCREEN, shown only the first time the app is opened (per session).
      Self-contained (inline SVG + CSS, no font-awesome needed) so it paints
@@ -6536,10 +6727,11 @@ html[data-theme="aurora"] #page-community .cc-btn,html:not([data-theme]) #page-c
 <div id="yapsLoader" role="status" aria-live="polite" aria-label="Loading YAPSMusic">
 <style>
 #yapsLoader{position:fixed;inset:0;z-index:2147483000;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:radial-gradient(60% 40% at 100% 8%,rgba(25,245,168,.16),transparent 70%),radial-gradient(60% 40% at 0% 6%,rgba(255,61,240,.2),transparent 70%),radial-gradient(120% 75% at 50% 0%,#0a1a3c 0%,#050c26 36%,#030718 70%,#02040f 100%);
+  background:radial-gradient(120% 75% at 50% 0%,#0a1a3c 0%,#050c26 36%,#030718 70%,#02040f 100%);
   color:#fff;font-family:'Archivo','Montserrat',system-ui,-apple-system,'Segoe UI',sans-serif;overflow:hidden;
   padding:max(env(safe-area-inset-top,0px),10px) 20px calc(max(env(safe-area-inset-bottom,0px),0px) + clamp(46px,13vh,128px));
   transition:opacity .55s ease,visibility .55s;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#yapsLoader .yl-corner,#yapsLoader .yl-curve-bot,#yapsLoader .yl-curve-top{display:none!important}
 #yapsLoader.yl-hide{opacity:0;visibility:hidden;pointer-events:none}
 html.yl-skip #yapsLoader{display:none!important}
 #yapsLoader *{box-sizing:border-box}
@@ -6624,6 +6816,24 @@ html[data-mode="light"] #yapsLoader .yl-flag{box-shadow:0 0 0 1px rgba(11,26,61,
 html[data-mode="light"] #yapsLoader .yl-spin{box-shadow:0 0 14px rgba(139,92,246,.25)}
 html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-color:#fff}
 @media (prefers-reduced-motion:reduce){#yapsLoader *{animation-duration:0s!important;animation-iteration-count:1!important}#yapsLoader .yl-spin,#yapsLoader .yl-step.yl-active .yl-state{animation:ylSpin 2.4s linear infinite!important}}
+/* ── Header + mobile bottom buttons stay visible on top of the loading screen ── */
+html:has(#yapsLoader) #topbar{z-index:2147483001!important;pointer-events:none}
+html:has(#yapsLoader) #bottomNav{z-index:2147483001!important;pointer-events:none}
+html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
+#yapsLoader{--yl-hero-h:clamp(150px,29vh,380px);padding-top:calc(var(--topbar-h,52px) + var(--yl-hero-h) - 14px)!important;padding-bottom:calc(var(--mnav-h,0px) + clamp(46px,13vh,128px))!important}
+/* hero artwork (top of the loading page) */
+#yapsLoader .yl-deco{display:none!important}
+#yapsLoader .yl-hero{position:absolute;left:0;right:0;top:var(--topbar-h,52px);height:var(--yl-hero-h);z-index:1;overflow:hidden;pointer-events:none}
+#yapsLoader .yl-hero img{display:block;width:100%;height:100%;object-fit:cover;object-position:62% 10%;
+  -webkit-mask-image:linear-gradient(#000 68%,transparent);mask-image:linear-gradient(#000 68%,transparent);animation:ylHeroIn .9s ease-out both}
+@keyframes ylHeroIn{from{opacity:0;transform:scale(1.05)}to{opacity:1;transform:scale(1)}}
+@media (max-height:720px){#yapsLoader .yl-spin{display:none}}
+@media (min-width:900px){
+  #yapsLoader{padding-top:calc(var(--topbar-h,52px) + 10px)!important;padding-left:calc(38vw + 24px)!important}
+  #yapsLoader .yl-hero{right:auto;width:38vw;height:auto;bottom:0}
+  #yapsLoader .yl-hero img{object-position:60% 20%;-webkit-mask-image:linear-gradient(90deg,#000 70%,transparent);mask-image:linear-gradient(90deg,#000 70%,transparent)}
+}
+#yapsLoader .yl-foot{bottom:calc(var(--mnav-h,0px) + clamp(10px,3vh,30px))!important}
 
 /* ── Logo identical to the app header: play-note icon + YAPS (3D) + MUSIC (gradient) ── */
 #yapsLoader .yl-brand{display:flex;flex-direction:column;align-items:center;width:100%}
@@ -6686,6 +6896,8 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
     <path d="M0 62 C90 20 150 110 230 74 C300 42 350 20 400 46" fill="none" stroke="url(#ylw2)" stroke-width="2.4" style="filter:drop-shadow(0 0 6px #a64bff)"/>
     <path d="M0 96 C110 60 170 128 260 98 C320 78 370 70 400 84" fill="none" stroke="rgba(166,75,255,.6)" stroke-width="1.4"/></svg>
 </div>
+
+<div class="yl-hero" aria-hidden="true"><img alt="" decoding="async" src="images/loading-hero.webp"></div>
 
 <div class="yl-corner" aria-hidden="true">YAPSMusic</div>
 
@@ -7688,15 +7900,6 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
 
     <!-- VIDEO PAGE (YouTube-style browse) -->
     <section class="page" id="page-video">
-      <div class="yv2-header">
-        <div class="yv2-header-top">
-          <div class="yv2-header-icon"><i class="fas fa-play"></i></div>
-          <h2 data-i18n="nav_videos">Videos</h2>
-          <button class="yv2-upload-btn" onclick="yvOpenUploadModal()"><i class="fas fa-upload"></i> Upload</button>
-        </div>
-        <p>Watch your favorite music videos</p>
-      </div>
-
       <div class="yv2-hero" id="yv2Hero" onclick="yv2PlayHero()">
         <div class="yv2-hero-bg" id="yv2HeroBg"></div>
         <div class="yv2-hero-overlay"></div>
@@ -7709,7 +7912,6 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
         <div class="yv2-hero-dots" id="yv2HeroDots" onclick="event.stopPropagation()"></div>
       </div>
 
-      <div class="hub-tabs" data-hub="video"></div>
       <div class="yv2-cats" id="yv2Cats"></div>
 
       <div class="yv2-section">
@@ -9095,6 +9297,9 @@ a.djx-row{color:inherit;text-decoration:none}
           </div>
           
         </div>
+        <div class="premium-colors-head"><span>App icon</span></div>
+        <div class="premium-colors-sub">Pick the icon for the app. On an installed app the home-screen icon updates after you add the app to your home screen again.</div>
+        <div class="app-icon-grid" id="appIconGrid" role="radiogroup" aria-label="App icon"></div>
       </div>
 
       <div class="settings-section">
@@ -11279,10 +11484,7 @@ window.addEventListener('load', () => { _studioSync(); setTimeout(_studioSync, 3
 // ── POPULAR PLAYLISTS (home) ──
 // Category chips filter the cards; tap a card to open the playlist, tap the white button to play it.
 var _pplCat = 'All';
-const _PPL_GRADS = [
-  ['#ff512f','#dd2476'], ['#7f00ff','#e100ff'], ['#11998e','#38ef7d'], ['#f7971e','#ff5e62'],
-  ['#2193b0','#6a5acd'], ['#ee0979','#ff6a00'], ['#4776e6','#8e54e4'], ['#0f9b8e','#1e3c72']
-];
+const _PPL_BGS = ['#d4f56b','#ff6f5e','#b8a6ff','#ffd166','#6fe0c0','#ff9ccc','#8cc8ff','#f5a35c'];
 function _pplEsc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function pplFilter(cat) { _pplCat = cat; renderPopularPlaylists(); }
 function pplPlay(ev, id) { if (ev) ev.stopPropagation(); playPlaylistAll(id); }
@@ -11302,28 +11504,41 @@ function renderPopularPlaylists() {
   const list = playlists.filter(p => _pplCat === 'All' || (p.cats || []).includes(_pplCat));
   if (!list.length) { row.innerHTML = '<div class="ppl-empty">No playlists in this category yet.</div>'; return; }
   row.innerHTML = list.map(p => {
-    const gi = playlists.indexOf(p) % _PPL_GRADS.length;
-    const g = _PPL_GRADS[gi];
-    let n = p.tracks;
-    try { const c = _catalogPlaylist(p.id); if (c && c.trackIndices.length) n = c.trackIndices.length; } catch (e) {}
-    const imgs = p.imgs || [];
-    const bg = imgs[0] ? `<img class="ppl-bg" src="${_pplEsc(imgs[0])}" alt="" loading="lazy" decoding="async">` : '';
-    const stack = imgs.slice(1, 3).map(i => `<img src="${_pplEsc(i)}" alt="" loading="lazy" decoding="async">`).join('');
+    const bg = _PPL_BGS[playlists.indexOf(p) % _PPL_BGS.length];
     const idAttr = _pplEsc(JSON.stringify(p.id));
+    // artists in this playlist, most-featured first (collabs split into individual names)
+    const cnt = new Map();
+    try {
+      tracks.forEach(t => {
+        if (!p.match(t)) return;
+        String(t.artist || '').split(/\s*(?:&|,|\bfeat\.?|\bft\.?|\bx\b|\bwith\b)\s*/i).forEach(n => {
+          n = n.trim(); if (!n) return;
+          const e = cnt.get(n) || { n, c: 0, img: null }; e.c++;
+          if (!e.img && t.img) e.img = t.img;
+          cnt.set(n, e);
+        });
+      });
+    } catch (e) {}
+    const artists = [...cnt.values()].sort((a, b) => b.c - a.c);
+    const names = artists.slice(0, 8).map(a => a.n);
+    const seen = new Set(), pics = [];
+    artists.forEach(a => { if (a.img && !seen.has(a.img) && pics.length < 3) { seen.add(a.img); pics.push(a.img); } });
+    (p.imgs || []).forEach(i => { if (i && !seen.has(i) && pics.length < 3) { seen.add(i); pics.push(i); } });
+    const pic = (cls, src) => src
+      ? `<div class="ppl-pic ${cls}"><img src="${_pplEsc(src)}" alt="" loading="lazy" decoding="async"></div>`
+      : `<div class="ppl-pic ${cls}">♪</div>`;
+    const sub = names.length ? names.join(', ') : (p.desc || '');
     return `
-    <div class="ppl-card" style="--g1:${g[0]};--g2:${g[1]};" role="button" tabindex="0" aria-label="${_pplEsc(p.title)} playlist"
-         onclick="openPlaylist(${idAttr})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPlaylist(${idAttr})}">
-      ${bg}
-      <div class="ppl-top">
-        <div class="ppl-stack">${stack}</div>
-        <div class="ppl-count">${n} tracks</div>
-      </div>
-      <div class="ppl-info">
-        <div class="ppl-tag">${_pplEsc((p.cats && p.cats[0]) || 'Playlist')}</div>
+    <div class="ppl-item" role="button" tabindex="0" aria-label="${_pplEsc(p.title)} playlist"
+         onclick="openPlaylist(${idAttr})" onkeydown="if(event.target===this&&(event.key==='Enter'||event.key===' ')){event.preventDefault();openPlaylist(${idAttr})}">
+      <div class="ppl-card" style="--bg:${bg};">
+        <div class="ppl-brand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3v11.6A3.5 3.5 0 1 0 11 18V8h6V3z"/></svg></div>
+        <div class="ppl-kind">Playlist</div>
+        ${pic('l', pics[1] || pics[0])}${pic('r', pics[2] || pics[0])}${pic('c', pics[0])}
         <div class="ppl-title">${_pplEsc(p.title)}</div>
-        <div class="ppl-desc">${_pplEsc(p.desc || '')}</div>
+        <button class="ppl-play" aria-label="Play ${_pplEsc(p.title)}" onclick="pplPlay(event,${idAttr})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
       </div>
-      <button class="ppl-play" aria-label="Play ${_pplEsc(p.title)}" onclick="pplPlay(event,${idAttr})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>
+      <div class="ppl-sub">${_pplEsc(sub)}</div>
     </div>`;
   }).join('');
 }
@@ -31937,16 +32152,9 @@ document.addEventListener('click',function(e){var a=e.target.closest&&e.target.c
   .ppl-chips { padding: 0 14px 8px; gap: 5px; }
   .ppl-chips > * { font-size: 10.5px !important; padding: 4px 10px !important; }
   .ppl-row { gap: 10px; padding-left: 14px; }
-  .ppl-card { width: 112px; height: 148px; border-radius: 13px; }
-  .ppl-top { top: 6px; left: 6px; right: 6px; }
-  .ppl-stack img, .ppl-stack span { width: 15px; height: 15px; margin-left: -6px; border-width: 1.5px; }
-  .ppl-count { font-size: 8px; padding: 2px 6px; }
-  .ppl-info { left: 8px; right: 8px; bottom: 8px; }
-  .ppl-tag { font-size: 7px; letter-spacing: 1px; margin-bottom: 1px; }
-  .ppl-title { font-size: 11.5px; }
-  .ppl-desc { font-size: 8.5px; margin: 3px 28px 0 0; -webkit-line-clamp: 1; }
-  .ppl-play { width: 24px; height: 24px; right: 7px; bottom: 7px; box-shadow: 0 3px 8px rgba(0,0,0,.45); }
-  .ppl-play svg { width: 11px; height: 11px; }
+  .ppl-item { width: 132px; }
+  .ppl-sub { font-size: 11.5px; margin-top: 7px; }
+  .ppl-play { opacity: 1; transform: none; }
 
   .taste-profile-section { padding-left: 14px; padding-right: 14px; padding-bottom: 16px; }
   .tp-hero { padding: 10px 11px 9px; border-radius: 14px; }
@@ -34918,6 +35126,143 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-j],[
   var gifts=CONFIG.confirmedGifts.length?'Confirmed gifts: '+CONFIG.confirmedGifts.map(esc).join('; ')+'.':'Gifts are listed here only once YAPS confirms them.';
   DLG.innerHTML=a==='terms'?'<h3>Giveaway rules</h3><ul><li>Free to enter. One entry per person; fake or duplicate entries may be removed.</li><li>Ages 13+. Under-18s need a parent or guardian\u2019s agreement.</li><li>Winners are chosen after YAPS checks entries, and are announced on '+esc(fmt(CONFIG.winnersAnnounceAt))+'.</li><li>'+gifts+'</li><li>Sharing the link with 5 groups is optional and improves your chance; it does not guarantee a win.</li></ul>':'<h3>Privacy</h3><p>We collect your name, phone or email (a parent or guardian\u2019s for under-18s), age group and answers to run the giveaway and contact winners. We never ask for passwords, mobile money PINs or bank details.</p>';
   DLG.innerHTML+='<button class="gv-ans" data-a="close">Close</button>';DLG.showModal?DLG.showModal():DLG.setAttribute('open','')});
+})();
+</script>
+<style>
+/* Hide bottom nav + mini player while the on-screen keyboard is open */
+@media (max-width: 1024px) {
+  html.kb-open #bottomNav, html.kb-open #player-bar { display: none !important; }
+}
+</style>
+<script>
+(function () {
+  var root = document.documentElement, t;
+  function typing(el) {
+    if (!el || el.nodeType !== 1) return false;
+    if (el.isContentEditable) return true;
+    var tag = el.tagName;
+    if (tag === 'TEXTAREA' || tag === 'SELECT') return true;
+    if (tag !== 'INPUT') return false;
+    return !/^(button|checkbox|radio|range|submit|reset|file|color|image)$/i.test(el.type || 'text');
+  }
+  document.addEventListener('focusin', function (e) {
+    clearTimeout(t);
+    if (typing(e.target)) root.classList.add('kb-open');
+  });
+  document.addEventListener('focusout', function () {
+    clearTimeout(t);
+    // short delay so moving focus between two inputs doesn't flicker the nav
+    t = setTimeout(function () { if (!typing(document.activeElement)) root.classList.remove('kb-open'); }, 150);
+  });
+  window.addEventListener('pagehide', function () { root.classList.remove('kb-open'); });
+})();
+</script>
+<style>
+/* Large screens: the home search bar sits inside the "Ads play between songs" box */
+@media (min-width: 1024px) {
+  #homeAdBanner.has-search { flex-wrap: nowrap; gap: 16px; padding: 10px 16px; }
+  #homeAdBanner.has-search > div:first-child { flex: 0 0 auto !important; }
+  #homeAdBanner.has-search > .home-search { flex: 1 1 auto; min-width: 260px; padding: 0; }
+  #homeAdBanner.has-search > .home-search .search-big { max-width: none; width: 100%; }
+}
+</style>
+<script>
+(function () {
+  var mq = window.matchMedia('(min-width: 1024px)');
+  var slot = null;
+  function place() {
+    var s = document.querySelector('.home-search'), b = document.getElementById('homeAdBanner');
+    if (!s || !b) return;
+    if (!slot) { slot = document.createElement('span'); slot.hidden = true; s.parentNode.insertBefore(slot, s); }
+    // only move it in while the box is actually showing (Premium users have no box)
+    var want = mq.matches && getComputedStyle(b).display !== 'none';
+    if (want && s.parentNode !== b) {
+      b.insertBefore(s, b.querySelector('.sub-btn') || b.querySelector('.ad-artists'));
+      b.classList.add('has-search');
+    } else if (!want && s.parentNode === b) {
+      slot.parentNode.insertBefore(s, slot.nextSibling);
+      b.classList.remove('has-search');
+    }
+  }
+  var b0 = document.getElementById('homeAdBanner');
+  if (b0) new MutationObserver(place).observe(b0, { attributes: true, attributeFilter: ['style', 'class'] });
+  (mq.addEventListener ? mq.addEventListener('change', place) : mq.addListener(place));
+  window.addEventListener('resize', place);
+  place(); setTimeout(place, 1500); setTimeout(place, 5000);
+})();
+</script>
+<style id="yv2-hero-match-home">
+/* Video page hero = same size, shape and text scale as the Home hero */
+#page-video .yv2-hero{margin:0!important;border-radius:0 0 16px 16px!important;height:168px!important}
+#page-video .yv2-hero-content{padding:14px 16px!important;max-width:100%}
+#page-video .yv2-hero-badge{font-size:8.5px;letter-spacing:1.5px;margin-bottom:5px}
+#page-video .yv2-hero-title{font-size:20px!important;margin:0 0 3px}
+#page-video .yv2-hero-sub{font-size:10.5px;margin:0 0 9px;line-height:1.3}
+#page-video .yv2-hero-btn{padding:6px 13px;font-size:11px}
+#page-video .yv2-hero-dots{bottom:10px;left:16px}
+@media (min-width:641px){#page-video .yv2-hero{height:180px!important;border-radius:0 0 20px 20px!important}
+  #page-video .yv2-hero-content{padding:12px 18px!important}#page-video .yv2-hero-title{font-size:24px!important}}
+@media (min-width:768px){#page-video .yv2-hero{height:240px!important}#page-video .yv2-hero-content{padding:18px 36px!important}}
+@media (min-width:1024px){#page-video .yv2-hero{height:290px!important}#page-video .yv2-hero-content{padding:26px 52px!important}}
+@media (min-width:1440px){#page-video .yv2-hero{height:350px!important}#page-video .yv2-hero-content{padding:34px 68px!important}}
+@media (min-width:1920px){#page-video .yv2-hero{height:410px!important}}
+@media (min-width:768px) and (max-height:700px){#page-video .yv2-hero{height:230px!important}}
+</style>
+<style id="app-icon-picker-css">
+.app-icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 4px}
+.app-icon-opt{position:relative;aspect-ratio:1;border:2px solid transparent;border-radius:16px;padding:3px;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s,border-color .15s}
+.app-icon-opt img{width:100%;height:100%;display:block;object-fit:contain;border-radius:12px}
+.app-icon-opt:active{transform:scale(.94)}
+.app-icon-opt.active{border-color:var(--accent,#19e68c);box-shadow:0 0 0 3px rgba(25,230,140,.18)}
+.app-icon-opt.active::after{content:"\2713";position:absolute;right:-4px;top:-4px;width:20px;height:20px;border-radius:50%;background:var(--accent,#19e68c);color:#04120b;font:900 12px/20px system-ui;text-align:center}
+.app-icon-opt .aio-def{position:absolute;left:0;right:0;bottom:3px;text-align:center;font:700 9px/1 system-ui;color:#fff;text-shadow:0 1px 3px #000}
+</style>
+<script id="app-icon-picker-js">
+(function(){
+  var KEY='yaps_app_icon', COUNT=16;
+  function pad(n){return (n<10?'0':'')+n}
+  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+  function setLinks(n){
+    var head=document.head;
+    head.querySelectorAll('link[rel="icon"],link[rel="shortcut icon"],link[rel="apple-touch-icon"]').forEach(function(l){l.parentNode.removeChild(l)});
+    function add(rel,size,href){var l=document.createElement('link');l.rel=rel;l.type='image/png';if(size)l.sizes=size;l.href=href;head.appendChild(l)}
+    if(n===0){
+      add('icon','32x32','icons/favicon-32.png?v=4');add('icon','192x192','icons/icon-192.png?v=4');add('icon','512x512','icons/icon-512.png?v=4');
+      add('apple-touch-icon','180x180','icons/apple-touch-icon.png?v=4');
+    } else {
+      var b='icons/app-icon-'+pad(n)+'-';
+      add('icon','96x96',b+'96.png');add('icon','192x192',b+'192.png');add('icon','512x512',b+'512.png');
+      add('apple-touch-icon','180x180',b+'180.png');
+    }
+  }
+  function setManifest(n){
+    var l=document.querySelector('link[rel="manifest"]'); if(!l)return;
+    var href=n===0?'manifest.json':'manifest-'+pad(n)+'.json';
+    if(n===0){l.setAttribute('href',href);return}
+    // only switch if that manifest file really exists on the site
+    try{fetch(href,{method:'HEAD',cache:'no-cache'}).then(function(r){l.setAttribute('href',r.ok?href:'manifest.json')}).catch(function(){})}catch(e){}
+  }
+  function mark(n){
+    var g=document.getElementById('appIconGrid'); if(!g)return;
+    g.querySelectorAll('.app-icon-opt').forEach(function(b){
+      var on=+b.dataset.n===n; b.classList.toggle('active',on); b.setAttribute('aria-checked',on?'true':'false');
+    });
+  }
+  window.setAppIcon=function(n,opts){
+    n=+n||0; opts=opts||{};
+    ls(KEY,String(n)); setLinks(n); setManifest(n); mark(n);
+    if(!opts.silent&&typeof showToast==='function')showToast('App icon updated');
+  };
+  function build(){
+    var g=document.getElementById('appIconGrid'); if(!g||g.children.length)return;
+    var html='<button type="button" class="app-icon-opt" data-n="0" role="radio" aria-label="Original icon" onclick="setAppIcon(0)"><img loading="lazy" alt="" src="icons/icon-192.png?v=4"><span class="aio-def">ORIGINAL</span></button>';
+    for(var i=1;i<=COUNT;i++)html+='<button type="button" class="app-icon-opt" data-n="'+i+'" role="radio" aria-label="Icon '+i+'" onclick="setAppIcon('+i+')"><img loading="lazy" alt="" src="icons/app-icon-'+pad(i)+'-96.png"></button>';
+    g.innerHTML=html;
+    mark(+ls(KEY)||0);
+  }
+  build();
+  var saved=+ls(KEY)||0;
+  if(saved>0){setLinks(saved);setManifest(saved)}
 })();
 </script>
 </body>

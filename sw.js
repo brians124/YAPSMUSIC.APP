@@ -5,7 +5,7 @@
  * Bump VERSION on every deploy that changes index.html or other shell files —
  * that is what triggers the in-app "update available" bar.
  */
-const VERSION = 'v5';
+const VERSION = 'v6';
 const SHELL_CACHE   = 'yaps-shell-'   + VERSION;
 const RUNTIME_CACHE = 'yaps-runtime-' + VERSION;
 const IMAGE_CACHE   = 'yaps-images-'  + VERSION;
@@ -24,7 +24,26 @@ const PRECACHE = [
   'manifest.json',
   'images/yaps-cover.png?v=2',
   'images/yaps-music-cover.jpg',
-  'images/g2w-gospel-to-the-world.png'
+  'images/g2w-gospel-to-the-world.png',
+  // loading-page hero + app-icon picker thumbnails (so the picker and first screen work offline)
+  'images/loading-hero.webp',
+  'icons/icon-192.png?v=4',
+  'icons/app-icon-01-96.png',
+  'icons/app-icon-02-96.png',
+  'icons/app-icon-03-96.png',
+  'icons/app-icon-04-96.png',
+  'icons/app-icon-05-96.png',
+  'icons/app-icon-06-96.png',
+  'icons/app-icon-07-96.png',
+  'icons/app-icon-08-96.png',
+  'icons/app-icon-09-96.png',
+  'icons/app-icon-10-96.png',
+  'icons/app-icon-11-96.png',
+  'icons/app-icon-12-96.png',
+  'icons/app-icon-13-96.png',
+  'icons/app-icon-14-96.png',
+  'icons/app-icon-15-96.png',
+  'icons/app-icon-16-96.png'
 ];
 
 const CDN_HOSTS = ['cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com', 'cdnjs.cloudflare.com'];
