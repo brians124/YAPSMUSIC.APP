@@ -29418,13 +29418,50 @@ button,[role="button"],a,label,select{touch-action:manipulation}
 })();
 </script>
 
+<style id="studio-landscape-fs-css">
+#studioRot{position:absolute;inset:0;z-index:5;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;background:rgba(5,7,18,.96);color:#fff;font-family:inherit}
+#studioRot .sr-i{font-size:64px;line-height:1;color:#19e68c}
+#studioRot b{font-size:20px}#studioRot span{font-size:14px;opacity:.75}
+#studioRot button{min-height:46px;padding:0 22px;border-radius:24px;border:0;font-weight:800;font-size:15px;color:#fff;cursor:pointer;background:linear-gradient(100deg,#0ea66b,#0891b2 40%,#7c3aed 70%,#c026d3)}
+#studioRot button.q{background:none;border:1px solid rgba(255,255,255,.3);min-height:38px;font-weight:600;font-size:13px}
+/* DJ Studio on small phones held sideways: the app header and the mobile bottom nav go away so the decks get the whole screen */
+@media (orientation:landscape) and (max-height:520px){
+  html.studio-open{--topbar-h:0px;--mnav-h:0px}
+  html.studio-open #topbar,html.studio-open #bottomNav,html.studio-open #sidebar{display:none!important}
+  html.studio-open #studioOverlay{top:0!important;left:0!important;right:0!important;bottom:0!important;width:auto!important;height:auto!important;z-index:2000!important;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+}
+</style>
 <script>
 /* ══════ DJ STUDIO, built into this file ══════
    The Virtual DJ Studio lives inside this single page as its own isolated screen (an embedded frame), so its styles and code
    never clash with the app. Same origin: same login, theme, library and storage. Open it with openStudio(). */
 window.__STUDIO_SRC = null;   // the DJ Studio page now lives in studio.html and is fetched the first time the Studio is opened
 (function(){
-  var ov=null,fr=null,pushed=false,saved=null;
+  var ov=null,fr=null,pushed=false,saved=null,rotEl=null,rotDismissed=false;
+  /* The DJ Studio opens sideways by default on phones and small tablets: fullscreen + landscape lock (Android), plus a "turn your phone" screen where the browser cannot lock (iPhone). */
+  function smallPhone(){try{return matchMedia('(pointer:coarse)').matches&&Math.min(screen.width,screen.height)<=820}catch(e){return false}}
+  async function lockLandscape(){
+    try{if(!document.fullscreenElement&&document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen({navigationUI:'hide'})}catch(e){}
+    try{await screen.orientation.lock('landscape')}catch(e){}
+    rotPrompt();
+  }
+  function unlockOrient(){try{screen.orientation.unlock()}catch(e){}try{if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen()}catch(e){}}
+  window.__hostFS=function(){lockLandscape()};   /* the Studio's own "Landscape" button calls this */
+  function rotPrompt(){
+    if(!ov)return;
+    if(!rotEl){
+      rotEl=document.createElement('div');rotEl.id='studioRot';
+      rotEl.innerHTML='<div class="sr-i">\u21BB</div><b>Turn your phone sideways</b><span>The DJ Studio works best in landscape.</span><button type="button" id="studioRotGo">Switch to landscape</button><button type="button" class="q" id="studioRotX">Continue in portrait</button>';
+      ov.appendChild(rotEl);
+      rotEl.querySelector('#studioRotGo').onclick=function(){lockLandscape()};
+      rotEl.querySelector('#studioRotX').onclick=function(){rotDismissed=true;rotEl.style.display='none'};
+      var pm=matchMedia('(orientation:portrait)'),f=function(){rotPrompt()};
+      if(pm.addEventListener)pm.addEventListener('change',f);else if(pm.addListener)pm.addListener(f);
+    }
+    var portrait=matchMedia('(orientation:portrait)').matches;
+    if(!portrait)rotDismissed=false;
+    rotEl.style.display=(window.__studioOpen&&smallPhone()&&portrait&&!rotDismissed)?'flex':'none';
+  }
   /* The Studio fills only the content area, so the app's own header, sidebar, player bar and bottom nav stay visible and working. */
   function fit(){
     if(!ov)return;
@@ -29453,7 +29490,9 @@ window.__STUDIO_SRC = null;   // the DJ Studio page now lives in studio.html and
     try{if(window.ResizeObserver){var ro=new ResizeObserver(fit);['main','topbar','layout'].forEach(function(id){var e=document.getElementById(id);if(e)ro.observe(e)})}}catch(e){}
   }
   /* the mini player (docked bar / floating bubble) is not needed while the Studio is open: hide it, bring it back on close */
-  function studioFlag(on){window.__studioOpen=!!on;try{if(typeof _updatePlayerBarVisibility==='function')_updatePlayerBarVisibility()}catch(e){}if(on)fit()}
+  function studioFlag(on){window.__studioOpen=!!on;document.documentElement.classList.toggle('studio-open',!!on);
+    try{if(on){if(smallPhone()){lockLandscape();rotPrompt()}}else{unlockOrient();if(rotEl)rotEl.style.display='none'}}catch(e){}
+    try{if(typeof _updatePlayerBarVisibility==='function')_updatePlayerBarVisibility()}catch(e){}if(on)fit()}
   function show(){ov.style.display='block';studioFlag(true);fit();setActive(true);try{if(typeof closeSidebar==='function')closeSidebar()}catch(e){}
     document.documentElement.style.overflow='hidden';
     if(!pushed){try{history.pushState({yapsStudio:1},'')}catch(e){}pushed=true}}
