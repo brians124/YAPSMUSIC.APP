@@ -6446,6 +6446,7 @@ html:not([data-theme]) .page.active::before {
 @media(prefers-reduced-motion:reduce){.cn-main,.cn-sheet,.cn-ov{animation:none!important;transition:none!important}}
 
 .artist-card-full .acf-msg-btn{margin-top:6px;width:100%;max-width:140px;min-height:34px;cursor:pointer;font-family:inherit;background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:20px;font-size:12.5px;font-weight:700;touch-action:manipulation;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.artist-card-full .acf-join-btn{max-width:none;color:var(--accent-light);border-color:var(--accent-light)}
 .artist-card-full:hover .acf-msg-btn,.artist-card-full .acf-msg-btn:hover{border-color:var(--accent-light);color:var(--accent-light)}
 .artist-card-full .acf-msg-btn:active{transform:scale(.95)}
 #sidebar #nav-connect .badge{margin-left:auto}
@@ -6494,6 +6495,9 @@ html[data-theme="aurora"] #page-community .cc-msg.me .cc-b,html:not([data-theme]
 @media (max-width:480px){#page-community .cc-live span{display:none}#page-community .cc-jbtn{padding:8px 14px}#page-community .cc-jbtn i,#page-community .cc-jbtn .cc-lg{display:none}#page-community .cc-head{gap:9px;padding:10px 12px}}
 #page-community .cc-note{flex:none;text-align:center;font-size:12px;color:var(--gold);background:var(--gold-dim);padding:5px 12px}
 #page-community .cc-form,#page-community .cc-signin{flex:none;display:flex;align-items:flex-end;gap:10px;padding:10px 12px;border-top:1px solid var(--border);background:var(--surface)}
+/* Signed-in users never see "Sign in to join" (display:flex was overriding the hidden attribute); the message bar has no background behind the input and send button */
+#page-community .cc-form[hidden],#page-community .cc-signin[hidden]{display:none!important}
+#page-community .cc-form{background:transparent;border-top:0}
 #page-community .cc-input{flex:1;min-width:0;resize:none;max-height:120px;min-height:44px;padding:11px 16px;border-radius:24px;outline:0;line-height:1.35;background:var(--bg);border:1.5px solid var(--border);color:var(--text);font:inherit;font-size:15px;transition:border-color .2s}
 #page-community .cc-input:focus{border-color:var(--accent)}
 #page-community .cc-input::placeholder{color:var(--dim)}
@@ -15013,11 +15017,23 @@ function renderArtistsGrid() {
         <div class="acf-name">${name}</div>
         <div class="acf-subs"><span><b>${_atpEsc(a.followers)}</b> followers</span><span>${trackCount} track${trackCount === 1 ? '' : 's'}</span></div>
         <button type="button" class="acf-follow-btn ${isFollowing ? 'following' : ''}" aria-pressed="${isFollowing}" onclick="event.stopPropagation();toggleFollowArtist('${_atpEsc(jsName)}',this)">${isFollowing ? 'Following' : '+ Follow'}</button>
-        <button type="button" class="acf-msg-btn" aria-label="Message ${name}" onclick="event.stopPropagation();cnMessageArtist('${_atpEsc(jsName)}')"><i class="fas fa-envelope"></i> Message</button>
+        <button type="button" class="acf-msg-btn acf-join-btn" aria-label="Join ${name} community" onclick="event.stopPropagation();atpJoinCommunity('${_atpEsc(jsName)}')"><i class="fas fa-people-group"></i> Join Community</button>
       </div>`;
   }).join('');
 }
 
+
+// "Join Community" on every artist card: opens that artist's community so fans of the artist can find each other
+function atpJoinCommunity(name) {
+  try {
+    const a = (typeof _atpFiltered === 'function' ? _atpFiltered() : []).find(x => x.name === name) || { name };
+    const uid = String((a._account && a._account.id) || '').toLowerCase().replace(/[^a-z0-9-]/g, '');
+    const key = String(name || '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 60);
+    if (typeof window.openCommunity === 'function') {
+      window.openCommunity({ c: uid ? 'artist-u-' + uid : 'artist-' + key, name: name, join: true });   // same room ids as the artist profile's Join Community button
+    } else if (typeof cnMessageArtist === 'function') { cnMessageArtist(name); }
+  } catch (e) { console.log('[YAPS] Join community failed', e); showToast('Could not open the community, try again'); }
+}
 let _atpSearchT = null;
 function filterArtists(query) {
   _artistSearch = query || '';
@@ -15734,6 +15750,85 @@ function _songFileName(t, blob) {
   const name = [clean(t && t.artist), clean(t && t.title)].filter(Boolean).join(' - ') || 'YAPS Music song';
   return name.slice(0, 120) + '.' + ext;
 }
+
+// ── Cover art inside the downloaded file ──
+// When a song is saved to the phone, write its cover picture + title/artist/genre into the
+// MP3's ID3 tag so the cover shows in the phone's music player, gallery, lock screen,
+// Bluetooth/car display, and any other app, even outside YAPS Music.
+async function _yapsCoverBytes(t) {
+  const srcs = [t && t.img, 'icons/icon-192.png?v=4'].filter(Boolean);
+  for (const src of srcs) {
+    try {
+      const r = await fetch(src);
+      if (!r.ok) continue;
+      const b = await r.blob();
+      if (!/^image\//i.test(b.type || '')) continue;
+      // Normalise any image type (webp/png/gif) to a square-ish JPEG that every player understands
+      try {
+        const bmp = await createImageBitmap(b);
+        const max = 600, sc = Math.min(1, max / Math.max(bmp.width, bmp.height));
+        const w = Math.max(1, Math.round(bmp.width * sc)), h = Math.max(1, Math.round(bmp.height * sc));
+        const c = document.createElement('canvas'); c.width = w; c.height = h;
+        const g = c.getContext('2d'); g.fillStyle = '#000'; g.fillRect(0, 0, w, h); g.drawImage(bmp, 0, 0, w, h);
+        const jb = await new Promise(res => c.toBlob(res, 'image/jpeg', 0.9));
+        if (jb) return new Uint8Array(await jb.arrayBuffer());
+      } catch (e) {}
+      if (/jpe?g/i.test(b.type)) return new Uint8Array(await b.arrayBuffer());
+    } catch (e) {}
+  }
+  return null;
+}
+function _id3Frame(id, body) {
+  const f = new Uint8Array(10 + body.length);
+  for (let i = 0; i < 4; i++) f[i] = id.charCodeAt(i);
+  const n = body.length;
+  f[4] = (n >>> 24) & 255; f[5] = (n >>> 16) & 255; f[6] = (n >>> 8) & 255; f[7] = n & 255;
+  f.set(body, 10);
+  return f;
+}
+function _id3Text(id, str) {
+  str = String(str || '').trim();
+  if (!str) return null;
+  const body = new Uint8Array(1 + 2 + str.length * 2);
+  body[0] = 1; body[1] = 0xFF; body[2] = 0xFE;                       // UTF-16 with BOM (handles Luganda letters, emoji, etc.)
+  for (let i = 0; i < str.length; i++) { const c = str.charCodeAt(i); body[3 + i * 2] = c & 255; body[4 + i * 2] = c >> 8; }
+  return _id3Frame(id, body);
+}
+async function _withCoverArt(blob, t) {
+  try {
+    if (!blob || !t) return blob;
+    const head = new Uint8Array(await blob.slice(0, 10).arrayBuffer());
+    const isMp3 = /mp3|mpeg/i.test(blob.type || '') || (head[0] === 0x49 && head[1] === 0x44 && head[2] === 0x33) || (head[0] === 0xFF && (head[1] & 0xE0) === 0xE0);
+    if (!isMp3 || /m4a|mp4|aac|ogg|opus|flac|wav|webm/i.test(blob.type || '')) return blob;   // only MP3 uses ID3 tags
+    // Drop any old ID3v2 tag so we don't end up with two
+    let audioStart = 0;
+    if (head[0] === 0x49 && head[1] === 0x44 && head[2] === 0x33) {
+      audioStart = 10 + (((head[6] & 127) << 21) | ((head[7] & 127) << 14) | ((head[8] & 127) << 7) | (head[9] & 127)) + ((head[5] & 0x10) ? 10 : 0);
+      if (audioStart > blob.size) audioStart = 0;
+    }
+    const frames = [
+      _id3Text('TIT2', t.title), _id3Text('TPE1', t.artist), _id3Text('TPE2', t.artist),
+      _id3Text('TALB', t.album || t.title), _id3Text('TCON', t.genre), _id3Text('TCOP', 'YAPS Music')
+    ].filter(Boolean);
+    const cover = await _yapsCoverBytes(t);
+    if (cover) {
+      const mime = 'image/jpeg';
+      const body = new Uint8Array(1 + mime.length + 1 + 1 + 1 + cover.length);   // enc, mime\0, type, desc\0, data
+      let o = 0; body[o++] = 0;
+      for (let i = 0; i < mime.length; i++) body[o++] = mime.charCodeAt(i);
+      body[o++] = 0; body[o++] = 3; body[o++] = 0;                              // 3 = front cover, empty description
+      body.set(cover, o);
+      frames.push(_id3Frame('APIC', body));
+    }
+    if (!frames.length) return blob;
+    const size = frames.reduce((a, f) => a + f.length, 0);
+    const hdr = new Uint8Array(10);
+    hdr.set([0x49, 0x44, 0x33, 3, 0, 0]);
+    hdr[6] = (size >> 21) & 127; hdr[7] = (size >> 14) & 127; hdr[8] = (size >> 7) & 127; hdr[9] = size & 127;
+    return new Blob([hdr, ...frames, blob.slice(audioStart)], { type: 'audio/mpeg' });
+  } catch (e) { console.log('[YAPS] Cover art embed skipped', e); return blob; }
+}
+
 function saveSongToDevice(blob, t) {
   try {
     const a = document.createElement('a');
@@ -15750,7 +15845,7 @@ async function saveTrackToPhone(idx) {
   const url = key && _downloadedBlobUrls.get(key);
   if (!url) { showToast('Download the song first'); return; }
   try {
-    const blob = await (await fetch(url)).blob();
+    const blob = await _withCoverArt(await (await fetch(url)).blob(), t);
     showToast(saveSongToDevice(blob, t) ? '"' + t.title + '" is being saved to your phone\'s Downloads folder' : 'Could not save to your phone, try again');
   } catch (e) { showToast('Could not save to your phone, try again'); }
 }
@@ -15817,7 +15912,7 @@ async function downloadTrack(idx) {
     });
     _downloadedBlobUrls.set(key, URL.createObjectURL(blob));
     _downloadedMeta.set(key, { title: t.title, artist: t.artist, img: t.img, duration: t.duration, genre: t.genre, downloadedAt: Date.now(), size: blob.size });
-    const _savedToPhone = _yS('saveToPhone', true) && saveSongToDevice(blob, t);
+    const _savedToPhone = _yS('saveToPhone', true) && saveSongToDevice(await _withCoverArt(blob, t), t);
     showToast(_savedToPhone ? '"' + t.title + '" saved to your phone\'s Downloads folder (' + _fmtBytes(blob.size) + ')' : '"' + t.title + '" available offline (' + _fmtBytes(blob.size) + ')');
     _requestPersistence();
   } catch (e) {
@@ -26648,6 +26743,15 @@ h1, h2, h3, h4, h5, h6,
   /* Promoters. Optional fields: whatsapp ('https://wa.me/256…'), phone ('+256…'), email, website, instagram, youtube, tiktok, twitter, facebook,
      events:[{ title, date:'2026-12-31', venue, link }], highlights:['…'], tags:['…']. Contact buttons and the booking request only appear for what is filled in. */
   const CURATED_DJS = [
+    { name:'DJ Shiru', avatar:'images/dj-shiru.webp', cover:'images/dj-shiru-cover.webp', crew:'256 Spin Doctor', city:'Kampala', bio:'Kiberu Shiru, widely recognized as one of the most prominent Ugandan DJs of the 21st century. Known for playing international acts, producing local collaborations and massive mainstream clout.' },
+    { name:'DJ Zahara Toto', avatar:'images/dj-zahara-toto.webp', cover:'images/dj-zahara-toto-cover.webp', city:'Kampala' },
+    { name:'DJ Suuna Ben', avatar:'images/dj-suuna-ben.webp', cover:'images/dj-suuna-ben-cover.webp', city:'Kampala' },
+    { name:'DJ Mbazira Tonny', avatar:'images/dj-mbazira-tonny.webp', cover:'images/dj-mbazira-tonny-cover.webp', city:'Kampala' },
+    { name:'DJ Roja & Slick Stuart', avatar:'images/dj-roja-slick-stuart.webp', cover:'images/dj-roja-slick-stuart-cover.webp', city:'Kampala', bio:'A powerhouse duo that dominates the club and mixtape scene, with major annual mix shows and hit collaborative tracks with artists like Ykee Benda.' },
+    { name:'DJ Nimrod', avatar:'images/dj-nimrod.webp', cover:'images/dj-nimrod-cover.webp', crew:'Galaxy FM', city:'Kampala', bio:'Popular Galaxy FM presenter and turntable spinner who regularly ranks high in audience polls and entertainment discussions.' },
+    { name:'Selector Jay', avatar:'images/selector-jay.webp', cover:'images/selector-jay-cover.webp', crew:'Club Guvnor', city:'Kampala', bio:'A household name, famous for his long-running stint on NTV The Beat and as a resident DJ at Club Guvnor in Kampala.' },
+    { name:'DJ Aludah', avatar:'images/dj-aludah.webp', cover:'images/dj-aludah-cover.webp', city:'Kampala', bio:'Known for his technical mixing skills, consistency and prominence across top-tier club and corporate events.' },
+    { name:'DJ Rota', avatar:'images/dj-rota.webp', cover:'images/dj-rota-cover.webp', city:'Kampala', bio:'A veteran pioneer of the industry who received lifetime achievement honors for introducing computerized disco systems and training new DJs in Uganda.' },
     { kind:'promoter', name:'Abitex (Abbey Musinguzi)', avatar:PH_ABITEX, city:'Kampala', role:'Event promoter',
       tags:['Event promoter','Entertainment'],
       bio:'Abbey Musinguzi, known as Abitex, is a Ugandan entertainment promoter.', highlights:[], events:[] },
@@ -34012,6 +34116,13 @@ function dayLabel(d) {
   return x.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
 }
 function toast(m) { if (typeof window.showToast === "function") { try { window.showToast(m); return; } catch (e) {} } alert(m); }
+function localJoin(write, on) {
+  try {
+    var k = "yaps_chat_joined_" + COMMUNITY + (S.me && S.me.real ? "_" + S.me.id : "");
+    if (write) { if (on) localStorage.setItem(k, "1"); else localStorage.removeItem(k); return on; }
+    return localStorage.getItem(k) === "1";
+  } catch (e) { return false; }
+}
 function friendly(e) { var m = String((e && e.message) || e || ""); return /row-level security|permission/i.test(m) ? "You don't have permission to do that." : m.slice(0, 120) || "Something went wrong"; }
 function signIn() { try { window.goAuth("signin"); } catch (e) { location.href = "auth.html"; } }
 var HUES = [220, 262, 190, 330, 150, 28, 205, 290];
@@ -34096,14 +34207,18 @@ var API = {
     if (!S.me) return false;
     if (!S.live || !S.memberDb) { try { return localStorage.getItem("yaps_chat_joined_" + COMMUNITY + (S.me.real ? "_" + S.me.id : "")) === "1"; } catch (e) { return false; } }
     if (!S.me.real) return false;
-    try { var r = await getSb().from("community_chat_members").select("user_id").eq("community", COMMUNITY).eq("user_id", S.me.id).maybeSingle(); return !!r.data; } catch (e) { return false; }
+    try { var r = await getSb().from("community_chat_members").select("user_id").eq("community", COMMUNITY).eq("user_id", S.me.id).maybeSingle(); if (r.data) return true; } catch (e) {}
+    return localJoin(false);   // joined on this phone even if the server could not save it
   },
   async setJoined(on) {
     if (!S.live || !S.memberDb) { try { localStorage.setItem("yaps_chat_joined_" + COMMUNITY + (S.me.real ? "_" + S.me.id : ""), on ? "1" : "0"); } catch (e) {} return; }
-    var c = getSb();
-    var r = on ? await c.from("community_chat_members").upsert({ community: COMMUNITY, user_id: S.me.id })
-               : await c.from("community_chat_members").delete().eq("community", COMMUNITY).eq("user_id", S.me.id);
-    if (r.error) throw r.error;
+    var c = getSb(), r;
+    try {
+      r = on ? await c.from("community_chat_members").upsert({ community: COMMUNITY, user_id: S.me.id })
+             : await c.from("community_chat_members").delete().eq("community", COMMUNITY).eq("user_id", S.me.id);
+    } catch (e) { r = { error: e }; }
+    if (r && r.error) { localJoin(true, on); return; }   // server refused: still join on this device so tapping Join always works
+    localJoin(true, false);
   },
   async count() {
     if (!S.live || !S.memberDb) return null;
