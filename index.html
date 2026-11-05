@@ -8121,51 +8121,21 @@ a.djx-row{color:inherit;text-decoration:none}
     </section>
 
     <!-- AI DJ PAGE (YAPS AI) -->
-    <section class="page" id="page-ai-dj">
+    <section class="page" id="page-ai-dj" aria-label="YAPS AI chat">
       <div class="yai-wrap">
         <header class="yai-head">
           <div class="yai-orb" id="yaiOrb" data-state="idle" aria-hidden="true"><span class="yai-orb-core"></span><span class="yai-orb-ring"></span></div>
-          <div class="yai-head-text">
-            <h2>YAPS AI</h2>
-            <div class="yai-status" id="yaiStatus" aria-live="polite">Ready when you are</div>
-          </div>
+          <div class="yai-head-text"><h2>YAPS AI</h2><div class="yai-status" id="yaiStatus" aria-live="polite">Ready when you are</div></div>
+          <span class="yai-live"><i></i><span>Online</span></span>
           <button type="button" class="yai-icon-btn" onclick="clearDJChat()" title="Start a new chat" aria-label="Start a new chat"><i class="fas fa-rotate-left"></i></button>
         </header>
-
-        <div class="yai-chips" role="group" aria-label="Quick prompts">
-          <button type="button" class="dj-prompt-chip new" data-q="30 minutes of gospel" onclick="sendDJPrompt(this.dataset.q)">30 minutes of gospel</button>
-          <button type="button" class="dj-prompt-chip new" data-q="Songs like Yoyo" onclick="sendDJPrompt(this.dataset.q)">Songs like Yoyo</button>
-          <button type="button" class="dj-prompt-chip new" data-q="What's new" onclick="sendDJPrompt(this.dataset.q)">What's new</button>
-          <button type="button" class="dj-prompt-chip" data-q="Chill Sunday vibes" onclick="sendDJPrompt(this.dataset.q)">Chill Sunday vibes</button>
-          <button type="button" class="dj-prompt-chip" data-q="Hype me up" onclick="sendDJPrompt(this.dataset.q)">Hype me up</button>
-          <button type="button" class="dj-prompt-chip" data-q="Kampala nights" onclick="sendDJPrompt(this.dataset.q)">Kampala nights</button>
-          <button type="button" class="dj-prompt-chip" data-q="Gospel Sunday" onclick="sendDJPrompt(this.dataset.q)">Gospel Sunday</button>
-          <button type="button" class="dj-prompt-chip" data-q="Heartbreak hour" onclick="sendDJPrompt(this.dataset.q)">Heartbreak hour</button>
-          <button type="button" class="dj-prompt-chip" data-q="Party starter" onclick="sendDJPrompt(this.dataset.q)">Party starter</button>
-          <button type="button" class="dj-prompt-chip" data-q="Workout mode" onclick="sendDJPrompt(this.dataset.q)">Workout mode</button>
-          <button type="button" class="dj-prompt-chip" data-q="Late night drive" onclick="sendDJPrompt(this.dataset.q)">Late night drive</button>
-          <button type="button" class="dj-prompt-chip" data-q="I need to focus" onclick="sendDJPrompt(this.dataset.q)">I need to focus</button>
-        </div>
-
+        <div class="yai-chips" role="group" aria-label="Quick prompts"><button type="button" class="dj-prompt-chip new" data-q="What can you do?" onclick="sendDJPrompt(this.dataset.q)">What can you do?</button><button type="button" class="dj-prompt-chip new" data-q="30 minutes of gospel" onclick="sendDJPrompt(this.dataset.q)">30 minutes of gospel</button><button type="button" class="dj-prompt-chip" data-q="Songs like Yoyo" onclick="sendDJPrompt(this.dataset.q)">Songs like Yoyo</button><button type="button" class="dj-prompt-chip" data-q="Where are my downloads?" onclick="sendDJPrompt(this.dataset.q)">Where are my downloads?</button><button type="button" class="dj-prompt-chip" data-q="How do I make a song?" onclick="sendDJPrompt(this.dataset.q)">How do I make a song?</button><button type="button" class="dj-prompt-chip" data-q="Open settings" onclick="sendDJPrompt(this.dataset.q)">Open settings</button><button type="button" class="dj-prompt-chip" data-q="Chill Sunday vibes" onclick="sendDJPrompt(this.dataset.q)">Chill Sunday vibes</button><button type="button" class="dj-prompt-chip" data-q="Hype me up" onclick="sendDJPrompt(this.dataset.q)">Hype me up</button><button type="button" class="dj-prompt-chip" data-q="Kampala nights" onclick="sendDJPrompt(this.dataset.q)">Kampala nights</button><button type="button" class="dj-prompt-chip" data-q="What's new" onclick="sendDJPrompt(this.dataset.q)">What's new</button></div>
         <div class="dj-chat-area" id="djChatArea" role="log" aria-live="polite">
-          <div class="dj-message">
-            <div class="dj-msg-avatar"></div>
-            <div class="dj-msg-bubble">
-              Sssup! I'm YAPS AI, built right into the app. Tell me a mood, a moment, an artist or how long you want to listen, and I'll build the set.
-            </div>
-          </div>
-          <div class="yai-caps" id="yaiCaps">
-            <button type="button" class="yai-cap" data-q="Late night drive" onclick="sendDJPrompt(this.dataset.q)"><i class="fas fa-bolt"></i><strong>Build a set</strong><span>Any mood, moment or feeling</span></button>
-            <button type="button" class="yai-cap" data-q="45 minutes of party music" onclick="sendDJPrompt(this.dataset.q)"><i class="fas fa-clock"></i><strong>Set by length</strong><span>“45 minutes of party music”</span></button>
-            <button type="button" class="yai-cap" data-q="Songs like Yoyo" onclick="sendDJPrompt(this.dataset.q)"><i class="fas fa-shuffle"></i><strong>Find similar</strong><span>“Songs like Yoyo”</span></button>
-            <button type="button" class="yai-cap" data-q="Volume 50" onclick="sendDJPrompt(this.dataset.q)"><i class="fas fa-sliders"></i><strong>Control playback</strong><span>“Volume 50”, “rewind 10 seconds”</span></button>
-            <button type="button" class="yai-cap" data-q="Stop playing in 30 minutes" onclick="sendDJPrompt(this.dataset.q)"><i class="fas fa-moon"></i><strong>Sleep timer</strong><span>“Stop playing in 30 minutes”</span></button>
-            <button type="button" class="yai-cap" data-q="Recommend something for me" onclick="sendDJPrompt(this.dataset.q)"><i class="fas fa-heart"></i><strong>Your taste</strong><span>Picks based on your likes</span></button>
-          </div>
+          <div class="dj-message"><div class="dj-msg-avatar"></div><div class="dj-msg-bubble">Sssup! I'm YAPS AI, built right into the app. Ask me for music by mood, artist or length, or ask how to do anything in YAPSMusic and I'll show you.</div></div>
+          <div class="yai-caps" id="yaiCaps"></div>
         </div>
-
         <div class="yai-composer">
-          <input type="text" id="djInput" placeholder="Ask for a mood, artist or “30 minutes of gospel”" autocomplete="off" enterkeyhint="send" aria-label="Message YAPS AI" onkeydown="if(event.key==='Enter')sendDJMessage()">
+          <input type="text" id="djInput" placeholder="Ask for music, or how to do anything in the app" autocomplete="off" enterkeyhint="send" aria-label="Message YAPS AI" onkeydown="if(event.key==='Enter')sendDJMessage()">
           <button type="button" id="djVoiceBtn" onclick="toggleDJVoice()" title="Speak" aria-label="Speak your request"><i class="fas fa-microphone"></i></button>
           <button type="button" class="yai-send" onclick="sendDJMessage()" title="Send" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
         </div>
@@ -8534,6 +8504,26 @@ a.djx-row{color:inherit;text-decoration:none}
         <div class="ern-top">
           <button type="button" class="ern-back" id="ernBack" aria-label="Go back"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
           <div><h1>Earnings</h1><p>Your income, payouts &amp; top tracks</p></div>
+        </div>
+        <div class="gv" id="gvRoot">
+          <div class="gv-hero" style="--img:url(images/giveaway-hero.jpg)"><div class="gv-copy">
+            <p class="gv-eye">Music to the World, from Uganda</p><h2>Listen. Play. <span>Win gifts.</span></h2>
+            <p>Test what you know about YAPS Music in a short quiz. Enter the giveaway for a chance to win.</p>
+            <div class="gv-cta"><button type="button" class="gv-btn" id="gvPlay">Play the quiz</button><a class="gv-btn wa" id="gvShare" target="_blank" rel="noopener noreferrer" href="#">Share on WhatsApp</a></div>
+            <p class="gv-credit">Promotional image. The gifts shown are examples. Each giveaway lists the gifts YAPS has confirmed.</p></div></div>
+          <details class="gv-det"><summary>How winning works</summary><div class="gv-in"><p id="gvDates"></p><ol>
+            <li><b>Answer a few questions</b>Tell us about yourself and how you use YAPS Music, then take the quiz.</li>
+            <li><b>Enter the giveaway</b>Add your name and phone or email. Under 18? A parent or guardian must agree. Under 13s can play but can’t enter.</li>
+            <li><b>YAPS checks the scores</b>We re-check every entry before choosing winners. A score on the screen alone doesn’t mean you’ve won.</li>
+            <li><b>Winners are announced here</b>Only verified winners are listed on this page.</li></ol></div></details>
+          <details class="gv-det"><summary>What’s up for grabs</summary><div class="gv-in"><img src="images/giveaway-gifts.jpg" alt="Example gifts" loading="lazy"><p>Gift types we feature on YAPS Music. The exact gifts for each giveaway are confirmed before it opens.</p><b style="color:var(--text)">Confirmed for this giveaway</b><div id="gvConfirmed"></div></div></details>
+          <details class="gv-det"><summary>Verified winners</summary><div class="gv-in" id="gvWinners"></div></details>
+          <details class="gv-det"><summary>Stay safe</summary><div class="gv-in"><p>Entering is free. You never pay to enter, to claim a gift or to receive a prize. YAPS Music and its giveaways will never ask for your password, mobile money PIN, bank details or a one-time code. If someone asks for them, don’t share anything.</p><p id="gvContact"></p><p><button type="button" class="gv-lk" data-a="terms">Giveaway rules</button> &middot; <button type="button" class="gv-lk" data-a="privacy">Privacy</button></p></div></details>
+          <dialog id="gvDlg"></dialog>
+          <div class="gv-quiz" id="gvQuiz" hidden role="dialog" aria-modal="true" aria-label="YAPS Music quiz"><div class="gv-qwrap">
+            <div class="gv-bar"><button type="button" data-a="home">&larr; YAPS Music</button><b id="gvStep"></b></div>
+            <img class="gv-qhero" src="images/giveaway-quiz.jpg" alt="YAPS Music giveaway artwork">
+            <main class="gv-card" id="gvCard" aria-live="polite"></main></div></div>
         </div>
         <div id="ernBody"></div>
       </div>
@@ -34490,6 +34480,290 @@ html[data-theme="aurora"] :is(button,a)[style*="background:var(--accent)"],html[
     });
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);else build();
+})();
+</script>
+<style id="yaiCommunityLook">
+/* YAPS AI = community chat look: header bar, avatar + bubbles, pill composer. No framed panels or tiles. */
+html body #page-ai-dj{padding:0}
+html body #page-ai-dj .yai-wrap{max-width:920px!important;width:100%!important;margin:0 auto!important;padding:0!important;height:calc(100dvh - var(--topbar-h,0px) - var(--player-h,0px) - var(--mnav-h,0px));display:flex;flex-direction:column;min-height:0}
+#page-ai-dj .yai-head{flex:none;padding:12px 16px;gap:12px;border-bottom:1px solid var(--border);background:var(--surface)}
+#page-ai-dj .yai-orb{width:42px;height:42px}
+#page-ai-dj .yai-orb-core{inset:0;background:var(--yai-art) center/cover,var(--accent);box-shadow:none}
+#page-ai-dj .yai-head-text h2{font-size:16px}
+#page-ai-dj .yai-status{font-size:12px}
+#page-ai-dj .yai-live{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--green);flex:none}
+#page-ai-dj .yai-live i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+#page-ai-dj .yai-chips{flex:none;padding:8px 12px 2px}
+html body #page-ai-dj .dj-chat-area{flex:1;min-height:0;height:auto!important;max-height:none!important;border:0;border-radius:0;background:none;padding:14px 14px 8px;gap:3px;overflow-y:auto}
+html body #page-ai-dj .dj-message{display:flex;max-width:86%;gap:9px;align-items:flex-end;margin-top:10px}
+html body #page-ai-dj .dj-message.user{align-self:flex-end;flex-direction:row-reverse}
+html body #page-ai-dj .dj-message:has(.wide){max-width:100%;width:100%}
+html body #page-ai-dj .dj-msg-avatar{width:34px;height:34px;margin:0;border-radius:50%;flex:none;background:var(--yai-art) center/cover,var(--accent)}
+html body #page-ai-dj .dj-message:not(.user) .dj-msg-bubble{background:var(--card);border:0;padding:8px 13px;border-radius:18px 18px 18px 5px;max-width:100%;font-size:15px;line-height:1.5}
+html body #page-ai-dj .dj-message.user .dj-msg-bubble{background:linear-gradient(135deg,var(--accent),var(--accent-dark));border:0;padding:8px 13px;border-radius:18px 18px 5px 18px;max-width:100%}
+html[data-theme="aurora"] #page-ai-dj .dj-message.user .dj-msg-bubble,html:not([data-theme]) #page-ai-dj .dj-message.user .dj-msg-bubble{background:var(--aurora-btn)}
+html body #page-ai-dj .dj-msg-track{background:none;border:0;padding:6px 4px;border-radius:12px}
+html body #page-ai-dj .dj-msg-track:hover{background:var(--card2)}
+html body #page-ai-dj .yai-caps{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:2px 10px;margin:6px 0 0 43px}
+html body #page-ai-dj .yai-cap{background:none;border:0;padding:8px 6px;display:grid;grid-template-columns:22px 1fr;column-gap:8px;border-radius:12px}
+html body #page-ai-dj .yai-cap:hover{background:var(--card)}
+#page-ai-dj .yai-cap i{grid-row:span 2;margin:3px 0 0}
+html body #page-ai-dj :is(.yai-btn,.yai-icon-btn,.dj-prompt-chip,.yai-follow .dj-prompt-chip){border:0}
+html body #page-ai-dj .dj-prompt-chip,html body #page-ai-dj .yai-follow .dj-prompt-chip{background:var(--card)}
+#page-ai-dj .yai-dna{border-top:0}
+#page-ai-dj .yai-acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+#page-ai-dj .yai-act{border:0;border-radius:16px;padding:7px 13px;background:var(--accent-dim);color:var(--accent-light);font:700 13px inherit;font-family:inherit;cursor:pointer}
+#page-ai-dj .yai-act:hover{background:var(--card2)}
+html body #page-ai-dj .yai-composer{flex:none;margin:0;padding:10px 12px;gap:10px;border:0;border-top:1px solid var(--border);border-radius:0;background:var(--surface);box-shadow:none;align-items:flex-end}
+html body #page-ai-dj .yai-composer:focus-within{box-shadow:none;border:0;border-top:1px solid var(--border)}
+#page-ai-dj .yai-composer input{min-height:44px;padding:11px 16px;border-radius:24px;background:var(--bg);border:1.5px solid var(--border);font-size:15px;transition:border-color .2s}
+#page-ai-dj .yai-composer input:focus{border-color:var(--accent)}
+#page-ai-dj .yai-composer button{width:46px;height:46px}
+@media(max-width:480px){#page-ai-dj .yai-live span{display:none}html body #page-ai-dj .dj-message{max-width:92%}html body #page-ai-dj .dj-msg-avatar{width:30px;height:30px}html body #page-ai-dj .yai-caps{margin-left:0}}
+</style>
+<script id="yaiFeatureGuide">
+(function(){
+const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const FN={queue:()=>toggleQueue(),studio:()=>{location.href='studio.html'},creator:()=>openSongCreator(),mixes:()=>sapOpen('dj-mixes'),lyrics:()=>openLyrics(),facts:()=>toggleSongFacts(),sleep:()=>openSleepTimer(),speed:()=>cyclePlaybackSpeed(),downloads:()=>_p2pGoToDownloads(),help:()=>openHelpCenter(),sub:()=>openSubscriptionModal(),edit:()=>openEditProfileModal(),rate:()=>openRateAppModal(),install:()=>pwaInstall(),about:()=>openModal('about'),lang:()=>openModal('language'),terms:()=>openLegal('terms'),privacy:()=>openLegal('privacypolicy'),bug:()=>openFeedback('bug'),feedback:()=>openFeedback('feedback'),signin:()=>goAuth('signin'),signup:()=>goAuth('signup'),now:()=>openNowPlaying(),logout:()=>_confirmSidebarLogout()};
+window.yaiGo=function(k){try{const i=k.indexOf(':'),t=k.slice(0,i),v=k.slice(i+1);if(t==='p'){navigate(v);try{updateBottomNav(v)}catch(e){}}else if(t==='s')openSettings(v);else if(t==='q'){const q=decodeURIComponent(v);openSettings('home');setTimeout(()=>{const e=document.getElementById('ysQ');if(e){e.value=q;e.dispatchEvent(new Event('input',{bubbles:true}));e.focus()}},400)}else if(t==='m'){const q=decodeURIComponent(v);navigate('search');setTimeout(()=>{try{filterMainSearch(q);const e=document.querySelector('#page-search input');if(e)e.value=q}catch(_){}},300)}else if(t==='n')(window._yaiNav||[])[+v].click();else FN[v]()}catch(e){console.warn('yaiGo',k,e);try{showToast('Could not open that here')}catch(_){}}};
+// Feature guide: [pattern, answer, ...[button label, action]]. Every action calls something that already exists in the app.
+const K=[];const k=(re,say,...b)=>K.push({re:new RegExp(re),say,b});
+k('what can you do|what do you do|features?|what.{0,20}(app|yaps).{0,12}(do|have|offer)|guide|tour|how to use','I can build sets by mood, length or artist, control playback, and show you every part of YAPSMusic. <b>Listen:</b> Home, Trending, New Releases, Charts, Artists, Genres, Quick Vibes, Podcasts, Videos. <b>Library:</b> Likes, Playlists, Downloads, History, Queue. <b>Create:</b> DJ Studio, AI Song Creator, Upload. <b>Community:</b> Messages, Community Chat, Events. Ask about any of them.',['Settings','s:home'],['Help Center','f:help']);
+k('yaps ai|ai dj|voice|microphone|mic\\b','Tell me a mood, artist or length (“30 minutes of gospel”), say “songs like…”, or control playback (pause, skip, volume 50, rewind 10 seconds, sleep timer). I can like, queue and save playlists, mute artists, and open any page. Tap the mic to speak. Turn me or recommendations on or off, pick a mood, or reset what I learned in Settings, AI &amp; DJ.',['AI &amp; DJ settings','s:ai']);
+k('home page|\\bhome\\b|recommended','Home has your recommendations, trending songs, new releases, recently played and featured artists and albums.',['Open Home','p:home']);
+k('trending','Trending Songs shows what listeners are playing most right now.',['Trending Songs','p:stream'],['Trending Videos','p:trending-videos']);
+k('new releases?|latest (songs|music)','New Releases lists the newest tracks on YAPS.',['New Releases','p:new-releases']);
+k('charts?|top 10|ranking','Top Charts ranks songs with rank, trend arrows and play counts.',['Top Charts','p:charts']);
+k('artists?|discover','Artists lets you browse and discover performers, then open their tracks. Say “tell me about” and an artist name and I will pull up their songs.',['Artists','p:artists']);
+k('genres?|search|find (a )?(song|music)','Search and Genres let you look up songs and artists or browse by genre. You can also just ask me, for example “songs like Yoyo”.',['Search &amp; Genres','p:search']);
+k('quick ?vibes?|moods?','Quick Vibes are ready playlists for the moment: Chill, Hype, Heartbreak, Kampala, Gospel, Party, Workout, Love and Late Night.',['Quick Vibes','p:quickvibes']);
+k('explore','Explore is the place to wander into music you have not heard yet.',['Explore','p:explore']);
+k('podcasts?','Podcasts has shows to stream next to your music.',['Podcasts','p:podcasts']);
+k('videos?|music videos?','Videos has music videos, trending videos, a discovery feed and categories.',['Videos','p:video'],['Trending Videos','p:trending-videos']);
+k('\\bdjs?\\b|dj mix(es)?|promoters?','The DJs page lists Ugandan DJs and promoters, and DJ Mixes has their mixes.',['DJs','p:djs'],['DJ Mixes','f:mixes']);
+k('dj studio|studio|mixer|decks?','DJ Studio is a virtual DJ mixer with decks, EQ, effects and recording.',['Open DJ Studio','f:studio']);
+k('song creator|make (a |my own )?song|create (a )?song|write (a )?song','AI Song Creator turns an idea into a new song: lyrics, music, vocals and cover art.',['AI Song Creator','f:creator']);
+k('upload|my uploads|release','Upload Your Track adds your music (sign in first and confirm you own the rights). Manage tracks, plays and listeners from your dashboard.',['Upload','p:upload'],['My Uploads','p:dashboard']);
+k('earnings?|payouts?|tips?|money|income','Earnings shows your income, payouts and top tracks.',['Earnings','p:earnings']);
+k('edit profile|profile|followers?|following|verif','Your Profile shows your followers and following. Edit it to change your details, and creators can request a verified badge in Settings, Creator / Artist.',['My Profile','p:profile'],['Edit Profile','f:edit']);
+k('messages?|inbox|dm|chat with (friends|users)|find friends','Messages is chat with any YAPS user. Tap New and search by name or username, or check which contacts already use the app.',['Messages','p:messages'],['Connect','p:connect']);
+k('community|request a song','Community Chat is an open room for artists, DJs and listeners. Join to post, and you can request a song for the DJ.',['Community Chat','p:community']);
+k('notifications?|alerts?','Notifications collects your alerts. Choose what you get in Settings.',['Notifications','p:notifications'],['Alert settings','s:notifs']);
+k('events?|festivals?|listening part','Events lists live nights, festivals and listening parties.',['Events','p:events']);
+k('library|liked songs?|likes|favou?rites?|playlists?|albums?','Your Library holds liked songs, playlists, albums and history. To like a song, tap its heart or tell me “like this”. Say “make a playlist called Sunday” and I will create it, or “save this set” to keep what I just built.',['Library','p:library'],['Playlists','p:playlists']);
+k('downloads?|offline|save (a )?song','Download a song from the player, then find it in Library, Downloads. Offline mode and download options are in Settings.',['My Downloads','f:downloads'],['Download settings','s:downloads']);
+k('queue','The Queue holds what plays next. Say “add this to the queue” and I will do it.',['Open Queue','f:queue']);
+k('history|recently played','Recently Played and history are in your Library. Ask me “what did I play recently”.',['Library','p:library']);
+k('on this device|device songs|local (songs|files)','On This Device shows songs and videos stored on your device.',['On This Device','p:device']);
+k('lyrics?','Lyrics opens the lyrics panel for the song that is playing.',['Open lyrics','f:lyrics']);
+k('song facts?|song dna|energy|danceab','Song Facts shows a song’s DNA, such as energy and danceability.',['Song Facts','f:facts']);
+k('sleep timer','Set a sleep timer from the player, or just say “stop playing in 30 minutes”.',['Sleep timer','f:sleep']);
+k('speed|crossfade|equali[sz]er|audio quality|playback','Playback speed cycles from the player button. Crossfade (0 to 12 seconds), audio quality and other sound options are in Settings, Playback.',['Playback settings','s:playback'],['Change speed','f:speed']);
+k('data saver|mobile data|data usage','Data Saver can lower streaming quality, stop video autoplay, reduce image quality and keep video to Wi-Fi.',['Data settings','s:data']);
+k('themes?|dark mode|light mode|appearance|colou?rs?','Dark and Light mode and the colour themes (Neon, Ocean, Crimson, Emerald, Violet, Aurora) are in Settings, Appearance. Some themes may need Premium.',['Appearance','s:appearance']);
+k('taste|my taste','Taste Profile learns what you like to shape your picks, and you can reset it in Settings.',['Taste profile','s:taste']);
+k('language','You can change the app language any time.',['Language','f:lang']);
+k('privacy|private account|block|delete (my )?account|security|password','Privacy &amp; Security lets you make your account private, choose who can follow or message you, hide listening activity, manage blocked users, reset your password or delete your account.',['Privacy settings','s:privacy'],['Privacy Policy','f:privacy']);
+k('subscription|premium|plans?|upgrade','Subscription shows the Free and Premium plans and what each includes.',['Subscription','f:sub']);
+k('sign ?in|log ?in|sign ?up|register|create (an )?account','Sign in to sync your music and settings, post in chats, upload and more.',['Sign in','f:signin'],['Sign up','f:signup']);
+k('install|add to home ?screen|\\bapp store\\b','Install YAPSMusic from Settings, App. On iPhone, tap Share then Add to Home Screen.',['Install app','f:install'],['App settings','s:app']);
+k('share (the )?app|invite|rate (the )?app','Share or invite friends from Settings, App, and rate the app from there too.',['App settings','s:app'],['Rate the app','f:rate']);
+k('help center|faq|support|contact|report|feedback|problem|bug','Help Center has answers. You can also report a problem or send feedback.',['Help Center','f:help'],['Report a problem','f:bug'],['Send feedback','f:feedback']);
+k('\\bsettings?\\b|preferences?','Settings covers Appearance, Playback, Downloads, Data, Notifications, Taste, Language, Privacy, Creator, AI &amp; DJ, App and Support.',['Open Settings','s:home']);
+k('\\babout\\b.*(yaps|app)|terms|mission','YAPSMusic is “Your Audio Playlist Station”, carrying music from Uganda to the world.',['About','f:about'],['Terms','f:terms']);
+k('share (this |the )?(song|track|now playing)|send (a )?song','Share now playing sends the song you are hearing to a chat. In Messages you can also send a photo, video or song.',['Messages','p:messages']);
+k('tip (an )?artists?|support (an )?artists?|mobile money|\\bmtn\\b|airtel','Tipping an artist uses Mobile Money (MTN and Airtel). Artists see their tips in Earnings.',['Earnings','p:earnings']);
+k('follow (an? )?(artist|user|dj|people)|unfollow','Open an artist or user and tap Follow. Choose who can follow you in Settings, Privacy &amp; Security.',['Artists','p:artists'],['Privacy settings','s:privacy']);
+k('create (a )?playlist|new playlist|add (a )?(song )?to (a )?playlist','Tap Add to playlist on any song, or tell me “make a playlist called Sunday” or “add this to my playlist Sunday”.',['Playlists','p:playlists']);
+k('remove (a )?download|delete (a )?download|clear downloads|clear cache|storage','Tap a downloaded song’s download icon to remove it. Settings, Downloads also has Clear Downloads and Clear Cache.',['Download settings','s:downloads']);
+k('auto.?download|download (all )?liked|download quality|wi-?fi only|save to (my )?phone','In Settings, Downloads you can pick download quality, limit downloads to Wi-Fi, auto-download liked songs and save songs to your phone storage.',['Download settings','s:downloads'],['My Downloads','f:downloads']);
+k('gapless|normali[sz]e|autoplay|resume|continue playing|lock.?screen','Settings, Playback has Autoplay, Gapless Playback, Normalize Volume, Continue Playing, Resume From Last Position and Lock-screen controls.',['Playback settings','s:playback']);
+k('reduce motion|animations?','Reduce Motion and App animations can be switched off in Settings.',['Settings','s:home']);
+k('video call|send (a )?(photo|video)','In a chat you can send a photo, video or song and start a video call.',['Messages','p:messages']);
+k('now playing|full player|player','Now Playing is the full player for the current song, with lyrics, queue, sleep timer, speed and share.',['Now Playing','f:now']);
+k('shuffle|repeat','Use the Shuffle and Repeat buttons on the player, or just say “shuffle” or “repeat”.');
+k('sign ?out|log ?out|logout','Signing out asks you to confirm first.',['Sign out','f:logout']);
+k('change password|email|phone number|my account','Account settings has Edit Profile, Change Password, Email / Phone, Subscription, Sign Out and Delete Account.',['Account settings','s:account']);
+k('region|country','Language and Region are in Settings.',['Language settings','s:lang']);
+k('push|notification settings','Turn push notifications and alert types on or off in Settings.',['Alert settings','s:notifs']);
+k('new chat|clear (the |this )?chat|start over with you|reset (the )?dj|forget (my )?(taste|prefs)','Tap the circular arrow at the top to start a fresh chat. To reset what I learned about your taste, use Settings, AI &amp; DJ, DJ preferences.',['AI &amp; DJ settings','s:ai']);
+k('mute|never play|block (an )?artist|unmute','Say “don’t play” and an artist name and I will leave them out of my sets, or “unmute everything” to bring them all back.');
+k('how (do i|to|can i) upload|upload (a )?(song|track|music)|artwork|explicit content|visibility|release date|track tags?','Open Upload Your Track. Add the title (required), artist, optional album, a genre (required: Afrobeats, Bongo Flava, Gospel, Hip Hop, Dancehall, R&amp;B / Soul, Traditional, Electronic, Pop or Other), a description, tags and a release date. Then add artwork and set Explicit content and Visibility. Sign in first, and only upload music you own.',['Upload','p:upload'],['My Uploads','p:dashboard'],['Sign in','f:signin']);
+k('record (a |my )?mix|export (a )?mix|publish (a )?mix|publish to yaps','In DJ Studio, Record Mix captures your set. Export / Share saves or shares it, and Publish to YAPS posts it.',['Open DJ Studio','f:studio']);
+k('loops?|beat ?roll|stutter|loop in|loop out','In DJ Studio each deck has loop tools: mark the loop start, mark the loop end to start looping, leave the loop, or jump back into the last loop. Hold Beat roll or Stutter for the effect.',['Open DJ Studio','f:studio']);
+k('crossfader|\\beq\\b|filter|gain|pads?|live mic|dj voice|autopilot|celebration mode|beginner|pro mode|how (do i|to) (dj|mix)|use (the )?(dj )?studio','In DJ Studio, load songs into Deck A and Deck B and blend with the Crossfader. Shape each deck with EQ, Filter and Gain, play the pads, and hold to talk on the Live Mic (the ` key). AI DJ Autopilot can pick songs for you, you can switch between Beginner and Pro, and Celebration Mode can be turned on or off.',['Open DJ Studio','f:studio']);
+k('keyboard shortcuts?|hotkeys?|studio shortcuts?','In DJ Studio, Space plays or pauses, S splits at the playhead, D duplicates a clip, Delete removes it, and Ctrl or ⌘ + Z undoes (add Shift to redo).',['Open DJ Studio','f:studio']);
+k('giveaway|win gifts|win prizes|quiz|free gifts?|play (the )?quiz','The YAPS Music quiz giveaway is on the Earnings page. Answer a few questions, pick a gift box and enter for a chance to win. Entering is free, and winners are verified by YAPS.',['Play the giveaway','p:earnings']);
+const ASK=/\b(how|where|what|which|explain|tell me|can i|can you|could i|do you|does|is there|are there|help|guide|tutorial|learn|set ?up|enable|disable|turn (on|off)|change|switch|manage|find|use|open|go to|take me|launch|show me|bring up|features?)\b/;
+const MUSIC=/^\s*(play|put on|queue|add|skip|shuffle|surprise|recommend|songs? like|more like|something|\d+\s*(min|hour)|an hour|half an hour)\b/;
+const OPEN=/^\s*(please\s+)?(open|go to|take me to|launch|show me|bring up|switch to)\b/;
+const STOP=/\b(please|how|do|does|can|could|would|i|to|the|a|an|my|in|on|of|for|is|are|where|find|open|go|take|me|turn|switch|change|set|enable|disable|setting|settings|option|options|app|yaps|it|this|that|use|want|need|with|and|or|off|up)\b/g;
+const NOASK=/how many|how are you|how'?s it|how do you do|how old|\bwho\b|\bjoke\b|what time|what day/;
+const BARE=/^(shuffle|repeat|queue|mute|unmute|likes?|favou?rites?|history|recently played|trending)\b/;
+const FALL=/\b(how (do|can|could|would|to)|where (is|are|can|do)|open|go to|take me|turn (on|off)|switch (on|off)|change|enable|disable|settings?|options?)\b/;
+const find=(m,bare)=>{let best=null,n=0;for(const f of K){const x=m.match(f.re);if(x&&x[0].length>n){n=x[0].length;best=f}}return best&&bare&&n<m.trim().length*0.8?null:best};
+const mk=(say,b)=>({message:`${say}<div class="yai-acts">${b.map(x=>`<button type="button" class="yai-act" onclick="yaiGo('${x[1]}')">${x[0]}</button>`).join('')}</div>`,picks:[],dna:null,noAutoplay:true});
+const reply=(f,m)=>{if(OPEN.test(m)&&f.b.length&&m.split(/\s+/).length<=5)setTimeout(()=>yaiGo(f.b[0][1]),900);return mk(f.say,f.b)};
+function fallback(m){const t=m.replace(STOP,' ').replace(/[^a-z0-9 \-]/g,'').replace(/\s+/g,' ').trim();
+ if(t.length<2)return mk('Which part of the app do you mean? Pick one and I will take you there.',[['Settings','s:home'],['Library','p:library'],['Charts','p:charts'],['Help Center','f:help']]);
+ const w=t.split(' ').filter(x=>x.length>2),nav=[...document.querySelectorAll('#mainNav .sidebar-item')].filter(e=>{const s=e.textContent.toLowerCase();return w.some(x=>s.includes(x))}).slice(0,3);window._yaiNav=nav;
+ return mk('I don’t have a lesson on “'+E(t)+'” yet, but here is where I would look.',[['Search Settings','q:'+encodeURIComponent(t)],['Search songs','m:'+encodeURIComponent(t)]].concat(nav.map((e,i)=>[E(e.textContent.trim().replace(/\s+/g,' ').slice(0,28)),'n:'+i])))}
+function guide(m){if(NOASK.test(m))return null;if(MUSIC.test(m)&&!/\bhow\b/.test(m))return null;
+ if(!ASK.test(m)){if(m.trim().split(/\s+/).length>3||BARE.test(m))return null;const b=find(m,true);return b?reply(b,m):null}
+ const f=find(m,false);if(f)return reply(f,m);return FALL.test(m)?fallback(m):null}
+const od=window._djDecide;window._djDecide=function(m,x,d){if(!d){try{const r=guide(m);if(r)return r}catch(e){console.warn('yai guide',e)}}return od.apply(this,arguments)};
+const CAPS=[['fa-bolt','Build a set','Late night drive','Any mood, moment or length'],['fa-compass','Tour the app','What can you do?','Every feature, explained'],['fa-folder-open','Find anything','Where are my downloads?','Library, charts, DJs, events'],['fa-sliders','Control playback','Volume 50','Pause, skip, sleep timer'],['fa-wand-magic-sparkles','Create','How do I make a song?','DJ Studio, Song Creator, upload'],['fa-gear','Settings','Open settings','Themes, quality, privacy']];
+const caps=()=>'<div class="yai-caps" id="yaiCaps">'+CAPS.map(c=>`<button type="button" class="yai-cap" data-q="${E(c[2])}" onclick="sendDJPrompt(this.dataset.q)"><i class="fas ${c[0]}"></i><strong>${c[1]}</strong><span>${E(c[3])}</span></button>`).join('')+'</div>';
+const put=()=>{const c=document.getElementById('yaiCaps');if(c)c.outerHTML=caps()};put();
+const oc=window.clearDJChat;window.clearDJChat=function(){oc.apply(this,arguments);put()};
+})();
+</script>
+<style id="giveawayCss">
+/* ── Earnings: YAPS Music quiz giveaway ── */
+.gv{margin:0 0 18px}
+.gv-hero{position:relative;overflow:hidden;border-radius:22px;color:#fff;min-height:240px;display:flex;align-items:flex-end;background:#0a1a3c var(--img) center/cover no-repeat}
+.gv-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,10,30,.15),rgba(5,10,30,.88))}
+.gv-copy{position:relative;z-index:1;padding:22px}
+.gv-eye{font:700 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#9fe9ff;margin:0 0 8px}
+.gv-copy h2{margin:0 0 8px;font-weight:900;font-size:clamp(26px,6vw,38px);line-height:1.08}
+.gv-copy h2 span{color:#19e68c}
+.gv-copy p{margin:0 0 14px;font-size:14px;line-height:1.5;color:rgba(255,255,255,.88);max-width:520px}
+.gv-cta{display:flex;flex-wrap:wrap;gap:10px}
+.gv-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border:0;border-radius:24px;font:800 14px inherit;font-family:inherit;color:#fff;cursor:pointer;text-decoration:none;background:linear-gradient(135deg,var(--accent),var(--accent-dark))}
+.gv-btn.wa{background:#25d366;color:#04210f}
+.gv-btn[disabled]{opacity:.5;pointer-events:none}
+.gv p.gv-credit{margin:12px 0 0;font-size:11px;color:rgba(255,255,255,.65)}
+.gv-det{margin-top:10px;border-radius:16px;background:var(--card)}
+.gv-det summary{cursor:pointer;list-style:none;padding:14px 16px;font-weight:800;font-size:15px}
+.gv-det summary::-webkit-details-marker{display:none}
+.gv-det summary:after{content:'+';float:right;color:var(--accent-light)}
+.gv-det[open] summary:after{content:'–'}
+.gv-in{padding:0 16px 16px;font-size:13.5px;line-height:1.55;color:var(--muted)}
+.gv-in p{margin:0 0 10px}
+.gv-in ol{margin:0;padding-left:18px}
+.gv-in li{margin-bottom:8px}.gv-in li b{display:block;color:var(--text)}
+.gv-in img{width:100%;border-radius:12px;margin-bottom:10px}
+.gv-st{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border-radius:12px;background:var(--card2);margin-bottom:8px}
+.gv-st.ok{background:rgba(25,230,140,.18);color:var(--green)}
+.gv-win{padding:8px 0}.gv-win b{display:block;color:var(--text)}
+.gv-lk{background:none;border:0;padding:0;color:var(--accent-light);text-decoration:underline;cursor:pointer;font:inherit}
+.gv-quiz{position:fixed;inset:0;z-index:99990;overflow-y:auto;background:var(--bg);display:flex;justify-content:center}
+.gv-quiz[hidden]{display:none}
+.gv-qwrap{width:100%;max-width:520px;padding:14px 16px 40px}
+.gv-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-size:13px;color:var(--muted)}
+.gv-bar button{background:none;border:0;color:var(--accent-light);font:700 14px inherit;font-family:inherit;cursor:pointer;padding:6px 0}
+.gv-qhero{width:100%;max-height:200px;object-fit:cover;border-radius:18px;margin-bottom:14px}
+.gv-quiz.noimg .gv-qhero{display:none}
+.gv-card{background:var(--card);border-radius:20px;padding:20px 18px;color:var(--text)}
+.gv-card h1,.gv-card h2{margin:0 0 12px;font-size:22px;line-height:1.2;font-weight:800}
+.gv-card h3{margin:14px 0 6px;font-size:15px}
+.gv-card p{margin:0 0 12px;font-size:14px;line-height:1.55;color:var(--muted)}
+.gv-ans{display:block;width:100%;text-align:center;margin:0 0 10px;padding:14px;border:0;border-radius:14px;font:700 15px inherit;font-family:inherit;color:var(--text);background:var(--card2);cursor:pointer;text-decoration:none}
+.gv-ans:hover,.gv-ans:focus-visible{background:var(--accent-dim)}
+.gv-ans.wa{background:#25d366;color:#04210f}
+.gv-card button[type=submit].gv-ans{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff}
+.gv-dots{display:flex;gap:6px;justify-content:center;margin:14px 0 4px}
+.gv-dots i{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.gv-dots i.on{background:var(--accent)}.gv-dots i.cur{background:var(--accent-light);width:20px;border-radius:4px}
+.gv-back{background:none;border:0;color:var(--muted);font:600 13px inherit;font-family:inherit;cursor:pointer;padding:8px 0}
+.gv-note{font-size:12px;color:var(--muted);margin:10px 0 0}
+.gv-card label{display:block;margin:12px 0 6px;font-size:13px;font-weight:700}
+.gv-card input[type=text]{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font:inherit;font-size:15px;outline:0;box-sizing:border-box}
+.gv-card input[type=text]:focus{border-color:var(--accent)}
+.gv-card label.chk{display:flex;gap:10px;align-items:flex-start;font-weight:500;color:var(--muted)}
+.gv-err{color:#ff6b7a;font-size:13px;min-height:18px;margin:8px 0}
+.gv-ok{font-size:44px;margin-bottom:6px}
+.gv-bxs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.gv-bx{border:0;border-radius:14px;padding:14px 4px;background:var(--card2);color:var(--text);font:700 12px inherit;font-family:inherit;cursor:pointer}
+.gv-bx b{display:block;font-size:26px;margin-bottom:4px}
+.gv-bx.dim{opacity:.4}.gv-bx.hit{background:rgba(25,230,140,.2)}.gv-bx.pk{outline:2px solid var(--accent)}
+.gv-quiz dialog,.gv dialog{max-width:min(440px,92vw);border:0;border-radius:18px;padding:20px;background:var(--card);color:var(--text)}
+.gv-quiz dialog::backdrop,.gv dialog::backdrop{background:rgba(0,0,0,.6)}
+.gv dialog ul{padding-left:18px;font-size:13.5px;color:var(--muted)}
+</style>
+<script id="giveawayJs">
+(function(){
+/* ========== GIVEAWAY CONFIG — EDIT ME ========== */
+var CONFIG={
+  shareUrl:location.href.split('#')[0].split('?')[0]+'?page=earnings',
+  closesAt:'2026-11-01T23:59:59+03:00',
+  winnersAnnounceAt:'2026-11-08T12:00:00+03:00',
+  winnerCount:2,
+  confirmedGifts:[],   // add a gift ONLY when it is real and YAPS will provide it
+  winners:[],          // add winners ONLY after verifying them and getting permission, e.g. {name:'Sarah K.',note:'Verified 9 Nov'}
+  contactEmail:'',contactWhatsApp:'',organiser:'YAPS Music',
+  live:false,          // false = entries stay in this browser (testing). true = save to the Supabase table below with the app's own client.
+  table:'yaps_entries',// needs insert-only RLS for anon, columns: name, contact, age_group, guardian_name, guardian_contact, answers (jsonb)
+  contact:''
+};
+var R=document.getElementById('gvRoot');if(!R)return;
+var $=function(i){return document.getElementById(i)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function fmt(d){return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'Africa/Kampala'})}
+var closed=Date.now()>+new Date(CONFIG.closesAt),quizEl=$('gvQuiz'),card=$('gvCard'),stepTxt=$('gvStep'),DLG=$('gvDlg');
+document.body.appendChild(quizEl);
+$('gvDates').textContent=(closed?'This giveaway has closed. ':'Closes '+fmt(CONFIG.closesAt)+'. ')+CONFIG.winnerCount+' winners are announced on '+fmt(CONFIG.winnersAnnounceAt)+'.';
+var play=$('gvPlay');if(closed){play.textContent='Giveaway closed';play.disabled=true}
+$('gvShare').href='https://wa.me/?text='+encodeURIComponent('Play the YAPS Music quiz for a chance to win gifts: '+CONFIG.shareUrl);
+$('gvConfirmed').innerHTML=CONFIG.confirmedGifts.length?'<span class="gv-st ok">Confirmed by YAPS</span><ul>'+CONFIG.confirmedGifts.map(function(g){return'<li>'+esc(g)+'</li>'}).join('')+'</ul>':'<span class="gv-st">Not yet confirmed</span><p>Confirmed gifts will be listed here. Nothing above is a promise until then.</p>';
+$('gvWinners').innerHTML=CONFIG.winners.length?CONFIG.winners.map(function(w){return'<div class="gv-win"><b>'+esc(w.name)+'</b>'+esc(w.note||'Verified by YAPS')+'</div>'}).join(''):'<p>No winners yet. Names appear here only after YAPS verifies them.</p>';
+var ct=[];if(CONFIG.contactEmail)ct.push('<a href="mailto:'+esc(CONFIG.contactEmail)+'">'+esc(CONFIG.contactEmail)+'</a>');
+if(CONFIG.contactWhatsApp)ct.push('<a href="https://wa.me/'+esc(CONFIG.contactWhatsApp.replace(/\D/g,''))+'" rel="noopener noreferrer">WhatsApp</a>');
+$('gvContact').innerHTML=ct.length?'Official contact: '+ct.join(' · '):'Official contact details will be listed here. Be careful with anyone who contacts you claiming to be YAPS Music.';
+var Q=[{k:'gender',q:'What\u2019s your gender?',a:['Male','Female','Prefer not to say']},{k:'knows',q:'Do you know YAPS Music?',a:['Yes','No']},{k:'age',q:'How old are you?',a:['Under 13','13\u201317','18 or older']},{k:'listen',q:'How often do you stream music?',a:['Every day','A few times a week','Rarely']},{k:'genre',q:'Which music do you love most?',a:['Ugandan hits','Afrobeats','Gospel','Something else']}];
+var S={i:0,ans:{}};
+function dots(n){var h='<div class="gv-dots" aria-hidden="true">';for(var i=0;i<Q.length;i++)h+='<i class="'+(i===n?'cur':i<n?'on':'')+'"></i>';return h+'</div>'}
+function foot(){return'<p class="gv-note"><button type="button" class="gv-lk" data-a="terms">Giveaway rules</button> &middot; <button type="button" class="gv-lk" data-a="privacy">Privacy</button></p>'}
+function render(){
+  quizEl.classList.toggle('noimg',!closed&&S.i>=Q.length);
+  if(closed){stepTxt.textContent='';card.innerHTML='<h2>This giveaway has closed</h2><p>Thank you for your interest. Winners are announced on the Earnings page.</p><button class="gv-ans" data-a="home">Back to YAPS Music</button>';return}
+  if(S.i<Q.length){var q=Q[S.i];stepTxt.textContent='Question '+(S.i+1)+' of '+Q.length;
+    card.innerHTML='<h1>'+esc(q.q)+'</h1>'+q.a.map(function(a,j){return'<button class="gv-ans" type="button" data-j="'+j+'">'+esc(a)+'</button>'}).join('')+dots(S.i)+(S.i?'<button class="gv-back" type="button" data-a="back">Back</button>':'')+foot();return}
+  if(S.ans.age==='Under 13'){stepTxt.textContent='Done';card.innerHTML='<div class="gv-ok">\uD83C\uDFB5</div><h2>Thanks for playing!</h2><p>Under-13s can play but can\u2019t enter the giveaway. Ask a parent or guardian to enjoy YAPS Music with you, and come back when you\u2019re 13.</p><button class="gv-ans" data-a="home">Back to YAPS Music</button>';return}
+  if(!S.g){stepTxt.textContent='Pick a box';card.innerHTML=boxes();return}
+  stepTxt.textContent='Last step';var minor=S.ans.age==='13\u201317';
+  card.innerHTML='<h2>Enter the giveaway</h2><form id="gvF" novalidate><label for="gvN">Your full name</label><input id="gvN" type="text" autocomplete="name" maxlength="80"><label for="gvC">Your phone or email</label><input id="gvC" type="text" inputmode="email" autocomplete="off" maxlength="100" placeholder="07XX XXX XXX or you@email.com">'
+   +(minor?'<label for="gvGn">Parent or guardian\u2019s name</label><input id="gvGn" type="text" maxlength="80"><label for="gvGc">Parent or guardian\u2019s phone or email</label><input id="gvGc" type="text" maxlength="100"><label class="chk"><input id="gvGok" type="checkbox"><span>My parent or guardian agrees to my entry.</span></label>':'')
+   +'<label class="chk"><input id="gvOk" type="checkbox"><span>I agree to the <button type="button" class="gv-lk" data-a="terms">giveaway rules</button> and understand entering is free and winners are verified.</span></label><div class="gv-err" id="gvE" role="alert"></div><button class="gv-ans" type="submit" id="gvGo">Submit my entry</button></form>'+dots(Q.length)+'<button class="gv-back" type="button" data-a="back">Back</button>'+foot()}
+function rnd(n){try{var u=new Uint32Array(1);crypto.getRandomValues(u);return u[0]%n}catch(e){return Math.floor(Math.random()*n)}}
+function mkBoxes(){var src=CONFIG.confirmedGifts.length?CONFIG.confirmedGifts.slice(0,5):['Cash prizes','Airtime & data','Music gear','YAPS Premium'];var a=src.slice();while(a.length<9)a.push(null);for(var i=a.length-1;i>0;i--){var j=rnd(i+1),t=a[i];a[i]=a[j];a[j]=t}return a}
+function shTxt(n){return n>=5?'Done! You shared with 5 groups.':n+' of 5 groups shared'}
+function boxes(){
+  if(!S.bx)S.bx=mkBoxes();
+  var p=S.pick,open=p!=null,n=S.bx.filter(Boolean).length,v=open?S.bx[p]:null;
+  var g='<div class="gv-bxs">'+S.bx.map(function(x,i){var cls='gv-bx'+(open?(i===p?(x?' hit pk':' pk'):' dim'):'');var inner=open?(x?'<b>\uD83C\uDF81</b>'+esc(x):'<b>\uD83D\uDCE6</b>Empty'):'<b>\uD83C\uDF81</b>Box '+(i+1);return'<button class="'+cls+'" type="button" data-a="box" data-b="'+i+'"'+(open?' disabled':'')+'>'+inner+'</button>'}).join('')+'</div>';
+  var label=CONFIG.confirmedGifts.length?'Gifts shown are confirmed by YAPS.':'Gift types are examples. Exact gifts are confirmed by YAPS before winners are chosen.';
+  if(!open)return'<h2>Pick a gift box</h2><p>'+S.bx.length+' boxes: '+n+' hold a gift and '+(S.bx.length-n)+' are empty. Tap one to see your chance.</p>'+g+'<p class="gv-note">'+esc(label)+'</p><button class="gv-back" type="button" data-a="back">Back</button>'+foot();
+  var d='<div class="gv-dots" aria-hidden="true">';for(var i=0;i<5;i++)d+='<i class="'+(i<(S.sh||0)?'on':'')+'"></i>';d+='</div>';
+  var url='https://wa.me/?text='+encodeURIComponent('Play the YAPS Music quiz for a chance to win gifts: '+CONFIG.shareUrl);
+  return'<h2>'+(v?'Lucky box! It holds: '+esc(v):'This box is empty')+'</h2>'+g+'<p class="gv-note">'+esc(label)+' The box is only a preview of your chance. It does not decide winners. YAPS checks every entry.</p><h3>Boost your chance</h3><p>Share this link with 5 WhatsApp groups to improve your chance of being one of the winners.</p><a class="gv-ans wa" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer" data-a="share">Share on WhatsApp</a>'+d+'<p class="gv-note" id="gvSh">'+shTxt(S.sh||0)+'</p><button class="gv-ans" type="button" data-a="gnext">Continue</button><button class="gv-back" type="button" data-a="back">Back</button>'+foot()}
+function validC(v){v=v.trim();return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)||v.replace(/\D/g,'').length>=9}
+function done(){stepTxt.textContent='Entered';card.innerHTML='<div class="gv-ok">\u2705</div><h2>You\u2019re entered!</h2><p>Thanks for taking part. Being entered doesn\u2019t guarantee a gift. YAPS checks every entry before choosing winners.</p><ol><li>Entries close '+esc(fmt(CONFIG.closesAt))+'.</li><li>Winners are announced on the Earnings page on '+esc(fmt(CONFIG.winnersAnnounceAt))+'.</li><li>You never pay anything to enter or to receive a gift. YAPS will never ask for your PIN, password or a one-time code.</li></ol>'+(CONFIG.contact?'<p class="gv-note">Official contact: '+esc(CONFIG.contact)+'</p>':'')+'<button class="gv-ans" data-a="home">Back to YAPS Music</button>'}
+function submit(e){e.preventDefault();var g=function(i){var el=$(i);return el?el.value.trim():''},err=$('gvE'),minor=S.ans.age==='13\u201317';
+  if(g('gvN').length<2)return err.textContent='Please enter your name.';
+  if(!validC(g('gvC')))return err.textContent='Enter a valid phone number or email.';
+  if(minor){if(g('gvGn').length<2||!validC(g('gvGc')))return err.textContent='Please add your parent or guardian\u2019s name and contact.';if(!$('gvGok').checked)return err.textContent='A parent or guardian must agree.'}
+  if(!$('gvOk').checked)return err.textContent='Please agree to the giveaway rules.';
+  var row={name:g('gvN'),contact:g('gvC'),age_group:S.ans.age,guardian_name:minor?g('gvGn'):null,guardian_contact:minor?g('gvGc'):null,answers:S.ans},btn=$('gvGo');
+  btn.disabled=true;btn.textContent='Sending\u2026';err.textContent='';
+  if(!(CONFIG.live&&window.sb)){try{var a=JSON.parse(localStorage.getItem('yaps_entries')||'[]');a.push(row);localStorage.setItem('yaps_entries',JSON.stringify(a))}catch(x){}return done()}
+  Promise.resolve(window.sb.from(CONFIG.table).insert(row)).then(function(r){if(r&&r.error)throw r.error;done()}).catch(function(){btn.disabled=false;btn.textContent='Submit my entry';err.textContent='We couldn\u2019t send your entry. Check your connection and try again.'})}
+function openQuiz(){S={i:0,ans:{}};render();quizEl.hidden=false;quizEl.scrollTop=0}
+function openHome(){quizEl.hidden=true}
+play.addEventListener('click',function(){if(!closed)openQuiz()});
+document.addEventListener('submit',function(e){if(e.target.id==='gvF')submit(e)});
+document.addEventListener('click',function(e){var t=e.target.closest('[data-j],[data-a]');if(!t||!(R.contains(t)||quizEl.contains(t)))return;
+  if(t.dataset.j!==undefined){S.ans[Q[S.i].k]=Q[S.i].a[+t.dataset.j];S.i++;render();quizEl.scrollTop=0;return}
+  var a=t.dataset.a;
+  if(a==='home'){openHome();return}
+  if(a==='box'){S.pick=+t.dataset.b;render();return}
+  if(a==='share'){S.sh=Math.min(5,(S.sh||0)+1);var d=card.querySelectorAll('.gv-dots i');for(var i=0;i<d.length;i++)d[i].className=i<S.sh?'on':'';var x=$('gvSh');if(x)x.textContent=shTxt(S.sh);return}
+  if(a==='gnext'){S.g=true;render();quizEl.scrollTop=0;return}
+  if(a==='back'){if(S.i===Q.length&&S.g){S.g=false;render()}else if(S.i>0){S.i--;render()}return}
+  if(a==='close'){DLG.close?DLG.close():DLG.removeAttribute('open');return}
+  var gifts=CONFIG.confirmedGifts.length?'Confirmed gifts: '+CONFIG.confirmedGifts.map(esc).join('; ')+'.':'Gifts are listed here only once YAPS confirms them.';
+  DLG.innerHTML=a==='terms'?'<h3>Giveaway rules</h3><ul><li>Free to enter. One entry per person; fake or duplicate entries may be removed.</li><li>Ages 13+. Under-18s need a parent or guardian\u2019s agreement.</li><li>Winners are chosen after YAPS checks entries, and are announced on '+esc(fmt(CONFIG.winnersAnnounceAt))+'.</li><li>'+gifts+'</li><li>Sharing the link with 5 groups is optional and improves your chance; it does not guarantee a win.</li></ul>':'<h3>Privacy</h3><p>We collect your name, phone or email (a parent or guardian\u2019s for under-18s), age group and answers to run the giveaway and contact winners. We never ask for passwords, mobile money PINs or bank details.</p>';
+  DLG.innerHTML+='<button class="gv-ans" data-a="close">Close</button>';DLG.showModal?DLG.showModal():DLG.setAttribute('open','')});
 })();
 </script>
 </body>
