@@ -6451,6 +6451,62 @@ html:not([data-theme]) .page.active::before {
 #sidebar #nav-connect .badge{margin-left:auto}
 #apJoinBtn[hidden],[data-cnjoin][hidden]{display:none!important}
 </style>
+<style id="communityChatCss">
+/* ══ COMMUNITY CHAT (merged from community.html) — everything scoped to #page-community ══ */
+#page-community{padding:0}
+#page-community .cc-app{height:calc(100dvh - var(--topbar-h,0px) - var(--player-h,0px) - var(--mnav-h,0px));display:flex;flex-direction:column;width:100%;max-width:920px;margin:0 auto;min-height:0}
+#page-community .cc-app *{box-sizing:border-box}
+#page-community .cc-head{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface);flex:none}
+#page-community .cc-ico{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:18px;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-dark))}
+html[data-theme="aurora"] #page-community .cc-ico,html:not([data-theme]) #page-community .cc-ico{background:var(--aurora-btn)}
+#page-community .cc-t{min-width:0;flex:1}
+#page-community .cc-t b{display:block;font-size:16px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-community .cc-t span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-community .cc-live{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--green);flex:none}
+#page-community .cc-live i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+#page-community .cc-live.off{color:var(--gold)}
+#page-community .cc-live.off i{background:var(--gold);box-shadow:0 0 8px var(--gold)}
+#page-community .cc-log{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:14px 14px 8px;display:flex;flex-direction:column;gap:3px;overscroll-behavior:contain}
+#page-community .cc-day{align-self:center;margin:12px 0 6px;font-size:11.5px;font-weight:700;color:var(--muted);background:var(--card);border:1px solid var(--border);padding:3px 12px;border-radius:20px}
+#page-community .cc-msg{display:flex;gap:9px;max-width:86%;align-items:flex-end;margin-top:10px}
+#page-community .cc-msg.cont{margin-top:0}
+#page-community .cc-msg.me{align-self:flex-end;flex-direction:row-reverse}
+#page-community .cc-av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;font-weight:800;font-size:13px;color:#fff;overflow:hidden;background-size:cover;background-position:center;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+#page-community .cc-msg.cont .cc-av{visibility:hidden}
+#page-community .cc-b{background:var(--card);border:1px solid var(--border);padding:7px 12px 6px;border-radius:18px;border-bottom-left-radius:5px;min-width:0;overflow-wrap:anywhere;word-break:break-word;white-space:pre-wrap}
+#page-community .cc-msg.cont .cc-b{border-top-left-radius:5px}
+#page-community .cc-msg.me .cc-b{background:linear-gradient(135deg,var(--accent),var(--accent-dark));border-color:transparent;color:#fff;border-radius:18px;border-bottom-right-radius:5px}
+html[data-theme="aurora"] #page-community .cc-msg.me .cc-b,html:not([data-theme]) #page-community .cc-msg.me .cc-b{background:var(--aurora-btn)}
+#page-community .cc-msg.me.cont .cc-b{border-top-right-radius:5px}
+#page-community .cc-nm{font-size:12px;font-weight:800;color:var(--accent-light);display:flex;gap:6px;align-items:center;white-space:normal}
+#page-community .cc-msg.me .cc-nm,#page-community .cc-msg.cont .cc-nm{display:none}
+#page-community .cc-role{font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:0 6px;border-radius:8px;background:var(--accent-dim);color:var(--accent-lighter)}
+#page-community .cc-tx a{color:inherit;text-decoration:underline}
+#page-community .cc-tm{font-size:10.5px;opacity:.6;text-align:right;margin-top:1px;white-space:normal}
+#page-community .cc-empty{margin:auto;text-align:center;color:var(--muted);padding:30px 16px}
+#page-community .cc-empty i{display:block;font-size:42px;margin-bottom:10px;background:var(--neon-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+#page-community .cc-empty b{display:block;color:var(--text);font-size:16px;margin-bottom:2px}
+#page-community .cc-jbtn{display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:16px;border:1.5px solid var(--au);color:var(--au2);font:800 13px var(--sans,inherit);letter-spacing:.02em;white-space:nowrap;flex:none;cursor:pointer;background:linear-gradient(180deg,rgba(var(--au-rgb),.16),rgba(var(--au-rgb),.05));box-shadow:0 0 18px rgba(var(--au-rgb),.2),inset 0 0 12px rgba(var(--au-rgb),.10);transition:background .2s,opacity .2s}
+#page-community .cc-jbtn:hover{background:linear-gradient(180deg,rgba(var(--au-rgb),.26),rgba(var(--au-rgb),.1))}
+#page-community .cc-jbtn i{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--au);background:rgba(var(--au-rgb),.08);color:var(--au);display:grid;place-items:center;font-size:11px;flex:none}
+#page-community .cc-jbtn.joined{border-color:rgba(var(--au-rgb),.45);box-shadow:none;background:rgba(var(--au-rgb),.06);color:var(--muted)}
+#page-community .cc-jbtn:disabled{opacity:.5;cursor:default}
+@media (max-width:480px){#page-community .cc-live span{display:none}#page-community .cc-jbtn{padding:8px 14px}#page-community .cc-jbtn i,#page-community .cc-jbtn .cc-lg{display:none}#page-community .cc-head{gap:9px;padding:10px 12px}}
+#page-community .cc-note{flex:none;text-align:center;font-size:12px;color:var(--gold);background:var(--gold-dim);padding:5px 12px}
+#page-community .cc-form,#page-community .cc-signin{flex:none;display:flex;align-items:flex-end;gap:10px;padding:10px 12px;border-top:1px solid var(--border);background:var(--surface)}
+#page-community .cc-input{flex:1;min-width:0;resize:none;max-height:120px;min-height:44px;padding:11px 16px;border-radius:24px;outline:0;line-height:1.35;background:var(--bg);border:1.5px solid var(--border);color:var(--text);font:inherit;font-size:15px;transition:border-color .2s}
+#page-community .cc-input:focus{border-color:var(--accent)}
+#page-community .cc-input::placeholder{color:var(--dim)}
+#page-community .cc-send{width:46px;height:46px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:17px;color:#fff;border:0;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-dark));box-shadow:0 0 14px var(--accent-dim);transition:transform .12s,opacity .2s}
+html[data-theme="aurora"] #page-community .cc-send,html:not([data-theme]) #page-community .cc-send{background:var(--aurora-btn)}
+#page-community .cc-send:active{transform:scale(.92)}
+#page-community .cc-send:disabled{opacity:.45;cursor:default}
+#page-community .cc-signin{justify-content:space-between;align-items:center}
+#page-community .cc-signin span{color:var(--muted);font-size:13.5px}
+#page-community .cc-btn{padding:10px 20px;border-radius:22px;font-weight:800;color:#fff;border:0;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-dark));white-space:nowrap}
+html[data-theme="aurora"] #page-community .cc-btn,html:not([data-theme]) #page-community .cc-btn{background:var(--aurora-btn)}
+@media (max-width:480px){#page-community .cc-msg{max-width:92%}#page-community .cc-av{width:30px;height:30px;font-size:12px}}
+</style>
 </head>
 <body>
 <!-- ═══════════════════════════════════════════════════════════
@@ -7177,6 +7233,9 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
         <div class="sidebar-item" id="nav-connect" onclick="navigate('connect')">
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><circle class="f" cx="8" cy="8" r="3.2"/><circle class="f" cx="16.5" cy="9" r="2.6"/><path class="f" d="M2 19c0-3.3 2.7-5.2 6-5.2s6 1.9 6 5.2z"/><path class="f" d="M15 14.2c3.2-.2 7 .9 7 4.8h-5.2c0-1.9-.7-3.4-1.8-4.8z"/></svg> <span>YAPS Connect</span> <span class="badge" style="display:none;">0</span>
         </div>
+        <div class="sidebar-item" id="nav-community" onclick="openCommunity()">
+          <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg> <span>Community Chat</span>
+        </div>
         <div class="sidebar-item" id="nav-messages" onclick="navigate('messages')">
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><circle class="f" cx="8" cy="10.5" r="1.3"/><circle class="f" cx="12" cy="10.5" r="1.3"/><circle class="f" cx="16" cy="10.5" r="1.3"/></svg> <span data-i18n="nav_messages">Messages</span> <span class="badge" id="navMsgBadge" style="display:none;">0</span>
         </div>
@@ -7277,19 +7336,6 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
     <!-- HOME PAGE -->
     <section class="page active" id="page-home">
 
-    <!-- HOME SEARCH BAR (same look as the Search page bar) -->
-    <div class="home-search">
-      <div class="search-big">
-        <i class="fas fa-search"></i>
-        <input type="text" placeholder="What do you want to hear?" id="homeSearchInput" enterkeyhint="search" autocomplete="off"
-               onkeydown="if(event.key==='Enter')homeSearchGo()">
-        <i class="fas fa-microphone voice-search-btn" onclick="homeVoiceSearch()" title="Search by voice"></i>
-        <button type="button" onclick="homeSearchGo()">Search</button>
-      </div>
-    </div>
-
-    <div class="hub-tabs" data-hub="home"></div>
-
     <!-- HERO CAROUSEL -->
     <div class="hero-carousel" id="heroCarousel">
       <div class="hero-slides" id="heroSlides">
@@ -7351,9 +7397,20 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
       </div>
     </div>
 
+    <!-- HOME SEARCH BAR (same look as the Search page bar) -->
+    <div class="home-search">
+      <div class="search-big">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="What do you want to hear?" id="homeSearchInput" enterkeyhint="search" autocomplete="off"
+               onkeydown="if(event.key==='Enter')homeSearchGo()">
+        <i class="fas fa-microphone voice-search-btn" onclick="homeVoiceSearch()" title="Search by voice"></i>
+        <button type="button" onclick="homeSearchGo()">Search</button>
+      </div>
+    </div>
+
     <!-- AD BANNER — shown to Free users, hidden automatically for Premium -->
-    <div id="homeAdBanner" style="display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin:12px 16px 0;">
-      <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+    <div id="homeAdBanner" class="home-ad">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 100%;">
         <i class="fas fa-volume-up" style="color:var(--accent);flex-shrink:0;"></i>
         <div style="min-width:0;">
           <div style="font-size:12.5px;font-weight:700;">Ads play between songs on Free</div>
@@ -7361,7 +7418,14 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
         </div>
       </div>
       <button class="sub-btn sub-btn-primary" style="width:auto;padding:8px 14px;font-size:12px;flex-shrink:0;" onclick="openSubscriptionModal()">Upgrade</button>
+      <div class="ad-artists" role="group" aria-label="Featured artists">
+        <button type="button" class="ad-art" title="Bobi Wine" aria-label="Bobi Wine" onclick="openArtistProfileByName('Bobi Wine')"><b>B</b><img src="images/bobi_wine.jpg" alt="" loading="lazy" onerror="this.remove()"></button>
+        <button type="button" class="ad-art" title="Bebe Cool" aria-label="Bebe Cool" onclick="openArtistProfileByName('Bebe Cool')"><b>B</b><img src="images/Bebe Cool.png" alt="" loading="lazy" onerror="this.remove()"></button>
+        <button type="button" class="ad-art" title="Jose Chameleone" aria-label="Jose Chameleone" onclick="openArtistProfileByName('Jose Chameleone')"><b>J</b><img src="images/Jose Chameleon.jpg" alt="" loading="lazy" onerror="this.remove()"></button>
+      </div>
     </div>
+
+    <div class="hub-tabs" data-hub="home"></div>
 
     <!-- PREMIUM BANNER — shown to Premium users only (see [data-premium] CSS) -->
     <div class="premium-banner" id="homePremiumBanner" onclick="openSubscriptionModal()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'){openSubscriptionModal()}">
@@ -8379,6 +8443,25 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
     <!-- YAPS CONNECT PAGE -->
     <section class="page" id="page-connect" aria-label="YAPS Connect"><div id="cnRoot"></div></section>
 
+    <!-- COMMUNITY CHAT PAGE (merged from community.html) -->
+    <section class="page" id="page-community" aria-label="Community chat">
+      <div class="cc-app" id="ccApp">
+        <div class="cc-head">
+          <span class="cc-ico"><i class="fas fa-comments"></i></span>
+          <div class="cc-t"><b id="ccTitle">Community Chat</b><span id="ccSub">Say hello to artists, DJs and music lovers</span></div>
+          <span class="cc-live off" id="ccLive"><i></i><span>Connecting</span></span>
+          <button class="cc-jbtn" id="ccJoin" type="button" aria-label="Join community"><i class="fas fa-user-plus"></i><b>Join<span class="cc-lg"> Community</span></b></button>
+        </div>
+        <div class="cc-note" id="ccNote" hidden>Preview mode: messages are saved on this device only.</div>
+        <div class="cc-log" id="ccLog" role="log" aria-live="polite" aria-label="Messages"></div>
+        <form class="cc-form" id="ccForm" autocomplete="off">
+          <textarea class="cc-input" id="ccInput" rows="1" maxlength="1000" placeholder="Type a message…" aria-label="Type a message" enterkeyhint="send"></textarea>
+          <button class="cc-send" id="ccSend" type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+        </form>
+        <div class="cc-signin" id="ccSignin" hidden><span>Sign in to join the conversation</span><button class="cc-btn" type="button" onclick="goAuth('signin')">Sign in</button></div>
+      </div>
+    </section>
+
     <section class="page" id="page-events" aria-label="Events">
       <div class="evp-wrap">
         <div class="evp-top">
@@ -8449,27 +8532,60 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
         <button class="btn-primary" onclick="if(!_demoUser){showToast('Sign in to follow people');openModal('auth');return;}showToast('Open a profile from People You May Know to follow them')"><i class="fas fa-user-plus"></i> Follow</button>
         <button class="btn-ghost" onclick="openProfileMessage()"><i class="fas fa-comment-dots"></i> Message</button>
       </div>
-      <!-- ACCOUNT HUB: compact icon grid (account, settings, notifications, calling, support) -->
+      <!-- ACCOUNT HUB: swipeable glass cards. Holds everything the desktop sidebar has, so phones need no MENU button -->
       <div class="acct-hub">
         <div class="acct-group">Account</div>
-        <div class="acct-grid">
-          <button type="button" class="acct-tile" style="--c:#8b5cf6;--c2:#e040fb" onclick="if(!_demoUser){showToast('Sign in to manage your account');openModal('auth');return;}openEditProfileModal()"><span class="acct-ico"><i class="fas fa-user-pen"></i></span><span class="acct-lbl">Account</span></button>
-          <button type="button" class="acct-tile" style="--c:#22d3ee;--c2:#8b5cf6" onclick="openSettings()"><span class="acct-ico"><i class="fas fa-gear"></i></span><span class="acct-lbl">Settings</span></button>
-          <button type="button" class="acct-tile" style="--c:#fbbf24;--c2:#f97316" onclick="openSubscriptionModal()"><span class="acct-ico"><i class="fas fa-crown"></i></span><span class="acct-lbl">Premium</span></button>
-          <button type="button" class="acct-tile" style="--c:#19e68c;--c2:#22d3ee" onclick="navigate('earnings')"><span class="acct-ico"><i class="fas fa-wallet"></i></span><span class="acct-lbl">Wallet</span></button>
+        <div class="acct-rail" tabindex="0" aria-label="Account">
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb" onclick="if(!_demoUser){showToast('Sign in to manage your account');openModal('auth');return;}openEditProfileModal()"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c0-3.5 3-5.5 6.5-5.5"/><path d="M14 20l.6-2.6 5-5 2 2-5 5z"/></svg></span></span><span class="ac-title">Account</span><span class="ac-desc">Edit your profile, photo and details.</span></button>
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#6366f1" onclick="openSettings()"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></span></span><span class="ac-title">Settings</span><span class="ac-desc">Audio, language, privacy and theme.</span></button>
+          <button type="button" class="acct-card" style="--c:#fbbf24;--c2:#f97316" onclick="openSubscriptionModal()"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span></span><span class="ac-title">Premium</span><span class="ac-desc">Go ad-free with higher audio quality.</span></button>
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#22d3ee" onclick="navigate('earnings')"><span class="ac-top"><span class="ac-num">04</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V7a2 2 0 0 1 2-2h11.5v3"/><rect x="3.5" y="8" width="17" height="11" rx="2.5"/><circle cx="16.5" cy="13.5" r="1.2"/></svg></span></span><span class="ac-title">Wallet</span><span class="ac-desc">Track your earnings and payouts.</span></button>
         </div>
         <div class="acct-group">Connect &amp; create</div>
-        <div class="acct-grid">
-          <button type="button" class="acct-tile" style="--c:#f43f5e;--c2:#e040fb" onclick="navigate('notifications')"><span class="acct-ico"><i class="fas fa-bell"></i></span><span class="acct-lbl">Alerts</span></button>
-          <button type="button" class="acct-tile" style="--c:#22d3ee;--c2:#19e68c" onclick="navigate('messages')"><span class="acct-ico"><i class="fas fa-phone"></i></span><span class="acct-lbl">Calls</span></button>
-          <button type="button" class="acct-tile" style="--c:#8b5cf6;--c2:#22d3ee" onclick="navigate('connect')"><span class="acct-ico"><i class="fas fa-user-group"></i></span><span class="acct-lbl">Connect</span></button>
-          <button type="button" class="acct-tile" style="--c:#19e68c;--c2:#8b5cf6" onclick="navigate('upload')"><span class="acct-ico"><i class="fas fa-cloud-arrow-up"></i></span><span class="acct-lbl">Upload</span></button>
+        <div class="acct-rail" tabindex="0" aria-label="Connect and create">
+          <button type="button" class="acct-card" style="--c:#f43f5e;--c2:#e040fb" onclick="navigate('notifications')"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span></span><span class="ac-title">Alerts</span><span class="ac-desc">Likes, follows and new releases.</span></button>
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="navigate('messages')"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span></span><span class="ac-title">Calls</span><span class="ac-desc">Message and call friends and artists.</span></button>
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#22d3ee" onclick="navigate('connect')"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 14c2.8 0 5 1.8 5 4.5"/></svg></span></span><span class="ac-title">Connect</span><span class="ac-desc">Join communities of fans and artists.</span></button>
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#8b5cf6" onclick="navigate('upload')"><span class="ac-top"><span class="ac-num">04</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9.5 4 4 0 0 1 17.5 18"/><path d="M12 17v-6M9 13.5l3-3 3 3"/></svg></span></span><span class="ac-title">Upload</span><span class="ac-desc">Share your music with the world.</span></button>
+        </div>
+        <div class="acct-group">Library &amp; explore</div>
+        <div class="acct-rail" tabindex="0" aria-label="Library and explore">
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="_p2pGoToDownloads()"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10M8 10.5l4 4 4-4"/><path d="M5 19h14"/></svg></span></span><span class="ac-title">Downloads</span><span class="ac-desc">Songs saved for offline listening.</span></button>
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb" onclick="toggleQueue()"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h12M4 12h12M4 17h7"/><path d="M18 14l3 2.5-3 2.5z"/></svg></span></span><span class="ac-title">Queue</span><span class="ac-desc">See what plays next.</span></button>
+          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#6366f1" onclick="navigate('device')"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></svg></span></span><span class="ac-title">On device</span><span class="ac-desc">Play songs stored on your phone.</span></button>
+          <button type="button" class="acct-card" style="--c:#e040fb;--c2:#8b5cf6" onclick="djxOpenPage('djs')"><span class="ac-top"><span class="ac-num">04</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3.5" y="13" width="4" height="6.5" rx="1.5"/><rect x="16.5" y="13" width="4" height="6.5" rx="1.5"/></svg></span></span><span class="ac-title">DJs</span><span class="ac-desc">Mixes from Ugandan DJs.</span></button>
+          <button type="button" class="acct-card" style="--c:#fb923c;--c2:#f43f5e" onclick="navigate('podcasts')"><span class="ac-top"><span class="ac-num">05</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg></span></span><span class="ac-title">Podcasts</span><span class="ac-desc">Shows and episodes to follow.</span></button>
+          <button type="button" class="acct-card" style="--c:#fbbf24;--c2:#f97316" onclick="navigate('events')"><span class="ac-top"><span class="ac-num">06</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg></span></span><span class="ac-title">Events</span><span class="ac-desc">Concerts and festivals near you.</span></button>
+        </div>
+        <div class="acct-group">Creator</div>
+        <div class="acct-rail" tabindex="0" aria-label="Creator">
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#8b5cf6" onclick="location.href='yaps-ai.html'"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></span></span><span class="ac-title">YAPS AI</span><span class="ac-desc">Chat with your AI DJ.</span></button>
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#e040fb" onclick="openStudio()"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16M12 4v16M18 4v16"/><circle cx="6" cy="9" r="2" fill="currentColor"/><circle cx="12" cy="15" r="2" fill="currentColor"/><circle cx="18" cy="8" r="2" fill="currentColor"/></svg></span></span><span class="ac-title">DJ Studio</span><span class="ac-desc">Build and publish your mixes.</span></button>
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#22d3ee;display:none" data-mirror="nav-dashboard" onclick="navigate('dashboard')"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-7M11 20V5M17 20v-10"/><path d="M3 20h18"/></svg></span></span><span class="ac-title">Analytics</span><span class="ac-desc">Plays and audience stats.</span></button>
+        </div>
+        <div class="acct-group">Preferences</div>
+        <div class="acct-rail" tabindex="0" aria-label="Preferences">
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#6366f1" onclick="openSettings('appearance',{k:'mode'})"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></span></span><span class="ac-title">Theme</span><span class="ac-desc">Switch dark or light mode.</span></button>
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="openSettings('playback',{l:'Audio Quality'})"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4"/></svg></span></span><span class="ac-title">Audio quality</span><span class="ac-desc">Choose how songs stream.</span></button>
+          <button type="button" class="acct-card" style="--c:#fb923c;--c2:#f43f5e" onclick="openSettings('downloads',{k:'offline'})"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 16 7.5"/><path d="M18 11.2A4 4 0 0 1 17.5 18H9"/><path d="M3 3l18 18"/></svg></span></span><span class="ac-title">Offline mode</span><span class="ac-desc">Listen without internet.</span></button>
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#22d3ee" onclick="openSettings('data',{k:'dataSaver'})"><span class="ac-top"><span class="ac-num">04</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/></svg></span></span><span class="ac-title">Data saver</span><span class="ac-desc">Use less mobile data.</span></button>
+          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#8b5cf6" onclick="openModal('language')"><span class="ac-top"><span class="ac-num">05</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></span></span><span class="ac-title">Language</span><span class="ac-desc">Change the app language.</span></button>
+          <button type="button" class="acct-card" style="--c:#e040fb;--c2:#8b5cf6" onclick="openLegal('privacypolicy')"><span class="ac-top"><span class="ac-num">06</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.5-3 8-7 9.5-4-1.5-7-5-7-9.5V6z"/><path d="M9 12l2.2 2.2L15 10.5"/></svg></span></span><span class="ac-title">Privacy</span><span class="ac-desc">How we protect your data.</span></button>
         </div>
         <div class="acct-group">Support</div>
-        <div class="acct-grid">
-          <button type="button" class="acct-tile" style="--c:#38bdf8;--c2:#6366f1" onclick="openHelpCenter()"><span class="acct-ico"><i class="fas fa-circle-question"></i></span><span class="acct-lbl">Help</span></button>
-          <button type="button" class="acct-tile" style="--c:#fb923c;--c2:#f43f5e" onclick="openFeedback('bug')"><span class="acct-ico"><i class="fas fa-bug"></i></span><span class="acct-lbl">Report</span></button>
-          <button type="button" class="acct-tile" style="--c:#e040fb;--c2:#8b5cf6" onclick="openFeedback('feedback')"><span class="acct-ico"><i class="fas fa-comment-dots"></i></span><span class="acct-lbl">Feedback</span></button>
+        <div class="acct-rail" tabindex="0" aria-label="Support">
+          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#6366f1" onclick="openHelpCenter()"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7"/><circle cx="12" cy="17" r=".7" fill="currentColor"/></svg></span></span><span class="ac-title">Help</span><span class="ac-desc">Answers to common questions.</span></button>
+          <button type="button" class="acct-card" style="--c:#fb923c;--c2:#f43f5e" onclick="openFeedback('bug')"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7a3 3 0 0 1 6 0v1H9z"/><rect x="7" y="8" width="10" height="11" rx="5"/><path d="M3 12h4M17 12h4M4 6l3 2M20 6l-3 2M4 19l3-2M20 19l-3-2M12 8v11"/></svg></span></span><span class="ac-title">Report</span><span class="ac-desc">Tell us when something is broken.</span></button>
+          <button type="button" class="acct-card" style="--c:#e040fb;--c2:#8b5cf6" onclick="openFeedback('feedback')"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span></span><span class="ac-title">Feedback</span><span class="ac-desc">Send ideas, praise or complaints.</span></button>
+        </div>
+        <div class="acct-group">About &amp; app</div>
+        <div class="acct-rail" tabindex="0" aria-label="About and app">
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#6366f1" onclick="openModal('about')"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.8" r=".8" fill="currentColor"/></svg></span></span><span class="ac-title">About</span><span class="ac-desc">Learn more about YAPSMusic.</span></button>
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#22d3ee" onclick="_sidebarShareApp()"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/></svg></span></span><span class="ac-title">Share</span><span class="ac-desc">Invite friends to YAPS.</span></button>
+          <button type="button" class="acct-card" style="--c:#fbbf24;--c2:#f97316" onclick="openRateAppModal()"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9-4.3-4.1 5.9-.8z"/></svg></span></span><span class="ac-title">Rate</span><span class="ac-desc">Tell us how we are doing.</span></button>
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb;display:none" data-mirror="pwaInstallBtn" onclick="pwaInstall()"><span class="ac-top"><span class="ac-num">04</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="2.5"/><path d="M12 8v6M9.5 11.5l2.5 2.5 2.5-2.5"/></svg></span></span><span class="ac-title">Install</span><span class="ac-desc">Add YAPS to your home screen.</span></button>
+          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#8b5cf6;display:none" data-mirror="feedbackInboxLink" onclick="openFeedbackInbox()"><span class="ac-top"><span class="ac-num">05</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13l2-8h12l2 8v6H4z"/><path d="M4 13h5l1 2h4l1-2h5"/></svg></span></span><span class="ac-title">Inbox</span><span class="ac-desc">Read feedback from users.</span></button>
+          <button type="button" class="acct-card" style="--c:#f43f5e;--c2:#b91c1c" onclick="_confirmSidebarLogout()"><span class="ac-top"><span class="ac-num">06</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"/><path d="M15 8l4 4-4 4M19 12H9"/></svg></span></span><span class="ac-title">Logout</span><span class="ac-desc">Sign out of your account.</span></button>
         </div>
       </div>
       <!-- PEOPLE YOU MAY KNOW (replaces the old Tracks / Albums / Playlists tabs on the profile page) -->
@@ -8672,48 +8788,12 @@ html[data-mode="light"] #yapsLoader .yl-step.yl-done .yl-state::after{border-col
   </main>
 </div>
 
-<!-- PLAYER BAR -->
-<div id="player-bar">
-  <div class="pb-art">
-    <img loading="lazy" decoding="async" id="pbImg" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100&q=70&auto=format" alt="Now Playing" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
-  </div>
-  <div class="pb-info">
-    <div class="pb-title" id="pbTitle">P2</div>
-    <div class="pb-artist" id="pbArtist">King Saha</div>
-    <div id="audioStatusDot" style="display:none;font-size:10px;color:var(--accent);margin-top:1px;letter-spacing:0.3px;"></div>
-  </div>
-  <i class="fas fa-heart pb-heart" id="pbHeart" onclick="toggleLikeTrack(currentTrack)"></i>
-
-  <div class="pb-center">
-    <div class="pb-controls">
-      <i class="fas fa-random pb-ctrl-btn" id="shuffleBtn" onclick="toggleShuffle()" title="Shuffle (S)"></i>
-      <i class="fas fa-step-backward pb-ctrl-btn" onclick="prevTrack()" title="Previous (←)"></i>
-      <div class="pb-play-btn" id="mainPlayBtn" onclick="togglePlay()">
-        <i class="fas fa-play" id="mainPlayIcon"></i>
-      </div>
-      <i class="fas fa-step-forward pb-ctrl-btn" onclick="nextTrack()" title="Next (→)"></i>
-      <i class="fas fa-redo pb-ctrl-btn" id="repeatBtn" onclick="toggleRepeat()" title="Repeat (R)"></i>
-    </div>
-    <div class="pb-progress">
-      <span class="pb-time" id="pbCurrent">1:14</span>
-      <div class="progress-bar" onclick="seekTo(event, this)">
-        <div class="progress-fill" id="progressFill"></div>
-      </div>
-      <span class="pb-time right" id="pbTotal">3:47</span>
-    </div>
-  </div>
-
-  <div class="pb-right">
-    <i class="fas fa-list-ul pb-queue-btn" onclick="toggleQueue()" title="Queue"></i>
-    <div class="pb-vol">
-      <i class="fas fa-volume-up pb-vol-icon"></i>
-      <div class="vol-slider" onclick="setVolume(event, this)">
-        <div class="vol-fill" id="volFill"></div>
-      </div>
-    </div>
-    <i class="fas fa-expand-alt pb-ctrl-btn" onclick="openNowPlayingScreen()" title="Expand"></i>
-    <i class="fas fa-info-circle pb-facts-btn" id="factsBtn" onclick="toggleSongFacts()" title="About this song"></i>
-  </div>
+<!-- Docked player bar removed: the round floating player (#miniBubble) replaces it.
+     Hidden placeholders keep the ids the playback code writes to, so nothing breaks. -->
+<div id="player-bar" hidden aria-hidden="true" style="display:none!important">
+  <img id="pbImg" alt=""><div id="pbTitle"></div><div id="pbArtist"></div><div id="audioStatusDot"></div>
+  <i id="pbHeart"></i><i id="shuffleBtn"></i><div id="mainPlayBtn"><i id="mainPlayIcon"></i></div><i id="repeatBtn"></i>
+  <span id="pbCurrent"></span><div id="progressFill"></div><span id="pbTotal"></span><div id="volFill"></div><i id="factsBtn"></i>
 </div>
 
 <!-- FLOATING MINI PLAYER — draggable bubble, follows the user to any page and
@@ -10864,8 +10944,8 @@ let _hasPlayedOnce = false;
 // home page, and only after a track has actually been played.
 function _updatePlayerBarVisibility() {
   const _pb = document.getElementById('player-bar');
-  const show = currentPage === 'home' && _hasPlayedOnce && !window.__studioOpen;
-  if (_pb) _pb.style.display = show ? 'flex' : 'none';
+  const show = false;   // docked bar retired: the round floating player is used on every page, home included
+  if (_pb) _pb.style.display = 'none';
   document.documentElement.style.setProperty('--player-h', show ? '72px' : '0px');
   _updateMiniBubbleVisibility();
 }
@@ -10877,7 +10957,7 @@ function _updatePlayerBarVisibility() {
 function _updateMiniBubbleVisibility() {
   const bubble = document.getElementById('miniBubble');
   if (!bubble) return;
-  const show = _hasPlayedOnce && currentPage !== 'home' && !window.__studioOpen;
+  const show = _hasPlayedOnce && !window.__studioOpen;
   bubble.style.display = show ? 'flex' : 'none';
   if (show) _mbSyncNowPlaying();
 }
@@ -11287,6 +11367,7 @@ function navigate(page) {
     _resetHorizontalScrollRows(document.getElementById('page-' + page));
     return;
   }
+  if (currentPage === 'community' && page !== 'community') { try { communityOnLeave(); } catch (e) {} }   // Community chat: close live subscription when leaving
   if (currentPage === 'connect' && page !== 'connect') { try { connectOnLeave(); } catch (e) {} }   // YAPS Connect: close chat subscriptions when leaving
   // close side panels when navigating
   if (typeof songFactsOpen !== 'undefined') songFactsOpen = false;
@@ -11329,6 +11410,7 @@ function navigate(page) {
   if (page === 'podcasts') { if (typeof renderPodcastsPage === 'function') renderPodcastsPage(); }
   if (page === 'events') { if (typeof renderEventsPage === 'function') renderEventsPage(); }
   if (page === 'connect') { if (typeof renderConnectPage === 'function') renderConnectPage(); }
+  if (page === 'community') { if (typeof renderCommunityPage === 'function') renderCommunityPage(); }
   document.getElementById('main').scrollTop = 0;
   _resetHorizontalScrollRows(pageEl);
 }
@@ -20430,7 +20512,7 @@ const _bnPageMap = {
   'messages': 'bn-profile', 'upload': 'bn-profile', 'artists': 'bn-search',
   'quickvibes': 'bn-home', 'playlists': 'bn-home', 'new-releases': 'bn-home',
   'device': 'bn-library', 'trending-videos': 'bn-video', 'new-videos': 'bn-video',
-  'earnings': 'bn-profile', 'dashboard': 'bn-profile', 'connect': 'bn-profile',
+  'earnings': 'bn-profile', 'dashboard': 'bn-profile', 'connect': 'bn-profile', 'community': 'bn-profile',
 };
 function updateBottomNav(page) {
   document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
@@ -31491,6 +31573,7 @@ html body #dev-all .dev-all-list{padding-left:clamp(8px,2vw,28px);padding-right:
       else {
         var admin = false; try { admin = !!((await rpc('connect_ensure_profile')) || {}).is_admin; } catch (e) { }
         if (admin) { btn.dataset.cnroom = ''; btn.dataset.cnadmin = '1'; btn.innerHTML = '<i class="fas fa-plus"></i> Open Community'; btn.hidden = false; }
+        else if (owner) { btn.dataset.cnroom = ''; btn.dataset.cnpage = 'community.html?artist=' + encodeURIComponent(owner) + '&join=1'; btn.innerHTML = '<i class="fas fa-people-group"></i> Join Community'; btn.hidden = false; }
         else if (kind === 'artist') { btn.dataset.cnroom = ''; btn.dataset.cnopen = '1'; btn.innerHTML = '<i class="fas fa-people-group"></i> Join Community'; btn.hidden = false; }
         else btn.hidden = true;
       }
@@ -31498,7 +31581,7 @@ html body #dev-all .dev-all-list{padding-left:clamp(8px,2vw,28px);padding-right:
   }
   function artistKeys(a) { return ['a:' + norm(a.name)]; }
   window.cnArtistProfileShown = function (a) {
-    var btn = $('apJoinBtn'); if (!btn || !a) return; btn.hidden = true; delete btn.dataset.cnopen; delete btn.dataset.cnadmin; btn.dataset.cnkind = 'artist'; btn.dataset.cnname = a.name;
+    var btn = $('apJoinBtn'); if (!btn || !a) return; btn.hidden = true; delete btn.dataset.cnopen; delete btn.dataset.cnadmin; delete btn.dataset.cnpage; btn.dataset.cnkind = 'artist'; btn.dataset.cnname = a.name;
     var run = function () { var owner = a._account && a._account.id; decorate(btn, 'artist', artistKeys(a).concat(owner ? ['u:' + owner] : []), owner, a.name); };
     run(); setTimeout(function () { if (curArtist() === a && a._account) run(); }, 1500);
   };
@@ -31513,6 +31596,7 @@ html body #dev-all .dev-all-list{padding-left:clamp(8px,2vw,28px);padding-right:
   document.addEventListener('click', async function (e) {
     var b = e.target.closest('#apJoinBtn,[data-cnjoin]'); if (!b) return;
     e.preventDefault(); e.stopPropagation();
+    if (b.dataset.cnpage) { if (/^community\.html/.test(b.dataset.cnpage) && typeof window.openCommunity === 'function') window.openCommunity(b.dataset.cnpage); else location.href = b.dataset.cnpage; return; }
     if (!curUser()) { try { window.showToast('Sign in to join communities'); window.goAuth('signin'); } catch (er) { } return; }
     S.uid = curUser().id; if (!S.me) { try { S.me = await rpc('connect_ensure_profile'); } catch (er) { toast(human(er)); return; } }
     var kind = b.dataset.cnkind, id = b.dataset.cnroom;
@@ -31556,6 +31640,292 @@ html body #dev-all .dev-all-list{padding-left:clamp(8px,2vw,28px);padding-right:
 
 </script>
 
+<script id="communityChatJs">
+/* ══ COMMUNITY CHAT (merged from community.html) ══
+   Open with navigate('community'), or window.openCommunity({artist:'name', c:'room', join:true}).
+   Deep link: index.html?page=community&artist=NAME&join=1 */
+(function () {
+"use strict";
+if (window.__yapsCommunityChat) return;
+window.__yapsCommunityChat = true;
+
+var SUPABASE_URL = "https://wnpqikufnwyiivrqfktk.supabase.co";
+var SUPABASE_ANON_KEY = "sb_publishable_1Dc7Ag-ZqsqJsgETEkxi5Q_VcG1w0XJ";
+var OWNER = "", COMMUNITY = "yaps-connect";
+var sb = null;
+function getSb() {
+  if (sb) return sb;
+  if (window.sb && window.sb.from) return (sb = window.sb);
+  try { if (window.supabase && window.supabase.createClient) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true } }); } catch (e) {}
+  return sb;
+}
+
+/* ── helpers ── */
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function safeUrl(u) { u = String(u || ""); return /^https?:\/\//i.test(u) ? u : ""; }
+function uid() { return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : "id" + Date.now() + Math.random().toString(16).slice(2); }
+function linkify(t) { return esc(t).replace(/(https?:\/\/[^\s<]+[^\s<.,;:!?)'"])/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'); }
+function hm(d) { return new Date(d).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); }
+function dayKey(d) { var x = new Date(d); return x.getFullYear() + "-" + x.getMonth() + "-" + x.getDate(); }
+function dayLabel(d) {
+  var x = new Date(d), t = new Date(), y = new Date(Date.now() - 864e5);
+  if (dayKey(x) === dayKey(t)) return "Today"; if (dayKey(x) === dayKey(y)) return "Yesterday";
+  return x.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" });
+}
+function toast(m) { if (typeof window.showToast === "function") { try { window.showToast(m); return; } catch (e) {} } alert(m); }
+function friendly(e) { var m = String((e && e.message) || e || ""); return /row-level security|permission/i.test(m) ? "You don't have permission to do that." : m.slice(0, 120) || "Something went wrong"; }
+function signIn() { try { window.goAuth("signin"); } catch (e) { location.href = "auth.html"; } }
+var HUES = [220, 262, 190, 330, 150, 28, 205, 290];
+function avatar(p) {
+  p = p || {}; var name = p.name || "?", h = HUES[(name.charCodeAt(0) + name.length) % HUES.length], img = safeUrl(p.avatar);
+  return '<span class="cc-av" style="' + (img ? "background-image:url('" + esc(img) + "')" : "background:linear-gradient(135deg,hsl(" + h + ",80%,55%),hsl(" + (h + 40) + ",80%,40%))") + '">' + (img ? "" : esc(name.trim().charAt(0).toUpperCase() || "?")) + "</span>";
+}
+function roleOf(t) { t = String(t || "").toLowerCase(); return t === "artist" ? "artist" : t === "dj" ? "dj" : "fan"; }
+function cleanKey(v, max) { return String(v || "").toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, max); }
+
+/* ══════════════ DATA ══════════════ */
+var S = { me: null, live: false, joined: false, left: false };
+var LS = "yaps_chat_preview_v1";
+var Local = {
+  d: null,
+  load: function () {
+    if (this.d) return this.d;
+    try { this.d = JSON.parse(localStorage.getItem(LS)); } catch (e) {}
+    if (!this.d) {
+      var now = Date.now();
+      this.d = { chat: [
+        { id: "m1", user: { id: "u-dax", name: "DJ Dax", role: "dj" }, body: "Welcome to YAPS Connect, everyone! 🎶", created_at: now - 3e6 },
+        { id: "m2", user: { id: "u-sam", name: "Sam K", role: "fan" }, body: "Anyone going to the Friday mix?", created_at: now - 2e6 }
+      ] };
+    }
+    return this.d;
+  },
+  save: function () { try { localStorage.setItem(LS, JSON.stringify(this.d)); } catch (e) {} }
+};
+
+var API = {
+  async init() {
+    S.live = false;
+    var c = getSb();
+    if (c) { try { var r = await c.from("community_chat").select("id").limit(1); if (!r.error) S.live = true; } catch (e) {} }
+    S.memberDb = false;
+    if (S.live) { try { var m = await c.from("community_members").select("community,user_id").limit(1); if (!m.error) S.memberDb = true; } catch (e) {} }
+  },
+  async session() {
+    var c = getSb();
+    if (c) {
+      try {
+        var r = await c.auth.getSession(), u = r.data && r.data.session && r.data.session.user;
+        if (u) {
+          var p = null;
+          try { var q = await c.from("yaps_profiles").select("id,username,full_name,avatar_url,account_type").eq("id", u.id).maybeSingle(); p = q.data; } catch (e) {}
+          var nm = (p && (p.full_name || p.username)) || (u.user_metadata && (u.user_metadata.full_name || u.user_metadata.name)) || (u.email || "You").split("@")[0];
+          return { id: u.id, name: nm, avatar: (p && p.avatar_url) || (u.user_metadata && u.user_metadata.avatar_url) || "", role: roleOf(p && p.account_type), real: true };
+        }
+      } catch (e) {}
+    }
+    if (!S.live) return { id: "u-me", name: "You", role: "fan", real: false };
+    return null;
+  },
+  async people(ids) {
+    ids = Array.from(new Set(ids.filter(Boolean))); var out = {};
+    if (!ids.length) return out;
+    try {
+      var r = await getSb().from("yaps_profiles").select("id,username,full_name,avatar_url,account_type").in("id", ids);
+      (r.data || []).forEach(function (p) { out[p.id] = { id: p.id, name: p.full_name || p.username || "YAPS user", avatar: p.avatar_url, role: roleOf(p.account_type) }; });
+    } catch (e) {}
+    ids.forEach(function (i) { if (!out[i]) out[i] = { id: i, name: "YAPS user", role: "fan" }; });
+    return out;
+  },
+  async load() {
+    if (!S.live) return Local.load().chat.slice();
+    var rows = [];
+    try { rows = (await getSb().from("community_chat").select("*").eq("community", COMMUNITY).order("created_at", { ascending: false }).limit(80)).data || []; rows.reverse(); } catch (e) {}
+    var pm = await this.people(rows.map(function (m) { return m.user_id; }));
+    return rows.map(function (m) { return { id: m.id, user: pm[m.user_id], body: m.body, created_at: m.created_at }; });
+  },
+  async send(body) {
+    if (!S.live) {
+      var row = { id: uid(), user: { id: S.me.id, name: S.me.name, role: S.me.role, avatar: S.me.avatar }, body: body, created_at: Date.now() };
+      var d = Local.load(); d.chat.push(row); Local.save(); return row;
+    }
+    var r = await getSb().from("community_chat").insert({ community: COMMUNITY, user_id: S.me.id, body: body }).select().single();
+    if (r.error) throw r.error;
+    return { id: r.data.id, user: S.me, body: r.data.body, created_at: r.data.created_at };
+  },
+  async isJoined() {
+    if (!S.me) return false;
+    if (!S.live || !S.memberDb) { try { return localStorage.getItem("yaps_chat_joined_" + COMMUNITY + (S.me.real ? "_" + S.me.id : "")) === "1"; } catch (e) { return false; } }
+    if (!S.me.real) return false;
+    try { var r = await getSb().from("community_members").select("user_id").eq("community", COMMUNITY).eq("user_id", S.me.id).maybeSingle(); return !!r.data; } catch (e) { return false; }
+  },
+  async setJoined(on) {
+    if (!S.live || !S.memberDb) { try { localStorage.setItem("yaps_chat_joined_" + COMMUNITY + (S.me.real ? "_" + S.me.id : ""), on ? "1" : "0"); } catch (e) {} return; }
+    var c = getSb();
+    var r = on ? await c.from("community_members").upsert({ community: COMMUNITY, user_id: S.me.id })
+               : await c.from("community_members").delete().eq("community", COMMUNITY).eq("user_id", S.me.id);
+    if (r.error) throw r.error;
+  },
+  async count() {
+    if (!S.live || !S.memberDb) return null;
+    try { var r = await getSb().from("community_members").select("user_id", { count: "exact", head: true }).eq("community", COMMUNITY); return r.count; } catch (e) { return null; }
+  }
+};
+
+/* ══════════════ UI ══════════════ */
+var seen = {}, last = null, members = null, BASE_SUB = "", chan = null, poll = null, bootId = 0, bound = false, booted = false, authHooked = false, pendingOpts = null;
+
+function nearBottom() { var l = $("ccLog"); return l.scrollHeight - l.scrollTop - l.clientHeight < 120; }
+function toBottom(smooth) { var l = $("ccLog"); l.style.scrollBehavior = smooth ? "smooth" : "auto"; l.scrollTop = l.scrollHeight; }
+
+function rowHtml(m) {
+  var u = m.user || { name: "YAPS user", role: "fan" }, mine = !!(S.me && u.id === S.me.id), html = "";
+  var t = new Date(m.created_at).getTime();
+  if (!last || dayKey(last.t) !== dayKey(t)) html += '<div class="cc-day">' + esc(dayLabel(t)) + "</div>";
+  var cont = !!(last && last.uid === u.id && dayKey(last.t) === dayKey(t) && t - last.t < 5 * 60000);
+  last = { uid: u.id, t: t };
+  return html + '<div class="cc-msg' + (mine ? " me" : "") + (cont ? " cont" : "") + '" data-id="' + esc(m.id) + '">' + (mine ? "" : avatar(u)) +
+    '<div class="cc-b"><div class="cc-nm">' + esc(u.name) + (u.role && u.role !== "fan" ? ' <span class="cc-role">' + (u.role === "dj" ? "DJ" : "Artist") + "</span>" : "") + "</div>" +
+    '<div class="cc-tx">' + linkify(m.body) + '</div><div class="cc-tm">' + esc(hm(t)) + "</div></div></div>";
+}
+function add(rows, force) {
+  rows = rows.filter(function (m) { if (seen[m.id]) return false; seen[m.id] = 1; return true; });
+  if (!rows.length) return;
+  var log = $("ccLog"), stick = force || nearBottom(), e = log.querySelector(".cc-empty"); if (e) e.remove();
+  log.insertAdjacentHTML("beforeend", rows.map(rowHtml).join(""));
+  if (stick) toBottom(!!force);
+}
+function showEmpty() { $("ccLog").innerHTML = '<div class="cc-empty"><i class="fas fa-comments"></i><b>No messages yet</b>Say hello 👋</div>'; }
+function autoGrow() { var i = $("ccInput"); i.style.height = "auto"; i.style.height = Math.min(i.scrollHeight, 120) + "px"; }
+
+function paintMe() {
+  $("ccSignin").hidden = !!S.me; $("ccForm").hidden = !S.me;
+  $("ccJoin").style.display = (S.me && S.me.real) ? "" : "none";   // Join / Leave button is only for users with an account
+}
+function paintJoin() {
+  var b = $("ccJoin");
+  b.classList.toggle("joined", S.joined);
+  b.setAttribute("aria-label", S.joined ? "Leave community" : "Join community");
+  b.innerHTML = S.joined ? '<i class="fas fa-right-from-bracket"></i><b>Leave<span class="cc-lg"> Community</span></b>' : '<i class="fas fa-user-plus"></i><b>Join<span class="cc-lg"> Community</span></b>';
+  $("ccSub").textContent = BASE_SUB + (members != null ? " · " + members.toLocaleString() + (members === 1 ? " member" : " members") : "");
+}
+async function toggleJoin() {
+  if (!S.me) { signIn(); return; }
+  if (S.live && !S.me.real) { signIn(); return; }
+  if (S.joined && !confirm("Leave this community? You can join again anytime.")) return;
+  var on = !S.joined, b = $("ccJoin"); b.disabled = true;
+  try {
+    await API.setJoined(on); S.joined = on; S.left = !on;
+    if (members != null) members = Math.max(0, members + (on ? 1 : -1));
+    paintJoin(); toast(on ? "Welcome! You joined the community 🎉" : "You left the community");
+  } catch (er) { toast(friendly(er)); }
+  b.disabled = false;
+}
+async function autoJoin() { if (S.joined || S.left || !S.me || (S.live && !S.me.real)) return; try { await API.setJoined(true); S.joined = true; if (members != null) members++; paintJoin(); } catch (e) {} }
+
+function bind() {
+  if (bound) return; bound = true;
+  var input = $("ccInput"), form = $("ccForm"), sendBtn = $("ccSend");
+  input.addEventListener("input", autoGrow);
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); form.requestSubmit(); } });
+  input.addEventListener("focus", function () { setTimeout(function () { toBottom(false); }, 250); });
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var v = input.value.trim(); if (!v) return;
+    if (!S.me) { signIn(); return; }
+    sendBtn.disabled = true; input.value = ""; autoGrow();
+    try { var row = await API.send(v); add([row], true); autoJoin(); }
+    catch (er) { input.value = v; autoGrow(); toast(friendly(er)); }
+    finally { sendBtn.disabled = false; input.focus(); }
+  });
+  $("ccJoin").addEventListener("click", toggleJoin);
+}
+
+function unsubscribe() {
+  if (poll) { clearInterval(poll); poll = null; }
+  if (chan) { try { getSb().removeChannel(chan); } catch (e) {} chan = null; }
+}
+function subscribe() {
+  unsubscribe();
+  if (!S.live) return;
+  var c = getSb(), key = COMMUNITY;
+  try {
+    chan = c.channel("cc-" + key).on("postgres_changes", { event: "INSERT", schema: "public", table: "community_chat", filter: "community=eq." + key }, async function (p) {
+      var pm = await API.people([p.new.user_id]); add([{ id: p.new.id, user: pm[p.new.user_id], body: p.new.body, created_at: p.new.created_at }]);
+    }).subscribe();
+  } catch (e) {}
+  poll = setInterval(function () { if (!document.hidden) API.load().then(function (r) { add(r); }).catch(function () {}); }, 10000);   // safety net if realtime is not enabled
+}
+
+function hookAuth() {
+  var c = getSb(); if (!c || authHooked) return; authHooked = true;
+  c.auth.onAuthStateChange(function (ev) {
+    if (ev !== "SIGNED_IN" && ev !== "SIGNED_OUT") return;
+    booted = false;   // re-load with the new account the next time the page opens
+    if (typeof currentPage !== "undefined" && currentPage === "community") start(null);
+  });
+}
+
+async function start(opts) {
+  var my = ++bootId;
+  opts = opts || {};
+  if (opts.artist != null || opts.c != null) {
+    OWNER = String(opts.artist || "").replace(/[^A-Za-z0-9_-]/g, "").slice(0, 64);
+    COMMUNITY = cleanKey(opts.c || (OWNER ? "artist-" + OWNER : "yaps-connect"), 80) || "yaps-connect";
+  }
+  bind(); hookAuth();
+  seen = {}; last = null; members = null; S.joined = false; S.left = false;
+  $("ccTitle").textContent = "Community Chat"; BASE_SUB = "Say hello to artists, DJs and music lovers"; $("ccSub").textContent = BASE_SUB;
+  $("ccLog").innerHTML = "";
+  try { await API.init(); S.me = await API.session(); } catch (e) { console.error(e); }
+  if (my !== bootId) return;
+  var tag = $("ccLive");
+  tag.classList.toggle("off", !S.live); tag.lastChild.textContent = S.live ? "Live" : "Preview";
+  $("ccNote").hidden = S.live;
+  paintMe();
+  S.joined = await API.isJoined(); members = await API.count();
+  if (my !== bootId) return;
+  paintJoin();
+  if (OWNER) {
+    try {
+      var op = (await API.people([OWNER]))[OWNER];
+      if (op && op.name !== "YAPS user") { $("ccTitle").textContent = op.name + " Community Chat"; BASE_SUB = "Fans and friends of " + op.name; paintJoin(); }
+    } catch (e) {}
+  }
+  var rows = [];
+  try { rows = await API.load(); } catch (e) {}
+  if (my !== bootId) return;
+  if (rows.length) add(rows, false); else showEmpty();
+  toBottom(false);
+  subscribe();
+  booted = true;
+  if (opts.join) { if (S.me) { if (!S.joined) toggleJoin(); } else setTimeout(signIn, 600); }
+}
+
+/* ── hooks used by navigate() ── */
+window.renderCommunityPage = function () {
+  var o = pendingOpts; pendingOpts = null;
+  if (!o && !booted) {
+    // first open through a deep link: index.html?page=community&artist=NAME&c=room&join=1
+    var q = new URLSearchParams(window.__yapsInitialSearch || location.search);
+    if (q.get("page") === "community") o = { artist: q.get("artist") || "", c: q.get("c") || "", join: q.get("join") === "1" };
+  }
+  if (o || !booted) start(o);
+  else { subscribe(); API.load().then(function (r) { add(r); }).catch(function () {}); }
+};
+window.communityOnLeave = function () { unsubscribe(); };
+
+/* open a community from anywhere in the app */
+window.openCommunity = function (o) {
+  if (typeof o === "string") { var q = new URLSearchParams(o.replace(/^.*\?/, "")); o = { artist: q.get("artist") || "", c: q.get("c") || "", join: q.get("join") === "1" }; }
+  pendingOpts = o || { artist: "", c: "" };
+  if (typeof currentPage !== "undefined" && currentPage === "community") { window.renderCommunityPage(); return; }
+  try { navigate("community"); if (typeof updateBottomNav === "function") updateBottomNav("community"); } catch (e) {}
+};
+})();
+</script>
+
 <style id="yaps-nav-reorg-css">
 .hub-tabs{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .hub-tabs::-webkit-scrollbar{display:none}
@@ -31564,16 +31934,96 @@ html body #dev-all .dev-all-list{padding-left:clamp(8px,2vw,28px);padding-right:
 .hub-tab i{font-size:11px}
 .hub-tab:hover{border-color:var(--accent);color:var(--accent)}
 .hub-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
-.acct-hub{margin:0 16px 14px}
-.acct-group{padding:10px 2px 6px;font-size:12px;font-weight:800;color:var(--muted)}
-.acct-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.acct-tile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 2px 9px;min-width:0;background:var(--card);border:1px solid var(--border);border-radius:16px;color:var(--text);font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s,border-color .12s}
-.acct-tile:active{transform:scale(.94);border-color:var(--accent)}
-.acct-tile:focus-visible{outline:2px solid var(--accent-light);outline-offset:2px}
-.acct-ico{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;font-size:17px;color:#fff;background:linear-gradient(135deg,var(--c,var(--accent)),var(--c2,var(--accent-dark)));box-shadow:0 4px 12px -4px var(--c,var(--accent))}
-.acct-lbl{max-width:100%;padding:0 2px;font-size:11.5px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media (min-width:640px){.acct-hub{max-width:560px}.acct-ico{width:44px;height:44px;font-size:18px}.acct-lbl{font-size:12.5px}}
+.acct-hub{margin:0 0 14px}
+.acct-group{padding:10px 18px 4px;font-size:12px;font-weight:800;color:var(--muted)}
+.acct-rail{display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;padding:8px 16px 12px;scroll-snap-type:x proximity;scroll-padding-left:16px;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}
+.acct-rail::-webkit-scrollbar{display:none}
+.acct-card{position:relative;flex:0 0 clamp(104px,30vw,132px);scroll-snap-align:start;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:9px 9px 11px;text-align:left;color:var(--text);font-family:inherit;cursor:pointer;
+  border:1px solid var(--border);border-radius:14px;
+  background:linear-gradient(160deg,var(--card2),var(--card) 70%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 10px 24px -12px var(--c);
+  -webkit-tap-highlight-color:transparent;transition:transform .12s,border-color .12s}
+@supports (color:color-mix(in srgb,red,blue)){
+  .acct-card{border-color:color-mix(in srgb,var(--c) 55%,transparent);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 20%,var(--card)),var(--card) 72%)}
+}
+.acct-card+.acct-card::before{content:"";position:absolute;top:50%;left:-12px;width:0;height:0;transform:translateY(-50%);border-left:7px solid var(--accent-light);border-top:4px solid transparent;border-bottom:4px solid transparent;filter:drop-shadow(0 0 4px var(--accent-light));pointer-events:none}
+.acct-card:active{transform:scale(.97)}
+.acct-card:focus-visible{outline:2px solid var(--accent-light);outline-offset:2px}
+.ac-top{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.ac-num{display:grid;place-items:center;width:22px;height:22px;border-radius:7px;font-size:10px;font-weight:800;color:#fff;background:rgba(255,255,255,.08);border:1px solid var(--c)}
+.ac-ico{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;color:#fff;background:linear-gradient(135deg,var(--c),var(--c2));box-shadow:0 6px 16px -6px var(--c)}
+.ac-ico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ac-title{font-size:13px;font-weight:800;line-height:1.2}
+.ac-desc{font-size:10.5px;line-height:1.35;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media (prefers-reduced-motion:reduce){.acct-card{transition:none}}
+.home-ad{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin:12px 16px 0}
+/* Discover (Search page) bar = same size as the Home bar */
+#page-search .search-hero{padding:12px 16px}
+#page-search .search-hero h2{font-size:18px;margin-bottom:10px}
+#page-search .search-big{margin-bottom:0}
+#page-search .search-big input{min-width:0}
+@media (min-width:768px){#page-search .search-hero{padding:14px 24px}#page-search .search-big{max-width:720px}}
+@media (max-width:640px){
+  #page-search .search-big i{padding:9px 10px;font-size:14px}
+  #page-search .search-big input{font-size:13px;padding:8px 0}
+  #page-search .search-big button{padding:0 14px;font-size:12px;align-self:stretch;display:flex;align-items:center;justify-content:center}
+}
+/* Ugandan DJs (home row): medium profile size */
+#djx-djs-row{gap:12px;padding:0 16px 16px}
+#djx-djs-row .djx-av{width:92px}
+#djx-djs-row .djx-av-img,#djx-djs-row .djx-av-ph{width:88px;height:88px;margin:0 auto 6px;border:2px solid var(--border);box-shadow:none}
+#djx-djs-row .djx-av-ph{font-size:30px}
+#djx-djs-row .djx-av-name{font-size:12px;font-weight:600;margin-bottom:2px}
+#djx-djs-row .djx-av-sub{font-size:10.5px}
+/* EVERY button / chip / pill shares the Upgrade button look (theme-aware like .sub-btn-primary).
+   Left alone: icon-only round controls, big card-style rows, destructive (danger/warn/bad) and disabled buttons.
+   Chips & tabs keep a white ring on the selected one so the current choice is still visible. */
+html :is(.sub-btn,.hero-btn,.qv-see-all,.btn-ghost,.btn-primary,.cn-btn,.p2p-btn,.djx-btn,.rel-btn,.hib-btn,.lib-pl-btn,.oos-btn,.ud-browse-btn,.evp-btn,.pdp-btn,.ern-btn,.search-big button,.action-btn,.atp-empty button,.btn-upload-tiktok,.claim-btn,.dev-allow,.ern-qk button,.genre-play-all-btn,.lp-retry-btn,.notif-more,.nrp-open,.nrp-reset,.nrp-select,.nvp-empty-btn,.pl-detail-play-btn,.pl-detail-rename-btn,.pl-detail-shuffle-btn,.plp-open,.plp-reset,.pymk-cta,.qvp-open,.qvp-reset,.tvc-seeall,.tvp-empty-btn,.wt-go,.yv-follow-btn,.yv2-hero-btn,.yv2-upload-btn,.smart-filter-btn,.acf-follow-btn,.settings-btn-row.pri):not(.danger):not(.warn):not(.bad):not(.on):not(.following):not(:disabled),
+html :is(.hub-tab,.filter-chip,.atp-chip,.disc-chip,.dj-prompt-chip,.dv-chip,.evp-chip,.nrp-chip,.nvp-chip,.pdp-chip,.plp-chip,.ppl-chip,.qvp-chip,.ts-chip,.tvp-chip,.yv2-cat,.disc-tabs button,.djx-tab,.ern-tab):not(.danger):not(.warn):not(.bad):not(:disabled){background:var(--accent);color:#fff;border-color:transparent}
+html:not([data-theme]) :is(.sub-btn,.hero-btn,.qv-see-all,.btn-ghost,.btn-primary,.cn-btn,.p2p-btn,.djx-btn,.rel-btn,.hib-btn,.lib-pl-btn,.oos-btn,.ud-browse-btn,.evp-btn,.pdp-btn,.ern-btn,.search-big button,.action-btn,.atp-empty button,.btn-upload-tiktok,.claim-btn,.dev-allow,.ern-qk button,.genre-play-all-btn,.lp-retry-btn,.notif-more,.nrp-open,.nrp-reset,.nrp-select,.nvp-empty-btn,.pl-detail-play-btn,.pl-detail-rename-btn,.pl-detail-shuffle-btn,.plp-open,.plp-reset,.pymk-cta,.qvp-open,.qvp-reset,.tvc-seeall,.tvp-empty-btn,.wt-go,.yv-follow-btn,.yv2-hero-btn,.yv2-upload-btn,.smart-filter-btn,.acf-follow-btn,.settings-btn-row.pri):not(.danger):not(.warn):not(.bad):not(.on):not(.following):not(:disabled),
+html:not([data-theme]) :is(.hub-tab,.filter-chip,.atp-chip,.disc-chip,.dj-prompt-chip,.dv-chip,.evp-chip,.nrp-chip,.nvp-chip,.pdp-chip,.plp-chip,.ppl-chip,.qvp-chip,.ts-chip,.tvp-chip,.yv2-cat,.disc-tabs button,.djx-tab,.ern-tab):not(.danger):not(.warn):not(.bad):not(:disabled){background:var(--neon-btn);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45);border-color:transparent;box-shadow:0 0 0 2px rgba(139,92,246,.25),0 6px 22px rgba(139,92,246,.35)}
+html:not([data-theme]) :is(.sub-btn,.hero-btn,.qv-see-all,.btn-ghost,.btn-primary,.cn-btn,.p2p-btn,.djx-btn,.rel-btn,.hib-btn,.lib-pl-btn,.oos-btn,.ud-browse-btn,.evp-btn,.pdp-btn,.ern-btn,.search-big button,.action-btn,.atp-empty button,.btn-upload-tiktok,.claim-btn,.dev-allow,.ern-qk button,.genre-play-all-btn,.lp-retry-btn,.notif-more,.nrp-open,.nrp-reset,.nrp-select,.nvp-empty-btn,.pl-detail-play-btn,.pl-detail-rename-btn,.pl-detail-shuffle-btn,.plp-open,.plp-reset,.pymk-cta,.qvp-open,.qvp-reset,.tvc-seeall,.tvp-empty-btn,.wt-go,.yv-follow-btn,.yv2-hero-btn,.yv2-upload-btn,.smart-filter-btn,.acf-follow-btn,.settings-btn-row.pri):not(.danger):not(.warn):not(.bad):not(.on):not(.following):not(:disabled):hover,
+html:not([data-theme]) :is(.hub-tab,.filter-chip,.atp-chip,.disc-chip,.dj-prompt-chip,.dv-chip,.evp-chip,.nrp-chip,.nvp-chip,.pdp-chip,.plp-chip,.ppl-chip,.qvp-chip,.ts-chip,.tvp-chip,.yv2-cat,.disc-tabs button,.djx-tab,.ern-tab):not(.danger):not(.warn):not(.bad):not(:disabled):hover{background:var(--neon-btn);color:#fff;border-color:transparent;filter:brightness(1.12)}
+html[data-theme="aurora"] :is(.sub-btn,.hero-btn,.qv-see-all,.btn-ghost,.btn-primary,.cn-btn,.p2p-btn,.djx-btn,.rel-btn,.hib-btn,.lib-pl-btn,.oos-btn,.ud-browse-btn,.evp-btn,.pdp-btn,.ern-btn,.search-big button,.action-btn,.atp-empty button,.btn-upload-tiktok,.claim-btn,.dev-allow,.ern-qk button,.genre-play-all-btn,.lp-retry-btn,.notif-more,.nrp-open,.nrp-reset,.nrp-select,.nvp-empty-btn,.pl-detail-play-btn,.pl-detail-rename-btn,.pl-detail-shuffle-btn,.plp-open,.plp-reset,.pymk-cta,.qvp-open,.qvp-reset,.tvc-seeall,.tvp-empty-btn,.wt-go,.yv-follow-btn,.yv2-hero-btn,.yv2-upload-btn,.smart-filter-btn,.acf-follow-btn,.settings-btn-row.pri):not(.danger):not(.warn):not(.bad):not(.on):not(.following):not(:disabled),
+html[data-theme="aurora"] :is(.hub-tab,.filter-chip,.atp-chip,.disc-chip,.dj-prompt-chip,.dv-chip,.evp-chip,.nrp-chip,.nvp-chip,.pdp-chip,.plp-chip,.ppl-chip,.qvp-chip,.ts-chip,.tvp-chip,.yv2-cat,.disc-tabs button,.djx-tab,.ern-tab):not(.danger):not(.warn):not(.bad):not(:disabled){background:var(--aurora-btn);color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45);border-color:transparent;box-shadow:0 0 0 2px rgba(139,92,246,.25),0 6px 22px rgba(139,92,246,.35)}
+html[data-theme="aurora"] :is(.sub-btn,.hero-btn,.qv-see-all,.btn-ghost,.btn-primary,.cn-btn,.p2p-btn,.djx-btn,.rel-btn,.hib-btn,.lib-pl-btn,.oos-btn,.ud-browse-btn,.evp-btn,.pdp-btn,.ern-btn,.search-big button,.action-btn,.atp-empty button,.btn-upload-tiktok,.claim-btn,.dev-allow,.ern-qk button,.genre-play-all-btn,.lp-retry-btn,.notif-more,.nrp-open,.nrp-reset,.nrp-select,.nvp-empty-btn,.pl-detail-play-btn,.pl-detail-rename-btn,.pl-detail-shuffle-btn,.plp-open,.plp-reset,.pymk-cta,.qvp-open,.qvp-reset,.tvc-seeall,.tvp-empty-btn,.wt-go,.yv-follow-btn,.yv2-hero-btn,.yv2-upload-btn,.smart-filter-btn,.acf-follow-btn,.settings-btn-row.pri):not(.danger):not(.warn):not(.bad):not(.on):not(.following):not(:disabled):hover,
+html[data-theme="aurora"] :is(.hub-tab,.filter-chip,.atp-chip,.disc-chip,.dj-prompt-chip,.dv-chip,.evp-chip,.nrp-chip,.nvp-chip,.pdp-chip,.plp-chip,.ppl-chip,.qvp-chip,.ts-chip,.tvp-chip,.yv2-cat,.disc-tabs button,.djx-tab,.ern-tab):not(.danger):not(.warn):not(.bad):not(:disabled):hover{background:var(--aurora-btn);color:#fff;border-color:transparent;filter:brightness(1.12)}
+html :is(.sub-btn,.hero-btn,.qv-see-all,.btn-ghost,.btn-primary,.cn-btn,.p2p-btn,.djx-btn,.rel-btn,.hib-btn,.lib-pl-btn,.oos-btn,.ud-browse-btn,.evp-btn,.pdp-btn,.ern-btn,.search-big button,.action-btn,.atp-empty button,.btn-upload-tiktok,.claim-btn,.dev-allow,.ern-qk button,.genre-play-all-btn,.lp-retry-btn,.notif-more,.nrp-open,.nrp-reset,.nrp-select,.nvp-empty-btn,.pl-detail-play-btn,.pl-detail-rename-btn,.pl-detail-shuffle-btn,.plp-open,.plp-reset,.pymk-cta,.qvp-open,.qvp-reset,.tvc-seeall,.tvp-empty-btn,.wt-go,.yv-follow-btn,.yv2-hero-btn,.yv2-upload-btn,.smart-filter-btn,.acf-follow-btn,.settings-btn-row.pri):not(.danger):not(.warn):not(.bad):not(.on):not(.following):not(:disabled):hover,
+html :is(.hub-tab,.filter-chip,.atp-chip,.disc-chip,.dj-prompt-chip,.dv-chip,.evp-chip,.nrp-chip,.nvp-chip,.pdp-chip,.plp-chip,.ppl-chip,.qvp-chip,.ts-chip,.tvp-chip,.yv2-cat,.disc-tabs button,.djx-tab,.ern-tab):not(.danger):not(.warn):not(.bad):not(:disabled):hover{color:#fff;border-color:transparent}
+html :is(.hub-tab,.filter-chip,.atp-chip,.disc-chip,.dj-prompt-chip,.dv-chip,.evp-chip,.nrp-chip,.nvp-chip,.pdp-chip,.plp-chip,.ppl-chip,.qvp-chip,.ts-chip,.tvp-chip,.yv2-cat,.disc-tabs button,.djx-tab,.ern-tab):is(.active,.on,.sel,.selected,.is-active,[aria-selected="true"],[aria-pressed="true"]):not(.danger):not(:disabled){box-shadow:0 0 0 2px var(--bg,#050712),0 0 0 4px #fff,0 6px 18px rgba(139,92,246,.45)}
+html .hero-btn{backdrop-filter:none;-webkit-backdrop-filter:none}
+html:not([data-theme]) :is(button,a)[style*="background:var(--accent)"],html:not([data-theme]) :is(button,a)[style*="background: var(--accent)"]{background:var(--neon-btn)!important;color:#fff!important;border-color:transparent!important}
+html[data-theme="aurora"] :is(button,a)[style*="background:var(--accent)"],html[data-theme="aurora"] :is(button,a)[style*="background: var(--accent)"]{background:var(--aurora-btn)!important;color:#fff!important;border-color:transparent!important}
+/* Bottom navigation: solid app background (no purple glow behind it) */
+#bottomNav::before{content:"";position:absolute;z-index:0;left:-10px;right:-10px;top:-8px;bottom:-10px;background:var(--bg)}
+/* Phones (bottom nav visible): no MENU button, everything lives in the bottom nav + Profile. Large screens keep the sidebar. */
+@media (max-width:768px){html #hamburgerBtn,html .yv-hamburger-btn{display:none!important}}
+.ad-artists{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
+.ad-art{position:relative;width:32px;height:32px;padding:0;border:0;border-radius:50%;overflow:hidden;cursor:pointer;background:var(--neon-grad);box-shadow:0 0 0 1.5px var(--card),0 0 0 3px var(--accent);-webkit-tap-highlight-color:transparent;transition:transform .12s}
+.ad-art:active{transform:scale(.92)}
+.ad-art:focus-visible{outline:2px solid var(--accent-light);outline-offset:3px}
+.ad-art b{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:900;color:#fff}
+.ad-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%}
 </style>
+<script id="yaps-profile-mirror-js">
+(function(){
+  function sync(){
+    document.querySelectorAll('.acct-card[data-mirror]').forEach(function(c){
+      var src=document.getElementById(c.getAttribute('data-mirror'));
+      c.style.display=(src&&getComputedStyle(src).display!=='none')?'':'none';
+    });
+  }
+  function init(){
+    sync();
+    document.querySelectorAll('.acct-card[data-mirror]').forEach(function(c){
+      var src=document.getElementById(c.getAttribute('data-mirror'));
+      if(src&&window.MutationObserver)new MutationObserver(sync).observe(src,{attributes:true,attributeFilter:['style','class']});
+    });
+    setTimeout(sync,1500);setTimeout(sync,5000);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
 
 <style id="fullWidthDesktop">
 /* ── Large screens: let these pages use the full width next to the sidebar (no empty bands left and right) ── */
