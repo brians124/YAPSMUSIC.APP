@@ -353,9 +353,11 @@ nav#mainNav .sidebar-footer .logout-item:hover{color:#ff5c5c;background:rgba(255
 nav#mainNav .sidebar-footer .logout-item i{color:#ff5c5c}
 /* phones / landscape: sidebar is a slide-in drawer (opened by the MENU button) */
 #navBtn{display:none;height:34px}
+#homeBtn{display:none;height:34px;align-items:center;gap:6px;width:auto;border-radius:12px;padding:0 12px;font:700 13px 'Archivo Narrow',sans-serif;text-decoration:none;white-space:nowrap}
 #navScrim{display:none}
 @media(max-width:820px),(orientation:landscape) and (min-height:521px) and (max-width:1180px),(orientation:landscape) and (max-height:520px){
- #navBtn{display:grid}
+ #navBtn{display:none!important}   /* small screens: a Home button replaces the MENU drawer */
+ #homeBtn{display:inline-flex}
  nav#mainNav{position:fixed;top:0;bottom:0;left:0;width:min(80vw,300px);z-index:61;display:flex!important;box-shadow:4px 0 24px rgba(0,0,0,.5);transform:translateX(-105%);visibility:hidden;transition:transform .28s cubic-bezier(.4,0,.2,1),visibility 0s .28s}
  nav#mainNav.open{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.4,0,.2,1)}
  nav#mainNav .sbw{position:static;height:100%}
@@ -1354,6 +1356,15 @@ body.vdj[data-vp=celeb] #celeb{display:block!important;max-height:52vh;overflow:
 #ylRoll .row2,.row2>#ylRoll,.row2>#ylTr,.row2>#ylBpm{border-top:1px solid var(--bd)}
 @media(orientation:landscape) and (max-height:520px){.row2>#ylLoop,.row2>#ylRoll,.row2>#ylTr,.row2>#ylBpm{flex:none;width:max-content;flex-wrap:nowrap;border-top:0;gap:10px}.yl-r{flex:none;flex-wrap:nowrap;width:max-content;margin:0}.yl-r>*{flex:none}.yl-l,.yl-o{white-space:nowrap}.row2 #ylLoop .hd,.row2 #ylRoll .hd,.row2 #ylTr .hd,.row2 #ylBpm .hd{display:block;white-space:nowrap}}
 </style>
+<style id="yapsBtnFix">
+/* The pitch column was a fixed 130px tall but holds slider + readout + label + RESET, so RESET spilled onto the CUE / SYNC row and blocked those buttons. */
+body.vdj .ctl>.sl{height:auto!important;min-height:130px;justify-content:flex-start}
+body.vdj .ctl>.sl [data-a=rp]{width:100%;min-width:0;padding:4px 2px!important;font-size:9.5px!important;letter-spacing:0}
+body.vdj .ctl>.btns{position:relative;z-index:1}
+#fxGo{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.05))!important;color:#eef3ff!important;-webkit-text-fill-color:#eef3ff!important}
+#fxGo.on,#fxHold.on{background:linear-gradient(180deg,var(--cy),#0a8f63)!important;color:#021!important;-webkit-text-fill-color:#021!important}
+#pro .prow .sm[aria-pressed=true]{background:var(--cy);color:#021}
+</style>
 </head>
 <style id="pinnedDecks">
 /* PINNED CONSOLE (embedded in the app, desktop/tablet height): the decks + mixer and the tool tabs stay put and never scroll;
@@ -1423,13 +1434,14 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
 </style>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="bnIconGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--accent-light)"/><stop offset="45%" style="stop-color:var(--accent)"/><stop offset="100%" style="stop-color:var(--accent-dark)"/></linearGradient><linearGradient id="bnIconGradActive" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--accent-lighter)"/><stop offset="45%" style="stop-color:var(--accent-light)"/><stop offset="100%" style="stop-color:var(--accent)"/></linearGradient></defs></svg><div id="app">
 <header><div class="earth"></div>
+ <a class="ic" id="homeBtn" href="index.html" aria-label="Back to YAPS Music home"><i class="fas fa-chevron-left" aria-hidden="true"></i> Home</a>
  <button class="ic" id="navBtn" aria-label="Open menu" aria-controls="mainNav" aria-expanded="false" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">MENU</button>
  <a class="logo" href="index.html" aria-label="YAPSMusic home" style="text-decoration:none">YAPS<small>MUSIC</small></a>
  <div class="ttl">VIRTUAL <b>DJ STUDIO</b><p>Mix. Create. Record. Publish. Become a DJ.</p></div><div class="sp"></div>
  <button class="aibtn" id="aiTop"><span class="ic"><i class="fas fa-wand-magic-sparkles"></i></span><span><b>AI DJ</b><span>Automated mixing</span></span></button>
- <button class="ic" id="scTop" aria-label="Open AI Song Creator" style="white-space:nowrap;display:inline-flex;align-items:center;gap:4px;width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow"> SONG <small style="font-size:9px;letter-spacing:.08em;border:1px solid currentColor;border-radius:6px;padding:0 4px;margin-left:3px;vertical-align:middle">BETA</small></button><button class="ic" id="helpBtn" aria-label="Show tutorial">?</button><button class="ic" id="modeBtn" aria-label="Switch Beginner or Pro mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">PRO</button><button class="ic" id="lmBtn" aria-label="Switch between dark and light mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">LIGHT</button><button class="ic hbtn" id="fsBtn" aria-label="Fullscreen and lock landscape"><i class="fas fa-expand"></i></button><button class="ic hbtn" id="toolsBtn" aria-label="Open tools: sources, AI DJ, record, export">☰</button>
+ <a class="ic" id="scTop" href="song-creator.html" aria-label="Open AI Song Creator" style="text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow"> SONG <small style="font-size:9px;letter-spacing:.08em;border:1px solid currentColor;border-radius:6px;padding:0 4px;margin-left:3px;vertical-align:middle">BETA</small></a><button class="ic" id="helpBtn" aria-label="Show tutorial">?</button><button class="ic" id="modeBtn" aria-label="Switch Beginner or Pro mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">PRO</button><button class="ic" id="lmBtn" aria-label="Switch between dark and light mode" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">LIGHT</button><button class="ic hbtn" id="fsBtn" aria-label="Fullscreen and lock landscape"><i class="fas fa-expand"></i></button><button class="ic hbtn" id="toolsBtn" aria-label="Open tools: sources, AI DJ, record, export">☰</button>
  <span class="ic" role="img" aria-label="Profile"><i class="fas fa-user"></i></span><span class="ic" role="img" aria-label="Settings"><i class="fas fa-gear"></i></span></header>
-<nav aria-label="Main" id="mainNav"><div class="sbw"><a class="sidebar-header" id="sbHead" href="index.html?page=profile"><div class="sidebar-header-art" id="sbArt">G</div><div class="sidebar-header-info"><div class="u-name" id="sbName">Guest · Tap to sign in</div><div class="u-plan" id="sbPlan"><i class="fas fa-star"></i> Free plan</div></div><i class="fas fa-chevron-right sidebar-header-caret"></i></a><div id="sidebarScroll"><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-user"></i> <span>Account</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-id-badge"></i> <span>My Profile</span></a><a class="sidebar-item" href="index.html?go=editprofile"><i class="fas fa-user-edit"></i> <span>Edit Profile</span></a><a class="sidebar-item" href="index.html?go=subscription"><i class="fas fa-crown"></i> <span>Subscription</span> <span class="badge" id="subNavBadge" style="margin-left:auto">Free</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-music"></i> <span>Music</span></div><a class="sidebar-item" href="index.html?page=home"><svg class="sb-home-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 2.5 11h2.4v9h5.4v-6h3.4v6h5.4v-9h2.4z"/></svg> <span>Home</span></a><a class="sidebar-item" href="index.html?page=stream"><i class="fas fa-fire"></i> <span>Trending Songs</span></a><a class="sidebar-item" href="index.html?go=newreleases"><i class="fas fa-star"></i> <span>New Releases</span></a><a class="sidebar-item" href="index.html?page=charts"><i class="fas fa-chart-bar"></i> <span>Top Charts</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-compact-disc"></i> <span>Albums</span></a><a class="sidebar-item" href="index.html?page=artists"><i class="fas fa-users"></i> <span>Artists</span></a><a class="sidebar-item" href="index.html?page=search"><i class="fas fa-th-large"></i> <span>Genres</span></a><a class="sidebar-item" href="index.html?page=podcasts"><i class="fas fa-podcast"></i> <span>Podcasts</span></a><a class="sidebar-item" href="index.html?page=video"><i class="fas fa-video"></i> <span>Videos</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-book"></i> <span>My Library</span></div><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-heart"></i> <span>Liked Songs</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-list"></i> <span>Playlists</span></a><a class="sidebar-item" href="index.html?page=library&amp;go=downloads"><i class="fas fa-download"></i> <span>Downloads</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-history"></i> <span>Recently Played</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-clock"></i> <span>History</span></a><a class="sidebar-item" href="index.html?go=queue"><i class="fas fa-stream"></i> <span>Queue</span></a><a class="sidebar-item" href="index.html?page=device"><i class="fas fa-mobile-alt"></i> <span>On This Device</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-microphone-alt"></i> <span>Creator Hub</span></div><a class="sidebar-item" href="yaps-ai.html"><i class="fas fa-wand-magic-sparkles"></i> <span>YAPS AI</span></a><a class="sidebar-item active" href="#" aria-current="page"><i class="fas fa-headphones"></i> <span>DJ Studio</span> </a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-upload"></i> <span>Upload Song</span></a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-folder-open"></i> <span>My Uploads</span></a><a class="sidebar-item" href="index.html?page=earnings"><i class="fas fa-coins"></i> <span>Earnings</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-users"></i> <span>Community</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-plus"></i> <span>Following</span></a><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-friends"></i> <span>Followers</span></a><a class="sidebar-item" href="index.html?page=messages"><i class="fas fa-comment-dots"></i> <span>Messages</span> <span class="badge" id="sbMsgBadge" style="margin-left:auto;display:none">0</span></a><a class="sidebar-item" href="index.html?page=notifications"><i class="fas fa-bell"></i> <span>Notifications</span> <span class="badge" id="sbNotifBadge" style="margin-left:auto;display:none">0</span></a><a class="sidebar-item" href="index.html?page=events"><i class="fas fa-calendar-alt"></i> <span>Events</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-cog"></i> <span>Settings</span></div><a class="sidebar-item" href="#" id="sbModeItem"><i class="fas fa-adjust"></i> <span>Dark / Light Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-sliders-h"></i> <span>Audio Quality</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-wifi"></i> <span>Offline Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-database"></i> <span>Data Saver</span></a><a class="sidebar-item" href="index.html?go=language"><i class="fas fa-globe"></i> <span>Language</span></a><a class="sidebar-item" href="index.html?go=privacy"><i class="fas fa-shield-alt"></i> <span>Privacy &amp; Security</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-life-ring"></i> <span>Support</span></div><a class="sidebar-item" href="index.html?go=help"><i class="fas fa-question-circle"></i> <span>Help Center</span></a><a class="sidebar-item" href="index.html?go=report"><i class="fas fa-bug"></i> <span>Report a Problem</span></a><a class="sidebar-item" href="index.html?go=feedback"><i class="fas fa-comment-alt"></i> <span>Send Feedback</span></a><a class="sidebar-item" href="index.html?go=about"><i class="fas fa-info-circle"></i> <span>About YAPSMusic</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-share-alt"></i> <span>Share App</span></a><a class="sidebar-item" href="index.html?go=rate"><i class="fas fa-star-half-alt"></i> <span>Rate App</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-user-plus"></i> <span>Invite Friends</span></a></div></div><div class="sidebar-footer"><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-cog"></i> <span>Settings</span></a><a class="sidebar-item logout-item" href="index.html?go=logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></div></div></nav>
+<nav aria-label="Main" id="mainNav"><div class="sbw"><a class="sidebar-header" id="sbHead" href="index.html?page=profile"><div class="sidebar-header-art" id="sbArt">G</div><div class="sidebar-header-info"><div class="u-name" id="sbName">Guest · Tap to sign in</div><div class="u-plan" id="sbPlan"><i class="fas fa-star"></i> Free plan</div></div><i class="fas fa-chevron-right sidebar-header-caret"></i></a><div id="sidebarScroll"><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-user"></i> <span>Account</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-id-badge"></i> <span>My Profile</span></a><a class="sidebar-item" href="index.html?go=editprofile"><i class="fas fa-user-edit"></i> <span>Edit Profile</span></a><a class="sidebar-item" href="index.html?go=subscription"><i class="fas fa-crown"></i> <span>Subscription</span> <span class="badge" id="subNavBadge" style="margin-left:auto">Free</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-music"></i> <span>Music</span></div><a class="sidebar-item" href="index.html?page=home"><svg class="sb-home-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 2.5 11h2.4v9h5.4v-6h3.4v6h5.4v-9h2.4z"/></svg> <span>Home</span></a><a class="sidebar-item" href="index.html?page=stream"><i class="fas fa-fire"></i> <span>Trending Songs</span></a><a class="sidebar-item" href="index.html?go=newreleases"><i class="fas fa-star"></i> <span>New Releases</span></a><a class="sidebar-item" href="index.html?page=charts"><i class="fas fa-chart-bar"></i> <span>Top Charts</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-compact-disc"></i> <span>Albums</span></a><a class="sidebar-item" href="index.html?page=artists"><i class="fas fa-users"></i> <span>Artists</span></a><a class="sidebar-item" href="index.html?page=search"><i class="fas fa-th-large"></i> <span>Genres</span></a><a class="sidebar-item" href="index.html?page=podcasts"><i class="fas fa-podcast"></i> <span>Podcasts</span></a><a class="sidebar-item" href="index.html?page=video"><i class="fas fa-video"></i> <span>Videos</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-book"></i> <span>My Library</span></div><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-heart"></i> <span>Liked Songs</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-list"></i> <span>Playlists</span></a><a class="sidebar-item" href="index.html?page=library&amp;go=downloads"><i class="fas fa-download"></i> <span>Downloads</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-history"></i> <span>Recently Played</span></a><a class="sidebar-item" href="index.html?page=library"><i class="fas fa-clock"></i> <span>History</span></a><a class="sidebar-item" href="index.html?go=queue"><i class="fas fa-stream"></i> <span>Queue</span></a><a class="sidebar-item" href="index.html?page=device"><i class="fas fa-mobile-alt"></i> <span>On This Device</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-microphone-alt"></i> <span>Creator Hub</span></div><a class="sidebar-item" href="yaps-ai.html"><i class="fas fa-wand-magic-sparkles"></i> <span>YAPS AI</span></a><a class="sidebar-item active" href="#" aria-current="page"><i class="fas fa-headphones"></i> <span>DJ Studio</span> </a><a class="sidebar-item" href="song-creator.html"><i class="fas fa-music"></i> <span>AI Song Creator</span></a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-upload"></i> <span>Upload Song</span></a><a class="sidebar-item" href="index.html?page=upload"><i class="fas fa-folder-open"></i> <span>My Uploads</span></a><a class="sidebar-item" href="index.html?page=earnings"><i class="fas fa-coins"></i> <span>Earnings</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-users"></i> <span>Community</span></div><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-plus"></i> <span>Following</span></a><a class="sidebar-item" href="index.html?page=profile"><i class="fas fa-user-friends"></i> <span>Followers</span></a><a class="sidebar-item" href="index.html?page=messages"><i class="fas fa-comment-dots"></i> <span>Messages</span> <span class="badge" id="sbMsgBadge" style="margin-left:auto;display:none">0</span></a><a class="sidebar-item" href="index.html?page=notifications"><i class="fas fa-bell"></i> <span>Notifications</span> <span class="badge" id="sbNotifBadge" style="margin-left:auto;display:none">0</span></a><a class="sidebar-item" href="index.html?page=events"><i class="fas fa-calendar-alt"></i> <span>Events</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-cog"></i> <span>Settings</span></div><a class="sidebar-item" href="#" id="sbModeItem"><i class="fas fa-adjust"></i> <span>Dark / Light Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-sliders-h"></i> <span>Audio Quality</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-wifi"></i> <span>Offline Mode</span></a><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-database"></i> <span>Data Saver</span></a><a class="sidebar-item" href="index.html?go=language"><i class="fas fa-globe"></i> <span>Language</span></a><a class="sidebar-item" href="index.html?go=privacy"><i class="fas fa-shield-alt"></i> <span>Privacy &amp; Security</span></a></div><div class="sidebar-section"><div class="sidebar-label"><i class="fas fa-life-ring"></i> <span>Support</span></div><a class="sidebar-item" href="index.html?go=help"><i class="fas fa-question-circle"></i> <span>Help Center</span></a><a class="sidebar-item" href="index.html?go=report"><i class="fas fa-bug"></i> <span>Report a Problem</span></a><a class="sidebar-item" href="index.html?go=feedback"><i class="fas fa-comment-alt"></i> <span>Send Feedback</span></a><a class="sidebar-item" href="index.html?go=about"><i class="fas fa-info-circle"></i> <span>About YAPSMusic</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-share-alt"></i> <span>Share App</span></a><a class="sidebar-item" href="index.html?go=rate"><i class="fas fa-star-half-alt"></i> <span>Rate App</span></a><a class="sidebar-item " href="#" data-share><i class="fas fa-user-plus"></i> <span>Invite Friends</span></a></div></div><div class="sidebar-footer"><a class="sidebar-item" href="index.html?go=settings"><i class="fas fa-cog"></i> <span>Settings</span></a><a class="sidebar-item logout-item" href="index.html?go=logout"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a></div></div></nav>
 <div id="navScrim"></div>
 <main>
  <div class="rot" id="rot"><span aria-hidden="true">↻</span><span>Tip: rotate your phone for bigger decks</span><button id="rotGo">Landscape</button><button class="q" id="rotX" aria-label="Dismiss">✕</button></div>
@@ -1503,7 +1515,7 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
    <div class="dp-stat" id="ceSt" role="status" aria-live="polite">Celebration Mode is OFF. Tap OFF to turn it on.</div>
   </section>
  <section class="pn pro" id="pro" aria-label="Pro console"></section><div id="proScrim"></div>
- <section class="pn sc-teaser" id="scTeaser"><span class="ic" aria-hidden="true"></span><div><b>AI SONG CREATOR</b><span class="t">Turn an idea into a brand-new song: lyrics, music, vocals and cover art. AI DJ mixes songs that already exist; Song Creator makes new ones.</span></div><button class="go" id="scOpen">Open Song Creator</button></section>
+ <section class="pn sc-teaser" id="scTeaser"><span class="ic" aria-hidden="true"></span><div><b>AI SONG CREATOR</b><span class="t">Turn an idea into a brand-new song: lyrics, music, vocals and cover art. AI DJ mixes songs that already exist; Song Creator makes new ones.</span></div><a class="go" id="scOpen" href="song-creator.html" style="text-decoration:none;display:inline-grid;place-items:center">Open Song Creator</a></section>
  <div class="row3" id="tools">
   <div class="sheethd"><span>TOOLS · SOURCES · AI DJ · RECORD · EXPORT</span><button class="x" id="toolsX" aria-label="Close tools">✕</button></div>
   <section class="pn card"><h4>YOUR MUSIC SOURCES</h4>
@@ -1532,154 +1544,6 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
  <ul class="up-list"><li>Ad-free listening, everywhere</li><li>Support Ugandan artists directly</li></ul>
  <div style="display:flex;gap:8px;margin-top:14px"><button class="sm" id="upLater" style="flex:1;min-height:42px">Maybe later</button><a class="go" href="index.html?go=subscription" style="flex:1;min-height:42px;display:grid;place-items:center;text-decoration:none">Upgrade</a></div></dialog>
 <footer><span>▮▮▯ <b>YAPSMusic</b> YOUR AUDIO PLAYLIST STATION</span><span>Mix your world • Be a DJ • Be You</span></footer>
-</div><!-- ===== AI SONG CREATOR overlay (opened from the header button or the teaser card) ===== -->
-<div id="scWrap" class="scw" role="dialog" aria-modal="true" aria-labelledby="scTitleH" hidden>
- <div class="scin">
-  <div class="sc-top">
-   <span class="ic" aria-hidden="true" style="font-size:22px"></span>
-   <div><h2 id="scTitleH">AI SONG CREATOR <small style="font-size:11px;border:1px solid currentColor;border-radius:6px;padding:1px 6px;vertical-align:middle">BETA</small></h2><p>Idea → Lyrics → Music → Vocals → Mix → Master → Preview → DJ Studio → Publish</p></div>
-   <button class="x" id="scX" aria-label="Close AI Song Creator">✕</button>
-  </div>
-  <div class="sc-vs">
-   <div><b> AI DJ</b><span>Mixes songs that already exist. Find it under Tools ☰ on the studio screen.</span></div>
-   <div class="on"><b> AI SONG CREATOR</b><span>Creates completely new songs from an idea you describe.</span></div>
-  </div>
-  <div class="sc-tabs" id="scTabs" role="tablist">
-   <button class="on" data-t="create" role="tab">Create</button>
-   <button data-t="mine" role="tab">My Creations</button>
-   <button data-t="cfg" role="tab">AI Music Settings</button>
-  </div>
-  <div class="sc-flow" id="scFlow" aria-label="Song creation workflow"></div>
-
-  <!-- ============ TAB: CREATE ============ -->
-  <div id="scP-create" class="sc-pane">
-   <div class="sc-msg" id="scMsg" role="status" aria-live="polite" hidden></div>
-
-   <section class="pn sc-card" data-stg="idea">
-    <h3>What do you want to create?</h3>
-    <div class="sc-chips" id="scChips"></div>
-   </section>
-
-   <section class="pn sc-card" data-stg="idea">
-    <h3>Song details</h3>
-    <label class="f">Song title<input type="text" id="scTitle" maxlength="120" placeholder="Name your song" autocomplete="off"></label>
-    <label class="f">Describe your song *<textarea id="scPrompt" maxlength="1200" placeholder="Example: Create an emotional Afrobeat song about never giving up."></textarea></label>
-    <div class="sc-grid">
-     <label class="f">Genre<select id="scGenre"></select></label>
-     <label class="f">Mood<select id="scMood"></select></label>
-     <label class="f">Vocal language<select id="scLang"></select></label>
-    </div>
-    <div class="sc-grid">
-     <label class="f">Tempo (BPM)<input type="number" id="scBpm" min="40" max="220" step="1" inputmode="numeric" value="104"><input type="range" id="scBpmR" min="40" max="220" value="104" aria-label="BPM slider" style="width:100%"></label>
-     <label class="f">Key<select id="scKey"></select></label>
-     <label class="f">Scale<select id="scScale"><option>Major</option><option>Minor</option></select></label>
-    </div>
-    <div class="sc-grid">
-     <label class="f">Song length<select id="scLen"><option value="30">30 seconds</option><option value="60">1 minute</option><option value="120" selected>2 minutes</option><option value="180">3 minutes</option><option value="240">4 minutes</option><option value="custom">Custom</option></select></label>
-     <label class="f" id="scLenCW" hidden>Custom length (seconds, 15 to 600)<input type="number" id="scLenC" min="15" max="600" step="1" inputmode="numeric" value="90"></label>
-    </div>
-    <label class="ck"><input type="checkbox" id="scInstr"><span>Instrumental only (no vocals)</span></label>
-   </section>
-
-   <section class="pn sc-card" data-stg="lyrics edit">
-    <h3>AI lyrics creator</h3>
-    <div class="sub">Sections: Intro, Verse 1, Pre-Chorus, Chorus, Verse 2, Bridge, Final Chorus, Outro. Shorter songs use fewer sections.</div>
-    <button class="go" id="scLyGen"> GENERATE LYRICS</button>
-    <label class="f">Lyrics (you can edit freely)<textarea id="scLyrics" placeholder="Generate lyrics, paste your own, or insert a section template and write them yourself."></textarea></label>
-    <div class="sc-acts">
-     <button class="k" id="scLyRe" disabled>↻ Regenerate</button>
-     <button class="k" id="scLyEdit">✎ Edit</button>
-     <button class="k" id="scLyCopy">⧉ Copy</button>
-     <button class="k" id="scLySave">▤ Save Lyrics</button>
-     <button class="k" id="scLyTpl">☰ Insert template</button>
-    </div>
-   </section>
-
-   <section class="pn sc-card" data-stg="edit">
-    <h3>Cover artwork (optional)</h3>
-    <div class="sc-covrow">
-     <div class="sc-cov" id="scCover" role="img" aria-label="Cover artwork preview"></div>
-     <div><button class="k" id="scCovGen" style="width:100%"> GENERATE COVER</button><small id="scCovNote"></small></div>
-    </div>
-   </section>
-
-   <button class="go" id="scCreate" data-stg="idea lyrics music vocals mix master"> CREATE SONG</button>
-
-   <section class="pn sc-card sc-prog" id="scProg" hidden aria-live="polite">
-    <h3 id="scProgH">Creating your song…</h3>
-    <div class="sc-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="scBarW"><i id="scBar"></i></div>
-    <div class="sc-pmeta"><span id="scPct">0%</span><span id="scPnote"></span><span id="scEl">0:00</span></div>
-    <ol class="sc-stages" id="scStages"></ol>
-    <div class="sc-row"><button class="k" id="scCancel">Cancel</button><button class="k pl" id="scRetry" hidden>Try again</button></div>
-   </section>
-
-   <section class="pn sc-card" id="scNoSong" data-stg="preview dj save download publish"><h3>No song yet</h3><div class="sub">Go through Idea to Master, then tap CREATE SONG. Preview, DJ Studio, Save, Download and Publish open here once your song exists.</div><button class="k pl" id="scNoSongGo" type="button">Start with an idea</button></section>
-   <section class="pn sc-card sc-res" id="scRes" data-stg="preview dj save download publish" hidden>
-    <h3>YOUR NEW SONG</h3>
-    <div class="sc-resg">
-     <div class="sc-cov" id="scResCov" role="img" aria-label="Song cover"></div>
-     <div>
-      <div class="sc-song" id="scResT"></div>
-      <div class="sc-tags" id="scResTags"></div>
-      <div class="sc-pl">
-       <button class="k pl sc-play" id="scPlay" aria-label="Play or pause preview">▶</button>
-       <input type="range" id="scSeek" min="0" max="1000" value="0" aria-label="Seek">
-       <span class="tm2" id="scTime">0:00 / 0:00</span>
-       <label class="sc-vol" aria-label="Preview volume"><i class="fas fa-volume-high"></i><input type="range" id="scVol" min="0" max="100" value="85"></label>
-      </div>
-      <audio id="scAud" preload="auto" hidden></audio>
-     </div>
-    </div>
-    <div class="sc-row" style="gap:8px">
-     <button class="go" id="scToDJ" style="flex:1 1 220px;width:auto"> LOAD INTO DJ STUDIO</button>
-     <label class="f" style="flex:0 1 150px"><select id="scDeck" aria-label="Deck"><option value="auto">Deck: Auto</option><option value="A">Deck A</option><option value="B">Deck B</option></select></label>
-    </div>
-    <div class="sc-acts">
-     <button class="k" id="scDl">⬇ Download</button>
-     <button class="k" id="scSave">▤ Save</button>
-     <button class="k" id="scShare">⤴ Share</button>
-     <button class="k" id="scLib">＋ Add to library</button>
-     <button class="k" id="scPub">☁ Publish to YAPS</button>
-    </div>
-    <div id="scPubBox" class="sc-pane" hidden>
-     <label class="f">Visibility<select id="scPubV"><option value="private">Private: only me</option><option value="public">Public: appears on YAPS</option></select></label>
-     <label class="ck"><input type="checkbox" id="scPubR"><span>I have the right to share this song and understand it was created with AI.</span></label>
-     <div class="sc-row"><button class="k" id="scPubX">Cancel</button><button class="k pl" id="scPubGo">Publish</button></div>
-    </div>
-   </section>
-  </div>
-
-  <!-- ============ TAB: MY CREATIONS ============ -->
-  <div id="scP-mine" class="sc-pane" hidden>
-   <section class="pn sc-card"><h3>Saved songs</h3><div class="sc-list" id="scMineS"></div></section>
-   <section class="pn sc-card"><h3>Saved lyrics</h3><div class="sc-list" id="scMineL"></div></section>
-  </div>
-
-  <!-- ============ TAB: AI MUSIC SETTINGS ============ -->
-  <div id="scP-cfg" class="sc-pane" hidden>
-   <section class="pn sc-card">
-    <h3>AI Music Settings</h3>
-    <div class="sub">Point these at <b>your own backend</b>. Never paste a provider's secret API key here: keep it on your server (FastAPI, Supabase Edge Function, etc.), which then calls the AI service. Signed-in users send their YAPS login token only to your own YAPS / Supabase origin, so your backend can verify who is asking.</div>
-    <label class="f">AI Song API URL (music generation)<input type="text" id="scUrlSong" inputmode="url" autocomplete="off" placeholder="https://your-backend.example.com/api/ai/song"></label>
-    <span class="sc-st" id="scStSong">Not tested</span>
-    <label class="f">AI Lyrics API URL<input type="text" id="scUrlLyrics" inputmode="url" autocomplete="off" placeholder="https://your-backend.example.com/api/ai/lyrics"></label>
-    <span class="sc-st" id="scStLyrics">Not tested</span>
-    <label class="f">AI Image API URL (cover art)<input type="text" id="scUrlImage" inputmode="url" autocomplete="off" placeholder="https://your-backend.example.com/api/ai/cover"></label>
-    <span class="sc-st" id="scStImage">Not tested</span>
-    <div class="sc-msg" id="scApiSt">API status: not tested yet.</div>
-    <div class="sc-acts">
-     <button class="k pl" id="scCfgSave">Save settings</button>
-     <button class="k" id="scCfgTest">Test connection</button>
-     <button class="k" id="scCfgReset">Reset</button>
-    </div>
-   </section>
-   <section class="pn sc-card">
-    <h3>Backend contract</h3>
-    <details><summary>Request your backend receives (current form values)</summary><pre class="sc-pre" id="scReqPre"></pre><button class="k" id="scReqCopy" style="margin-top:8px">Copy request JSON</button></details>
-    <details><summary>Responses your backend can return</summary><pre class="sc-pre" id="scRespPre"></pre></details>
-   </section>
-  </div>
- </div>
 </div>
 
 <div id="scrim"></div><dialog id="libd" aria-label="Library"><div class="lh"><b>SELECT MUSIC</b><button class="x" id="libx" aria-label="Close">✕</button></div>
@@ -1741,7 +1605,7 @@ html.emb body.vdj #libd.inl #list.secs{overflow-y:hidden}
 .srcsw button em{font-style:normal;opacity:.7;margin-left:2px}
 .srcsw button.on{background:var(--cy,#19c3ff);color:#032}
 html[data-mode="light"] .srcsw{background:#e8edf3}
-/* third box: listeners (YAPS Connect) */
+/* third box: listeners (DJ community chat) */
 #list.secs .libsec.fans{grid-template-rows:auto auto minmax(0,1fr) auto;gap:6px}
 .fans .ftools{display:flex;gap:6px;flex-wrap:wrap}.fans .ftools .k{flex:1 1 auto;padding:7px 8px;font-size:12px}
 .fans .fmsgs{overflow-y:auto;overscroll-behavior:contain;display:grid;gap:7px;align-content:start;padding:2px 0;min-height:0}
@@ -2035,7 +1899,8 @@ async function readDeviceUploads(){
  catch(e){console.warn('Device uploads unavailable:',e&&e.message)}}
 readShared();
 /* ══════ Stay inside the YAPSMusic app: on phones Studio runs in a rotated frame, so links to the app must open in the whole window ══════ */
-document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a||self===top)return;const h=a.getAttribute('href')||'';if(!/^index\.html/.test(h))return;
+document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a||self===top)return;const h=a.getAttribute('href')||'';if(/^song-creator\.html/.test(h)&&top.openSongCreator){e.preventDefault();try{top.openSongCreator();return}catch(x){}}
+ if(!/^index\.html/.test(h))return;
  e.preventDefault();try{if(top.__closeStudio){top.__closeStudio(h);return}top.location.href=new URL(h,top.location.href).href}catch(x){location.href=h}},true);
 /* ══════ Offline songs: audio saved in this browser (IndexedDB 'yaps_offline_v1'), details in localStorage ══════ */
 const offIds=new Set(),offBusy=new Set();
@@ -3327,492 +3192,8 @@ document.addEventListener('input',e=>{if(ai&&ai.tr&&!AP.lock()&&(e.target.id==='
 
 
 
-/* ══════════════════════════════════════════════════════════════════════════
-   YAPS AI SONG CREATOR  (additive module: it only READS existing globals and
-   never replaces any existing function, so AI DJ, decks, recording, saving
-   and publishing keep working exactly as before)
 
-   TWO DIFFERENT AI SYSTEMS
-     AI DJ            -> mixes songs that already exist           (unchanged)
-     AI SONG CREATOR  -> creates completely new songs from an idea (this file)
-
-   ── BACKEND ENDPOINTS (edit here, or set them at runtime in the Song Creator
-      → "AI Music Settings" tab; runtime values are kept in this browser only) ──
-   Never put a provider's SECRET API key in this file. Keep it on your own
-   backend (FastAPI / Supabase Edge Function) and let that backend call the AI
-   service. The browser only ever talks to YOUR endpoints below.
-
-   LYRICS   POST AI_LYRICS_API_URL   {title,prompt,genre,mood,language,structure[],duration_seconds}
-            → {"lyrics":"[Intro]\n…"}  or  {"sections":[{"name":"Verse 1","text":"…"}]}
-   SONG     POST AI_SONG_API_URL      {title,prompt,genre,mood,bpm,key,duration_seconds,language,
-                                       instrumental,lyrics,lyrics_sections[],structure[]}
-            → A) binary audio/*         (synchronous)
-              B) {"audio_url":"https://…","cover_url":"…","bpm":104,"key":"A minor","duration":120,"lyrics":"…"}
-              C) {"job_id":"…","status_url":"…"}  then GET status_url until
-                 {"status":"processing","progress":42,"stage":"Mixing"} …
-                 {"status":"completed","audio_url":"…"}  or  {"status":"failed","error":"…"}
-   IMAGE    POST AI_IMAGE_API_URL     {title,prompt,genre,mood}
-            → binary image/*  or  {"image_url":"https://…"}
-   HEALTH   (optional) GET <url>/health   used only by "Test connection"
-   ══════════════════════════════════════════════════════════════════════════ */
-const AI_SONG_API_URL   = "";   /* music generation endpoint (your backend) */
-const AI_LYRICS_API_URL = "";   /* lyrics endpoint (your backend)          */
-const AI_IMAGE_API_URL  = "";   /* cover-art endpoint (your backend)       */
 const AI_STEMS_API_URL  = "";   /* stem separation endpoint (your backend); can also be set in the STEMS tab */
-
-(function(){
-'use strict';
-const $s=id=>document.getElementById(id);
-const LS={get(k){try{return localStorage.getItem(k)||''}catch(e){return ''}},set(k,v){try{if(v)localStorage.setItem(k,v);else localStorage.removeItem(k);return true}catch(e){return false}}};
-const KEYS={song:'yaps_ai_song_url',lyrics:'yaps_ai_lyrics_url',image:'yaps_ai_image_url'};
-const DEFAULTS=()=>({song:AI_SONG_API_URL,lyrics:AI_LYRICS_API_URL,image:AI_IMAGE_API_URL});
-const cfgUrl=k=>(LS.get(KEYS[k])||DEFAULTS()[k]||'').trim();
-const SC_TIMEOUT_MS=5*60*1000;   /* give up on a generation after 5 minutes */
-const SC_POLL_MS=2500;
-
-/* ---------- options ---------- */
-const GENRES=['Afrobeat','Afropop','Amapiano','Hip-Hop','R&B','Dancehall','Gospel','Pop','EDM','Reggae','Lo-fi','Other'];
-const MOODS=['Happy','Romantic','Sad','Energetic','Inspirational','Chill','Dark','Emotional','Party'];
-const LANGS=['Auto (from description)','English','Luganda','Swahili','French','Spanish','Portuguese','Hindi','Arabic','Other'];
-const KEYN=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-const BPM_DEF={'Afrobeat':104,'Afropop':100,'Amapiano':112,'Hip-Hop':90,'R&B':85,'Dancehall':98,'Gospel':80,'Pop':110,'EDM':128,'Reggae':76,'Lo-fi':75,'Other':100};
-const SUGGEST=[
- {t:'Create an Afrobeat hit',p:'Create an upbeat Afrobeat hit with a catchy hook, warm percussion and a feel-good melody.',g:'Afrobeat'},
- {t:'Make a romantic song',p:'Make a romantic song about falling in love, with soft melodies and heartfelt lyrics.',m:'Romantic'},
- {t:'Create an energetic club track',p:'Create an energetic club track with a driving beat, big drops and a crowd-pleasing hook.',g:'EDM',m:'Energetic'},
- {t:'Make an inspirational song',p:'Make an inspirational song about believing in yourself and never giving up.',m:'Inspirational'},
- {t:'Create a Ugandan-inspired Afrobeat',p:'Create a Ugandan-inspired Afrobeat with Luganda flavour, lively drums and a joyful, danceable groove.',g:'Afrobeat',m:'Happy'},
- {t:'Make a global summer hit',p:'Make a global summer hit with a sunny melody, an irresistible chorus and a beach-party vibe.',g:'Pop',m:'Party'}];
-const STAGES=['Understanding idea','Creating lyrics','Building melody','Creating instruments','Generating vocals','Mixing','Mastering','Finalizing'];
-const FLOW=[['idea','Idea'],['lyrics','Lyrics'],['music','Music'],['vocals','Vocals'],['mix','Mix'],['master','Master'],['preview','Preview'],['edit','Edit'],['dj','DJ Studio'],['save','Save'],['download','Download'],['publish','Publish to YAPS']];
-const structureFor=sec=>sec<=45?['Intro','Chorus','Outro']:sec<=90?['Intro','Verse 1','Chorus','Verse 2','Chorus','Outro']:['Intro','Verse 1','Pre-Chorus','Chorus','Verse 2','Bridge','Final Chorus','Outro'];
-
-/* ---------- errors: friendly text, never a fake success ---------- */
-class ScErr extends Error{constructor(code,detail){super(code);this.code=code;this.detail=detail||''}}
-const MSG={
- NOT_CONNECTED:'AI Song Creator is not connected to a generation service yet. Add your AI backend/API in settings to enable song generation.',
- LYRICS_NOT_CONNECTED:'AI lyrics are not connected to a service yet. Add an AI Lyrics API URL in AI Music Settings, or write your own lyrics (use Insert template for the section layout).',
- IMAGE_NOT_CONNECTED:'',
- BAD_URL:'That API URL isn’t valid. Use a full https:// address (http:// only works for localhost).',
- EMPTY_PROMPT:'Describe your song first, for example: “Create an emotional Afrobeat song about never giving up.”',
- OFFLINE:'You appear to be offline. Connect to the internet and try again.',
- TIMEOUT:'The AI service took too long to respond, so nothing was created. Try again, or try a shorter song.',
- CANCELLED:'Generation cancelled. Nothing was created.',
- API_DOWN:d=>d?'The AI service had a problem ('+d+'). Nothing was created. Try again in a moment.':'The AI service is unavailable right now (it didn’t respond, or the browser was blocked from reaching it). Nothing was created. Check the API URL and that your backend allows requests from this site (CORS).',
- API_ERR:d=>'The AI service rejected the request'+(d?': '+d:'.')+' Nothing was created.',
- AUTH:'The AI service needs you to be signed in. Open YAPSMusic, sign in, then come back. Your settings here are kept.',
- NOT_FOUND:'The AI service address wasn’t found (404). Check the API URL in AI Music Settings.',
- RATE:'The AI service is busy or you’ve hit its limit (429). Wait a minute and try again.',
- BAD_RESPONSE:'The AI service replied, but not in a format YAPS understands, so no song was created. It should return audio, or JSON with an audio_url.',
- GEN_FAILED:d=>'The AI service reported that generation failed'+(d?': '+d:'.'),
- DL_FAIL:'The AI service said the song is ready, but the audio file couldn’t be downloaded. Nothing was added. Try again.',
- UNSUPPORTED:'The audio came back in a format this browser can’t play. Ask your backend to return MP3, M4A/AAC, WAV or OGG.'};
-const humanize=e=>{if(e instanceof ScErr){const m=MSG[e.code];return typeof m==='function'?m(e.detail):(m||'Something went wrong.')}return 'Something unexpected went wrong ('+(e&&e.message||e)+').'};
-
-/* ---------- state ---------- */
-const st={song:null,cover:{url:'',ai:false,blob:null},seed:0,busy:false,lyBusy:false,covBusy:false,ac:null,flow:new Set(),lyDirty:false,bpmTouched:false,tab:'create',cur:'idea',opener:null,lyLocked:false};
-const sleep=(ms,sig)=>new Promise((res,rej)=>{const t=setTimeout(res,ms);if(sig)sig.addEventListener('abort',()=>{clearTimeout(t);rej(new ScErr('CANCELLED'))},{once:true})});
-const num=v=>{const n=parseFloat(v);return isFinite(n)?n:null};
-const clampN=(v,a,b)=>Math.max(a,Math.min(b,v));
-const slug=s=>String(s||'song').replace(/[^\w -]/g,'').trim().replace(/\s+/g,'-').slice(0,60)||'song';
-const extFor=m=>/mpeg|mp3/.test(m)?'mp3':/wav/.test(m)?'wav':/mp4|aac|m4a/.test(m)?'m4a':/ogg|opus/.test(m)?'ogg':/flac/.test(m)?'flac':/webm/.test(m)?'webm':'mp3';
-const validUrl=u=>{try{const x=new URL(u);return x.protocol==='https:'||(x.protocol==='http:'&&/^(localhost|127\.0\.0\.1)$/.test(x.hostname))}catch(e){return false}};
-const trusted=u=>{try{const x=new URL(u);if(/\.supabase\.co$/.test(x.hostname))return true;return !!YAPS_API_URL&&x.origin===new URL(YAPS_API_URL).origin}catch(e){return false}};
-const creatorName=()=>{try{const u=typeof user!=='undefined'?user:null;if(u){const m=u.user_metadata||{};return m.full_name||m.name||(u.email?u.email.split('@')[0]:'YAPS User')}}catch(e){}return 'Guest'};
-const fmtT=s=>{s=Math.max(0,s|0);return (s/60|0)+':'+String(s%60).padStart(2,'0')};
-const hashS=str=>{let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
-
-/* ---------- messages ---------- */
-function msg(text,type){const m=$s('scMsg');if(!text){m.hidden=true;return}m.hidden=false;m.className='sc-msg'+(type?' '+type:'');m.textContent=text;if(st.tab==='create'&&type==='err')try{m.scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}}
-
-/* ---------- network helpers ---------- */
-async function call(url,opts,ms,outer){
- const ac=new AbortController();let timedOut=false;const t=setTimeout(()=>{timedOut=true;ac.abort()},ms);
- const onOuter=()=>ac.abort();if(outer)outer.addEventListener('abort',onOuter,{once:true});
- try{return await fetch(url,Object.assign({},opts,{signal:ac.signal}))}
- catch(e){if(timedOut)throw new ScErr('TIMEOUT');if(outer&&outer.aborted)throw new ScErr('CANCELLED');throw new ScErr('API_DOWN')}
- finally{clearTimeout(t);if(outer)outer.removeEventListener('abort',onOuter)}}
-async function authHdr(url){try{if(!trusted(url)||typeof sb==='undefined'||!sb)return{};const r=await sb.auth.getSession();return r.data&&r.data.session?{Authorization:'Bearer '+r.data.session.access_token}:{}}catch(e){return{}}}
-async function postJson(url,body,ms,sig){
- if(!navigator.onLine)throw new ScErr('OFFLINE');
- const h=Object.assign({'Content-Type':'application/json',Accept:'application/json, audio/*, image/*'},await authHdr(url));
- const r=await call(url,{method:'POST',headers:h,body:JSON.stringify(body),credentials:'omit'},ms,sig);
- if(!r.ok)throw await httpErr(r);return r}
-async function httpErr(r){let d='';try{const j=await r.clone().json();const v=j.detail||j.error||j.message||'';d=typeof v==='string'?v:JSON.stringify(v)}catch(e){}
- const s=r.status;return new ScErr(s===401||s===403?'AUTH':s===404?'NOT_FOUND':s===429?'RATE':s>=500?'API_DOWN':'API_ERR',d||('HTTP '+s))}
-const audioOf=j=>{if(!j||typeof j!=='object')return '';const r=j.result||j.output||{};return j.audio_url||j.audioUrl||j.audio||j.url||r.audio_url||r.audioUrl||r.audio||''};
-const coverOf=j=>{if(!j||typeof j!=='object')return '';const r=j.result||j.output||{};return j.cover_url||j.coverUrl||j.cover||r.cover_url||r.coverUrl||''};
-
-/* ---------- form ---------- */
-function lenSec(){const v=$s('scLen').value;if(v==='custom')return clampN(Math.round(num($s('scLenC').value)||90),15,600);return +v}
-function keyStr(){return $s('scKey').value==='Auto'?'':$s('scKey').value+' '+$s('scScale').value.toLowerCase()}
-function parseLyrics(t){const out=[];let cur=null;String(t||'').split(/\r?\n/).forEach(l=>{const m=l.match(/^\s*\[(.+?)\]\s*$/);if(m){cur={name:m[1].trim(),text:''};out.push(cur)}else if(cur){cur.text+=(cur.text?'\n':'')+l}});out.forEach(o=>o.text=o.text.trim());return out}
-function readForm(){const dur=lenSec(),b=num($s('scBpm').value),lang=$s('scLang').selectedIndex===0?'auto':$s('scLang').value;
- return{title:$s('scTitle').value.trim()||'Untitled Song',prompt:$s('scPrompt').value.trim(),genre:$s('scGenre').value,mood:$s('scMood').value,
-  bpm:b?clampN(Math.round(b),40,220):null,key:keyStr(),duration_seconds:dur,language:lang,instrumental:$s('scInstr').checked,
-  lyrics:$s('scLyrics').value.trim(),lyrics_sections:parseLyrics($s('scLyrics').value),structure:structureFor(dur),options:readOpts()}}
-
-/* ---------- workflow strip ---------- */
-function mark(k){st.flow.add(k);renderFlow()}
-function renderFlow(){const f=$s('scFlow');if(!f)return;const done=new Set(st.flow);if($s('scPrompt').value.trim())done.add('idea');if($s('scLyrics').value.trim())done.add('lyrics');
- f.innerHTML=FLOW.map(x=>'<button type="button" data-s="'+x[0]+'" class="'+(done.has(x[0])?'done ':'')+(st.cur===x[0]?'cur':'')+'">'+(done.has(x[0])?'✓ ':'')+x[1]+'</button>').join('')}
-
-/* ---------- cover artwork ---------- */
-function placeholderCover(title,genre,seed){
- const c=document.createElement('canvas');c.width=c.height=600;const x=c.getContext('2d'),h=hashS(title+'|'+genre+'|'+seed),H=h%360;
- const g=x.createLinearGradient(0,0,600,600);g.addColorStop(0,'hsl('+H+',80%,16%)');g.addColorStop(.55,'hsl('+((H+50)%360)+',80%,30%)');g.addColorStop(1,'hsl('+((H+130)%360)+',85%,45%)');x.fillStyle=g;x.fillRect(0,0,600,600);
- let r=h;const rnd=()=>{r=(Math.imul(r,1664525)+1013904223)>>>0;return r/4294967296};
- for(let i=0;i<6;i++){const cx=rnd()*600,cy=rnd()*600,rad=90+rnd()*190,gg=x.createRadialGradient(cx,cy,0,cx,cy,rad);gg.addColorStop(0,'hsla('+((H+rnd()*160)%360)+',95%,62%,.55)');gg.addColorStop(1,'hsla(0,0%,0%,0)');x.fillStyle=gg;x.beginPath();x.arc(cx,cy,rad,0,7);x.fill()}
- x.fillStyle='rgba(255,255,255,.16)';for(let i=0;i<34;i++){const bh=20+rnd()*(60+Math.abs(Math.sin(i*.4))*150);x.fillRect(30+i*16,330-bh/2,9,bh)}
- x.lineWidth=2;x.strokeStyle='rgba(255,255,255,.28)';for(let i=0;i<3;i++){x.beginPath();x.arc(300,330,150+i*60,0,7);x.stroke()}
- x.fillStyle='rgba(0,0,0,.35)';x.fillRect(0,440,600,160);
- x.fillStyle='#fff';x.textBaseline='alphabetic';x.font='800 40px Archivo,system-ui,sans-serif';
- let t=title;while(x.measureText(t).width>540&&t.length>3)t=t.slice(0,-2);if(t!==title)t=t.trim()+'…';x.fillText(t,30,505);
- x.font='700 22px Archivo,system-ui,sans-serif';x.fillStyle='rgba(255,255,255,.8)';x.fillText((genre||'Music').toUpperCase()+'  ·  YAPSMUSIC',30,548);
- return c.toDataURL('image/jpeg',.88)}
-function setCover(c){st.cover=c;const u=c.url?'url("'+c.url+'")':'';$s('scCover').style.backgroundImage=u;$s('scResCov').style.backgroundImage=u;
- $s('scCovNote').textContent=c.ai?'AI-generated artwork from your connected image service.':'YAPS placeholder artwork (generated on this device, not AI). Connect an AI Image API in settings for AI covers.'}
-let covT=0;function refreshPlaceholder(){if(st.cover.ai)return;clearTimeout(covT);covT=setTimeout(()=>{setCover({url:placeholderCover($s('scTitle').value.trim()||'Your Song',$s('scGenre').value,st.seed),ai:false,blob:null})},250)}
-async function coverBlob(){if(st.cover.blob)return st.cover.blob;try{const b=await (await fetch(st.cover.url)).blob();st.cover.blob=b;return b}catch(e){return null}}
-async function genCover(){
- if(st.covBusy)return;const f=readForm(),url=cfgUrl('image');
- if(!url){st.seed++;st.cover.ai=false;setCover({url:placeholderCover(f.title,f.genre,st.seed),ai:false,blob:null});msg('No image-generation service is connected, so this is a new YAPS placeholder design, not AI artwork. Add an AI Image API URL in AI Music Settings to generate real AI covers.','');return}
- if(!validUrl(url)){msg(humanize(new ScErr('BAD_URL')),'err');return}
- st.covBusy=true;$s('scCovGen').disabled=true;$s('scCovGen').textContent='Generating…';
- try{const r=await postJson(url,{title:f.title,prompt:f.prompt,genre:f.genre,mood:f.mood,style:'album cover'},90000);
-  const ct=(r.headers.get('content-type')||'').toLowerCase();let blob;
-  if(ct.startsWith('image/'))blob=await r.blob();
-  else{let j;try{j=await r.json()}catch(e){throw new ScErr('BAD_RESPONSE')}const iu=j.image_url||j.imageUrl||j.url||'';if(!iu||!validUrl(new URL(iu,url).href))throw new ScErr('BAD_RESPONSE');
-   const ir=await call(new URL(iu,url).href,{method:'GET',credentials:'omit'},60000);if(!ir.ok)throw new ScErr('DL_FAIL');blob=await ir.blob()}
-  if(!blob||!/^image\//.test(blob.type)||blob.size<500)throw new ScErr('BAD_RESPONSE');
-  const du=await new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.onerror=()=>rej(new ScErr('BAD_RESPONSE'));fr.readAsDataURL(blob)});
-  setCover({url:du,ai:true,blob});if(st.song){st.song.coverUrl=du}mark('edit');msg('Cover artwork created.','ok')}
- catch(e){msg(humanize(e)+' Your current cover is unchanged.','err')}
- st.covBusy=false;$s('scCovGen').disabled=false;$s('scCovGen').textContent=' GENERATE COVER'}
-
-/* ---------- lyrics ---------- */
-function normLyrics(j,ct,r){
- return(async()=>{let t='';
-  if(ct.includes('text/plain'))t=await r.text();
-  else{let o;try{o=await r.json()}catch(e){throw new ScErr('BAD_RESPONSE')}
-   if(typeof o==='string')t=o;else if(typeof o.lyrics==='string')t=o.lyrics;else if(Array.isArray(o.sections))t=o.sections.map(s=>'['+(s.name||s.title||'Section')+']\n'+String(s.text||s.lyrics||'').trim()).join('\n\n');else if(typeof o.text==='string')t=o.text}
-  t=String(t||'').trim();if(t.length<20)throw new ScErr('BAD_RESPONSE');return t})()}
-async function genLyrics(){
- if(st.lyBusy)return;const f=readForm();
- try{if(!f.prompt)throw new ScErr('EMPTY_PROMPT');const url=cfgUrl('lyrics');if(!url)throw new ScErr('LYRICS_NOT_CONNECTED');if(!validUrl(url))throw new ScErr('BAD_URL');
-  if(st.lyDirty&&f.lyrics.replace(/^\s*\[.+?\]\s*$/gm,'').trim()&&!confirm('Replace your edited lyrics with new AI lyrics?'))return;
-  st.lyBusy=true;$s('scLyGen').disabled=$s('scLyRe').disabled=true;$s('scLyGen').textContent='Writing lyrics…';msg('');
-  const r=await postJson(url,{title:f.title,prompt:f.prompt,genre:f.genre,mood:f.mood,language:f.language,instrumental:f.instrumental,structure:f.structure,duration_seconds:f.duration_seconds},90000);
-  const t=await normLyrics(null,(r.headers.get('content-type')||'').toLowerCase(),r);
-  $s('scLyrics').value=t;st.lyDirty=false;lockLy(true);mark('lyrics');msg('Lyrics created. Tap Edit to change them.','ok')}
- catch(e){msg(humanize(e),e.code==='CANCELLED'?'':'err')}
- st.lyBusy=false;$s('scLyGen').disabled=false;$s('scLyGen').textContent=' GENERATE LYRICS';$s('scLyRe').disabled=!$s('scLyrics').value.trim();renderFlow()}
-function lockLy(on){st.lyLocked=on;$s('scLyrics').readOnly=on;$s('scLyEdit').textContent=on?'✎ Edit':' Lock'}
-async function copyText(t){try{await navigator.clipboard.writeText(t);return true}catch(e){const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand('copy')}catch(x){}a.remove();return ok}}
-
-/* ---------- IndexedDB (own database: this device only; shape is ready for Supabase later) ---------- */
-const sdb=()=>new Promise((res,rej)=>{const r=indexedDB.open('yaps_sc_v1',1);r.onupgradeneeded=()=>{r.result.createObjectStore('songs',{keyPath:'id'});r.result.createObjectStore('lyrics',{keyPath:'id'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
-async function sTx(store,mode,fn){const db=await sdb();return new Promise((res,rej)=>{const tx=db.transaction(store,mode),q=fn(tx.objectStore(store));tx.oncomplete=()=>{db.close();res(q&&q.result)};tx.onerror=tx.onabort=()=>{db.close();rej(tx.error||(q&&q.error))}})}
-
-/* ---------- progress UI ---------- */
-let pT=0,pStart=0,pBackend=null;
-function buildStages(){$s('scStages').innerHTML=STAGES.map((n,i)=>'<li data-i="'+i+'"><b>'+(i+1)+'</b>'+n+'</li>').join('')}
-function setProg(p,note){p=clampN(p,0,100);$s('scBar').style.width=p+'%';$s('scBarW').setAttribute('aria-valuenow',Math.round(p));$s('scPct').textContent=Math.round(p)+'%';if(note!=null)$s('scPnote').textContent=note;
- const a=Math.min(7,Math.floor(p/12.5));$s('scStages').querySelectorAll('li').forEach((li,i)=>{li.className=p>=100||i<a?'done':i===a?'act':''})}
-function startProg(){const P=$s('scProg');P.hidden=false;P.className='pn sc-card sc-prog';$s('scProgH').textContent='Creating your song…';$s('scRetry').hidden=true;$s('scCancel').hidden=false;buildStages();pStart=Date.now();pBackend=null;setProg(1,'Estimated progress');
- clearInterval(pT);pT=setInterval(()=>{const el=(Date.now()-pStart)/1000;$s('scEl').textContent=fmtT(el);if(pBackend==null)setProg(92*(1-Math.exp(-el/45)),'Estimated progress; finishes only when your backend responds')},300);
- try{P.scrollIntoView({block:'center',behavior:'smooth'})}catch(e){}}
-function endProg(kind){clearInterval(pT);const P=$s('scProg');$s('scCancel').hidden=true;
- if(kind==='ok'){setProg(100,'Done');P.classList.add('stop');$s('scProgH').textContent='Song created';setTimeout(()=>{if(!st.busy)P.hidden=true},1400)}
- else{P.classList.add(kind==='cancel'?'stop':'fail');$s('scProgH').textContent=kind==='cancel'?'Cancelled':'Song was not created';$s('scRetry').hidden=false;$s('scStages').querySelectorAll('li').forEach(li=>{if(li.classList.contains('act'))li.classList.remove('act')})}}
-
-/* ---------- audio helpers ---------- */
-function probe(blob){return new Promise((res,rej)=>{const u=URL.createObjectURL(blob),a=new Audio();let done=false;const fin=(ok,d)=>{if(done)return;done=true;clearTimeout(t);a.onloadedmetadata=a.onerror=null;try{URL.revokeObjectURL(u)}catch(e){}ok?res(d):rej(new ScErr('UNSUPPORTED'))};const t=setTimeout(()=>fin(false),12000);a.preload='metadata';a.onloadedmetadata=()=>fin(true,isFinite(a.duration)?a.duration:0);a.onerror=()=>fin(false);a.src=u})}
-const guessMime=u=>{const m=String(u).split(/[?#]/)[0].match(/\.(mp3|wav|m4a|aac|ogg|opus|flac|webm)$/i);if(!m)return '';return{mp3:'audio/mpeg',wav:'audio/wav',m4a:'audio/mp4',aac:'audio/aac',ogg:'audio/ogg',opus:'audio/ogg',flac:'audio/flac',webm:'audio/webm'}[m[1].toLowerCase()]};
-
-/* ---------- CREATE SONG ---------- */
-async function resolveJob(base,j,sig){
- let pollUrl='';const t0=Date.now();let first=true;
- for(;;){
-  const status=String(j&&j.status||'').toLowerCase(),a=audioOf(j);
-  if(/fail|error|cancel/.test(status)||(j&&j.error&&!a))throw new ScErr('GEN_FAILED',typeof j.error==='string'?j.error:(j.message||''));
-  if(/complete|succe|done|ready|finish/.test(status)||(!status&&a)){if(a)return{url:a,meta:j};throw new ScErr('BAD_RESPONSE')}
-  if(first){const jid=j&&(j.job_id||j.jobId||j.id),su=j&&(j.status_url||j.statusUrl);
-   if(su)pollUrl=new URL(su,base).href;else if(jid)pollUrl=base.replace(/\/+$/,'')+'/'+encodeURIComponent(jid);
-   if(!pollUrl)throw new ScErr('BAD_RESPONSE');if(new URL(pollUrl).origin!==new URL(base).origin||!validUrl(pollUrl))throw new ScErr('BAD_RESPONSE');first=false}
-  const pr=num(j&&j.progress);if(pr!=null){pBackend=pr<=1?pr*100:pr;setProg(Math.min(99,pBackend),'Reported by your backend'+(j.stage?': '+j.stage:''))}
-  if(Date.now()-t0>SC_TIMEOUT_MS)throw new ScErr('TIMEOUT');
-  await sleep(SC_POLL_MS,sig);
-  const r=await call(pollUrl,{method:'GET',headers:Object.assign({Accept:'application/json'},await authHdr(pollUrl)),credentials:'omit'},30000,sig);
-  if(!r.ok)throw await httpErr(r);
-  try{j=await r.json()}catch(e){throw new ScErr('BAD_RESPONSE')}}}
-async function fetchAudio(u,base,sig){
- let href;try{href=new URL(u,base).href}catch(e){throw new ScErr('BAD_RESPONSE')}if(!validUrl(href))throw new ScErr('BAD_RESPONSE');
- let r;try{r=await call(href,{method:'GET',credentials:'omit'},120000,sig)}catch(e){if(e.code==='CANCELLED'||e.code==='TIMEOUT')throw e;throw new ScErr('DL_FAIL')}
- if(!r.ok)throw new ScErr('DL_FAIL');let b;try{b=await r.blob()}catch(e){throw new ScErr('DL_FAIL')}return{blob:b,href}}
-async function requestSong(url,f,sig){
- const r=await postJson(url,f,60000,sig),ct=(r.headers.get('content-type')||'').toLowerCase();
- if(ct.startsWith('audio/')||ct.includes('octet-stream')||ct.startsWith('video/')){return{blob:await r.blob(),meta:{},href:''}}
- let j;try{j=await r.json()}catch(e){throw new ScErr('BAD_RESPONSE')}
- if(!j||typeof j!=='object')throw new ScErr('BAD_RESPONSE');
- const res=await resolveJob(url,j,sig);setProg(97,'Downloading your song');
- const a=await fetchAudio(res.url,url,sig);return{blob:a.blob,meta:res.meta,href:a.href}}
-async function createSong(){
- if(st.busy)return;const f=readForm();
- if(f.prompt&&!cfgUrl('song'))return createLocal(f);
- try{if(!f.prompt)throw new ScErr('EMPTY_PROMPT');const url=cfgUrl('song');if(!url)throw new ScErr('NOT_CONNECTED');if(!validUrl(url))throw new ScErr('BAD_URL');if(!navigator.onLine)throw new ScErr('OFFLINE')}
- catch(e){msg(humanize(e),'err');return}
- msg('');st.busy=true;$s('scCreate').disabled=true;$s('scRes').hidden=true;pauseAud();startProg();const ac=st.ac=new AbortController();
- try{
-  const url=cfgUrl('song'),got=await requestSong(url,f,ac.signal);let blob=got.blob;
-  if(!blob||blob.size<2000)throw new ScErr('BAD_RESPONSE');
-  if(!/^audio\//.test(blob.type)){const g=guessMime(got.href);blob=new Blob([blob],{type:g||blob.type||'audio/mpeg'})}
-  setProg(98,'Checking the audio');const pd=await probe(blob);
-  const m=got.meta||{},cu=coverOf(m);
-  if(cu&&!st.cover.ai){try{const cr=await call(new URL(cu,url).href,{method:'GET',credentials:'omit'},30000);if(cr.ok){const cb=await cr.blob();if(/^image\//.test(cb.type)){const du=await new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.onerror=()=>res('');fr.readAsDataURL(cb)});if(du)setCover({url:du,ai:true,blob:cb})}}}catch(e){}}
-  const dur=pd||num(m.duration)||f.duration_seconds,bpm=num(m.bpm)||f.bpm,ly=typeof m.lyrics==='string'&&m.lyrics.trim()?m.lyrics.trim():f.lyrics;
-  if(ly&&ly!==f.lyrics){$s('scLyrics').value=ly;lockLy(true)}
-  setSong({id:'sc'+Date.now(),title:f.title,genre:f.genre,mood:f.mood,bpm:bpm,key:(typeof m.key==='string'&&m.key)||f.key,duration:Math.round(dur),lyrics:ly,
-   audioUrl:got.href||'',coverUrl:st.cover.url,createdAt:new Date().toISOString(),creator:creatorName(),prompt:f.prompt,blob,mime:blob.type});
-  ['music','vocals','mix','master'].forEach(k=>st.flow.add(k));renderFlow();endProg('ok');setStage('preview');msg('Your song was created by your AI service. Preview it below.','ok')}
- catch(e){const cancel=e instanceof ScErr&&e.code==='CANCELLED';endProg(cancel?'cancel':'fail');msg(humanize(e),cancel?'':'err')}
- st.busy=false;st.ac=null;$s('scCreate').disabled=false}
-
-/* ---------- result / player ---------- */
-function toMeta(s){return{title:s.title,genre:s.genre,mood:s.mood,bpm:s.bpm,key:s.key,duration:s.duration,lyrics:s.lyrics,audioUrl:s.audioUrl,coverUrl:s.coverUrl,createdAt:s.createdAt,creator:s.creator}}
-let audUrl='';
-function setSong(s){st.song=s;if(audUrl){try{URL.revokeObjectURL(audUrl)}catch(e){}}audUrl=URL.createObjectURL(s.blob);s.blobUrl=audUrl;if(!s.audioUrl)s.audioUrl=audUrl;
- const a=$s('scAud');a.src=audUrl;a.volume=$s('scVol').value/100;$s('scSeek').value=0;$s('scPlay').textContent='▶';
- $s('scRes').hidden=false;$s('scNoSong').hidden=true;$s('scResT').textContent=s.title;$s('scResCov').style.backgroundImage=st.cover.url?'url("'+st.cover.url+'")':'';
- $s('scResTags').innerHTML=[s.genre,s.mood,s.bpm?Math.round(s.bpm)+' BPM':'',s.key,fmtT(s.duration)].filter(Boolean).map(x=>'<span>'+esc(x)+'</span>').join('');
- $s('scTime').textContent='0:00 / '+fmtT(s.duration);renderFlow()}
-function pauseAud(){const a=$s('scAud');if(a&&!a.paused)a.pause()}
-function wirePlayer(){const a=$s('scAud');
- $s('scPlay').onclick=()=>{if(!st.song)return;if(a.paused){const rec=typeof R!=='undefined'&&R.rec&&R.rec.state==='recording';if(!rec&&!(typeof ai!=='undefined'&&ai)){try{D.forEach(stopD)}catch(e){}}a.play().catch(()=>msg(humanize(new ScErr('UNSUPPORTED')),'err'))}else a.pause()};
- a.onplay=()=>{$s('scPlay').textContent='❚❚';mark('preview')};a.onpause=()=>{$s('scPlay').textContent='▶'};a.onended=()=>{$s('scPlay').textContent='▶';$s('scSeek').value=0};
- a.onerror=()=>{if(st.song)msg(humanize(new ScErr('UNSUPPORTED')),'err')};
- a.ontimeupdate=()=>{const d=isFinite(a.duration)&&a.duration>0?a.duration:(st.song?st.song.duration:0);if(!d)return;if(!seeking)$s('scSeek').value=a.currentTime/d*1000;$s('scTime').textContent=fmtT(a.currentTime)+' / '+fmtT(d)};
- let seeking=false;const sk=$s('scSeek');sk.oninput=()=>{seeking=true;const d=isFinite(a.duration)&&a.duration>0?a.duration:(st.song?st.song.duration:0);if(d)a.currentTime=sk.value/1000*d};sk.onchange=()=>{seeking=false};sk.onpointerup=()=>{seeking=false};
- $s('scVol').oninput=e=>{a.volume=e.target.value/100}}
-
-/* ---------- actions on the new song ---------- */
-function needSong(){if(!st.song){msg('Create a song first.','err');return false}return true}
-function dlSong(){if(!needSong())return;const s=st.song,l=document.createElement('a');l.href=s.blobUrl;l.download=slug(s.title)+'.'+extFor(s.mime);document.body.appendChild(l);l.click();l.remove();mark('download');msg('Download started.','ok')}
-async function saveSong(){if(!needSong())return;const s=st.song;
- try{const cb=await coverBlob();await sTx('songs','readwrite',x=>x.put({id:s.id,meta:toMeta(s),blob:s.blob,mime:s.mime,cover:cb,coverAi:st.cover.ai,prompt:s.prompt,saved:Date.now()}));mark('save');msg('Saved on this device in My Creations.','ok');renderMine()}
- catch(e){msg('Couldn’t save on this device (storage is full or blocked). Use Download so you don’t lose the song.','err')}}
-async function shareSong(){if(!needSong())return;const s=st.song,f=new File([s.blob],slug(s.title)+'.'+extFor(s.mime),{type:s.mime});
- try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:s.title,text:'Created with YAPSMusic AI Song Creator'});msg('Shared.','ok')}
-  else{dlSong();msg('This browser can’t share files, so the song was downloaded. Share the file from your device.','')}}
- catch(e){if(e&&e.name==='AbortError')msg('Share cancelled. Your song is still here.','');else msg('Couldn’t share ('+(e&&e.message||'error')+'). Use Download instead.','err')}}
-async function addLib(){if(!needSong())return;const s=st.song;
- try{if(typeof devAdd!=='function')throw new Error('x');await devAdd({name:s.title,artist:'AI Song Creator · '+s.creator,duration:fmtT(s.duration),kind:'audio',size:s.blob.size,added:Date.now(),blob:s.blob});try{devFresh=false}catch(e){}msg('Added to your library. Find it under Phone / Device in the YAPS Library.','ok')}
- catch(e){msg('Couldn’t add it to your library (storage is full or blocked). Use Download instead.','err')}}
-async function toDJ(){if(!needSong())return;const s=st.song;let L=$s('scDeck').value;if(L==='auto')L=!D[0].buf?'A':!D[1].buf?'B':'A';
- const dd=dk(L);if(dd.on&&!confirm('Deck '+L+' is playing. Replace it with your new song?'))return;
- if(!s.blobUrl){s.blobUrl=audUrl}
- pauseAud();let ok=false;
- try{ok=await loadTrack(L,{id:s.id,title:s.title,artist:'AI Song Creator',cover:st.cover.url||'',audio:s.blobUrl,genre:s.genre||'',duration:fmtT(s.duration),bpm:s.bpm||null,local:true})}catch(e){ok=false}
- if(ok){mark('dj');closeSc();toast('“'+s.title+'” is in Deck '+L+'. Mix it, add effects, record and export.')}
- else msg('Couldn’t load the song into Deck '+L+'. Try downloading it and loading the file from Phone / Device.','err')}
-function showPub(){if(!needSong())return;
- if(typeof user==='undefined'||!user){msg(typeof sb!=='undefined'&&sb?'Sign in to publish. Open YAPSMusic, sign in, then come back. Your song stays here.':'Sign-in is unavailable right now. Check your connection and reload. Your song stays here.','err');return}
- const b=$s('scPubBox');b.hidden=!b.hidden}
-async function doPub(){const s=st.song;if(!s)return;
- if(!$s('scPubR').checked){msg('Confirm you have the right to share this song.','err');return}
- const priv=$s('scPubV').value==='private',go=$s('scPubGo');go.disabled=true;
- try{if(typeof user==='undefined'||!user)throw new Error('Sign in first.');
-  const ext=extFor(s.mime),file=new File([s.blob],slug(s.title)+'.'+ext,{type:s.mime});msg('Uploading audio…','');
-  const au=await upload(priv?BUCKETS.private:BUCKETS.public,file,file.name);
-  let cover='';const cb=await coverBlob();if(cb){msg('Uploading cover…','');try{cover=(await upload(BUCKETS.cover,new File([cb],slug(s.title)+'-cover.jpg',{type:cb.type||'image/jpeg'}),slug(s.title)+'-cover.jpg')).url}catch(e){cover=''}}
-  msg('Saving to your YAPS account…','');
-  /* Same row shape as DJ mixes, so it works with the existing `mixes` table today.
-     When you add a dedicated `songs` table, send toMeta(s) (+ bpm/key/mood/lyrics columns) here instead. */
-  await saveMixRow({title:s.title.slice(0,150),description:('AI song. '+(s.prompt||'')+(s.mood?' Mood: '+s.mood+'.':'')+(s.bpm?' '+Math.round(s.bpm)+' BPM.':'')+(s.key?' Key: '+s.key+'.':'')).slice(0,500),genre:s.genre||'Other',tags:['ai-song',(s.genre||'').toLowerCase(),(s.mood||'').toLowerCase()].filter(Boolean).slice(0,10),
-   visibility:priv?'private':'public',audio_url:priv?null:au.url,audio_path:au.path,cover_url:cover||null,duration:Math.round(s.duration),format:ext,track_a_id:null,track_b_id:null});
-  $s('scPubBox').hidden=true;mark('publish');msg(priv?'Saved privately to your YAPS account.':'Published to YAPS.','ok')}
- catch(e){const m=e&&e.code==='42P01'?'The mixes table isn’t set up in Supabase yet (run yaps-mixes-setup.sql once). Your song is safe here: Save or Download it.':e&&e.status===404?'The server has no mixes endpoint yet, so nothing was published. Your song is safe here: Save or Download it.':e&&e.status===0?(e.message+' Your song is safe here: Save or Download it.'):'Couldn’t publish: '+(e&&e.message||'error')+'. Your song is still here. Try again, or Save/Download it.';msg(m,'err')}
- go.disabled=false}
-
-/* ---------- My Creations ---------- */
-async function renderMine(){const S=$s('scMineS'),Ly=$s('scMineL');let songs=[],lys=[];
- try{songs=(await sTx('songs','readonly',s=>s.getAll()))||[];lys=(await sTx('lyrics','readonly',s=>s.getAll()))||[]}catch(e){S.innerHTML='<div class="empty">Saved creations aren’t available in this browser (private mode or storage blocked).</div>';Ly.innerHTML='';return}
- songs.sort((a,b)=>b.saved-a.saved);lys.sort((a,b)=>b.ts-a.ts);
- S.innerHTML=songs.length?songs.map(x=>'<div class="sc-it"><div><b>'+esc(x.meta.title)+'</b><span>'+esc([x.meta.genre,x.meta.mood,x.meta.bpm?Math.round(x.meta.bpm)+' BPM':'',fmtT(x.meta.duration),new Date(x.saved).toLocaleDateString()].filter(Boolean).join(' · '))+'</span></div><div class="sc-row"><button class="sm" data-sa="open" data-id="'+esc(x.id)+'">Open</button><button class="sm" data-sa="A" data-id="'+esc(x.id)+'">Deck A</button><button class="sm" data-sa="B" data-id="'+esc(x.id)+'">Deck B</button><button class="sm" data-sa="dl" data-id="'+esc(x.id)+'" aria-label="Download"><i class="fas fa-download"></i></button><button class="sm" data-sa="del" data-id="'+esc(x.id)+'" aria-label="Delete"><i class="fas fa-trash"></i></button></div></div>').join(''):'<div class="empty">No saved songs yet. Create a song, then tap Save.</div>';
- Ly.innerHTML=lys.length?lys.map(x=>'<div class="sc-it"><div><b>'+esc(x.title)+'</b><span>'+esc(new Date(x.ts).toLocaleDateString())+' · '+esc(x.lyrics.slice(0,70).replace(/\s+/g,' '))+'…</span></div><div class="sc-row"><button class="sm" data-la="use" data-id="'+esc(x.id)+'">Use</button><button class="sm" data-la="copy" data-id="'+esc(x.id)+'">Copy</button><button class="sm" data-la="del" data-id="'+esc(x.id)+'" aria-label="Delete"><i class="fas fa-trash"></i></button></div></div>').join(''):'<div class="empty">No saved lyrics yet.</div>'}
-async function saveLyrics(){const t=$s('scLyrics').value.trim();if(!t){msg('There are no lyrics to save yet.','err');return}
- try{await sTx('lyrics','readwrite',s=>s.put({id:'l'+Date.now(),title:$s('scTitle').value.trim()||'Untitled lyrics',lyrics:t,genre:$s('scGenre').value,mood:$s('scMood').value,ts:Date.now()}));msg('Lyrics saved in My Creations.','ok');renderMine()}
- catch(e){msg('Couldn’t save the lyrics (storage is full or blocked). Use Copy so you don’t lose them.','err')}}
-function mineClick(e){const b=e.target.closest('[data-sa],[data-la]');if(!b)return;const id=b.dataset.id;
- if(b.dataset.la){sTx('lyrics','readonly',s=>s.get(id)).then(async x=>{if(!x)return;const a=b.dataset.la;
-   if(a==='use'){$s('scLyrics').value=x.lyrics;lockLy(false);st.lyDirty=true;setTab('create');renderFlow();msg('Lyrics loaded into the editor.','ok')}
-   else if(a==='copy'){const ok=await copyText(x.lyrics);setTab('create');msg(ok?'Lyrics copied.':'Couldn’t copy. Open them with Use and copy manually.',ok?'ok':'err')}
-   else if(confirm('Delete these lyrics?')){await sTx('lyrics','readwrite',s=>s.delete(id));renderMine()}}).catch(()=>{});return}
- sTx('songs','readonly',s=>s.get(id)).then(async x=>{if(!x)return;const a=b.dataset.sa;
-  const toTrack=()=>({id:x.id,title:x.meta.title,artist:'AI Song Creator',cover:'',audio:URL.createObjectURL(x.blob),genre:x.meta.genre||'',duration:fmtT(x.meta.duration),bpm:x.meta.bpm||null,local:true});
-  if(a==='del'){if(confirm('Delete “'+x.meta.title+'” from this device?')){await sTx('songs','readwrite',s=>s.delete(id));renderMine()}}
-  else if(a==='dl'){const l=document.createElement('a');l.href=URL.createObjectURL(x.blob);l.download=slug(x.meta.title)+'.'+extFor(x.mime);l.click()}
-  else if(a==='A'||a==='B'){const t=toTrack();if(x.cover){t.cover=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.onerror=()=>r('');fr.readAsDataURL(x.cover)})}const ok=await loadTrack(a,t);if(ok){closeSc();toast('Loaded into Deck '+a)}}
-  else if(a==='open'){const m=x.meta;$s('scTitle').value=m.title;$s('scPrompt').value=x.prompt||'';if(GENRES.includes(m.genre))$s('scGenre').value=m.genre;if(MOODS.includes(m.mood))$s('scMood').value=m.mood;if(m.bpm){$s('scBpm').value=Math.round(m.bpm);$s('scBpmR').value=Math.round(m.bpm)}$s('scLyrics').value=m.lyrics||'';
-   let cu='';if(x.cover)cu=await new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.onerror=()=>r('');fr.readAsDataURL(x.cover)});
-   if(cu)setCover({url:cu,ai:!!x.coverAi,blob:x.cover});else{st.cover.ai=false;setCover({url:placeholderCover(m.title,m.genre,0),ai:false,blob:null})}
-   setSong(Object.assign({},m,{id:x.id,prompt:x.prompt||'',blob:x.blob,mime:x.mime,audioUrl:'',coverUrl:st.cover.url}));setTab('create');renderFlow();try{$s('scRes').scrollIntoView({behavior:'smooth',block:'start'})}catch(e2){}}}).catch(()=>msg('Couldn’t open that item.','err'))}
-
-/* ---------- settings ---------- */
-function respDoc(){return JSON.stringify({request:{title:'string',prompt:'string',genre:'string',mood:'string',bpm:104,key:'A minor',duration_seconds:120,language:'auto',instrumental:false,lyrics:'[Intro] …',lyrics_sections:[{name:'Verse 1',text:'…'}],structure:['Intro','Verse 1','…']},
- response_A:'binary audio (Content-Type: audio/mpeg, audio/wav, audio/mp4, audio/ogg)',
- response_B:{audio_url:'https://…/song.mp3',cover_url:'https://…/cover.jpg (optional)',bpm:104,key:'A minor',duration:120,lyrics:'(optional)'},
- response_C_long_jobs:{start:{job_id:'abc123',status_url:'https://…/jobs/abc123'},poll:{status:'processing | completed | failed',progress:42,stage:'Mixing',audio_url:'when completed',error:'when failed'}}},null,2)}
-function fillCfg(){$s('scUrlSong').value=cfgUrl('song');$s('scUrlLyrics').value=cfgUrl('lyrics');$s('scUrlImage').value=cfgUrl('image');$s('scReqPre').textContent=JSON.stringify(readForm(),null,2);$s('scRespPre').textContent=respDoc();
- const n=['song','lyrics','image'].filter(k=>cfgUrl(k)).length;const set=(k,t,c)=>{const e=$s('scSt'+k);e.textContent=t;e.className='sc-st'+(c?' '+c:'')};
- set('Song',cfgUrl('song')?'Configured, not tested':'Not set');set('Lyrics',cfgUrl('lyrics')?'Configured, not tested':'Not set');set('Image',cfgUrl('image')?'Configured, not tested':'Not set');
- $s('scApiSt').textContent='API status: '+(n?n+' of 3 services configured. Press Test connection to check them.':'no services configured yet. Song, lyrics and cover generation stay off until you add a backend URL.')}
-function saveCfg(){const v={song:$s('scUrlSong').value.trim(),lyrics:$s('scUrlLyrics').value.trim(),image:$s('scUrlImage').value.trim()};
- for(const k in v){if(v[k]&&!validUrl(v[k])){$s('scApiSt').textContent='“'+v[k]+'” isn’t valid. '+MSG.BAD_URL;return false}}
- const clean=k=>v[k]===DEFAULTS()[k]?'':v[k];let ok=true;for(const k in v)ok=LS.set(KEYS[k],clean(k))&&ok;
- fillCfg();$s('scApiSt').textContent=ok?'Settings saved on this device.':'Couldn’t save settings (browser storage blocked).';return ok}
-async function testCfg(){if(!saveCfg())return;const btn=$s('scCfgTest');btn.disabled=true;btn.textContent='Testing…';let okN=0,tot=0;
- for(const [k,id] of [['song','Song'],['lyrics','Lyrics'],['image','Image']]){const u=cfgUrl(k),e=$s('scSt'+id);if(!u){e.textContent='Not set';e.className='sc-st';continue}tot++;
-  if(!navigator.onLine){e.textContent='Offline';e.className='sc-st bad';continue}
-  try{const r=await call(u.replace(/\/+$/,'')+'/health',{method:'GET',headers:{Accept:'application/json'},credentials:'omit'},7000);
-   if(r.ok){okN++;e.textContent='Connected (health check passed)';e.className='sc-st ok'}else{okN++;e.textContent='Reachable, /health returned HTTP '+r.status;e.className='sc-st'}}
-  catch(x){e.textContent=x.code==='TIMEOUT'?'Timed out':'Can’t reach it (wrong URL, offline or blocked by CORS)';e.className='sc-st bad'}}
- $s('scApiSt').textContent=!tot?'API status: nothing to test. Add at least one URL first.':'API status: '+okN+' of '+tot+' configured service'+(tot>1?'s':'')+' reachable. “Reachable” only proves your server answered; it can’t prove generation works until you try a song.';
- btn.disabled=false;btn.textContent='Test connection'}
-
-/* ---------- overlay open / close / tabs ---------- */
-function setTab(t){st.tab=t;$s('scTabs').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));['create','mine','cfg'].forEach(k=>$s('scP-'+k).hidden=k!==t);
- if(t==='mine')renderMine();if(t==='cfg')fillCfg();try{$s('scWrap').scrollTo({top:0})}catch(e){}}
-function openSc(tab){const w=$s('scWrap');st.opener=document.activeElement;try{if(typeof setTools==='function')setTools(false)}catch(e){}
- try{const nv=document.getElementById('mainNav');if(nv)nv.classList.remove('open');const ns=document.getElementById('navScrim');if(ns)ns.classList.remove('show')}catch(e){}
- w.hidden=false;setTab(tab||st.tab||'create');renderFlow();setTimeout(()=>{try{$s('scX').focus({preventScroll:true})}catch(e){}},30)}
-function closeSc(){const w=$s('scWrap');if(w.hidden)return;pauseAud();w.hidden=true;try{st.opener&&st.opener.focus&&st.opener.focus()}catch(e){}}
-
-/* ---------- workspace: one panel per stage (Music / Vocals / Mix / Master) ---------- */
-const NAV=FLOW.map(x=>x[0]);
-const THEMES=['love and heartbreak','never giving up','a Kampala night out','faith and hope','friendship','a summer road trip','celebrating success'];
-const OPT={
- music:['Music','Shape the sound. These choices are sent to your AI service with the song request.',[
-  ['instruments','chips','Instruments',['Drums','Bass','Guitar','Piano','Synth','Strings','Percussion','Horns','Pads'],['Drums','Bass','Percussion']],
-  ['energy','range','Energy',60],['groove','sel','Groove',['Straight','Swing','Syncopated','Laid-back']],
-  ['intro','sel','Intro',['Short','Build-up','Drum-only','Melody-first']],['hook','sel','Hook',['Catchy chorus','Instrumental riff','Call and response','Big drop']]]],
- vocals:['Vocals','Choose who sings and how.',[
-  ['voice','sel','Voice',['Female','Male','Duet','Choir','Rap / spoken']],['style','sel','Singing style',['Smooth','Powerful','Soft','Gritty','Energetic']],
-  ['extras','chips','Extras',['Backing vocals','Harmonies','Ad-libs','Vocal chops'],['Backing vocals']],['tune','range','Pitch correction',30]]],
- mix:['Mix','Balance the song. Levels are sent with the request; the preview tone controls change what you hear in Preview.',[
-  ['preset','sel','Mix preset',['Balanced','Vocal-forward','Club bass','Warm and soft']],
-  ['vocals','range','Vocals level',75],['drums','range','Drums level',70],['bass','range','Bass level',65],['melody','range','Melody level',60],['space','range','Space / reverb',30],
-  ['bass_db','range','Preview bass (dB)',0,-12,12],['mid_db','range','Preview mid (dB)',0,-12,12],['treble_db','range','Preview treble (dB)',0,-12,12]]],
- master:['Master','Final polish. Sent with the request, and applied live while you listen in Preview. The downloaded file is the one your AI service returns.',[
-  ['preset','sel','Master preset',['Off','Clean','Warm','Club','Radio']],['loudness','range','Loudness',50]]]};
-const PRE={'Balanced':[75,70,65,60],'Vocal-forward':[90,60,55,55],'Club bass':[65,80,90,55],'Warm and soft':[70,55,60,70]};
-const PM={Off:{th:0,ra:1,gn:0,lo:0,hi:0},Clean:{th:-18,ra:3,gn:1,lo:0,hi:1},Warm:{th:-20,ra:3,gn:1,lo:2,hi:-2},Club:{th:-24,ra:6,gn:2,lo:4,hi:1},Radio:{th:-22,ra:5,gn:2,lo:1,hi:2}};
-function optHtml(p,f){const k=f[0],t=f[1],l=f[2],a=f[3],b=f[4],c=f[5];
- if(t==='sel')return '<label class="f">'+l+'<select data-p="'+p+'" data-o="'+k+'">'+a.map(x=>'<option>'+x+'</option>').join('')+'</select></label>';
- if(t==='range')return '<label class="f">'+l+' <b data-v>'+a+'</b><input type="range" data-p="'+p+'" data-o="'+k+'" min="'+(b==null?0:b)+'" max="'+(c==null?100:c)+'" value="'+a+'"></label>';
- return '<div class="f" style="grid-column:1/-1"><span>'+l+'</span><div class="sc-chips" data-oc="'+k+'">'+a.map(x=>'<button type="button" class="sm sc-chip'+(b.includes(x)?' on':'')+'">'+x+'</button>').join('')+'</div></div>'}
-function buildOpts(){const ref=$s('scCreate');Object.keys(OPT).forEach(p=>{const o=OPT[p],s=document.createElement('section');s.className='pn sc-card';s.id='scO-'+p;s.dataset.stg=p;
- s.innerHTML='<h3>'+o[0]+'</h3><div class="sub">'+o[1]+'</div><div class="sc-grid">'+o[2].map(f=>optHtml(p,f)).join('')+'</div>'+(p==='vocals'?'<label class="ck"><input type="checkbox" id="scInstr2"><span>Instrumental only (no vocals)</span></label>':'');
- ref.parentNode.insertBefore(s,ref)})}
-function readOpts(){const o={};Object.keys(OPT).forEach(p=>{const s=document.getElementById('scO-'+p);if(!s)return;o[p]={};
- s.querySelectorAll('[data-o]').forEach(e=>{o[p][e.dataset.o]=e.type==='range'?+e.value:e.value});
- s.querySelectorAll('[data-oc]').forEach(e=>{o[p][e.dataset.oc]=[].map.call(e.querySelectorAll('.on'),b=>b.textContent)})});return o}
-function setO(p,k,v){const e=document.querySelector('#scO-'+p+' [data-o="'+k+'"]');if(!e)return;e.value=v;const b=e.parentNode.querySelector('[data-v]');if(b)b.textContent=v}
-/* live preview chain: EQ + compressor + gain on the preview player */
-let fx=null;
-function fxInit(){if(fx!==null)return fx;try{const C=new (window.AudioContext||window.webkitAudioContext)(),src=C.createMediaElementSource($s('scAud')),lo=C.createBiquadFilter(),md=C.createBiquadFilter(),hi=C.createBiquadFilter(),cp=C.createDynamicsCompressor(),g=C.createGain();
- lo.type='lowshelf';lo.frequency.value=120;md.type='peaking';md.frequency.value=1500;md.Q.value=.8;hi.type='highshelf';hi.frequency.value=6000;
- src.connect(lo);lo.connect(md);md.connect(hi);hi.connect(cp);cp.connect(g);g.connect(C.destination);fx={C:C,lo:lo,md:md,hi:hi,cp:cp,g:g}}catch(e){fx=false}return fx}
-function fxApply(){if(!fx)return;const o=readOpts(),m=o.mix||{},k=o.master||{},p=PM[k.preset]||PM.Off,t=fx.C.currentTime,T=.05;
- fx.lo.gain.setTargetAtTime((m.bass_db||0)+p.lo,t,T);fx.md.gain.setTargetAtTime(m.mid_db||0,t,T);fx.hi.gain.setTargetAtTime((m.treble_db||0)+p.hi,t,T);
- fx.cp.threshold.setTargetAtTime(p.th,t,T);fx.cp.ratio.setTargetAtTime(p.ra,t,T);fx.g.gain.setTargetAtTime(Math.pow(10,(((k.loudness==null?50:k.loudness)-50)/50*6+p.gn)/20),t,T)}
-function setStage(s){if(NAV.indexOf(s)<0)s='idea';st.cur=s;$s('scP-create').dataset.cur=s;const i=NAV.indexOf(s),b=$s('scBack'),n=$s('scNext');if(b)b.hidden=i===0;if(n)n.hidden=i===NAV.length-1;renderFlow();
- if(st.tab!=='create')setTab('create');else try{$s('scWrap').scrollTo({top:0,behavior:'smooth'})}catch(e){}}
-function initWork(){buildOpts();const P=$s('scP-create'),nv=document.createElement('div');nv.className='sc-row';nv.innerHTML='<button class="k" id="scBack" type="button">‹ Back</button><button class="k pl" id="scNext" type="button" style="margin-left:auto">Next ›</button>';P.appendChild(nv);
- $s('scBack').onclick=()=>setStage(NAV[NAV.indexOf(st.cur)-1]);$s('scNext').onclick=()=>setStage(NAV[NAV.indexOf(st.cur)+1]);
- $s('scFlow').addEventListener('click',e=>{const b=e.target.closest('[data-s]');if(b)setStage(b.dataset.s)});$s('scNoSongGo').onclick=()=>setStage('idea');
- P.addEventListener('click',e=>{const b=e.target.closest('[data-oc] button');if(b)b.classList.toggle('on')});
- P.addEventListener('input',e=>{const r=e.target;if(r.dataset&&r.dataset.o){const v=r.parentNode.querySelector('[data-v]');if(v&&r.type==='range')v.textContent=r.value;fxApply()}});
- P.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.p==='mix'&&t.dataset.o==='preset'){const v=PRE[t.value];['vocals','drums','bass','melody'].forEach((k,i)=>setO('mix',k,v[i]))}fxApply()});
- $s('scInstr2').onchange=()=>{$s('scInstr').checked=$s('scInstr2').checked};$s('scInstr').addEventListener('change',()=>{$s('scInstr2').checked=$s('scInstr').checked});
- $s('scAud').addEventListener('play',()=>{if(fxInit()){try{fx.C.resume()}catch(e){}fxApply()}})}
-
-/* ---------- built-in generator: free, on this device, instrumental only (used when no Song API URL is set) ---------- */
-function encWav(b){const n=b.length,ch=b.numberOfChannels,sr=b.sampleRate,d=new DataView(new ArrayBuffer(44+n*ch*2)),w=(o,t)=>{for(let i=0;i<t.length;i++)d.setUint8(o+i,t.charCodeAt(i))};
- w(0,'RIFF');d.setUint32(4,36+n*ch*2,true);w(8,'WAVEfmt ');d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,ch,true);d.setUint32(24,sr,true);d.setUint32(28,sr*ch*2,true);d.setUint16(32,ch*2,true);d.setUint16(34,16,true);w(36,'data');d.setUint32(40,n*ch*2,true);
- const c=[];for(let k=0;k<ch;k++)c.push(b.getChannelData(k));let o=44;for(let i=0;i<n;i++)for(let k=0;k<ch;k++){const v=Math.max(-1,Math.min(1,c[k][i]));d.setInt16(o,v<0?v*32768:v*32767,true);o+=2}return new Blob([d.buffer],{type:'audio/wav'})}
-async function renderLocal(f){
- const mu=(f.options&&f.options.music)||{},ins=mu.instruments&&mu.instruments.length?mu.instruments:['Drums','Bass','Piano'],has=x=>ins.indexOf(x)>=0,en=.6+(mu.energy==null?60:mu.energy)/150;
- const dur=Math.min(f.duration_seconds,240),bpm=f.bpm||BPM_DEF[f.genre]||100,beat=60/bpm,bar=beat*4,sr=24000,C=new OfflineAudioContext(2,Math.ceil(sr*dur),sr);
- let h=hashS(f.prompt+f.title+f.genre);const rnd=()=>{h=(Math.imul(h,1664525)+1013904223)>>>0;return h/4294967296};
- const km=(f.key||'A minor').split(' '),root=Math.max(0,KEYN.indexOf(km[0])),minor=km[1]!=='major',sc=minor?[0,2,3,5,7,8,10]:[0,2,4,5,7,9,11],prog=minor?[0,5,2,6]:[0,4,5,3];
- const fq=m=>440*Math.pow(2,(m-69)/12),nt=(dg,oc)=>12*(oc+1+Math.floor(dg/7))+root+sc[((dg%7)+7)%7];
- const mst=C.createGain(),cp=C.createDynamicsCompressor();mst.gain.setValueAtTime(.8,0);mst.gain.setValueAtTime(.8,Math.max(0,dur-2));mst.gain.linearRampToValueAtTime(0,dur);mst.connect(cp);cp.connect(C.destination);
- const nb=C.createBuffer(1,sr,sr),nd=nb.getChannelData(0);for(let i=0;i<sr;i++)nd[i]=rnd()*2-1;
- const env=(g,t,a,d,pk)=>{g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(pk,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+a+d)};
- const osc=(ty,fr,t,a,d,pk,lp)=>{const x=C.createOscillator(),g=C.createGain();x.type=ty;x.frequency.value=fr;env(g,t,a,d,pk);let n=x;if(lp){const l=C.createBiquadFilter();l.type='lowpass';l.frequency.value=lp;x.connect(l);n=l}n.connect(g);g.connect(mst);x.start(t);x.stop(t+a+d+.05)};
- const noise=(t,d,pk,hp)=>{const s=C.createBufferSource(),g=C.createGain(),q=C.createBiquadFilter();s.buffer=nb;q.type='highpass';q.frequency.value=hp;env(g,t,.002,d,pk);s.connect(q);q.connect(g);g.connect(mst);s.start(t);s.stop(t+d+.05)};
- const kick=t=>{const x=C.createOscillator(),g=C.createGain();x.frequency.setValueAtTime(150,t);x.frequency.exponentialRampToValueAtTime(42,t+.12);g.gain.setValueAtTime(.9,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);x.connect(g);g.connect(mst);x.start(t);x.stop(t+.32)};
- const PT={four:{k:[0,4,8,12],s:[4,12],h:[2,6,10,14]},afro:{k:[0,7,10],s:[4,12],h:[0,2,3,6,8,10,11,14]},hop:{k:[0,7,10],s:[4,12],h:[0,2,4,6,8,10,12,14]},reg:{k:[8],s:[8],h:[0,2,4,6,8,10,12,14]}};
- const P=PT[{'EDM':'four','Pop':'four','Amapiano':'four','Hip-Hop':'hop','R&B':'hop','Lo-fi':'hop','Reggae':'reg'}[f.genre]||'afro'];
- const names=f.structure,nbars=Math.max(1,Math.floor(dur/bar)),sec=i=>names[Math.min(names.length-1,Math.floor(i/nbars*names.length))];
- const lay=n=>/Intro/.test(n)?{d:0,b:0,l:0}:/Outro|Bridge/.test(n)?{d:0,b:1,l:0}:/Chorus/.test(n)?{d:1,b:1,l:1}:{d:1,b:1,l:0},sw=mu.groove==='Swing'||mu.groove==='Laid-back',mot={};
- for(let i=0;i<nbars;i++){const t0=i*bar,L=lay(sec(i)),dg=prog[i%4],cd=[0,2,4].map(x=>nt(dg+x,3)),T=s=>t0+s*beat/4+(s%2&&sw?beat*.055:0);
-  if(has('Pads')||has('Strings'))cd.forEach(m=>osc('sawtooth',fq(m),t0,.4,bar,.035,900));
-  if(has('Piano')||has('Guitar'))for(let s=0;s<16;s+=2){const m=cd[[0,1,2,1][(s/2)%4]]+12;osc(has('Guitar')&&!has('Piano')?'sawtooth':'triangle',fq(m),T(s),.005,.4,.11,2200)}
-  if(has('Bass')&&L.b)P.k.forEach(s=>{const m=nt(dg,1);osc('triangle',fq(m),T(s),.01,beat*.8,.38,350);osc('sine',fq(m-12),T(s),.01,beat*.8,.3)});
-  if(has('Drums')&&L.d){P.k.forEach(s=>kick(T(s)));P.s.forEach(s=>{noise(T(s),.16,.3,1500);osc('triangle',190,T(s),.002,.1,.2)});P.h.forEach(s=>noise(T(s),.04,.12*en,7000))}
-  if(has('Percussion'))for(let s=1;s<16;s+=2)noise(T(s),.03,.07*en,9000);
-  if(L.l&&(has('Synth')||has('Horns')||!has('Pads'))){const m=mot[dg]||(mot[dg]=Array.from({length:8},()=>rnd()<.3?null:[0,2,4,1,3][rnd()*5|0]));m.forEach((x,k)=>{if(x==null)return;osc(has('Horns')&&!has('Synth')?'sawtooth':'square',fq(nt(dg+x,5)),T(k*2),.01,.3,.06,2400)})}}
- return C.startRendering()}
-async function createLocal(f){
- st.busy=true;$s('scCreate').disabled=true;$s('scRes').hidden=true;pauseAud();startProg();const ac=st.ac=new AbortController();msg('');
- try{if(typeof OfflineAudioContext==='undefined')throw new Error('This browser has no audio engine for the built-in generator.');
-  pBackend=20;setProg(20,'Building the song on this device');await sleep(80,ac.signal);
-  const buf=await renderLocal(f);if(ac.signal.aborted)throw new ScErr('CANCELLED');setProg(92,'Encoding');
-  const blob=encWav(buf),pd=await probe(blob);
-  setSong({id:'sc'+Date.now(),title:f.title,genre:f.genre,mood:f.mood,bpm:f.bpm||BPM_DEF[f.genre]||100,key:f.key||'A minor',duration:Math.round(pd||buf.duration),lyrics:f.lyrics,audioUrl:'',coverUrl:st.cover.url,createdAt:new Date().toISOString(),creator:creatorName(),prompt:f.prompt,blob:blob,mime:'audio/wav'});
-  ['music','vocals','mix','master'].forEach(k=>st.flow.add(k));renderFlow();endProg('ok');setStage('preview');
-  msg('Made by the free built-in generator: an instrumental, no singing. Add an AI service in AI Music Settings for full songs with vocals.','ok')}
- catch(e){const c=e instanceof ScErr&&e.code==='CANCELLED';endProg(c?'cancel':'fail');msg(e instanceof ScErr?humanize(e):'Couldn’t build the song: '+(e&&e.message||'error'),c?'':'err')}
- st.busy=false;st.ac=null;$s('scCreate').disabled=false}
-
-/* ---------- boot ---------- */
-function boot(){
- const fill=(id,arr)=>{$s(id).innerHTML=arr.map(x=>'<option>'+esc(x)+'</option>').join('')};
- fill('scGenre',GENRES);fill('scMood',MOODS);fill('scLang',LANGS);$s('scKey').innerHTML='<option>Auto</option>'+KEYN.map(x=>'<option>'+x+'</option>').join('');$s('scKey').value='A';$s('scScale').value='Minor';
- $s('scMood').value='Inspirational';
- $s('scChips').innerHTML=SUGGEST.map((x,i)=>'<button class="sm sc-chip" data-sug="'+i+'">'+esc(x.t)+'</button>').join('');
- $s('scChips').insertAdjacentHTML('beforeend','<button type="button" class="sm sc-chip" id="scSurp">✦ Surprise me</button>');$s('scSurp').onclick=()=>{const x=SUGGEST[Math.random()*SUGGEST.length|0];$s('scPrompt').value=x.p.replace(/\.$/,'')+', about '+THEMES[Math.random()*THEMES.length|0]+'.';if(x.g)$s('scGenre').value=x.g;if(x.m)$s('scMood').value=x.m;refreshPlaceholder();renderFlow()};
- $s('scChips').addEventListener('click',e=>{const b=e.target.closest('[data-sug]');if(!b)return;const x=SUGGEST[+b.dataset.sug];$s('scPrompt').value=x.p;if(x.g){$s('scGenre').value=x.g;if(!st.bpmTouched){$s('scBpm').value=$s('scBpmR').value=BPM_DEF[x.g]}}if(x.m)$s('scMood').value=x.m;if(!$s('scTitle').value.trim())$s('scTitle').placeholder=x.t;refreshPlaceholder();renderFlow();try{$s('scPrompt').focus({preventScroll:true})}catch(e2){}});
- $s('scOpen').onclick=()=>openSc('create');$s('scTop').onclick=()=>openSc('create');$s('scX').onclick=closeSc;
- $s('scTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-t]');if(b)setTab(b.dataset.t)});
- window.addEventListener('keydown',e=>{if($s('scWrap').hidden||document.querySelector('dialog[open]'))return;if(e.key==='Escape')closeSc();e.stopPropagation()},true); /* while this panel is open: Esc closes it, and studio shortcuts (Q, P, 1-8, T…) are ignored */
- $s('scGenre').onchange=()=>{if(!st.bpmTouched){$s('scBpm').value=$s('scBpmR').value=BPM_DEF[$s('scGenre').value]||100}refreshPlaceholder()};
- $s('scBpm').oninput=()=>{st.bpmTouched=true;const v=num($s('scBpm').value);if(v)$s('scBpmR').value=clampN(v,40,220)};
- $s('scBpmR').oninput=()=>{st.bpmTouched=true;$s('scBpm').value=$s('scBpmR').value};
- $s('scLen').onchange=()=>{$s('scLenCW').hidden=$s('scLen').value!=='custom'};
- $s('scTitle').oninput=refreshPlaceholder;$s('scPrompt').oninput=renderFlow;
- $s('scLyrics').oninput=()=>{st.lyDirty=true;$s('scLyRe').disabled=!$s('scLyrics').value.trim()||st.lyBusy;if(st.song)st.flow.add('edit');renderFlow()};
- $s('scLyGen').onclick=genLyrics;$s('scLyRe').onclick=genLyrics;
- $s('scLyEdit').onclick=()=>{if(st.lyLocked){lockLy(false);$s('scLyrics').focus()}else lockLy(true)};
- $s('scLyCopy').onclick=async()=>{const t=$s('scLyrics').value.trim();if(!t){msg('There are no lyrics to copy yet.','err');return}const ok=await copyText(t);msg(ok?'Lyrics copied to the clipboard.':'Couldn’t copy automatically. Select the text and copy it manually.',ok?'ok':'err')};
- $s('scLySave').onclick=saveLyrics;
- $s('scLyTpl').onclick=()=>{const t=$s('scLyrics');if(t.value.trim()&&!confirm('Replace the current lyrics with an empty section template?'))return;t.value=structureFor(lenSec()).map(n=>'['+n+']\n').join('\n');lockLy(false);st.lyDirty=true;$s('scLyRe').disabled=false;renderFlow();t.focus()};
- $s('scCovGen').onclick=genCover;$s('scCreate').onclick=createSong;
- $s('scCancel').onclick=()=>{if(st.ac)st.ac.abort()};$s('scRetry').onclick=createSong;
- $s('scToDJ').onclick=toDJ;$s('scDl').onclick=dlSong;$s('scSave').onclick=saveSong;$s('scShare').onclick=shareSong;$s('scLib').onclick=addLib;$s('scPub').onclick=showPub;$s('scPubX').onclick=()=>{$s('scPubBox').hidden=true};$s('scPubGo').onclick=doPub;
- wirePlayer();initWork();
- $s('scMineS').addEventListener('click',mineClick);$s('scMineL').addEventListener('click',mineClick);
- $s('scCfgSave').onclick=saveCfg;$s('scCfgTest').onclick=testCfg;$s('scCfgReset').onclick=()=>{Object.values(KEYS).forEach(k=>LS.set(k,''));fillCfg()};
- $s('scReqCopy').onclick=async()=>{fillCfg();$s('scApiSt').textContent=(await copyText($s('scReqPre').textContent))?'Request JSON copied.':'Couldn’t copy automatically. Select the text and copy it.'};
- addEventListener('offline',()=>{if(!$s('scWrap').hidden)msg(humanize(new ScErr('OFFLINE')),'err')});
- lockLy(false);refreshPlaceholder();setStage('idea');
- try{const q=new URLSearchParams(location.search);if(q.get('creator')==='1'||q.get('songcreator')==='1')openSc('create')}catch(e){}
- /* Public hooks so you can wire the Song Creator into other YAPS pages later (Supabase etc.) */
- window.YAPS_SC={open:openSc,close:closeSc,buildRequest:readForm,config:()=>({song:cfgUrl('song'),lyrics:cfgUrl('lyrics'),image:cfgUrl('image')}),currentSong:()=>st.song?toMeta(st.song):null,createSong}}
-try{boot()}catch(e){console.warn('AI Song Creator failed to start (the rest of the studio is unaffected):',e)}
-})();
 
 /* ══════════════════════════════════════════════════════════════════════════
    PRO CONSOLE — VirtualDJ-style features (added block, self-contained)
@@ -3823,7 +3204,7 @@ try{boot()}catch(e){console.warn('AI Song Creator failed to start (the rest of t
    ══════════════════════════════════════════════════════════════════════════ */
 (function(){
 const P={q:true,slip:true,sel:0,pad:'cue',del:false,zoom:8,tab:'wave',sm:Array(8).fill(null),smAct:'play',smMode:'one',smV:.8,map:{},ml:{},learn:0,set:[],t0:0,
- fx:{id:'echo',tg:'off',div:.5,p:.5,m:.5,on:false,cur:'off',nodes:[],oscs:[]}};
+ fx:{id:'echo',tg:'M',div:.5,p:.5,m:.5,on:false,cur:'off',nodes:[],oscs:[]}};
 const S=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},G=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
 const L2D=L=>D[L=='A'?0:1],root=$('#pro');
 if(!root)return;
@@ -3844,13 +3225,14 @@ function autoLoop(d,beats){if(needBpm(d))return;const len=beats*60/d.bpm;
  const s=snap(d,d.pos);loopSet(d,s,s+len)}
 function rollStart(d,beats,from){if(!d.on){toast('Start Deck '+d.L+' first');return}if(needBpm(d))return;d.rollOn=true;const s=from!=null?from:snap(d,d.pos);loopSet(d,s,s+beats*60/d.bpm)}
 function rollEnd(d){if(!d.rollOn)return;d.rollOn=false;loopOff(d)}
-window.YAPS_PRO={loopSet,loopOff,autoLoop,rollStart,rollEnd,snap,needBpm};
+window.YAPS_PRO={loopSet,loopOff,autoLoop,rollStart,rollEnd,snap,needBpm,brake,spin,echoOut};
 function jump(d,beats){if(needBpm(d))return;seek(d,snap(d,d.pos+beats*60/d.bpm))}
 function cuePad(d,i){if(P.del){d.hc[i]=null;hcBtn(d,i);return}
  if(d.hc[i]==null){d.hc[i]=snap(d,d.pos);hcBtn(d,i);toast('Cue '+(i+1)+' set on Deck '+d.L)}else seek(d,d.hc[i])}
 function hcBtn(d,i){if(i<4){const b=$('[data-hc="'+d.L+i+'"]');if(b)b.classList.toggle('on',d.hc[i]!=null)}refresh()}
 
 /* ---------- one-shot transitions ---------- */
+function deckLive(d){if(d.buf&&d.on)return true;toast(d.buf?'Start Deck '+d.L+' first, then use this effect.':'Load a track into Deck '+d.L+' first.');return false}
 function brake(d){if(!d.on||!d.src)return;const s=d.src,t=C.currentTime;s.playbackRate.cancelScheduledValues(t);s.playbackRate.setValueAtTime(s.playbackRate.value,t);s.playbackRate.linearRampToValueAtTime(.03,t+1.3);
  setTimeout(()=>{if(d.src===s)stopD(d)},1350)}
 function revPlay(d){if(!d.on||!d.buf)return;init();const sr=d.buf.sampleRate,rt=1+d.pitch/100,Ls=Math.min(d.bpm?4*60/d.bpm:2,d.pos),n=Math.floor(Ls*sr);if(n<1000)return;
@@ -4061,7 +3443,7 @@ root.innerHTML='<div class="pro-bar"><button class="pro-t" id="proTgl" aria-expa
  '<div class="prow"><span class="pl">ON</span>'+[['A','DECK A'],['B','DECK B'],['M','MASTER']].map(t=>'<button class="sm" data-act="fxt" data-v="'+t[0]+'" id="fxt'+t[0]+'">'+t[1]+'</button>').join('')+'</div>'+
  '<div class="prow"><span class="pl">PARAM</span><input type="range" id="fxP" min="0" max="100" value="50" aria-label="Effect parameter" style="flex:1"></div><div class="prow"><span class="pl">MIX</span><input type="range" id="fxM" min="0" max="100" value="50" aria-label="Effect mix" style="flex:1"></div>'+
  '<div class="prow"><button class="k pl" id="fxGo" data-act="fxgo" style="flex:1;width:auto;padding:12px">FX OFF</button><button class="k" id="fxHold" data-pad="x" data-hold="1" style="flex:1;width:auto;padding:12px">HOLD</button></div></div>'+
- '<div class="pcard"><div class="hd">TRANSITIONS · SELECTED DECK</div><div class="prow"><button class="k" data-act="brake">BRAKE</button><button class="k" data-act="spin">BACKSPIN</button><button class="k" data-act="eout">ECHO OUT</button></div><div class="hd" style="margin-top:10px">SWITCH SONG · SELECTED DECK → OTHER DECK</div><div class="prow"><button class="k" data-act="swap" data-v="cut">CUT</button><button class="k" data-act="swap" data-v="fade">CROSSFADE</button><button class="k" data-act="swap" data-v="slow">SLOW BLEND</button><button class="k" data-act="swap" data-v="echo">ECHO SWAP</button><button class="k" data-act="swap" data-v="spin">BACKSPIN SWAP</button><button class="k" data-act="swap" data-v="brake">BRAKE SWAP</button></div><div class="pnote" id="swapNote">Starts the other deck and hands the music over. Cut is instant, Crossfade takes 4s, Slow blend 12s. Echo, Backspin and Brake swaps use the effect on the outgoing song while the next one comes in.</div><div class="pnote">Brake slows the deck to a stop. Backspin rewinds the last second and drops back in (with Slip on, in time). Echo out cuts the deck into an echo tail, then stops it. Pick the deck on the PADS tab.</div></div></div></div>'+
+ '<div class="pcard"><div class="hd">TRANSITIONS · SELECTED DECK</div><div class="prow"><span class="pl">DECK</span><button class="sm" id="psA2" data-act="psel" data-v="0" aria-pressed="true">DECK A</button><button class="sm" id="psB2" data-act="psel" data-v="1" aria-pressed="false">DECK B</button></div><div class="prow"><button class="k" data-act="brake">BRAKE</button><button class="k" data-act="spin">BACKSPIN</button><button class="k" data-act="eout">ECHO OUT</button></div><div class="hd" style="margin-top:10px">SWITCH SONG · SELECTED DECK → OTHER DECK</div><div class="prow"><button class="k" data-act="swap" data-v="cut">CUT</button><button class="k" data-act="swap" data-v="fade">CROSSFADE</button><button class="k" data-act="swap" data-v="slow">SLOW BLEND</button><button class="k" data-act="swap" data-v="echo">ECHO SWAP</button><button class="k" data-act="swap" data-v="spin">BACKSPIN SWAP</button><button class="k" data-act="swap" data-v="brake">BRAKE SWAP</button></div><div class="pnote" id="swapNote">Starts the other deck and hands the music over. Cut is instant, Crossfade takes 4s, Slow blend 12s. Echo, Backspin and Brake swaps use the effect on the outgoing song while the next one comes in.</div><div class="pnote">Brake slows the deck to a stop. Backspin rewinds the last second and drops back in (with Slip on, in time). Echo out cuts the deck into an echo tail, then stops it. Pick the deck with the DECK A / DECK B buttons above.</div></div></div></div>'+
 /* MIXER */
 '<div class="pro-pane" data-p="mix"><div class="pgrid"><div class="pcard"><div class="hd">CHANNELS</div>'+
  both(L=>'<div class="prow"><b class="'+(L=='B'?'p':'')+'">'+L+'</b><span class="pl">GAIN</span><input type="range" data-in="gain" data-d="'+L+'" min="-12" max="12" step=".5" value="0" aria-label="Gain deck '+L+'" style="flex:1"><output id="mg'+L+'">0 dB</output></div>'+
@@ -4091,9 +3473,9 @@ function padDown(i){const d=D[P.sel];init();
  padHeld[i]=d;refreshPads()}
 function padUp(i){const d=padHeld[i];delete padHeld[i];if(d&&(P.pad=='roll'||P.pad=='slice'))rollEnd(d)}
 root.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-pad]');if(!b)return;e.preventDefault();
- if(b.dataset.sp!=null){padHeld['s'+b.dataset.sp]=1;smPad(+b.dataset.sp,true)}else if(b.id=='fxHold'){P.fxPrev=P.fx.on;fxOn(true)}else padDown(+b.dataset.pad)});
+ if(b.dataset.sp!=null){padHeld['s'+b.dataset.sp]=1;smPad(+b.dataset.sp,true)}else if(b.id=='fxHold'){P.fxPrev=P.fx.on;b.classList.add('on');fxOn(true)}else padDown(+b.dataset.pad)});
 const upAll=e=>{const b=e.target.closest&&e.target.closest('[data-pad]');if(!b)return;
- if(b.dataset.sp!=null){if(padHeld['s'+b.dataset.sp]){delete padHeld['s'+b.dataset.sp];smPad(+b.dataset.sp,false)}}else if(b.id=='fxHold'){if(P.fxPrev!==undefined){fxOn(P.fxPrev);P.fxPrev=undefined}}else padUp(+b.dataset.pad)};
+ if(b.dataset.sp!=null){if(padHeld['s'+b.dataset.sp]){delete padHeld['s'+b.dataset.sp];smPad(+b.dataset.sp,false)}}else if(b.id=='fxHold'){b.classList.remove('on');if(P.fxPrev!==undefined){fxOn(P.fxPrev);P.fxPrev=undefined}}else padUp(+b.dataset.pad)};
 root.addEventListener('pointerup',upAll);root.addEventListener('pointercancel',upAll);root.addEventListener('pointerleave',e=>{if(e.target.closest&&e.target.closest('.pp,#fxHold'))upAll(e)},true);
 
 /* delegated clicks */
@@ -4130,7 +3512,8 @@ root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)retur
   case'loff':loopOff(d);break;
   case'fxt':init();P.fx.tg=v;if(P.fx.on)fxWire();break;
   case'fxgo':fxOn(!P.fx.on);break;
-  case'swap':trSwap(v,d);break;case'brake':brake(d);break;case'rev':revPlay(d);break;case'spin':spin(d);break;case'eout':echoOut(d);break;
+  case'swap':if(typeof window.trSwap==='function')window.trSwap(v,d);else toast('Switch song is not ready yet. Reload the page and try again.');break;
+  case'brake':if(!deckLive(d))break;brake(d);break;case'rev':if(!deckLive(d))break;revPlay(d);break;case'spin':if(!deckLive(d))break;spin(d);break;case'eout':if(!deckLive(d))break;echoOut(d);break;
   case'fltc':d.flt=0;{const r=$p('[data-in=flt][data-d="'+d.L+'"]');r.value=0}applyMixer(d);break;
   case'kill':init();kill(d,b.dataset.b);break;
   case'xc':window.proXf.curve=v;xfade();break;
@@ -4180,7 +3563,7 @@ function refresh(){if(!root)return;
   on('#kl'+L,d.kl);const ks=$p('#ks'+L);if(ks)ks.textContent=(d.ks>0?'+':'')+d.ks;
   for(const k in d.stem)ap('#st'+L+k,d.stem[k]);['lo','mi','hi'].forEach(b=>on('#kl'+L+b,d.kill[b]))});
  const c=compat(effKey(D[0])&&effKey(D[0]).code,effKey(D[1])&&effKey(D[1]).code),ce=$p('#kcomp');if(ce){ce.textContent=c?'Harmonic match: '+c[0]:'Load two tracks to see harmonic compatibility.';ce.className='pnote '+(c?c[1]:'')}
- ap('#psA',P.sel==0);ap('#psB',P.sel==1);['cue','roll','jump','slice'].forEach(m=>on('#pm-'+m,P.pad==m));on('#pdel',P.del);
+ ap('#psA',P.sel==0);ap('#psB',P.sel==1);ap('#psA2',P.sel==0);ap('#psB2',P.sel==1);['cue','roll','jump','slice'].forEach(m=>on('#pm-'+m,P.pad==m));on('#pdel',P.del);
  const d=D[P.sel];[.25,.5,1,2,4,8,16,32].forEach(b=>on('#al'+String(b).replace('.','_'),d.xl&&d.bpm&&Math.abs(d.xl[1]-d.xl[0]-b*60/d.bpm)<.002));
  const lo=$p('#pLoopO');if(lo)lo.textContent=d.xl?((d.xl[1]-d.xl[0])*(d.bpm?d.bpm/60:1)).toFixed(d.bpm?2:0)+(d.bpm?' beats':' s'):'';
  refreshPads();
@@ -4413,6 +3796,19 @@ $('#libAn').onclick=()=>analyseAll();
    try{readShared();if(!find())await readDeviceUploads();if(!find())await loadRemote()}catch(e){}
    const t=find();if(!t){post('studio-ack',{ok:false,deck:L});return}
    loadTrack(L,t);toast('YAPSMusic sent “'+t.title+'” to Deck '+L);post('studio-ack',{ok:true,deck:L,title:t.title})}}
+
+ /* a song made on song-creator.html is waiting in IndexedDB: put it in the chosen deck */
+ const scHandoff=async force=>{try{if(!force&&new URLSearchParams(location.search).get('scload')!=='1')return;
+  const db=await new Promise((res,rej)=>{const r=indexedDB.open('yaps_sc_handoff',1);r.onupgradeneeded=()=>r.result.createObjectStore('h',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+  const row=await new Promise(res=>{const q=db.transaction('h').objectStore('h').get('latest');q.onsuccess=()=>res(q.result);q.onerror=()=>res(null)});
+  if(!row||!row.blob||Date.now()-row.t>6e5)return;
+  const L=row.deck==='B'?'B':'A';await new Promise(r=>setTimeout(r,500));
+  const ok=await loadTrack(L,Object.assign({},row.track,{audio:URL.createObjectURL(row.blob),local:true}));
+  try{history.replaceState(null,'','studio.html')}catch(e){}
+  toast(ok?'“'+(row.track.title||'Your song')+'” is in Deck '+L+'. Mix it, add effects, record and export.':'Couldn’t load the song into Deck '+L+'. Use Download on the Song Creator page and load the file from Phone / Device.');
+  try{const tx=db.transaction('h','readwrite');tx.objectStore('h').delete('latest')}catch(e){}
+ }catch(e){console.warn('Song Creator hand-off failed',e)}};
+ scHandoff();window.__scHandoff=()=>scHandoff(true);
  window.__yapsPost=post;
  if(bc)bc.onmessage=e=>onMsg(e.data);
  else addEventListener('storage',e=>{if(e.key==='yaps_bridge_msg'&&e.newValue){try{onMsg(JSON.parse(e.newValue))}catch(x){}}});
@@ -4542,7 +3938,7 @@ function trSwap(style,src){
  const rev=!!(window.proXf&&window.proXf.rev),to=(D.indexOf(dst)===1)!==rev?1:0,from=xv,
   N={cut:'Cut',fade:'Crossfade',slow:'Slow blend',echo:'Echo swap',spin:'Backspin swap',brake:'Brake swap'}[style]||'Swap',
   dur={cut:.08,fade:4,slow:12,echo:.25,spin:.9,brake:1.3}[style]||4,ease=style==='fade'||style==='slow';
- if(style==='echo')echoOut(src);else if(style==='spin')spin(src);else if(style==='brake')brake(src);
+ const FXO=window.YAPS_PRO||{};if(style==='echo'&&FXO.echoOut)FXO.echoOut(src);else if(style==='spin'&&FXO.spin)FXO.spin(src);else if(style==='brake'&&FXO.brake)FXO.brake(src);
  const t0=performance.now(),msg=$('#swapNote');
  TR.run=true;if(msg)msg.textContent=N+': Deck '+src.L+' → Deck '+dst.L;toast(N+': Deck '+src.L+' → Deck '+dst.L);
  TR.t=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/(dur*1000)),e=ease?k*k*(3-2*k):k;
@@ -4592,7 +3988,7 @@ function refresh(){const d=sel(),$$$=s=>document.querySelectorAll(s);
  const bo=$('#ylBpmO');if(bo)bo.textContent=!d.buf?'Deck '+d.L+': empty':!d.bpm?(d.bpmNote||'Deck '+d.L+': no BPM yet. Use SET BPM or the tap tempo.'):'Deck '+d.L+': '+d.bpm.toFixed(1)+' BPM ('+bpmSrc(d)+') → '+eff(d).toFixed(1)+' at '+(d.pitch>=0?'+':'')+d.pitch.toFixed(1)+'%';
  $$$('[data-tr]').forEach(b=>{if(b.dataset.tr!=='stop')b.classList.toggle('on',false)})}
 setInterval(refresh,250);refresh();
-window.YAPS_LOOPTOOLS={state:LT,loopSize,loopIn,loopOut,loopExit,reloop,rollStart,rollStop,stutStart,stutStop,resetDeck,trGo,trStop,setBpm,get transition(){return TR.run}};
+window.trSwap=trSwap;window.YAPS_LOOPTOOLS={state:LT,trSwap,loopSize,loopIn,loopOut,loopExit,reloop,rollStart,rollStop,stutStart,stutStop,resetDeck,trGo,trStop,setBpm,get transition(){return TR.run}};
 })();
 
 
@@ -4679,37 +4075,37 @@ window.YAPS_LOOPTOOLS={state:LT,loopSize,loopIn,loopOut,loopExit,reloop,rollStar
 })();
 </script>
 <script id="djFans">
-/* ===== DJ STUDIO · LISTENERS PANEL (YAPS Connect) =====
-   The right-hand box of "Select music" is now a live line to the DJ's own community: read what listeners
-   write, answer them, and share what is playing. Uses the Studio's own Supabase client and the YAPS Connect
-   database (supabase-connect.sql). Nothing here touches the decks or the audio engine. */
+/* ===== DJ STUDIO · LISTENERS PANEL (DJ community chat) =====
+   The right-hand box of "Select music" is the DJ's own community room, the same room listeners join from the
+   DJ's profile in the main app (community_chat table, room "dj-u-<account id>"). The DJ reads what listeners
+   write, answers them, sees song requests (🎵) and can find a requested song in the library with one tap.
+   Uses the Studio's own Supabase client. Nothing here touches the decks or the audio engine. */
 (function(){
  'use strict';
  if(window.DJFANS)return;
  const E=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const el=document.createElement('div');el.className='libsec fans';el.dataset.sec='fans';
- const st={state:'init',room:null,msgs:[],people:new Map(),ch:null,reqOnly:false,busy:false,err:'',count:0,uid:null};
+ const st={state:'init',key:'',msgs:[],seen:new Set(),people:new Map(),ch:null,poll:null,reqOnly:false,busy:false,err:'',count:null,uid:null};
  const REQ=/\brequest|\bplease play|\bplay (me|us|this|that|the|some|my)\b|\bnext song|\bdedicat|🎵/i;
  const toastS=m=>{try{toast(m)}catch(e){}};
  const initials=n=>String(n||'?').trim().split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase();
- const rpc=async(n,a)=>{const r=await sb.rpc(n,a||{});if(r.error)throw r.error;return r.data};
  const nm=id=>(st.people.get(id)||{}).name||'Listener';
- function head(){return '<h5><span>Listeners</span><em>'+(st.state==='ready'?st.count+' in your community':'live')+'</em></h5>'}
+ const reqText=b=>String(b||'').replace(/^🎵\s*(request:?)?\s*/i,'').split(' · ')[0].trim();
+ function head(){return '<h5><span>Listeners</span><em>'+(st.state==='ready'?(st.count!=null?st.count+' in your community':'live'):'live')+'</em></h5>'}
  function paint(keepScroll){
   const box=el.querySelector('.fmsgs'),top=box?box.scrollTop:0,atBottom=box?(box.scrollHeight-box.scrollTop-box.clientHeight<60):true;
   let h=head();
   if(st.state==='init'||st.state==='loading')h+='<div class="empty">Connecting to your listeners…</div>';
   else if(st.state==='nosb')h+='<div class="empty">Listeners need a connection. Check your internet and reopen Select music.</div>';
   else if(st.state==='signin')h+='<div class="fbox"><p>Sign in to talk with your listeners while you mix.</p><a class="k pl" href="auth.html?next=studio.html" target="_top">Sign in</a></div>';
-  else if(st.state==='missing')h+='<div class="empty">YAPS Connect is not set up yet. Run <b>supabase-connect.sql</b> in Supabase, then reopen this box.</div>';
+  else if(st.state==='missing')h+='<div class="empty">Community chat is not set up yet. The <b>community_chat</b> table is missing in Supabase.</div>';
   else if(st.state==='error')h+='<div class="empty">'+E(st.err||'Could not load your listeners.')+'</div><div class="fbox"><button class="k" data-f="retry">Try again</button></div>';
-  else if(st.state==='nodj')h+='<div class="fbox"><b>Connect with your listeners</b><p>Create your DJ community. Listeners join it from your DJ profile, chat with you and ask for songs while you play.</p><input id="fanName" maxlength="60" placeholder="Your DJ name" aria-label="Your DJ name"><button class="k pl" data-f="create">Create my DJ community</button></div>';
   else{
-   const list=st.msgs.filter(m=>!m.deleted_at&&(!st.reqOnly||REQ.test(m.body||'')));
-   h+='<div class="ftools"><button class="k" data-f="now" title="Tell your listeners what is playing">🎧 Share now playing</button><button class="k'+(st.reqOnly?' pl':'')+'" data-f="req" aria-pressed="'+st.reqOnly+'">Requests</button><button class="k" data-f="open" title="Members, moderation and private chats">Open Connect</button></div>'
-    +'<div class="fmsgs" aria-live="polite">'+(list.length?list.map(m=>{const mine=m.sender_id===st.uid,r=REQ.test(m.body||'');
-      return '<div class="fm'+(mine?' me':'')+(r?' rq':'')+'"><span class="fa" aria-hidden="true">'+E(initials(nm(m.sender_id)))+'</span><div><b>'+E(mine?'You':nm(m.sender_id))+'</b>'+(r?'<i>request</i>':'')+'<p>'+E(m.body)+'</p></div></div>'}).join('')
-      :'<div class="empty">'+(st.reqOnly?'No song requests yet.':'No messages yet. Say hello, or share what you are playing.')+'</div>')+'</div>'
+   const list=st.msgs.filter(m=>!st.reqOnly||REQ.test(m.body||''));
+   h+='<div class="ftools"><button class="k" data-f="now" title="Tell your listeners what is playing">🎧 Share now playing</button><button class="k'+(st.reqOnly?' pl':'')+'" data-f="req" aria-pressed="'+st.reqOnly+'">Requests</button><button class="k" data-f="open" title="Open your community in YAPS Music">Open community</button></div>'
+    +'<div class="fmsgs" aria-live="polite">'+(list.length?list.map(m=>{const mine=m.user_id===st.uid,r=REQ.test(m.body||'');
+      return '<div class="fm'+(mine?' me':'')+(r?' rq':'')+'"><span class="fa" aria-hidden="true">'+E(initials(nm(m.user_id)))+'</span><div><b>'+E(mine?'You':nm(m.user_id))+'</b>'+(r?'<i>request</i>':'')+'<p>'+E(m.body)+'</p>'+(r&&!mine?'<button class="k" data-f="find" data-q="'+E(reqText(m.body))+'" style="margin-top:4px;padding:4px 10px;font-size:11px">Find in library</button>':'')+'</div></div>'}).join('')
+      :'<div class="empty">'+(st.reqOnly?'No song requests yet.':'No messages yet. Listeners who join your community from your DJ profile will chat and request songs here.')+'</div>')+'</div>'
     +'<form class="fcomp" data-f="form"><input id="fanIn" maxlength="500" autocomplete="off" placeholder="Message your listeners" aria-label="Message your listeners" enterkeyhint="send"><button class="k pl" type="submit" aria-label="Send">Send</button></form>';
   }
   el.innerHTML=h;
@@ -4720,41 +4116,50 @@ window.YAPS_LOOPTOOLS={state:LT,loopSize,loopIn,loopOut,loopExit,reloop,rollStar
   try{const r=await sb.from('yaps_profiles').select('id,username,full_name').in('id',need);(r.data||[]).forEach(p=>st.people.set(p.id,{name:(p.full_name&&p.full_name.indexOf('@')<0?p.full_name:p.username)||'Listener'}))}catch(e){}
   need.forEach(i=>{if(!st.people.has(i))st.people.set(i,{name:'Listener'})});
  }
+ function addRows(rows){
+  const fresh=rows.filter(m=>m&&!st.seen.has(m.id));if(!fresh.length)return false;
+  fresh.forEach(m=>{st.seen.add(m.id);st.msgs.push(m)});
+  st.msgs.sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));if(st.msgs.length>200)st.msgs=st.msgs.slice(-200);
+  return fresh;
+ }
+ async function fetchRows(){
+  const r=await sb.from('community_chat').select('*').eq('community',st.key).order('created_at',{ascending:false}).limit(60);
+  if(r.error)throw r.error;return (r.data||[]).reverse();
+ }
  async function load(){
   if(st.busy)return;st.busy=true;
   try{
    if(typeof sb==='undefined'||!sb){st.state='nosb';paint();return}
    const ses=(await sb.auth.getSession()).data.session;
    if(!ses){st.state='signin';paint();return}
-   st.uid=ses.user.id;st.state='loading';paint();
-   const me=await rpc('connect_ensure_profile');
-   const rooms=await rpc('connect_find_rooms',{p_kind:'dj',p_keys:['u:'+st.uid],p_owner:st.uid});
-   if(!me.dj_enabled||!rooms||!rooms[0]){st.state='nodj';paint();return}
-   st.room=rooms[0];st.count=st.room.member_count||0;
-   const rows=(await rpc('connect_get_messages',{p_room:st.room.id,p_before:null,p_limit:40}))||[];
-   rows.forEach(m=>{if(m.sender)st.people.set(m.sender.id,{name:m.sender.name})});
-   st.msgs=rows.slice().reverse();st.state='ready';paint();subscribe();
+   st.uid=ses.user.id;st.key=('dj-u-'+st.uid).toLowerCase().replace(/[^a-z0-9_-]/g,'');st.state='loading';paint();
+   const rows=await fetchRows();
+   await people(rows.map(m=>m.user_id).concat([st.uid]));
+   st.seen=new Set();st.msgs=[];addRows(rows);
+   try{const c=await sb.from('community_chat_members').select('user_id',{count:'exact',head:true}).eq('community',st.key);st.count=c.error?null:c.count}catch(e){st.count=null}
+   st.state='ready';paint();subscribe();
   }catch(e){const m=String((e&&(e.message||e.details))||'');
-   if(e&&(e.code==='PGRST202'||e.code==='42883'||/could not find the function|schema cache/i.test(m)))st.state='missing';else{st.state='error';st.err=/fetch|network/i.test(m)?'Network problem. Try again.':'Could not load your listeners.'}
+   if(e&&(e.code==='42P01'||e.code==='PGRST205'||/does not exist|schema cache/i.test(m)))st.state='missing';else{st.state='error';st.err=/fetch|network/i.test(m)?'Network problem. Try again.':'Could not load your listeners.'}
    paint();
   }finally{st.busy=false}
  }
- function subscribe(){
-  unsubscribe();if(!st.room)return;
-  st.ch=sb.channel('djfans-'+st.room.id+'-'+Date.now());
-  st.ch.on('postgres_changes',{event:'INSERT',schema:'public',table:'community_messages',filter:'room_id=eq.'+st.room.id},async p=>{
-    if(st.msgs.some(m=>m.id===p.new.id))return;await people([p.new.sender_id]);st.msgs.push(p.new);if(st.msgs.length>200)st.msgs.shift();paint(true);
-    if(p.new.sender_id!==st.uid&&REQ.test(p.new.body||''))toastS('Song request from '+nm(p.new.sender_id));
-  });
-  st.ch.on('postgres_changes',{event:'UPDATE',schema:'public',table:'community_messages',filter:'room_id=eq.'+st.room.id},p=>{const m=st.msgs.find(x=>x.id===p.new.id);if(m){m.body=p.new.body;m.deleted_at=p.new.deleted_at;paint(true)}});
-  st.ch.subscribe();
+ async function onNew(rows){
+  const fresh=addRows(rows);if(!fresh)return;await people(fresh.map(m=>m.user_id));paint(true);
+  fresh.forEach(m=>{if(m.user_id!==st.uid&&REQ.test(m.body||''))toastS('Song request from '+nm(m.user_id))});
  }
- function unsubscribe(){if(st.ch){try{sb.removeChannel(st.ch)}catch(e){}st.ch=null}}
+ function subscribe(){
+  unsubscribe();if(!st.key)return;
+  try{st.ch=sb.channel('djfans-'+st.key+'-'+Date.now());
+   st.ch.on('postgres_changes',{event:'INSERT',schema:'public',table:'community_chat',filter:'community=eq.'+st.key},p=>onNew([p.new]));
+   st.ch.subscribe()}catch(e){}
+  st.poll=setInterval(()=>{if(!document.hidden)fetchRows().then(onNew).catch(()=>{})},10000);   // safety net if realtime is not enabled
+ }
+ function unsubscribe(){if(st.poll){clearInterval(st.poll);st.poll=null}if(st.ch){try{sb.removeChannel(st.ch)}catch(e){}st.ch=null}}
  async function sendText(t){
-  t=String(t||'').trim();if(!t||!st.room)return false;
-  const r=await sb.from('community_messages').insert({room_id:st.room.id,sender_id:st.uid,body:t}).select('*').single();
-  if(r.error){const m=String(r.error.message||'');toastS(/connect_rate_limited/.test(m)?'Slow down a little.':/row-level|permission/i.test(m)?'You cannot post in this community right now.':'Message not sent. Try again.');return false}
-  if(!st.msgs.some(m=>m.id===r.data.id)){st.msgs.push(r.data);paint(false)}return true;
+  t=String(t||'').trim();if(!t||!st.key)return false;
+  const r=await sb.from('community_chat').insert({community:st.key,user_id:st.uid,body:t}).select('*').single();
+  if(r.error){const m=String(r.error.message||'');toastS(/row-level|permission/i.test(m)?'You cannot post in this community right now.':'Message not sent. Try again.');return false}
+  if(addRows([r.data]))paint(false);return true;
  }
  function nowPlaying(){
   const ds=(typeof D!=='undefined'?D:[]).filter(d=>d&&d.t&&d.t!=='Empty deck'),d=ds.find(x=>x.on)||ds[0];
@@ -4764,12 +4169,9 @@ window.YAPS_LOOPTOOLS={state:LT,loopSize,loopIn,loopOut,loopExit,reloop,rollStar
   const b=e.target.closest('[data-f]');if(!b||b.dataset.f==='form')return;const a=b.dataset.f;e.stopPropagation();
   if(a==='retry'){st.busy=false;load()}
   else if(a==='req'){st.reqOnly=!st.reqOnly;paint(false)}
-  else if(a==='open'){try{if(self!==top&&parent.navigate){parent._studioClose&&parent._studioClose(true);parent.navigate('connect')}else toastS('Open YAPS Music and choose YAPS Connect.')}catch(x){toastS('Open YAPS Connect from the main menu.')}}
+  else if(a==='find'){const q=document.getElementById('q');if(q){q.value=b.dataset.q||'';q.dispatchEvent(new Event('input',{bubbles:true}));toastS('Searching the library for the request')}}
+  else if(a==='open'){try{if(self!==top&&parent.openCommunity){parent._studioClose&&parent._studioClose(true);parent.openCommunity({c:st.key,name:nm(st.uid)})}else toastS('Open YAPS Music and tap Community Chat.')}catch(x){toastS('Open Community Chat from the main menu.')}}
   else if(a==='now'){const t=nowPlaying();if(!t){toastS('Load a song on a deck first.');return}b.disabled=true;if(await sendText(t))toastS('Shared with your listeners');b.disabled=false}
-  else if(a==='create'){
-   const n=(el.querySelector('#fanName')||{}).value||'';if(n.trim().length<2){toastS('Enter your DJ name first');return}
-   b.disabled=true;try{await rpc('connect_save_dj_profile',{p_name:n.trim(),p_bio:'',p_city:'',p_image:null});toastS('Your DJ community is open');st.busy=false;load()}catch(x){b.disabled=false;toastS('Could not create it. Try again.')}
-  }
  });
  el.addEventListener('submit',async e=>{e.preventDefault();const i=el.querySelector('#fanIn');if(!i)return;const v=i.value;i.value='';if(!(await sendText(v)))i.value=v;else{const n=el.querySelector('#fanIn');if(n)n.focus()}});
  ['pointerdown','touchstart','keydown'].forEach(t=>el.addEventListener(t,e=>e.stopPropagation()));   // keep the song drag-and-drop and shortcuts out of the chat box

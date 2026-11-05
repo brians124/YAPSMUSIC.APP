@@ -326,7 +326,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 
 
 /* ── Added: DJ account type, forgot password, new-password view ── */
-.acct-type-row { grid-template-columns: repeat(3, 1fr); }
+.acct-type-row { grid-template-columns: repeat(2, 1fr); }
 .acct-type-icon i { font-size: 20px; }
 .acct-type-btn { user-select: none; }
 .acct-hint { font-size: 11.5px; color: var(--muted); line-height: 1.4; margin-top: 8px; min-height: 16px; }
@@ -343,7 +343,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 .signup-success-icon i { color: var(--accent-lighter); }
 .btn-primary.signup-submit-btn { border-radius: 24px; font-size: 13.5px; font-weight: 700; }
 @media (min-width: 900px) and (min-height: 560px) {
-  .auth-modal .acct-type-row { grid-template-columns: repeat(3, 1fr); }
+  .auth-modal .acct-type-row { grid-template-columns: repeat(2, 1fr); }
   .auth-modal .acct-hint { color: rgba(255,255,255,.6); font-size: 11px; margin-top: 6px; }
   .auth-modal .auth-intro { color: rgba(255,255,255,.75); font-size: 12.5px; }
   .auth-modal .auth-face .auth-linkbtn { color: #0ef; }
@@ -431,7 +431,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
       <button class="btn-primary" id="newPwSubmitBtn" data-v="newpw" style="width:100%;justify-content:center;padding:12px;margin-top:8px;">Save new password</button>
 
       <p class="auth-flip-link" data-v="login">New here? <a href="#" id="toSignup">Create account <i class="fas fa-arrow-right"></i></a><br>
-        <span style="display:inline-block;margin-top:6px;">Are you a DJ? <a href="#" id="toDj"><i class="fas fa-compact-disc"></i> Create a DJ account</a></span></p>
+        <span style="display:inline-block;margin-top:6px;">Are you a DJ? <a href="#" id="toDj"><i class="fas fa-compact-disc"></i> Create a DJ account</a></span><br>
+        <span style="display:inline-block;margin-top:6px;">Are you a promoter? <a href="#" id="toPromoter"><i class="fas fa-bullhorn"></i> Create a promoter account</a></span></p>
       <p class="auth-flip-link" data-v="forgot"><a href="#" id="toLogin"><i class="fas fa-arrow-left"></i> Back to sign in</a></p>
     </div>
 
@@ -460,6 +461,11 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
             <span class="acct-type-icon"><i class="fas fa-compact-disc"></i></span>
             <span class="acct-type-label">DJ</span>
             <span class="acct-type-sub">Mix &amp; perform</span>
+          </div>
+          <div class="acct-type-btn" id="acctTypePromoter" data-type="promoter" role="radio" aria-checked="false" tabindex="0">
+            <span class="acct-type-icon"><i class="fas fa-bullhorn"></i></span>
+            <span class="acct-type-label">Promoter</span>
+            <span class="acct-type-sub">Events &amp; shows</span>
           </div>
         </div>
         <div class="acct-hint" id="acctHint"></div>
@@ -540,7 +546,7 @@ var sb = (window.supabase && typeof window.supabase.createClient === "function")
 var qp = new URLSearchParams(location.search);
 var hp = new URLSearchParams(location.hash.replace(/^#/, ""));
 var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-var TYPES = ["listener", "artist", "dj"];
+var TYPES = ["listener", "artist", "dj", "promoter"];
 var acctType = "listener", view = "login", recovery = hp.get("type") === "recovery", cooldownT = null;
 
 // Where Google / email links send people back to: the app root, the address already allowed in Supabase → Redirect URLs.
@@ -589,7 +595,7 @@ function setView(v) {
   if (!$("authFlip").classList.contains("flipped")) $("authTitle").textContent = TITLES[v];
   clearError(); fit();
 }
-function signupTitle() { return acctType === "dj" ? "Create your DJ account" : acctType === "artist" ? "Create your artist account" : "Create your account"; }
+function signupTitle() { return acctType === "promoter" ? "Create your promoter account" : acctType === "dj" ? "Create your DJ account" : acctType === "artist" ? "Create your artist account" : "Create your account"; }
 function authFlip(side) {
   var w = $("authFlip"), toSignup = side === "signup";
   $("signupSuccess").style.display = "none";
@@ -607,9 +613,10 @@ function authFlip(side) {
 var HINTS = {
   listener: "Discover and stream music, like songs and make playlists.",
   artist: "Upload your songs, add a profile and reach new fans.",
-  dj: "Open DJ Studio: mix tracks, use sound packs and play live sets."
+  dj: "Open DJ Studio: mix tracks, use sound packs and play live sets.",
+  promoter: "Get a promoter profile: list your events, connect with artists and reach wider audiences."
 };
-var LABELS = { listener: "Create free account", artist: "Create artist account", dj: "Create DJ account" };
+var LABELS = { listener: "Create free account", artist: "Create artist account", dj: "Create DJ account", promoter: "Create promoter account" };
 function selectAccountType(type) {
   if (TYPES.indexOf(type) < 0) type = "listener";
   acctType = type; $("authAccountType").value = type;
@@ -744,17 +751,19 @@ async function signUpWithEmail() {
 var STEPS = {
   listener: [["fa-fire", "Explore trending Ugandan music"], ["fa-user-plus", "Follow your favourite artists"], ["fa-list", "Create a playlist"]],
   artist: [["fa-cloud-arrow-up", "Upload your first track"], ["fa-image-portrait", "Add a profile photo & bio"], ["fa-share-nodes", "Share your profile link"]],
-  dj: [["fa-sliders", "Open DJ Studio and load two tracks"], ["fa-box-open", "Add a sound pack"], ["fa-share-nodes", "Publish your first mix"]]
+  dj: [["fa-sliders", "Open DJ Studio and load two tracks"], ["fa-box-open", "Add a sound pack"], ["fa-share-nodes", "Publish your first mix"]],
+  promoter: [["fa-image-portrait", "Add your photo, company and bio"], ["fa-calendar-plus", "List your upcoming events"], ["fa-handshake", "Connect with artists who want to be promoted"]]
 };
 function showSignupSuccess(name, type, needsConfirm) {
   $("authFlip").style.display = "none"; $("signupSuccess").style.display = "block";
   $("authTitle").textContent = "You're in!";
-  $("successIcon").innerHTML = '<i class="fas ' + (type === "dj" ? "fa-compact-disc" : "fa-circle-check") + '"></i>';
-  $("signupSuccessMsg").textContent = needsConfirm ? "Check your email to confirm your account" : "Welcome, " + name + "! Your YAPS " + (type === "dj" ? "DJ " : "") + "account is ready.";
+  $("successIcon").innerHTML = '<i class="fas ' + (type === "dj" ? "fa-compact-disc" : type === "promoter" ? "fa-bullhorn" : "fa-circle-check") + '"></i>';
+  $("signupSuccessMsg").textContent = needsConfirm ? "Check your email to confirm your account" : "Welcome, " + name + "! Your YAPS " + (type === "dj" ? "DJ " : type === "promoter" ? "promoter " : "") + "account is ready.";
   $("signupNextSteps").innerHTML = STEPS[type].map(function (s) { return '<div class="signup-next-step"><span class="step-icon"><i class="fas ' + s[0] + '"></i></span><span>' + s[1] + '</span></div>'; }).join("");
   var p = $("successPrimary"), a = $("successAlt");
   // DJs land on the Ugandan DJs page and artists on the Artists page, where their new profile is already listed
   if (type === "dj") { p.textContent = "Go to the DJs page"; p.href = "index.html?page=djs"; a.hidden = false; a.textContent = "Open DJ Studio"; a.href = "studio.html"; }
+  else if (type === "promoter") { p.textContent = "Go to the Promoters page"; p.href = "index.html?page=djs"; a.hidden = false; a.textContent = "Go to YAPSMusic"; a.href = nextUrl(); }
   else if (type === "artist") { p.textContent = "Go to the Artists page"; p.href = "index.html?page=artists"; a.hidden = false; a.textContent = "Go to YAPSMusic"; a.href = nextUrl(); }
   else { p.textContent = "Start listening"; p.href = nextUrl(); a.hidden = true; }
 }
@@ -814,6 +823,7 @@ document.querySelectorAll(".acct-type-btn").forEach(function (b) {
 });
 $("toSignup").addEventListener("click", function (e) { e.preventDefault(); authFlip("signup"); });
 $("toDj").addEventListener("click", function (e) { e.preventDefault(); selectAccountType("dj"); authFlip("signup"); });
+$("toPromoter").addEventListener("click", function (e) { e.preventDefault(); selectAccountType("promoter"); authFlip("signup"); });
 $("toSignin").addEventListener("click", function (e) { e.preventDefault(); setView("login"); authFlip("signin"); });
 $("toLogin").addEventListener("click", function (e) { e.preventDefault(); setView("login"); });
 $("toForgot").addEventListener("click", openForgot);
@@ -840,7 +850,7 @@ if (sb) sb.auth.onAuthStateChange(function (ev) { if (ev === "PASSWORD_RECOVERY"
 
 if (recovery) { setView("newpw"); }
 else if (qp.get("forgot") === "1") { openForgot(); }
-else if (mode === "signup" || qType === "dj" || qType === "artist") { authFlip("signup"); }
+else if (mode === "signup" || qType === "dj" || qType === "artist" || qType === "promoter") { authFlip("signup"); }
 else if (sb) { sb.auth.getSession().then(function (r) { if (r.data && r.data.session && !recovery && !linkErr) go(); }); }
 if ((mode === "signup" || qType) && sb && !recovery) sb.auth.getSession().then(function (r) { if (r.data && r.data.session && !linkErr) go(); });
 document.getElementById("closeLink").href = "index.html";
