@@ -32603,6 +32603,27 @@ html body .gs-row {
   border-color: rgba(150,150,160,0.18) !important;
   box-shadow: none !important;
 }
+
+/* ── LARGE SCREENS ONLY: pinned sidebar uses the SAME gray transparent box background as the song boxes ──
+   (phones / small tablets keep the slide-in MENU drawer exactly as before) */
+@media (min-width: 900px) and (min-height: 521px) {
+  html body #sidebar {
+    background: rgba(150,150,160,0.14) !important;
+    background-color: rgba(150,150,160,0.14) !important;
+    border-right: 1px solid rgba(150,150,160,0.18) !important;
+    box-shadow: none !important;
+  }
+  html body #sidebar .sidebar-footer {
+    background: transparent !important;
+    border-top-color: rgba(150,150,160,0.18) !important;
+  }
+  html body #sidebar .sidebar-section + .sidebar-section {
+    border-top-color: rgba(150,150,160,0.18) !important;
+  }
+  html body #sidebar .sidebar-item:not(.active):not(.logout-item):hover {
+    background: rgba(150,150,160,0.16);
+  }
+}
 </style>
 
 <style id="yapsSearchUnify">
