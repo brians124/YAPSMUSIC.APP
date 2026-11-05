@@ -1,0 +1,113 @@
+{
+  "id": "/",
+  "name": "YAPS Music",
+  "short_name": "YAPS Music",
+  "description": "Uganda's premier music platform stream, upload, and share Ugandan music, videos, and AI generated tracks.",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
+  "background_color": "#050b22",
+  "theme_color": "#050b22",
+  "lang": "en-UG",
+  "dir": "ltr",
+  "categories": [
+    "music",
+    "entertainment",
+    "video"
+  ],
+  "icons": [
+    {
+      "src": "icons/app-icon-12-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/app-icon-12-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/app-icon-12-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/app-icon-12-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/app-icon-12-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/app-icon-12-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "images/yaps-cover.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "YAPS Music home screen"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "AI DJ",
+      "short_name": "AI DJ",
+      "description": "Jump straight into the AI DJ mix",
+      "url": "./?page=ai-dj",
+      "icons": [
+        {
+          "src": "icons/app-icon-12-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Upload",
+      "short_name": "Upload",
+      "description": "Upload a new track",
+      "url": "./?page=upload",
+      "icons": [
+        {
+          "src": "icons/app-icon-12-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "short_name": "Search",
+      "description": "Search music, artists, and genres",
+      "url": "./?page=search",
+      "icons": [
+        {
+          "src": "icons/app-icon-12-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
+}
