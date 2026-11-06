@@ -823,6 +823,38 @@ body {
 .qv-see-all:hover { border-color: var(--qv-neon-glow); }
 .qv-see-all i { font-size: 11px; }
 
+/* ── EXCLUSIVE HITS: list design (columns of 4 rows: thumb, title, artist • plays, ⋮; next column peeks) ──
+   Uses only app theme variables, no colors taken from artwork. */
+.qvl-scroller {
+  display: flex; overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; padding: 0 0 8px;
+}
+.qvl-scroller::-webkit-scrollbar { display: none; }
+.qvl-col {
+  flex: 0 0 88%; max-width: 520px; scroll-snap-align: start;
+  display: flex; flex-direction: column; padding: 0 0 0 16px; box-sizing: border-box;
+}
+.qvl-col:last-child { padding-right: 16px; flex-basis: calc(88% + 16px); }
+.qvl-row {
+  -webkit-tap-highlight-color: transparent;
+  display: flex; align-items: center; gap: 14px;
+  padding: 8px 4px 8px 8px; margin: 0 -8px; border-radius: 14px;
+  cursor: pointer; transition: background .18s ease;
+}
+.qvl-row:active, .qvl-row.is-active { background: var(--card); }
+@media (hover: hover) { .qvl-row:hover { background: var(--card); } }
+.qvl-thumb { flex: 0 0 56px; width: 56px; height: 56px; border-radius: 8px; overflow: hidden; background: var(--card2); }
+.qvl-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.qvl-info { flex: 1; min-width: 0; }
+.qvl-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qvl-sub { font-size: 13.5px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qvl-more {
+  flex: 0 0 40px; width: 40px; height: 40px; border: 0; background: transparent; color: var(--text);
+  font-size: 18px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.qvl-more:active { background: var(--card2); }
+
 /* ── 3D COVERFLOW STAGE ── */
 .qv3d-wrap { position: relative; }
 .qv3d-stage {
@@ -2460,6 +2492,10 @@ body {
    content still fits within the row. */
 .scroll-row:has(> :nth-child(-n+2):last-child) {
   justify-content: center;
+}
+/* Continue Listening: always start at the left edge, never centered */
+#continue-listening-row, #continue-listening-row:has(> :nth-child(-n+2):last-child) {
+  justify-content: flex-start;
 }
 @media (max-width: 480px) {
   .scroll-row { padding: 0 16px 20px; }
@@ -7769,6 +7805,15 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
     </div>
     <div class="scroll-row new-releases-row" id="new-releases-home-row" style="padding:0 16px 16px;gap:12px;"></div>
 
+    <!-- EXCLUSIVE HITS SINCE 2013 -->
+    <div class="section-head" id="exclusive-hits-head" style="padding:18px 16px 10px;">
+      <div>
+        <h2>Exclusive Hits <span style="color:var(--accent-light);">Since 2013</span></h2>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">The songs that built the sound, only on YAPS</div>
+      </div>
+    </div>
+    <div class="qvl-scroller" id="exclusive-hits-row"></div>
+
     <!-- TRENDING VIDEOS — automatic 3D rotating carousel -->
     <div class="tvc-head">
       <div class="tvc-head-left">
@@ -8198,9 +8243,17 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
 
         <!-- STEP 3: ARTWORK & RIGHTS -->
         <div id="uploadStep3" style="display:none;">
-        <div class="form-group" id="uploadTrendingRow" style="display:none;align-items:center;gap:10px;background:var(--accent-dim);border:1.5px solid var(--accent);border-radius:10px;padding:12px 14px;">
-          <input type="checkbox" id="uploadMarkTrending" style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer;flex-shrink:0;">
-          <label for="uploadMarkTrending" style="font-size:13px;font-weight:700;color:var(--text);cursor:pointer;">Mark as Trending (owner upload, featured in Trending Now)</label>
+        <div class="form-group" id="uploadTrendingRow">
+          <label class="form-label">Is this song trending?</label>
+          <div style="display:flex;gap:10px;">
+            <div class="vis-option" id="uploadTrendingYes" onclick="_setTrending(true)" style="flex:0 0 auto;padding:10px 20px;">
+              <div class="vis-label">Yes</div>
+            </div>
+            <div class="vis-option selected" id="uploadTrendingNo" onclick="_setTrending(false)" style="flex:0 0 auto;padding:10px 20px;">
+              <div class="vis-label">No</div>
+            </div>
+          </div>
+          <div id="uploadTrendingHint" style="font-size:12px;color:var(--muted);margin-top:6px;">Trending songs are shown in Trending Now.</div>
         </div>
         <div class="form-group">
           <label class="form-label">Artwork / Thumbnail</label>
@@ -8758,59 +8811,60 @@ a.djx-row{color:inherit;text-decoration:none}
         <button class="btn-primary" onclick="if(!_demoUser){showToast('Sign in to follow people');openModal('auth');return;}showToast('Open a profile from People You May Know to follow them')"><i class="fas fa-user-plus"></i> Follow</button>
       </div>
       <!-- ACCOUNT HUB: swipeable glass cards. Holds everything the desktop sidebar has, so phones need no MENU button -->
-      <div class="acct-hub">
-        <div class="acct-group">Account</div>
-        <div class="acct-rail" tabindex="0" aria-label="Account">
-          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb" onclick="if(!_demoUser){showToast('Sign in to manage your account');openModal('auth');return;}openEditProfileModal()"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c0-3.5 3-5.5 6.5-5.5"/><path d="M14 20l.6-2.6 5-5 2 2-5 5z"/></svg></span></span><span class="ac-title">Account</span><span class="ac-desc">Edit your profile, photo and details.</span></button>
-          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#6366f1" onclick="openSettings()"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></span></span><span class="ac-title">Settings</span><span class="ac-desc">Audio, language, privacy and theme.</span></button>
-          <button type="button" class="acct-card" style="--c:#fbbf24;--c2:#f97316" onclick="openSubscriptionModal()"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span></span><span class="ac-title">Premium</span><span class="ac-desc">Go ad-free with higher audio quality.</span></button>
-          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#22d3ee" onclick="navigate('earnings')"><span class="ac-top"><span class="ac-num">04</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V7a2 2 0 0 1 2-2h11.5v3"/><rect x="3.5" y="8" width="17" height="11" rx="2.5"/><circle cx="16.5" cy="13.5" r="1.2"/></svg></span></span><span class="ac-title">Wallet</span><span class="ac-desc">Track your earnings and payouts.</span></button>
+      <div class="acct-hub" id="acctHub">
+        <!-- Simple list: only the everyday items. Everything else lives behind "Settings & more". -->
+        <div class="acct-list" id="acctMain" role="list">
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb" onclick="if(!_demoUser){showToast('Sign in to manage your account');openModal('auth');return;}openEditProfileModal()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c0-3.5 3-5.5 6.5-5.5"/><path d="M14 20l.6-2.6 5-5 2 2-5 5z"/></svg></span></span><span class="ac-title">Account</span><span class="ac-desc">Edit your profile, photo and details.</span></button>
+          <button type="button" class="acct-card" style="--c:#fbbf24;--c2:#f97316" onclick="openSubscriptionModal()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span></span><span class="ac-title">Premium</span><span class="ac-desc">Go ad-free with higher audio quality.</span></button>
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#22d3ee" onclick="navigate('connect')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 14c2.8 0 5 1.8 5 4.5"/></svg></span></span><span class="ac-title">Connect</span><span class="ac-desc">Join communities of fans and artists.</span></button>
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="navigate('messages')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span></span><span class="ac-title">Calls</span><span class="ac-desc">Message and call friends and artists.</span></button>
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#8b5cf6" onclick="navigate('upload')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9.5 4 4 0 0 1 17.5 18"/><path d="M12 17v-6M9 13.5l3-3 3 3"/></svg></span></span><span class="ac-title">Upload</span><span class="ac-desc">Share your music with the world.</span></button>
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="_p2pGoToDownloads()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10M8 10.5l4 4 4-4"/><path d="M5 19h14"/></svg></span></span><span class="ac-title">Downloads</span><span class="ac-desc">Songs saved for offline listening.</span></button>
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb" onclick="toggleQueue()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h12M4 12h12M4 17h7"/><path d="M18 14l3 2.5-3 2.5z"/></svg></span></span><span class="ac-title">Queue</span><span class="ac-desc">See what plays next.</span></button>
+          <button type="button" class="acct-card acct-moreBtn" style="--c:#8b5cf6;--c2:#6366f1" onclick="acctMore(true)"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span></span><span class="ac-title">Settings &amp; more</span></button>
         </div>
-        <div class="acct-group">Connect &amp; create</div>
-        <div class="acct-rail" tabindex="0" aria-label="Connect and create">
-          <button type="button" class="acct-card" style="--c:#f43f5e;--c2:#e040fb" onclick="navigate('notifications')"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span></span><span class="ac-title">Alerts</span><span class="ac-desc">Likes, follows and new releases.</span></button>
-          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="navigate('messages')"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span></span><span class="ac-title">Calls</span><span class="ac-desc">Message and call friends and artists.</span></button>
-          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#22d3ee" onclick="navigate('connect')"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 14c2.8 0 5 1.8 5 4.5"/></svg></span></span><span class="ac-title">Connect</span><span class="ac-desc">Join communities of fans and artists.</span></button>
-          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#8b5cf6" onclick="navigate('upload')"><span class="ac-top"><span class="ac-num">04</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9.5 4 4 0 0 1 17.5 18"/><path d="M12 17v-6M9 13.5l3-3 3 3"/></svg></span></span><span class="ac-title">Upload</span><span class="ac-desc">Share your music with the world.</span></button>
-        </div>
-        <div class="acct-group">Library &amp; explore</div>
-        <div class="acct-rail" tabindex="0" aria-label="Library and explore">
-          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="_p2pGoToDownloads()"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10M8 10.5l4 4 4-4"/><path d="M5 19h14"/></svg></span></span><span class="ac-title">Downloads</span><span class="ac-desc">Songs saved for offline listening.</span></button>
-          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb" onclick="toggleQueue()"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h12M4 12h12M4 17h7"/><path d="M18 14l3 2.5-3 2.5z"/></svg></span></span><span class="ac-title">Queue</span><span class="ac-desc">See what plays next.</span></button>
-          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#6366f1" onclick="navigate('device')"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></svg></span></span><span class="ac-title">On device</span><span class="ac-desc">Play songs stored on your phone.</span></button>
-          <button type="button" class="acct-card" style="--c:#e040fb;--c2:#8b5cf6" onclick="djxOpenPage('djs')"><span class="ac-top"><span class="ac-num">04</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3.5" y="13" width="4" height="6.5" rx="1.5"/><rect x="16.5" y="13" width="4" height="6.5" rx="1.5"/></svg></span></span><span class="ac-title">DJs</span><span class="ac-desc">Mixes from Ugandan DJs.</span></button>
-          <button type="button" class="acct-card" style="--c:#fb923c;--c2:#f43f5e" onclick="navigate('podcasts')"><span class="ac-top"><span class="ac-num">05</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg></span></span><span class="ac-title">Podcasts</span><span class="ac-desc">Shows and episodes to follow.</span></button>
-          <button type="button" class="acct-card" style="--c:#fbbf24;--c2:#f97316" onclick="navigate('events')"><span class="ac-top"><span class="ac-num">06</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg></span></span><span class="ac-title">Events</span><span class="ac-desc">Concerts and festivals near you.</span></button>
-        </div>
-        <div class="acct-group">Creator</div>
-        <div class="acct-rail" tabindex="0" aria-label="Creator">
-          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#8b5cf6" onclick="location.href='yaps-ai.html'"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></span></span><span class="ac-title">YAPS AI</span><span class="ac-desc">Chat with your AI DJ.</span></button>
-          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#e040fb" onclick="openStudio()"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16M12 4v16M18 4v16"/><circle cx="6" cy="9" r="2" fill="currentColor"/><circle cx="12" cy="15" r="2" fill="currentColor"/><circle cx="18" cy="8" r="2" fill="currentColor"/></svg></span></span><span class="ac-title">DJ Studio</span><span class="ac-desc">Build and publish your mixes.</span></button>
-          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#22d3ee;display:none" data-mirror="nav-dashboard" onclick="navigate('dashboard')"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-7M11 20V5M17 20v-10"/><path d="M3 20h18"/></svg></span></span><span class="ac-title">Analytics</span><span class="ac-desc">Plays and audience stats.</span></button>
-        </div>
-        <div class="acct-group">Preferences</div>
-        <div class="acct-rail" tabindex="0" aria-label="Preferences">
-          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#6366f1" onclick="openSettings('appearance',{k:'mode'})"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></span></span><span class="ac-title">Theme</span><span class="ac-desc">Switch dark or light mode.</span></button>
-          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="openSettings('playback',{l:'Audio Quality'})"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4"/></svg></span></span><span class="ac-title">Audio quality</span><span class="ac-desc">Choose how songs stream.</span></button>
-          <button type="button" class="acct-card" style="--c:#fb923c;--c2:#f43f5e" onclick="openSettings('downloads',{k:'offline'})"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 16 7.5"/><path d="M18 11.2A4 4 0 0 1 17.5 18H9"/><path d="M3 3l18 18"/></svg></span></span><span class="ac-title">Offline mode</span><span class="ac-desc">Listen without internet.</span></button>
-          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#22d3ee" onclick="openSettings('data',{k:'dataSaver'})"><span class="ac-top"><span class="ac-num">04</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/></svg></span></span><span class="ac-title">Data saver</span><span class="ac-desc">Use less mobile data.</span></button>
-          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#8b5cf6" onclick="openModal('language')"><span class="ac-top"><span class="ac-num">05</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></span></span><span class="ac-title">Language</span><span class="ac-desc">Change the app language.</span></button>
-          <button type="button" class="acct-card" style="--c:#e040fb;--c2:#8b5cf6" onclick="openLegal('privacypolicy')"><span class="ac-top"><span class="ac-num">06</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.5-3 8-7 9.5-4-1.5-7-5-7-9.5V6z"/><path d="M9 12l2.2 2.2L15 10.5"/></svg></span></span><span class="ac-title">Privacy</span><span class="ac-desc">How we protect your data.</span></button>
-        </div>
-        <div class="acct-group">Support</div>
-        <div class="acct-rail" tabindex="0" aria-label="Support">
-          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#6366f1" onclick="openHelpCenter()"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7"/><circle cx="12" cy="17" r=".7" fill="currentColor"/></svg></span></span><span class="ac-title">Help</span><span class="ac-desc">Answers to common questions.</span></button>
-          <button type="button" class="acct-card" style="--c:#fb923c;--c2:#f43f5e" onclick="openFeedback('bug')"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7a3 3 0 0 1 6 0v1H9z"/><rect x="7" y="8" width="10" height="11" rx="5"/><path d="M3 12h4M17 12h4M4 6l3 2M20 6l-3 2M4 19l3-2M20 19l-3-2M12 8v11"/></svg></span></span><span class="ac-title">Report</span><span class="ac-desc">Tell us when something is broken.</span></button>
-          <button type="button" class="acct-card" style="--c:#e040fb;--c2:#8b5cf6" onclick="openFeedback('feedback')"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span></span><span class="ac-title">Feedback</span><span class="ac-desc">Send ideas, praise or complaints.</span></button>
-        </div>
-        <div class="acct-group">About &amp; app</div>
-        <div class="acct-rail" tabindex="0" aria-label="About and app">
-          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#6366f1" onclick="openModal('about')"><span class="ac-top"><span class="ac-num">01</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.8" r=".8" fill="currentColor"/></svg></span></span><span class="ac-title">About</span><span class="ac-desc">Learn more about YAPSMusic.</span></button>
-          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#22d3ee" onclick="_sidebarShareApp()"><span class="ac-top"><span class="ac-num">02</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/></svg></span></span><span class="ac-title">Share</span><span class="ac-desc">Invite friends to YAPS.</span></button>
-          <button type="button" class="acct-card" style="--c:#fbbf24;--c2:#f97316" onclick="openRateAppModal()"><span class="ac-top"><span class="ac-num">03</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9-4.3-4.1 5.9-.8z"/></svg></span></span><span class="ac-title">Rate</span><span class="ac-desc">Tell us how we are doing.</span></button>
-          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb;display:none" data-mirror="pwaInstallBtn" onclick="pwaInstall()"><span class="ac-top"><span class="ac-num">04</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="2.5"/><path d="M12 8v6M9.5 11.5l2.5 2.5 2.5-2.5"/></svg></span></span><span class="ac-title">Install</span><span class="ac-desc">Add YAPS to your home screen.</span></button>
-          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#8b5cf6;display:none" data-mirror="feedbackInboxLink" onclick="openFeedbackInbox()"><span class="ac-top"><span class="ac-num">05</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13l2-8h12l2 8v6H4z"/><path d="M4 13h5l1 2h4l1-2h5"/></svg></span></span><span class="ac-title">Inbox</span><span class="ac-desc">Read feedback from users.</span></button>
-          <button type="button" class="acct-card" style="--c:#f43f5e;--c2:#b91c1c" onclick="_confirmSidebarLogout()"><span class="ac-top"><span class="ac-num">06</span><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"/><path d="M15 8l4 4-4 4M19 12H9"/></svg></span></span><span class="ac-title">Logout</span><span class="ac-desc">Sign out of your account.</span></button>
+        <div id="acctMore" hidden>
+          <button type="button" class="acct-back" onclick="acctMore(false)"><span class="acct-chev"></span> Settings &amp; more</button>
+          <div class="acct-group">Settings</div>
+          <div class="acct-list" role="list">
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#6366f1" onclick="openSettings()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></span></span><span class="ac-title">Settings</span><span class="ac-desc">Audio, language, privacy and theme.</span></button>
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#6366f1" onclick="openSettings('appearance',{k:'mode'})"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg></span></span><span class="ac-title">Theme</span><span class="ac-desc">Switch dark or light mode.</span></button>
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="openSettings('playback',{l:'Audio Quality'})"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4M8 6v12M12 3v18M16 7v10M20 10v4"/></svg></span></span><span class="ac-title">Audio quality</span><span class="ac-desc">Choose how songs stream.</span></button>
+          <button type="button" class="acct-card" style="--c:#fb923c;--c2:#f43f5e" onclick="openSettings('downloads',{k:'offline'})"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 16 7.5"/><path d="M18 11.2A4 4 0 0 1 17.5 18H9"/><path d="M3 3l18 18"/></svg></span></span><span class="ac-title">Offline mode</span><span class="ac-desc">Listen without internet.</span></button>
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#22d3ee" onclick="openSettings('data',{k:'dataSaver'})"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/></svg></span></span><span class="ac-title">Data saver</span><span class="ac-desc">Use less mobile data.</span></button>
+          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#8b5cf6" onclick="openModal('language')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></span></span><span class="ac-title">Language</span><span class="ac-desc">Change the app language.</span></button>
+          <button type="button" class="acct-card" style="--c:#e040fb;--c2:#8b5cf6" onclick="openLegal('privacypolicy')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.5-3 8-7 9.5-4-1.5-7-5-7-9.5V6z"/><path d="M9 12l2.2 2.2L15 10.5"/></svg></span></span><span class="ac-title">Privacy</span><span class="ac-desc">How we protect your data.</span></button>
+          </div>
+          <div class="acct-group">Library &amp; explore</div>
+          <div class="acct-list" role="list">
+          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#6366f1" onclick="navigate('device')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></svg></span></span><span class="ac-title">On device</span><span class="ac-desc">Play songs stored on your phone.</span></button>
+          <button type="button" class="acct-card" style="--c:#e040fb;--c2:#8b5cf6" onclick="djxOpenPage('djs')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3.5" y="13" width="4" height="6.5" rx="1.5"/><rect x="16.5" y="13" width="4" height="6.5" rx="1.5"/></svg></span></span><span class="ac-title">DJs</span><span class="ac-desc">Mixes from Ugandan DJs.</span></button>
+          <button type="button" class="acct-card" style="--c:#fb923c;--c2:#f43f5e" onclick="navigate('podcasts')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg></span></span><span class="ac-title">Podcasts</span><span class="ac-desc">Shows and episodes to follow.</span></button>
+          <button type="button" class="acct-card" style="--c:#fbbf24;--c2:#f97316" onclick="navigate('events')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg></span></span><span class="ac-title">Events</span><span class="ac-desc">Concerts and festivals near you.</span></button>
+          </div>
+          <div class="acct-group">Creator</div>
+          <div class="acct-list" role="list">
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#22d3ee" onclick="navigate('earnings')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8V7a2 2 0 0 1 2-2h11.5v3"/><rect x="3.5" y="8" width="17" height="11" rx="2.5"/><circle cx="16.5" cy="13.5" r="1.2"/></svg></span></span><span class="ac-title">Wallet</span><span class="ac-desc">Track your earnings and payouts.</span></button>
+          <button type="button" class="acct-card" style="--c:#f43f5e;--c2:#e040fb" onclick="navigate('notifications')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span></span><span class="ac-title">Alerts</span><span class="ac-desc">Likes, follows and new releases.</span></button>
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#8b5cf6" onclick="location.href='yaps-ai.html'"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></span></span><span class="ac-title">YAPS AI</span><span class="ac-desc">Chat with your AI DJ.</span></button>
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#e040fb" onclick="openStudio()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16M12 4v16M18 4v16"/><circle cx="6" cy="9" r="2" fill="currentColor"/><circle cx="12" cy="15" r="2" fill="currentColor"/><circle cx="18" cy="8" r="2" fill="currentColor"/></svg></span></span><span class="ac-title">DJ Studio</span><span class="ac-desc">Build and publish your mixes.</span></button>
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#22d3ee;display:none" data-mirror="nav-dashboard" onclick="navigate('dashboard')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-7M11 20V5M17 20v-10"/><path d="M3 20h18"/></svg></span></span><span class="ac-title">Analytics</span><span class="ac-desc">Plays and audience stats.</span></button>
+          </div>
+          <div class="acct-group">Support</div>
+          <div class="acct-list" role="list">
+          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#6366f1" onclick="openHelpCenter()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7"/><circle cx="12" cy="17" r=".7" fill="currentColor"/></svg></span></span><span class="ac-title">Help</span><span class="ac-desc">Answers to common questions.</span></button>
+          <button type="button" class="acct-card" style="--c:#fb923c;--c2:#f43f5e" onclick="openFeedback('bug')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7a3 3 0 0 1 6 0v1H9z"/><rect x="7" y="8" width="10" height="11" rx="5"/><path d="M3 12h4M17 12h4M4 6l3 2M20 6l-3 2M4 19l3-2M20 19l-3-2M12 8v11"/></svg></span></span><span class="ac-title">Report</span><span class="ac-desc">Tell us when something is broken.</span></button>
+          <button type="button" class="acct-card" style="--c:#e040fb;--c2:#8b5cf6" onclick="openFeedback('feedback')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></svg></span></span><span class="ac-title">Feedback</span><span class="ac-desc">Send ideas, praise or complaints.</span></button>
+          </div>
+          <div class="acct-group">About &amp; app</div>
+          <div class="acct-list" role="list">
+          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#6366f1" onclick="openModal('about')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.8" r=".8" fill="currentColor"/></svg></span></span><span class="ac-title">About</span><span class="ac-desc">Learn more about YAPSMusic.</span></button>
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#22d3ee" onclick="_sidebarShareApp()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/></svg></span></span><span class="ac-title">Share</span><span class="ac-desc">Invite friends to YAPS.</span></button>
+          <button type="button" class="acct-card" style="--c:#fbbf24;--c2:#f97316" onclick="openRateAppModal()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9 6.8 19.7l1-5.9-4.3-4.1 5.9-.8z"/></svg></span></span><span class="ac-title">Rate</span><span class="ac-desc">Tell us how we are doing.</span></button>
+          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb;display:none" data-mirror="pwaInstallBtn" onclick="pwaInstall()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="2.5"/><path d="M12 8v6M9.5 11.5l2.5 2.5 2.5-2.5"/></svg></span></span><span class="ac-title">Install</span><span class="ac-desc">Add YAPS to your home screen.</span></button>
+          <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#8b5cf6;display:none" data-mirror="feedbackInboxLink" onclick="openFeedbackInbox()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13l2-8h12l2 8v6H4z"/><path d="M4 13h5l1 2h4l1-2h5"/></svg></span></span><span class="ac-title">Inbox</span><span class="ac-desc">Read feedback from users.</span></button>
+          <button type="button" class="acct-card" style="--c:#f43f5e;--c2:#b91c1c" onclick="_confirmSidebarLogout()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"/><path d="M15 8l4 4-4 4M19 12H9"/></svg></span></span><span class="ac-title">Logout</span><span class="ac-desc">Sign out of your account.</span></button>
+          </div>
         </div>
       </div>
       <!-- PEOPLE YOU MAY KNOW (replaces the old Tracks / Albums / Playlists tabs on the profile page) -->
@@ -11932,6 +11986,7 @@ function renderHome() {
 
   // New home sections
   renderNewReleasesHomeRow();
+  renderExclusiveHits();
   renderTrendingVideos();
   renderGlobalTopCharts('Global');
   renderUgandaTrending();
@@ -12035,6 +12090,7 @@ function _homeTrackCardHTML(t, i) {
 }
 
 function renderPersonalizedHome() {
+  try { if (typeof _gsRenderHome === 'function') _gsRenderHome(); } catch (e) {}
   try { if (typeof renderTasteProfile === 'function' && typeof tasteData !== 'undefined') renderTasteProfile(); } catch (e) {}
   _renderContinueListening();
   _renderRecentlyPlayed();
@@ -16303,10 +16359,19 @@ function clearUploadFile() {
   const tagsInput = document.getElementById('uploadTags'); if (tagsInput) tagsInput.value = '';
   const copyrightBox = document.getElementById('uploadCopyrightConfirm'); if (copyrightBox) copyrightBox.checked = false;
   _uploadExplicit = false;
+  _setTrending(false);
   goToUploadStep(1);
 }
 
 // ── UPLOAD WIZARD (Step 1: Upload · Step 2: Details · Step 3: Artwork & Rights) ──
+let _uploadTrending = false;
+function _setTrending(val) {
+  _uploadTrending = !!val;
+  const yes = document.getElementById('uploadTrendingYes');
+  const no = document.getElementById('uploadTrendingNo');
+  if (yes) yes.classList.toggle('selected', !!val);
+  if (no) no.classList.toggle('selected', !val);
+}
 let _uploadExplicit = false;
 function _setExplicit(val) {
   _uploadExplicit = val;
@@ -16351,9 +16416,13 @@ async function _submitUploadInner() {
   if (_uploadedArtworkFile && (!_checkImageFile(_uploadedArtworkFile) || _uploadedArtworkFile.size > _MAX_ART)) { if (_uploadedArtworkFile.size > _MAX_ART) showToast('Artwork is too large (max 10 MB)'); goToUploadStep(3); return; }
 
   const ownerUpload = _isOwner();
-  const markTrending = ownerUpload && document.getElementById('uploadMarkTrending')?.checked;
+  // Everyone is asked "Is this song trending?". Owner uploads go straight into Trending Now;
+  // other artists send a request (TrendingRequest tag) that the owner confirms in the review queue.
+  const markTrending = ownerUpload && _uploadTrending;
+  const requestTrending = !ownerUpload && _uploadTrending;
   const baseTags = ['Uganda', genre];
   if (markTrending) baseTags.push('Trending');
+  else if (requestTrending) baseTags.push('TrendingRequest');
 
   const progressWrap = document.getElementById('uploadProgressWrap');
   const progressFill = document.getElementById('uploadProgressFill');
@@ -16474,6 +16543,8 @@ async function _submitUploadInner() {
       if (false) showToast('');
       else showToast(markTrending
         ? `"${title}" is live and featured in Trending Now!`
+        : requestTrending && window._lastUploadPending
+        ? `"${title}" submitted, your trending request is reviewed with it`
         : isRemote
           ? (window._lastUploadPending ? `"${title}" submitted, it goes live once approved` : `"${title}" is live, everyone can hear it!`)
           : `"${title}" saved locally, plays even after refresh!`);
@@ -16506,8 +16577,8 @@ function showUploadForm() {
   const reveal = () => {
     document.getElementById('uploadZone').style.display = 'none';
     document.getElementById('uploadForm').classList.add('visible');
-    const trendRow = document.getElementById('uploadTrendingRow');
-    if (trendRow) trendRow.style.display = _isOwner() ? 'flex' : 'none';
+    const trendHint = document.getElementById('uploadTrendingHint');
+    if (trendHint) trendHint.textContent = _isOwner() ? 'Yes puts this song straight into Trending Now.' : 'Trending songs are shown in Trending Now. Your answer is confirmed during review.';
     goToUploadStep(2);
   };
   // Owner (unlocked via the 5-tap logo + PIN) can upload straight away —
@@ -20450,8 +20521,13 @@ function _gsRenderHome() {
       <div class="tc-title">${_escHtml(t.title)}</div><div class="tc-artist">${_escHtml(t.artist)}</div></div>`).join('')}</div>
       <div style="padding:0 16px 8px;"><button class="btn-ghost" style="padding:6px 12px;font-size:12px;" onclick="openTaste()">Edit my picks</button></div>`;
   }
+  else html += `<div class="section-head" style="padding:16px 16px 10px;"><h2>Picked for you</h2></div>
+      <div style="padding:0 16px 8px;"><button class="btn-ghost" style="padding:10px 14px;font-size:13px;" onclick="openTaste()"><i class="fas fa-heart"></i> Choose the music you like</button></div>`;
   box.innerHTML = html;
 }
+// Redraw when the app finishes loading / the user signs in late / tabs back to Home
+window.addEventListener('load', () => { setTimeout(() => { try { _gsRenderHome(); } catch (e) {} }, 800); setTimeout(() => { try { _gsRenderHome(); } catch (e) {} }, 3500); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { try { _gsRenderHome(); } catch (e) {} } });
 
 // ── Get started checklist ──
 function _gsSteps() {
@@ -21812,6 +21888,45 @@ function startHeroAuto() {
 })();
 
 // ── RENDER NEW RELEASES HOME ROW ──
+// ── EXCLUSIVE HITS SINCE 2013: established catalog hits (anything from 2013 on), biggest plays first.
+// A track can carry an optional `year`; tracks without one are the established catalog (not fresh uploads). ──
+function _ehPlays(v) {
+  const m = String(v == null ? 0 : v).trim().match(/^([\d.,]+)\s*([KMB])?$/i);
+  if (!m) return 0;
+  return parseFloat(m[1].replace(/,/g, '')) * ({ K: 1e3, M: 1e6, B: 1e9 }[(m[2] || '').toUpperCase()] || 1);
+}
+function renderExclusiveHits() {
+  const row = document.getElementById('exclusive-hits-row');
+  const head = document.getElementById('exclusive-hits-head');
+  if (!row || !tracks) return;
+  const pool = gospelWeekendPool(tracks)
+    .filter(t => t && t.img && (t.year ? Number(t.year) >= 2013 : !t.savedAt) && _ehPlays(t.plays) > 0)
+    .sort((a, b) => _ehPlays(b.plays) - _ehPlays(a.plays))
+    .slice(0, 12);
+  if (head) head.style.display = pool.length ? '' : 'none';
+  row.style.display = pool.length ? 'flex' : 'none';
+  const e = _tvcEsc;
+  const PER_COL = 4;
+  let html = '';
+  for (let c = 0; c < pool.length; c += PER_COL) {
+    html += '<div class="qvl-col">' + pool.slice(c, c + PER_COL).map(t => {
+      const i = tracks.indexOf(t);
+      const plays = String(t.plays || '0');
+      return `<div class="qvl-row" role="button" tabindex="0" onclick="_ehPlay(${i}, this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();_ehPlay(${i}, this);}">
+        <div class="qvl-thumb"><img src="${e(t.img)}" alt="" loading="lazy" decoding="async"></div>
+        <div class="qvl-info"><div class="qvl-title">${e(t.title)}</div><div class="qvl-sub">${e(t.artist)} \u2022 ${e(plays)} plays</div></div>
+        <button type="button" class="qvl-more" aria-label="Play ${e(t.title)}" onclick="event.stopPropagation();_ehPlay(${i}, this.closest('.qvl-row'))"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
+      </div>`;
+    }).join('') + '</div>';
+  }
+  row.innerHTML = html;
+}
+function _ehPlay(i, el) {
+  document.querySelectorAll('#exclusive-hits-row .qvl-row.is-active').forEach(r => r.classList.remove('is-active'));
+  if (el) el.classList.add('is-active');
+  playTrack(i);
+}
+
 function renderNewReleasesHomeRow() {
   const row = document.getElementById('new-releases-home-row');
   if (!row || !tracks) return;
@@ -24762,7 +24877,7 @@ function _onTrackChange_lyrics() {
 </style>
 
 <div class="modal-overlay" id="modalSubscription" onclick="if(event.target===this)closeModal('subscription')">
-  <div class="modal" style="max-width:440px;">
+  <div class="modal sub-modal" style="max-width:440px;">
     <div class="modal-head">
       <h3><i class="fas fa-crown" style="margin-right:8px;color:var(--accent);"></i>Subscription</h3>
       <div class="modal-close" onclick="closeModal('subscription')"><i class="fas fa-times"></i></div>
@@ -24953,21 +25068,29 @@ async function _showPaymentForm() {
   const to = PREMIUM_PAY_TO[_premNet], ready = _premReady(_premNet);
   const netBtn = (k, label) => `<button class="tip-method-btn${_premNet === k ? ' active' : ''}" style="flex:1;" onclick="_premSelectNet('${k}')">${label}</button>`;
   body.innerHTML = `
+    <div class="sub-pay-layout">
+    <div class="sub-pay-side">
     <div class="sub-plan-card is-premium" style="margin-bottom:14px;">
       <div class="sub-plan-name"><i class="fas fa-crown" style="color:var(--accent);"></i> Premium · UGX ${PREMIUM_PRICE_UGX.toLocaleString()} / ${PREMIUM_DAYS} days</div>
     </div>
     <div class="sub-pay-form">
       <div style="display:flex;gap:8px;margin-bottom:12px;">${netBtn('mtn', 'MTN MoMo')}${netBtn('airtel', 'Airtel Money')}</div>
-      ${ready ? `<ol style="font-size:13px;color:var(--muted);line-height:1.7;margin:0 0 14px 18px;padding:0;">
+      ${ready ? `<ol class="sub-pay-steps" style="font-size:13px;color:var(--muted);line-height:1.7;margin:0 0 14px 18px;padding:0;">
         <li>Send <b style="color:var(--text);">UGX ${PREMIUM_PRICE_UGX.toLocaleString()}</b> to <b style="color:var(--text);">${_escHtml(to.number)}</b> (${_escHtml(to.name)})</li>
         <li>Copy the <b>Transaction ID</b> from the confirmation SMS</li>
-        <li>Enter it below. Premium turns on when it is approved.</li></ol>
-      <input id="premPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Your ${_premNet === 'mtn' ? 'MTN' : 'Airtel'} number, 07XXXXXXXX" style="width:100%;margin-bottom:8px;padding:12px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);">
+        <li>Enter it below. Premium turns on when it is approved.</li></ol>` : ''}
+    </div>
+    </div>
+    <div class="sub-pay-main">
+    <div class="sub-pay-form">
+      ${ready ? `<input id="premPhone" type="tel" inputmode="numeric" maxlength="10" placeholder="Your ${_premNet === 'mtn' ? 'MTN' : 'Airtel'} number, 07XXXXXXXX" style="width:100%;margin-bottom:8px;padding:12px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);">
       <input id="premTxn" type="text" maxlength="20" autocapitalize="characters" placeholder="${_T('prem_txn_ph','Transaction ID')}" style="width:100%;margin-bottom:12px;padding:12px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);">
       <button class="sub-btn sub-btn-primary" id="premSubmit" onclick="_submitPremiumRequest()">${_T('prem_paid','I have paid')}</button>`
       : `<p style="font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 14px;">Payments on this network are not open yet. Try the other network or check back soon.</p>`}
       <div id="premStatus" style="font-size:12.5px;color:var(--dim);margin:12px 0;"></div>
       <button class="sub-btn sub-btn-outline" onclick="_renderSubscription()">Back</button>
+    </div>
+    </div>
     </div>`;
   try {
     const { data } = await sb.from('premium_requests').select('status,created_at').eq('user_id', _demoUser.id).order('created_at', { ascending: false }).limit(1).maybeSingle();
@@ -24989,7 +25112,7 @@ async function _submitPremiumRequest() {
     showToast(error.code === '23505' ? 'That Transaction ID was already submitted' : 'Could not send. Check your connection and try again');
     return;
   }
-  document.getElementById('subModalBody').innerHTML = `<div style="text-align:center;padding:24px 8px;">
+  document.getElementById('subModalBody').innerHTML = `<div class="sub-done" style="text-align:center;padding:24px 8px;">
     <i class="fas fa-circle-check" style="font-size:40px;color:var(--accent);"></i>
     <h3 style="margin:14px 0 6px;">${_T('prem_received','Payment received')}</h3>
     <p style="font-size:13px;color:var(--muted);line-height:1.6;">${_T('prem_received_sub','We will confirm it shortly and turn Premium on. You will get a notification.')}</p>
@@ -25030,13 +25153,13 @@ async function _premOwnerOpen() {
   body.innerHTML = '<p style="color:var(--dim);font-size:13px;">Loading…</p>';
   const { data, error } = await sb.from('premium_requests').select('*').eq('status', 'pending').order('created_at');
   if (error) { body.innerHTML = '<p style="color:#ef5350;font-size:13px;">Could not load. Run premium_payments.sql first.</p>'; return; }
-  body.innerHTML = (data.length ? data.map(r => `<div style="border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;font-size:13px;">
+  body.innerHTML = (data.length ? '<div class="sub-owner-grid">' + data.map(r => `<div style="border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px;font-size:13px;">
       <b>${r.network === 'mtn' ? 'MTN' : 'Airtel'}</b> · UGX ${Number(r.amount).toLocaleString()}<br>
       Phone: ${_escHtml(r.payer_phone)}<br>Txn ID: <b>${_escHtml(r.txn_id)}</b><br>
       <span style="color:var(--dim);">${new Date(r.created_at).toLocaleString()}</span>
       <div style="display:flex;gap:8px;margin-top:10px;">
         <button class="sub-btn sub-btn-primary" style="flex:1;" onclick="_premDecide('${r.id}',true)">Approve</button>
-        <button class="sub-btn sub-btn-outline" style="flex:1;" onclick="_premDecide('${r.id}',false)">Reject</button></div></div>`).join('')
+        <button class="sub-btn sub-btn-outline" style="flex:1;" onclick="_premDecide('${r.id}',false)">Reject</button></div></div>`).join('') + '</div>'
     : '<p style="color:var(--dim);font-size:13px;">No payments waiting.</p>')
     + '<button class="sub-btn sub-btn-outline" onclick="_renderSubscription()">Back</button>';
 }
@@ -28565,7 +28688,7 @@ async function relLoadReview() {
     const q = await _directMedia('/api/moderation/queue', 'GET');
     window._relQ = q;
     const tr = q.tracks.map(r => `<div class="rel-card"><img loading="lazy" decoding="async" src="${_escHtml(r.artwork_url || '')}" alt="" onerror="this.style.visibility='hidden'"><div class="rel-info">
-<div class="rel-t">${_escHtml(r.title)}</div><div class="rel-s">${_escHtml(r.artist || '')} · ${_escHtml(r.genre || '')}${r.explicit ? ' · Explicit' : ''}<br>Rights confirmed ${r.copyright_confirmed ? (r.copyright_confirmed_at ? new Date(r.copyright_confirmed_at).toLocaleDateString() : 'yes') : 'NO'}</div>
+<div class="rel-t">${_escHtml(r.title)}</div><div class="rel-s">${_escHtml(r.artist || '')} · ${_escHtml(r.genre || '')}${r.explicit ? ' · Explicit' : ''}${(r.tags || []).includes('TrendingRequest') ? ' · <b style="color:var(--accent)">Marked trending by artist</b>' : ''}<br>Rights confirmed ${r.copyright_confirmed ? (r.copyright_confirmed_at ? new Date(r.copyright_confirmed_at).toLocaleDateString() : 'yes') : 'NO'}</div>
 <audio controls preload="none" src="${_escHtml(r.audio_url || '')}"></audio>
 <div class="rel-act"><button class="rel-btn pri" onclick="relDecide('tracks','${r.id}','approve')">Approve</button><button class="rel-btn bad" onclick="relDecide('tracks','${r.id}','reject')">Reject</button></div></div></div>`).join('');
     const vd = q.videos.map(r => `<div class="rel-card"><div class="rel-info"><div class="rel-t">${_escHtml(r.caption || 'Video')}</div><div class="rel-s">${_escHtml(r.uploader_name || '')} · ${_escHtml(r.hashtags || '')}<br>Rights confirmed ${r.copyright_confirmed ? 'yes' : 'NO'}</div>
@@ -28583,6 +28706,9 @@ async function relDecide(kind, id, decision) {
       const uid = row.user_id || row.uploader_id, name = row.title || row.caption || 'your upload';
       if (uid) sendNotification({ toUserId: uid, type: 'release', trackTitle: row.title || '', trackImg: row.artwork_url || '', body: decision === 'approve' ? `Your upload "${name}" is now live` : `Your upload "${name}" was not approved${reason ? ': ' + reason : ''}` });
     } catch (e) {}
+    if (decision === 'approve' && kind === 'tracks' && row && (row.tags || []).includes('TrendingRequest')) {
+      try { await sb.from('tracks').update({ tags: row.tags.map(t => t === 'TrendingRequest' ? 'Trending' : t) }).eq('id', id); } catch (e) { console.warn('trending promote failed', e); }
+    }
     showToast(decision === 'approve' ? 'Approved, now live' : 'Rejected');
     relLoadReview();
     if (decision === 'approve') { if (kind === 'tracks') _loadRemoteTracks(); else _loadVideoFeed(); }
@@ -33074,6 +33200,73 @@ html body #dev-all .dev-all-list{padding-left:clamp(8px,2vw,28px);padding-right:
   html body[data-page="device"] :is(#modalLanguage,#modalEditProfile,#modalHelp,#modalAbout,#modalLegal,#modalRate,#modalSubscription,#modalFeedbackInbox).modal-overlay{left:220px!important}
 }
 </style>
+
+<!-- ═══ SUBSCRIPTION: BIG SCREEN LAYOUT ═══
+     Tablet landscape / laptop / desktop: the Subscription page uses the whole content area
+     (right of the sidebar): plans side by side, payment form in two columns.
+     Phones keep the original single-column layout (nothing below applies under 760px). -->
+<style id="subscriptionBigScreen">
+@media (min-width:760px){
+  html body #modalSubscription.modal-overlay{align-items:stretch!important;justify-content:stretch!important;background:var(--bg)!important;backdrop-filter:none!important}
+  html body #modalSubscription .modal.sub-modal{width:100%!important;max-width:none!important;height:100%;max-height:none!important;border:0;border-radius:0;background:transparent;transform:none}
+  html body #modalSubscription .modal-head{border-bottom:0;padding:20px clamp(16px,3vw,48px) 4px;width:100%;max-width:1240px;margin:0 auto;box-sizing:border-box}
+  html body #modalSubscription .modal-head h3{font-size:24px;letter-spacing:-.2px}
+  html body #modalSubscription .modal-body{padding:12px clamp(16px,3vw,48px) 48px!important;width:100%;max-width:1240px;margin:0 auto;box-sizing:border-box}
+
+  /* plans side by side, equal height, button pinned to the bottom of each card */
+  html body #modalSubscription .sub-plans{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:stretch}
+  html body #modalSubscription .sub-plan-card{display:flex;flex-direction:column;padding:28px}
+  html body #modalSubscription .sub-plan-card .sub-btn{margin-top:auto}
+  html body #modalSubscription .sub-plan-card .sub-plan-features{margin-bottom:22px}
+  html body #modalSubscription .sub-plan-name{font-size:20px}
+  html body #modalSubscription .sub-plan-price{font-size:34px;margin:10px 0 4px}
+  html body #modalSubscription .sub-plan-price span{font-size:14px}
+  html body #modalSubscription .sub-plan-features{gap:12px}
+  html body #modalSubscription .sub-plan-features li{font-size:15px}
+  html body #modalSubscription .sub-plan-features li i{font-size:14px;margin-top:3px}
+  html body #modalSubscription .sub-plan-badge{font-size:11.5px;padding:4px 12px;right:24px}
+  html body #modalSubscription .aurora-preview{height:76px;font-size:26px;margin:0 0 20px}
+  html body #modalSubscription .sub-btn{padding:15px;font-size:15px}
+
+  /* already Premium: one wide card (features in two columns) + centred Extend button */
+  html body #modalSubscription .sub-plans>.sub-plan-card.is-current.is-premium{grid-column:1/-1}
+  html body #modalSubscription .sub-plans>.sub-plan-card.is-current.is-premium .sub-plan-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 32px}
+  html body #modalSubscription .sub-plans>.sub-plan-card.is-current.is-premium .sub-btn{margin-top:4px;max-width:360px}
+  html body #modalSubscription .sub-plans>.sub-btn.sub-btn-outline{grid-column:1/-1;justify-self:center;width:100%;max-width:360px}
+  html body #modalSubscription #premOwnerBtn{display:flex;width:100%;max-width:360px;margin:20px auto 0!important}
+
+  /* payment: summary + steps on the left, inputs on the right */
+  html body #modalSubscription .sub-pay-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+  html body #modalSubscription .sub-pay-side .sub-plan-card{padding:22px 24px}
+  html body #modalSubscription .sub-pay-side .sub-plan-name{font-size:19px}
+  html body #modalSubscription .sub-pay-steps{font-size:15px!important;line-height:1.9!important}
+  html body #modalSubscription .sub-pay-main{border:2px solid var(--border);border-radius:16px;padding:28px;background:var(--surface)}
+  html body #modalSubscription .sub-pay-main input{font-size:15px;padding:14px!important}
+  html body #modalSubscription .tip-method-btn{font-size:15px;padding:14px 10px}
+
+  /* "payment received" + owner approval list */
+  html body #modalSubscription .sub-done{max-width:520px;margin:40px auto 0;padding:40px 24px!important}
+  html body #modalSubscription .sub-done .fa-circle-check{font-size:56px!important}
+  html body #modalSubscription .sub-done h3{font-size:24px}
+  html body #modalSubscription .sub-done p{font-size:15px!important}
+  html body #modalSubscription .sub-owner-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:14px}
+  html body #modalSubscription .sub-owner-grid>div{margin-bottom:0!important}
+}
+@media (min-width:1600px){
+  html body #modalSubscription .modal-head,
+  html body #modalSubscription .modal-body{max-width:1400px}
+  html body #modalSubscription .sub-plans{gap:32px}
+  html body #modalSubscription .sub-plan-card{padding:36px}
+  html body #modalSubscription .sub-plan-price{font-size:40px}
+  html body #modalSubscription .sub-plan-features li{font-size:16px}
+}
+/* narrow tablets: stack the two plans again if the content area gets too tight */
+@media (min-width:760px) and (max-width:899px){
+  html body #modalSubscription .sub-plans,
+  html body #modalSubscription .sub-pay-layout{grid-template-columns:1fr}
+  html body #modalSubscription .sub-plans>.sub-plan-card.is-current.is-premium .sub-plan-features{grid-template-columns:1fr}
+}
+</style>
 <script id="contentAreaOverlaysJs">
 (function(){
   var IDS=['modalLanguage','modalEditProfile','modalHelp','modalAbout','modalLegal','modalRate','modalSubscription','modalFeedbackInbox'];
@@ -34745,8 +34938,8 @@ html :is(.hub-tab,.filter-chip,.atp-chip,.disc-chip,.dj-prompt-chip,.dv-chip,.ev
 html .hero-btn{backdrop-filter:none;-webkit-backdrop-filter:none}
 html:not([data-theme]) :is(button,a)[style*="background:var(--accent)"],html:not([data-theme]) :is(button,a)[style*="background: var(--accent)"]{background:var(--neon-btn)!important;color:#fff!important;border-color:transparent!important}
 html[data-theme="aurora"] :is(button,a)[style*="background:var(--accent)"],html[data-theme="aurora"] :is(button,a)[style*="background: var(--accent)"]{background:var(--aurora-btn)!important;color:#fff!important;border-color:transparent!important}
-/* Bottom navigation: solid app background (no purple glow behind it) */
-#bottomNav::before{content:"";position:absolute;z-index:0;left:-10px;right:-10px;top:-8px;bottom:-10px;background:var(--bg)}
+/* Bottom navigation: transparent background (page content shows through behind the buttons) */
+#bottomNav::before{content:"";position:absolute;z-index:0;left:-10px;right:-10px;top:-8px;bottom:-10px;background:transparent}
 /* Phones (bottom nav visible): no MENU button, everything lives in the bottom nav + Profile. Large screens keep the sidebar. */
 @media (max-width:768px){html #hamburgerBtn,html .yv-hamburger-btn{display:none!important}}
 .ad-artists{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
@@ -34776,6 +34969,37 @@ html[data-theme="aurora"] :is(button,a)[style*="background:var(--accent)"],html[
 })();
 </script>
 
+<style id="acct-simple-css">
+/* Profile hub: calm vertical list (no glow, numbers, arrows or sideways scrolling) */
+.acct-hub{max-width:640px;margin:0 auto 14px;padding:0 16px}
+.acct-hub .acct-group{padding:18px 4px 6px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.3px}
+.acct-hub .acct-list{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:8px}
+.acct-hub .acct-group+.acct-list{margin-top:0}
+.acct-hub .acct-card{flex:none;width:100%;flex-direction:row;align-items:center;gap:14px;padding:12px 14px;border:0;border-radius:0;background:transparent;box-shadow:none;position:relative;transition:background .12s}
+.acct-hub .acct-card+.acct-card{border-top:1px solid var(--border)}
+.acct-hub .acct-card+.acct-card::before{display:none}
+.acct-hub .acct-card::after{content:"";width:8px;height:8px;margin-left:auto;border-right:2px solid var(--muted);border-top:2px solid var(--muted);transform:rotate(45deg);opacity:.7;flex:none}
+.acct-hub .acct-card:active{background:var(--card2);transform:none}
+.acct-hub .ac-top{margin:0}
+.acct-hub .ac-ico{width:34px;height:34px;border-radius:10px;background:var(--card2);box-shadow:none;color:var(--accent-light)}
+.acct-hub .ac-ico svg{width:19px;height:19px}
+.acct-hub .ac-title{font-size:15px;font-weight:600}
+.acct-hub .ac-desc,.acct-hub .ac-num{display:none}
+.acct-hub .acct-moreBtn .ac-title{color:var(--accent-light)}
+.acct-back{display:flex;align-items:center;gap:8px;width:100%;padding:12px 4px 4px;background:none;border:0;color:var(--text);font:700 17px inherit;font-family:inherit;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent}
+.acct-chev{width:10px;height:10px;border-left:2px solid var(--text);border-bottom:2px solid var(--text);transform:rotate(45deg);margin:0 4px 0 6px}
+#acctMore[hidden]{display:none}
+#acctHub{scroll-margin-top:70px}
+</style>
+<script id="acct-more-js">
+window.acctMore=function(open){
+  var m=document.getElementById('acctMore'),l=document.getElementById('acctMain');
+  if(!m||!l)return;
+  m.hidden=!open;l.style.display=open?'none':'';
+  var h=document.getElementById('acctHub');
+  if(h&&h.scrollIntoView)h.scrollIntoView({block:'start'});
+};
+</script>
 <style id="fullWidthDesktop">
 /* ── Large screens: let these pages use the full width next to the sidebar (no empty bands left and right) ── */
 @media (min-width: 900px) {
@@ -35157,7 +35381,9 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-j],[
 </style>
 <script>
 (function () {
-  var root = document.documentElement, t;
+  // Bottom nav + mini player are hidden whenever the on-screen keyboard is open (so they never ride up
+  // above it) and come back as soon as the keyboard closes (done typing, Back pressed, tapped away).
+  var root = document.documentElement, t, vv = window.visualViewport, base = 0, seen = false;
   function typing(el) {
     if (!el || el.nodeType !== 1) return false;
     if (el.isContentEditable) return true;
@@ -35166,16 +35392,34 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-j],[
     if (tag !== 'INPUT') return false;
     return !/^(button|checkbox|radio|range|submit|reset|file|color|image)$/i.test(el.type || 'text');
   }
+  function curH() { return vv ? vv.height : window.innerHeight; }
+  function shrunk() {
+    var h = curH();
+    if (!seen) base = Math.max(base, window.innerHeight, h);
+    return base - h > 120;
+  }
+  function show() { root.classList.remove('kb-open'); }
+  function hide() { root.classList.add('kb-open'); }
   document.addEventListener('focusin', function (e) {
     clearTimeout(t);
-    if (typing(e.target)) root.classList.add('kb-open');
+    if (typing(e.target)) hide();   // hide immediately, before the keyboard finishes sliding up
   });
   document.addEventListener('focusout', function () {
     clearTimeout(t);
-    // short delay so moving focus between two inputs doesn't flicker the nav
-    t = setTimeout(function () { if (!typing(document.activeElement)) root.classList.remove('kb-open'); }, 150);
+    // delay so moving focus between inputs (or re-rendering the chat composer after send) doesn't flicker the nav
+    t = setTimeout(function () {
+      if (typing(document.activeElement)) return;
+      if (seen && shrunk()) return;  // keyboard still physically open: keep hidden
+      seen = false; show();
+    }, 200);
   });
-  window.addEventListener('pagehide', function () { root.classList.remove('kb-open'); });
+  function onVV() {
+    if (shrunk()) { seen = true; hide(); }
+    else if (seen) { seen = false; show(); }   // keyboard closed (even if the field kept focus)
+  }
+  if (vv) vv.addEventListener('resize', onVV);
+  window.addEventListener('orientationchange', function () { base = 0; seen = false; setTimeout(function () { if (!typing(document.activeElement)) show(); }, 300); });
+  window.addEventListener('pagehide', function () { seen = false; show(); });
 })();
 </script>
 <style>
