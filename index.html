@@ -7518,7 +7518,7 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><circle class="f" cx="8" cy="8" r="3.2"/><circle class="f" cx="16.5" cy="9" r="2.6"/><path class="f" d="M2 19c0-3.3 2.7-5.2 6-5.2s6 1.9 6 5.2z"/><path class="f" d="M15 14.2c3.2-.2 7 .9 7 4.8h-5.2c0-1.9-.7-3.4-1.8-4.8z"/></svg> <span>YAPS Connect</span> <span class="badge" style="display:none;">0</span>
         </div>
         <div class="sidebar-item" id="nav-community" onclick="openCommunity()">
-          <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg> <span>Community Chat</span>
+          <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg> <span>Listeners Hub</span>
         </div>
         <div class="sidebar-item" id="nav-messages" onclick="navigate('messages')">
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><circle class="f" cx="8" cy="10.5" r="1.3"/><circle class="f" cx="12" cy="10.5" r="1.3"/><circle class="f" cx="16" cy="10.5" r="1.3"/></svg> <span data-i18n="nav_messages">Messages</span> <span class="badge" id="navMsgBadge" style="display:none;">0</span>
@@ -13326,7 +13326,9 @@ function _syncProfileHeader() {
       actionsEl.innerHTML = `
         <button class="btn-primary" onclick="navigate('upload')"><i class="fas fa-upload"></i> Upload a track</button>
         <button class="btn-ghost" onclick="openEditProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
-        <button class="btn-ghost" onclick="openMyCommunity()"><i class="fas fa-people-group"></i> Join Community</button>`;
+        ${['artist','dj','promoter'].includes(_demoUser.accountType)
+          ? '<button class="btn-ghost" onclick="openMyCommunity()"><i class="fas fa-people-group"></i> Join Community</button>'
+          : '<button class="btn-ghost" onclick="openMyCommunity()"><i class="fas fa-headphones"></i> Join Listeners Hub</button>'}`;
     }
   } else {
     nameEl.textContent = 'Guest';
@@ -34439,9 +34441,9 @@ html body #dev-all .dev-all-list{padding-left:clamp(8px,2vw,28px);padding-right:
         if (admin) { btn.dataset.cnroom = ''; btn.dataset.cnadmin = '1'; btn.innerHTML = '<i class="fas fa-plus"></i> Open Community'; btn.hidden = false; }
         else if (owner) { btn.dataset.cnroom = ''; btn.dataset.cnpage = 'community.html?artist=' + encodeURIComponent(owner) + '&join=1'; btn.innerHTML = '<i class="fas fa-people-group"></i> Join Community'; btn.hidden = false; }
         else if (kind === 'artist') { btn.dataset.cnroom = ''; btn.dataset.cnopen = '1'; btn.innerHTML = '<i class="fas fa-people-group"></i> Join Community'; btn.hidden = false; }
-        else btn.hidden = true;
+        else { btn.dataset.cnroom = ''; btn.innerHTML = '<i class="fas fa-people-group"></i> Join Community'; btn.hidden = false; }   // no room yet: the click handler still opens/creates it by name
       }
-    } catch (e) { btn.hidden = true; }
+    } catch (e) { btn.dataset.cnroom = ''; btn.innerHTML = '<i class="fas fa-people-group"></i> Join Community'; btn.hidden = false; }   // lookup failed (offline, RPC missing): keep the button, the click handler does not need the lookup
   }
   function artistKeys(a) { return ['a:' + norm(a.name)]; }
   window.cnArtistProfileShown = function (a) {
@@ -34679,30 +34681,33 @@ function add(rows, force) {
 function showEmpty() { $("ccLog").innerHTML = '<div class="cc-empty"><i class="fas fa-comments"></i><b>No messages yet</b>Say hello 👋</div>'; }
 function autoGrow() { var i = $("ccInput"); i.style.height = "auto"; i.style.height = Math.min(i.scrollHeight, 120) + "px"; }
 
+function isHub() { return COMMUNITY === "yaps-connect"; }   // the shared room for all listeners
+function creatorInHub() { return isHub() && S.me && S.me.role !== "fan"; }   // artists, DJs and promoters have their own community, so no join button in the hub
 function paintMe() {
   $("ccSignin").hidden = !!S.me; $("ccForm").hidden = !S.me;
-  $("ccJoin").style.display = (S.me && S.me.real) ? "" : "none";   // Join / Leave button is only for users with an account
+  $("ccJoin").style.display = (S.me && S.me.real && !creatorInHub()) ? "" : "none";   // Join / Leave button is only for users with an account
 }
 function paintJoin() {
   var b = $("ccJoin");
   b.classList.toggle("joined", S.joined);
-  b.setAttribute("aria-label", S.joined ? "Leave community" : "Join community");
-  b.innerHTML = S.joined ? '<i class="fas fa-right-from-bracket"></i><b>Leave<span class="cc-lg"> Community</span></b>' : '<i class="fas fa-user-plus"></i><b>Join<span class="cc-lg"> Community</span></b>';
+  var nm = isHub() ? " Listeners Hub" : " Community";
+  b.setAttribute("aria-label", (S.joined ? "Leave" : "Join") + nm.toLowerCase());
+  b.innerHTML = S.joined ? '<i class="fas fa-right-from-bracket"></i><b>Leave<span class="cc-lg">' + nm + '</span></b>' : '<i class="fas fa-' + (isHub() ? "headphones" : "user-plus") + '"></i><b>Join<span class="cc-lg">' + nm + '</span></b>';
   $("ccSub").textContent = BASE_SUB + (members != null ? " · " + members.toLocaleString() + (members === 1 ? " member" : " members") : "");
 }
 async function toggleJoin() {
   if (!S.me) { signIn(); return; }
   if (S.live && !S.me.real) { signIn(); return; }
-  if (S.joined && !confirm("Leave this community? You can join again anytime.")) return;
+  if (S.joined && !confirm(isHub() ? "Leave the Listeners Hub? You can join again anytime." : "Leave this community? You can join again anytime.")) return;
   var on = !S.joined, b = $("ccJoin"); b.disabled = true;
   try {
     await API.setJoined(on); S.joined = on; S.left = !on;
     if (members != null) members = Math.max(0, members + (on ? 1 : -1));
-    paintJoin(); toast(on ? "Welcome! You joined the community 🎉" : "You left the community");
+    paintJoin(); toast(isHub() ? (on ? "Welcome to the Listeners Hub! 🎧" : "You left the Listeners Hub") : (on ? "Welcome! You joined the community 🎉" : "You left the community"));
   } catch (er) { toast(friendly(er)); }
   b.disabled = false;
 }
-async function autoJoin() { if (S.joined || S.left || !S.me || (S.live && !S.me.real)) return; try { await API.setJoined(true); S.joined = true; if (members != null) members++; paintJoin(); } catch (e) {} }
+async function autoJoin() { if (S.joined || S.left || !S.me || creatorInHub() || (S.live && !S.me.real)) return; try { await API.setJoined(true); S.joined = true; if (members != null) members++; paintJoin(); } catch (e) {} }
 
 function bind() {
   if (bound) return; bound = true;
@@ -34775,7 +34780,7 @@ async function start(opts) {
   }
   bind(); hookAuth();
   seen = {}; last = null; members = null; S.joined = false; S.left = false;
-  $("ccTitle").textContent = "Community Chat"; BASE_SUB = "Open to artists, DJs and listeners: talk about any artist, DJ or song"; $("ccSub").textContent = BASE_SUB;
+  $("ccTitle").textContent = isHub() ? "Listeners Hub" : "Community Chat"; BASE_SUB = isHub() ? "Every YAPS listener in one place: talk about any artist, DJ or song" : "Open to artists, DJs and listeners: talk about any artist, DJ or song"; $("ccSub").textContent = BASE_SUB;
   $("ccLog").innerHTML = "";
   try { await API.init(); S.me = await API.session(); } catch (e) { console.error(e); }
   if (my !== bootId) return;
@@ -34801,7 +34806,7 @@ async function start(opts) {
   toBottom(false);
   subscribe();
   booted = true;
-  if (opts.join) { if (S.me) { if (!S.joined) toggleJoin(); } else setTimeout(signIn, 600); }
+  if (opts.join) { if (S.me) { if (!S.joined && !creatorInHub()) toggleJoin(); } else setTimeout(signIn, 600); }
 }
 
 /* ── hooks used by navigate() ── */
@@ -34822,8 +34827,8 @@ window.openMyCommunity = function () {
   var u = (typeof _demoUser !== "undefined") ? _demoUser : null;
   if (!u) { signIn(); return; }
   var t = u.accountType, id = String(u.id || "").toLowerCase().replace(/[^a-z0-9-]/g, "");
-  if ((t === "artist" || t === "dj") && id) window.openCommunity({ c: (t === "dj" ? "dj-" : "artist-") + "u-" + id, name: u.name, join: true });
-  else window.openCommunity({ join: true });
+  if ((t === "artist" || t === "dj" || t === "promoter") && id) window.openCommunity({ c: (t === "artist" ? "artist-" : "dj-") + "u-" + id, name: u.name, join: true });   // artists, DJs and promoters: their own community
+  else window.openCommunity({ artist: "", c: "yaps-connect", join: true });   // listeners: the shared Listeners Hub
 };
 
 /* open a community from anywhere in the app */
@@ -35132,7 +35137,7 @@ k('upload|my uploads|release','Upload Your Track adds your music (sign in first 
 k('earnings?|payouts?|tips?|money|income','Earnings shows your income, payouts and top tracks.',['Earnings','p:earnings']);
 k('edit profile|profile|followers?|following|verif','Your Profile shows your followers and following. Edit it to change your details, and creators can request a verified badge in Settings, Creator / Artist.',['My Profile','p:profile'],['Edit Profile','f:edit']);
 k('messages?|inbox|dm|chat with (friends|users)|find friends','Messages is chat with any YAPS user. Tap New and search by name or username, or check which contacts already use the app.',['Messages','p:messages'],['Connect','p:connect']);
-k('community|request a song','Community Chat is an open room for artists, DJs and listeners. Join to post, and you can request a song for the DJ.',['Community Chat','p:community']);
+k('community|request a song','The Listeners Hub is the shared room for every listener (artists, DJs and promoters are welcome to chat too). Join to post. Artists, DJs and promoters also have their own Join Community rooms, where you can request a song for the DJ.',['Community Chat','p:community']);
 k('notifications?|alerts?','Notifications collects your alerts. Choose what you get in Settings.',['Notifications','p:notifications'],['Alert settings','s:notifs']);
 k('events?|festivals?|listening part','Events lists live nights, festivals and listening parties.',['Events','p:events']);
 k('library|liked songs?|likes|favou?rites?|playlists?|albums?','Your Library holds liked songs, playlists, albums and history. To like a song, tap its heart or tell me “like this”. Say “make a playlist called Sunday” and I will create it, or “save this set” to keep what I just built.',['Library','p:library'],['Playlists','p:playlists']);
