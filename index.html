@@ -20,7 +20,7 @@
 <meta name="apple-mobile-web-app-title" content="YAPSMusic">
 <!-- Apple launch screen images (shown when app opens from home screen) -->
 <link rel="apple-touch-startup-image" href="images/yaps-cover.png?v=2">
-<meta name="description" content="YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Gospel, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.">
+<meta name="description" content="YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.">
 <link rel="manifest" href="manifest.json">
 
 <!-- Loading screen only on the first open of the app (per app session). Coming back from
@@ -87,7 +87,7 @@
 
 <!-- Open Graph for sharing (Facebook, WhatsApp, LinkedIn, etc.) -->
 <meta property="og:title" content="YAPS Music (YAPSMusic): Stream Ugandan &amp; African Music Free">
-<meta property="og:description" content="YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Gospel, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.">
+<meta property="og:description" content="YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://brians124.github.io/YAPSMUSIC.APP/">
 <meta property="og:site_name" content="YAPSMusic">
@@ -101,7 +101,7 @@
 <!-- Twitter / X Card -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YAPS Music (YAPSMusic): Stream Ugandan &amp; African Music Free">
-<meta name="twitter:description" content="YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Gospel, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.">
+<meta name="twitter:description" content="YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.">
 <meta name="twitter:image" content="https://brians124.github.io/YAPSMUSIC.APP/images/yaps-cover.png?v=2">
 
 <!-- Structured data for Google rich results -->
@@ -136,7 +136,7 @@
       "applicationCategory": "MusicApplication",
       "operatingSystem": "Any (Android, iOS, Windows, macOS, Linux) - installable PWA",
       "browserRequirements": "Requires JavaScript",
-      "description": "YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Gospel, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.",
+      "description": "YAPS Music (YAPSMusic) is a free music streaming app with YAPS AI, your AI DJ, for Ugandan and African music: Afrobeats, Luganda Pop, Hip-Hop, Bongo Flava and more. Stream, download, discover artists, DJ and upload your own music.",
       "image": "https://brians124.github.io/YAPSMUSIC.APP/images/yaps-cover.png?v=2",
       "inLanguage": "en",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "UGX" },
@@ -825,7 +825,10 @@ body {
 
 /* ── EXCLUSIVE HITS: list design (columns of 4 rows: thumb, title, artist • plays, ⋮; next column peeks) ──
    Uses only app theme variables, no colors taken from artwork. */
+.qvl-playall { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.qvl-playall i { font-size: 10px; }
 .qvl-scroller {
+  background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%);
   display: flex; overflow-x: auto; overflow-y: hidden;
   scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
   scrollbar-width: none; padding: 0 0 8px;
@@ -844,16 +847,29 @@ body {
 }
 .qvl-row:active, .qvl-row.is-active { background: var(--card); }
 @media (hover: hover) { .qvl-row:hover { background: var(--card); } }
-.qvl-thumb { flex: 0 0 56px; width: 56px; height: 56px; border-radius: 8px; overflow: hidden; background: var(--card2); }
+.qvl-thumb { position: relative; flex: 0 0 56px; width: 56px; height: 56px; border-radius: 6px; overflow: hidden; background: var(--card2); }
+.qvl-eq { position: absolute; right: 5px; bottom: 5px; display: none; align-items: flex-end; gap: 2px; height: 12px; padding: 2px 3px; border-radius: 4px; background: rgba(0,0,0,.55); box-sizing: content-box; }
+.qvl-eq i { display: block; width: 2.5px; height: 100%; background: #fff; border-radius: 1px; transform-origin: bottom; animation: qvlEq 0.9s ease-in-out infinite; }
+.qvl-eq i:nth-child(2) { animation-delay: -.3s; } .qvl-eq i:nth-child(3) { animation-delay: -.6s; }
+@keyframes qvlEq { 0%,100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
+.qvl-row.is-active .qvl-eq { display: flex; }
+@media (prefers-reduced-motion: reduce) { .qvl-eq i { animation: none; transform: scaleY(.7); } }
+.qvl-badge { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; margin-right: 6px; border-radius: 3px; background: var(--muted); color: var(--bg, #000); font-size: 10px; font-weight: 800; line-height: 1; vertical-align: -2px; }
 .qvl-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .qvl-info { flex: 1; min-width: 0; }
-.qvl-title { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.qvl-sub { font-size: 13.5px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qvl-title { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.qvl-sub { font-size: 13.5px; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; }
+.qvl-sub > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .qvl-more {
   flex: 0 0 40px; width: 40px; height: 40px; border: 0; background: transparent; color: var(--text);
   font-size: 18px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
 .qvl-more:active { background: var(--card2); }
+.qvl-skel { cursor: default; pointer-events: none; }
+.qvl-skel .qvl-thumb, .qvl-sl { background: linear-gradient(100deg, var(--card2) 30%, color-mix(in srgb, var(--card2) 60%, var(--text) 12%) 50%, var(--card2) 70%); background-size: 220% 100%; animation: qvlShimmer 1.3s linear infinite; }
+.qvl-sl { height: 14px; border-radius: 6px; }
+@keyframes qvlShimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@media (prefers-reduced-motion: reduce) { .qvl-skel .qvl-thumb, .qvl-sl { animation: none; } }
 
 /* ── 3D COVERFLOW STAGE ── */
 .qv3d-wrap { position: relative; }
@@ -3859,7 +3875,7 @@ html { -webkit-tap-highlight-color: transparent; }
   width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3);
   border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+
 
 /* ── SUCCESS SCREEN ── */
 .signup-success {
@@ -6570,189 +6586,106 @@ html[data-theme="aurora"] #page-community .cc-btn,html:not([data-theme]) #page-c
 <!-- Header styles up-front so the header looks right while the loading screen is up (copy of studio-chrome below, which still applies last) -->
 <style id="studio-chrome-early">
 /* ══ STUDIO HEADER + SIDEBAR CHROME — ported from studio.html (champagne-gold on navy, Playfair + Archivo) ══ */
-:root{--serif:'Playfair Display',Georgia,'Times New Roman',serif;--sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
- --au:#ffc94d;--au2:#ffe7a8;--au3:#b9861f;--au-rgb:255,201,77;
- --logo-g:linear-gradient(180deg,#fff3c9 0,#ffc94d 48%,#b9861f 100%);--topbar-h:68px}
-html[data-theme="crimson"]{--au:#ff5c6b;--au2:#ffc2c8;--au3:#b3121f;--au-rgb:255,92,107;--logo-g:linear-gradient(180deg,#ffe3e6 0,#ff5c6b 48%,#b3121f 100%)}
-html[data-theme="emerald"]{--au:#22e08a;--au2:#b8ffdb;--au3:#159e5f;--au-rgb:34,224,138;--logo-g:linear-gradient(180deg,#e4fff0 0,#22e08a 48%,#159e5f 100%)}
-html[data-theme="violet"]{--au:#a96bff;--au2:#e0ccff;--au3:#6a2fd6;--au-rgb:169,107,255;--logo-g:linear-gradient(180deg,#f1e8ff 0,#a96bff 48%,#6a2fd6 100%)}
-html[data-theme="aurora"]{--au:#19e68c;--au2:#9bffd0;--au3:#0ea66b;--au-rgb:25,230,140;--logo-g:linear-gradient(100deg,#19e68c,#19c3ff 40%,#8b5cf6 70%,#e040fb)}
-html[data-mode="light"]{--au:#9a6700;--au2:#7a5200;--au3:#8a5d00;--au-rgb:154,103,0;--logo-g:linear-gradient(180deg,#d9a21b 0,#9a6700 55%,#6b4600 100%)}
+
+
+
+
+
+
 
 /* header bar */
-html:root #topbar{position:fixed;overflow:visible;height:var(--topbar-h);padding:0 18px;gap:18px;
- background:linear-gradient(90deg,color-mix(in srgb,var(--bg) 96%,transparent),color-mix(in srgb,var(--bg) 45%,transparent)),var(--bg);
- border-bottom:1px solid transparent!important;
- border-image:linear-gradient(90deg,var(--au3),rgba(var(--au-rgb),.15) 40%,var(--border) 70%,transparent) 1!important}
-#topbar .earth-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-#topbar .earth{position:absolute;right:18%;top:-190px;width:420px;height:420px;border-radius:50%;pointer-events:none;
- background:radial-gradient(circle at 40% 70%,rgba(var(--au-rgb),.18),color-mix(in srgb,var(--accent) 20%,transparent) 45%,transparent 70%)}
-#topbar>*:not(.earth-wrap){position:relative}
+
+
+
+
 
 /* logo */
-#topbar .topbar-logo{display:block;padding:0;cursor:pointer;text-decoration:none;letter-spacing:0}
-#topbar .topbar-logo .logo{display:block;font:900 42px/1 var(--serif);letter-spacing:.01em;background:var(--logo-g);
- -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 14px rgba(var(--au-rgb),.35))}
-#topbar .topbar-logo .logo small{display:block;font:700 10.5px var(--sans);letter-spacing:.42em;color:var(--au2);
- -webkit-text-fill-color:var(--au2);margin-top:3px;padding-left:2px}
+
+
+
 
 /* title block — same as studio.html .ttl (replaces the search bar) */
-#topbar .ttl{flex:0 1 auto;min-width:0;font:800 30px/1.05 var(--serif);letter-spacing:.005em;text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:2px}
-#topbar .ttl b{color:var(--au);font-weight:800}
-#topbar .ttl p{font:500 14px var(--sans);letter-spacing:.02em;color:var(--muted);margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#topbar .sp{flex:1 1 0;min-width:0}
-#topbar .topbar-logo,#topbar .topbar-nav,#hamburgerBtn{flex:none}
+
+
+
+
+
 
 /* round gold icon buttons (.ic) */
 #topbar .topbar-nav{gap:12px}
-#topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:42px;height:42px;border-radius:50%;padding:0;
- border:1.5px solid rgba(var(--au-rgb),.55);background:rgba(var(--au-rgb),.07);color:var(--au);font-size:18px;flex:none;display:grid;place-items:center;cursor:pointer;transition:all .2s}
-#topbar .topbar-avatar{font-size:13px;font-weight:800;background:linear-gradient(135deg,rgba(var(--au-rgb),.35),rgba(var(--au-rgb),.1))}
-#topbar .topbar-icon-btn:hover,#topbar .topbar-guest-avatar:hover,#topbar .topbar-avatar:hover{border-color:var(--au);background:rgba(var(--au-rgb),.16);color:var(--au2)}
-#topbar .topbar-bell-btn{position:relative}
-#topbar .tb-ico{width:1.2em;height:1.2em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block}
-#topbar .topbar-bell-badge{top:-3px;right:-3px;background:var(--au);color:#1a1204;border-color:var(--bg)}
+
+
+
+
+
+
 
 /* AI DJ + Upload pills (.aibtn) */
-#topbar .aibtn,#topbar .btn-upload-tiktok.aibtn{position:relative;display:flex;align-items:center;gap:12px;padding:8px 16px;border-radius:16px;
- border:1.5px solid var(--au);text-align:left;cursor:pointer;color:var(--au2);transform:none;
- background:linear-gradient(180deg,rgba(var(--au-rgb),.16),rgba(var(--au-rgb),.05));
- box-shadow:0 0 22px rgba(var(--au-rgb),.22),inset 0 0 14px rgba(var(--au-rgb),.10)}
-#topbar .aibtn:hover{background:linear-gradient(180deg,rgba(var(--au-rgb),.26),rgba(var(--au-rgb),.1));transform:none}
-#topbar .aibtn b{display:block;font:800 15px var(--sans);letter-spacing:.02em;color:var(--au2)}
-#topbar .aibtn>span>span{display:block;font-size:11.5px;color:var(--muted);font-weight:500}
-#topbar .aibtn .ic{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--au);background:rgba(var(--au-rgb),.08);color:var(--au);display:grid;place-items:center;font-size:15px;flex:none}
-#topbar .btn-upload-arrow{width:34px;height:34px;font-size:18px;background:rgba(var(--au-rgb),.08);border:1.5px solid var(--au);color:var(--au)}
+
+
+
+
+
+
 
 /* MENU button (drawer toggle) */
-#hamburgerBtn{height:34px;width:auto;padding:0 12px;border-radius:12px;border:1.5px solid rgba(var(--au-rgb),.55);background:rgba(var(--au-rgb),.07);
- color:var(--au);font:700 13px 'Archivo Narrow',var(--sans);letter-spacing:.04em;place-items:center}
-#hamburgerBtn:hover{border-color:var(--au);background:rgba(var(--au-rgb),.16);color:var(--au2)}
+
+
 
 /* sidebar lettering (rest of the sidebar already identical to studio) */
-#sidebar .sidebar-label{color:var(--au3)}
-#sidebar .sidebar-header{padding-top:max(20px,env(safe-area-inset-top))}
+
+
 
 /* compact header sizes — same steps as studio */
-@media(max-width:1280px){#topbar .ttl{font-size:24px}#topbar .ttl p{display:none}}
-@media(max-width:820px){
- #topbar .ttl{font-size:20px}
- :root{--topbar-h:56px}
- html:root #topbar{padding:0 10px;gap:8px}
- #topbar .topbar-logo .logo{font-size:30px}
- #topbar .aibtn,#topbar .btn-upload-tiktok.aibtn{padding:3px 10px;border-radius:12px;gap:8px}
- #topbar .aibtn .ic,#topbar .btn-upload-arrow{width:26px;height:26px;font-size:13px}
- #topbar .aibtn b{font-size:13px}#topbar .aibtn>span>span{display:none}
- #topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:34px;height:34px;font-size:15px}
- #topbar .topbar-nav{gap:8px}
- #topbar .earth-wrap{display:none}
-}
-@media(max-width:560px){#topbar .ttl{display:none}}
-@media(orientation:portrait) and (max-width:820px){#topbar .topbar-logo .logo{font-size:26px}#topbar .topbar-logo .logo small{display:none}}
+
+
+
+
 /* Small phones: keep AI DJ, Upload, Sign-in, Notifications and Settings ALL visible.
    Nothing is hidden any more - the buttons just shrink (labels turn into icons) so the row always fits. */
-@media(max-width:480px){
- :root{--topbar-h:50px}
- html:root #topbar{padding:0 8px;gap:6px}
- #topbar #fsBtn{display:none}                       /* fullscreen is not supported on most phones */
- #topbar #aiTop{display:flex}                       /* AI DJ stays visible (was display:none) */
- #topbar #aiTop>span:last-child{display:none}       /* ...as an icon-only button */
- #topbar #aiTop{padding:3px;border-radius:50%}
- #topbar .btn-upload-tiktok.aibtn b{font-size:12px}
- #topbar .topbar-nav{gap:5px;min-width:0;flex:0 0 auto}
- #hamburgerBtn{height:32px;padding:0 9px;font-size:12px;border-radius:10px}
- #topbar .topbar-logo .logo{font-size:23px}
- #topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:32px;height:32px;font-size:14px}
-}
-@media(max-width:400px){
- #topbar .btn-upload-tiktok.aibtn>span:last-child{display:none}   /* Upload becomes icon-only */
- #topbar .btn-upload-tiktok.aibtn{padding:3px;border-radius:50%}
- #topbar .aibtn .ic,#topbar .btn-upload-arrow{width:24px;height:24px;font-size:12px}
- #topbar .topbar-nav{gap:4px}
- #topbar .topbar-logo .logo{font-size:21px}
-}
-@media(max-width:340px){
- html:root #topbar{padding:0 6px;gap:4px}
- #topbar .topbar-logo .logo{font-size:19px}
- #topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:30px;height:30px}
- #topbar .aibtn .ic,#topbar .btn-upload-arrow{width:22px;height:22px}
- #hamburgerBtn{padding:0 7px}
-}
-@media(orientation:landscape) and (max-height:520px){
- :root{--topbar-h:46px}
- #topbar .ttl{font-size:17px}
- #topbar .topbar-logo .logo{font-size:24px}#topbar .topbar-logo .logo small{display:none}
-}
+
+
+
+
 
 /* sidebar = slide-in drawer (opened by MENU) — studio breakpoints, full height, above header */
-@media(max-width:899px),(orientation:landscape) and (max-height:520px){
- html #hamburgerBtn{display:grid}
- html #sidebar{position:fixed;top:0;bottom:0;left:0;width:min(80vw,300px);z-index:310;display:flex!important;
-  box-shadow:4px 0 24px rgba(0,0,0,.5);transform:translateX(-105%);visibility:hidden;
-  transition:transform .28s cubic-bezier(.4,0,.2,1),visibility 0s .28s}
- html #sidebar.open{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.4,0,.2,1)}
- html #sidebarOverlay.open{display:block;z-index:300;background:rgba(0,0,0,.6)}
- #layout{margin-left:0}
-}
-@media(min-width:900px) and (min-height:521px){html #hamburgerBtn{display:none}}
+
+
 
 /* ===== PREMIUM / AURORA skin — same extruded 3D lettering as studio.html ===== */
-html[data-theme="aurora"] #topbar .topbar-logo .logo{display:inline-flex;align-items:center;gap:.2em;font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:40px;font-weight:900;letter-spacing:.005em;line-height:1;
- background:linear-gradient(180deg,#fff 0%,#fff 45%,#d4c4ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
- filter:drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c) drop-shadow(4px 4px 0 #2c1470) drop-shadow(0 8px 10px rgba(0,0,0,.7)) drop-shadow(0 0 16px rgba(224,64,251,.45))}
-html[data-theme="aurora"] #topbar .topbar-logo .logo::before{content:"";flex:none;width:1.05em;height:1.05em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2319e68c'/%3E%3Cstop offset='.5' stop-color='%2319c3ff'/%3E%3Cstop offset='1' stop-color='%23e040fb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M16 10 54 32 16 54Z' fill='url(%23g)' stroke='url(%23g)' stroke-width='11' stroke-linejoin='round'/%3E%3Cpath d='M30 42a5 5 0 1 1-3-4.6V23l15-3.4v14.6a5 5 0 1 1-3-4.6V26l-9 2Z' fill='%23fff'/%3E%3C/svg%3E") center/contain no-repeat;-webkit-text-fill-color:initial}
-html[data-theme="aurora"] #topbar .topbar-logo .logo small{display:inline;margin:0;padding:0;font:900 1em var(--sans);letter-spacing:.005em;
- background:linear-gradient(100deg,#19e68c,#19c3ff 35%,#8b5cf6 68%,#e040fb);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-html[data-theme="aurora"] #topbar .ttl{font-family:'Archivo',system-ui,sans-serif;font-weight:900;letter-spacing:.04em;
- background:linear-gradient(180deg,#fff,#e9e0ff 60%,#b9a2ff);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
- filter:drop-shadow(1px 1px 0 #6a3fe0) drop-shadow(2px 2px 0 #4a28b0) drop-shadow(3px 3px 0 #301a80) drop-shadow(0 6px 8px rgba(0,0,0,.65))}
-html[data-theme="aurora"] #topbar .ttl b{background:linear-gradient(180deg,#cfffe9 0%,#19e68c 45%,#19c3ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:900}
-@media(max-width:820px){html[data-theme="aurora"] #topbar .topbar-logo .logo{font-size:30px}}
-@media(orientation:portrait) and (max-width:820px){html[data-theme="aurora"] #topbar .topbar-logo .logo{font-size:21px}html[data-theme="aurora"] #topbar .ttl{display:none}}
-@media(orientation:landscape) and (max-height:520px){html[data-theme="aurora"] #topbar .topbar-logo .logo{font-size:24px}}
+
+
+
+
+
+
+
+
 
 /* ===== HERO: shorter carousel + same extruded 3D lettering as the YAPSMUSIC header ===== */
-.hero-carousel { --hero-h: 180px; }
-.hero-content { padding: 12px 18px; }
-@media (min-width: 768px)  { .hero-carousel { --hero-h: 240px; } .hero-content { padding: 18px 36px; } }
-@media (min-width: 1024px) { .hero-carousel { --hero-h: 290px; } .hero-content { padding: 26px 52px; } }
-@media (min-width: 1440px) { .hero-carousel { --hero-h: 350px; } .hero-content { padding: 34px 68px; } }
-@media (min-width: 1920px) { .hero-carousel { --hero-h: 410px; } }
-@media (min-width: 768px) and (max-height: 700px) { .hero-carousel { --hero-h: 230px; } }
 
-html .hero-title, html[data-theme] .hero-title {
-  font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
-  font-weight: 900 !important; text-transform: uppercase; letter-spacing: .005em; line-height: 1.04;
-  font-size: 20px; margin-bottom: 6px;
-  background: linear-gradient(180deg,#fff 0%,#fff 45%,#d4c4ff 100%);
-  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
-  filter: drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c)
-          drop-shadow(0 6px 8px rgba(0,0,0,.7)) drop-shadow(0 0 14px rgba(224,64,251,.4));
-}
-html .hero-title em, html[data-theme] .hero-title em {
-  font-style: normal; padding-right: .06em;
-  background: linear-gradient(100deg,#19e68c,#19c3ff 35%,#8b5cf6 68%,#e040fb);
-  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
-}
-html .hero-sub { margin-bottom: 8px; }
-html .hero-btn { padding: 7px 16px; font-size: 12px; }
-@media (min-width: 768px) {
-  html .hero-title, html[data-theme] .hero-title { font-size: 27px; margin-bottom: 8px;
-    filter: drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c) drop-shadow(4px 4px 0 #2c1470)
-            drop-shadow(0 8px 10px rgba(0,0,0,.7)) drop-shadow(0 0 16px rgba(224,64,251,.45)); }
-  html .hero-sub { margin-bottom: 10px; }
-  html .hero-btn { padding: 8px 18px; font-size: 13px; }
-}
-@media (min-width: 1024px) { html .hero-title, html[data-theme] .hero-title { font-size: 34px; } }
-@media (min-width: 1440px) { html .hero-title, html[data-theme] .hero-title { font-size: 42px; } }
-@media (min-width: 1920px) { html .hero-title, html[data-theme] .hero-title { font-size: 48px; } }
-@media (min-width: 768px) and (max-height: 700px) { html .hero-title, html[data-theme] .hero-title { font-size: 26px; } }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ===== HOME: search bar above the hero (reuses .search-big from the Search page) ===== */
-.home-search { padding: 12px 16px 12px; }
-.home-search .search-big { margin-bottom: 0; }
-.home-search .search-big input { min-width: 0; }
-@media (min-width: 768px) { .home-search { padding: 14px 24px 14px; } .home-search .search-big { max-width: 720px; } }
+
+
+
+
 </style>
 <!-- ═══════════════════════════════════════════════════════════
      YAPS LOADING SCREEN, shown only the first time the app is opened (per session).
@@ -7041,7 +6974,7 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
 <noscript>
   <main style="max-width:900px;margin:0 auto;padding:24px;font-family:sans-serif;color:#eef6ff;background:#050b22;">
     <h1>YAPS Music (YAPSMusic): Stream Music from Uganda and Around the World</h1>
-    <p>YAPS Music, also known as YAPS, YAPSMusic or YAPS AI, is a free app and platform to stream, discover and share music from Uganda, Africa and around the world. The catalogue includes Afrobeats, Bongo Flava, Luganda Pop, Gospel, Afropop, Dancehall and R&amp;B from Kampala and across Uganda. Browse trending songs and featured artists below.</p>
+    <p>YAPS Music, also known as YAPS, YAPSMusic or YAPS AI, is a free app and platform to stream, discover and share music from Uganda, Africa and around the world. The catalogue includes Afrobeats, Bongo Flava, Luganda Pop, Afropop, Dancehall and R&amp;B from Kampala and across Uganda. Browse trending songs and featured artists below.</p>
     <p><a href="songs.html">Browse all YAPS Music songs and artists</a></p>
     <h2 data-i18n="h_trending_songs">Trending Songs on YAPSMusic</h2>
     <ul>
@@ -7067,7 +7000,6 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
       <li>"Oyaya" by Lutty Neika (Afropop)</li>
       <li>"Yandalula" by Pawaboy (Afropop)</li>
       <li>"Addict" by Azawi (Afrobeats)</li>
-      <li>"Number Mojja" by Levixone ft. Winnie Nwagi (Gospel)</li>
       <li>"Go" by Karole Kasita (Afropop)</li>
       <li>"Nzalina" by Feffe Bussi ft. Winnie Nwagi, Spice Diana, Kapeke & Dax Vibez (Afrobeats)</li>
       <li>"Tema Ensingo Kaba" by Kapeke (Luganda Pop)</li>
@@ -7130,7 +7062,7 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
       <li>Sqoop Larma</li>
     </ul>
     <h2 data-i18n="nav_genres">Genres</h2>
-    <p>Afrobeats, Luganda Pop, Afropop, R&B, Gospel, Dancehall</p>
+    <p>Afrobeats, Luganda Pop, Afropop, R&B, Dancehall</p>
     <p>Enable JavaScript to stream, upload, and interact with tracks on YAPSMusic.</p>
   </main>
 </noscript>
@@ -7765,7 +7697,6 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
         <div class="filter-chip active" onclick="setFilter(this,'All')">All</div>
         <div class="filter-chip" onclick="setFilter(this,'Afrobeats')">Afrobeats</div>
         <div class="filter-chip" onclick="setFilter(this,'Bongo')">Bongo Flava</div>
-        <div class="filter-chip" onclick="setFilter(this,'Gospel')">Gospel</div>
         <div class="filter-chip" onclick="setFilter(this,'Hip Hop')">Hip Hop</div>
         <div class="filter-chip" onclick="setFilter(this,'Dancehall')">Dancehall</div>
         <div class="filter-chip" onclick="setFilter(this,'RnB')">R&B</div>
@@ -7811,8 +7742,9 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
         <h2>Exclusive Hits <span style="color:var(--accent-light);">Since 2013</span></h2>
         <div style="font-size:12px;color:var(--muted);margin-top:2px;">The songs that built the sound, only on YAPS</div>
       </div>
+      <a href="#" class="qvl-playall" onclick="event.preventDefault();_ehPlayAll()"><i class="fas fa-play"></i> Play all</a>
     </div>
-    <div class="qvl-scroller" id="exclusive-hits-row"></div>
+    <div class="qvl-scroller" id="exclusive-hits-row" aria-busy="true"><div class="qvl-col"><div class="qvl-row qvl-skel" aria-hidden="true"><div class="qvl-thumb"></div><div class="qvl-info"><div class="qvl-sl" style="width:62%"></div><div class="qvl-sl" style="width:40%;height:11px;margin-top:8px"></div></div></div><div class="qvl-row qvl-skel" aria-hidden="true"><div class="qvl-thumb"></div><div class="qvl-info"><div class="qvl-sl" style="width:62%"></div><div class="qvl-sl" style="width:40%;height:11px;margin-top:8px"></div></div></div><div class="qvl-row qvl-skel" aria-hidden="true"><div class="qvl-thumb"></div><div class="qvl-info"><div class="qvl-sl" style="width:62%"></div><div class="qvl-sl" style="width:40%;height:11px;margin-top:8px"></div></div></div><div class="qvl-row qvl-skel" aria-hidden="true"><div class="qvl-thumb"></div><div class="qvl-info"><div class="qvl-sl" style="width:62%"></div><div class="qvl-sl" style="width:40%;height:11px;margin-top:8px"></div></div></div></div><div class="qvl-col"><div class="qvl-row qvl-skel" aria-hidden="true"><div class="qvl-thumb"></div><div class="qvl-info"><div class="qvl-sl" style="width:62%"></div><div class="qvl-sl" style="width:40%;height:11px;margin-top:8px"></div></div></div><div class="qvl-row qvl-skel" aria-hidden="true"><div class="qvl-thumb"></div><div class="qvl-info"><div class="qvl-sl" style="width:62%"></div><div class="qvl-sl" style="width:40%;height:11px;margin-top:8px"></div></div></div><div class="qvl-row qvl-skel" aria-hidden="true"><div class="qvl-thumb"></div><div class="qvl-info"><div class="qvl-sl" style="width:62%"></div><div class="qvl-sl" style="width:40%;height:11px;margin-top:8px"></div></div></div><div class="qvl-row qvl-skel" aria-hidden="true"><div class="qvl-thumb"></div><div class="qvl-info"><div class="qvl-sl" style="width:62%"></div><div class="qvl-sl" style="width:40%;height:11px;margin-top:8px"></div></div></div></div></div>
 
     <!-- TRENDING VIDEOS — automatic 3D rotating carousel -->
     <div class="tvc-head">
@@ -8211,7 +8143,6 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
             <select class="form-select" id="uploadGenre">
               <option>Afrobeats</option>
               <option>Bongo Flava</option>
-              <option>Gospel</option>
               <option>Hip Hop</option>
               <option>Dancehall</option>
               <option>R&B / Soul</option>
@@ -8388,7 +8319,7 @@ a.djx-row{color:inherit;text-decoration:none}
           <span class="yai-live"><i></i><span>Online</span></span>
           <button type="button" class="yai-icon-btn" onclick="clearDJChat()" title="Start a new chat" aria-label="Start a new chat"><i class="fas fa-rotate-left"></i></button>
         </header>
-        <div class="yai-chips" role="group" aria-label="Quick prompts"><button type="button" class="dj-prompt-chip new" data-q="What can you do?" onclick="sendDJPrompt(this.dataset.q)">What can you do?</button><button type="button" class="dj-prompt-chip new" data-q="30 minutes of gospel" onclick="sendDJPrompt(this.dataset.q)">30 minutes of gospel</button><button type="button" class="dj-prompt-chip" data-q="Songs like Yoyo" onclick="sendDJPrompt(this.dataset.q)">Songs like Yoyo</button><button type="button" class="dj-prompt-chip" data-q="Where are my downloads?" onclick="sendDJPrompt(this.dataset.q)">Where are my downloads?</button><button type="button" class="dj-prompt-chip" data-q="How do I make a song?" onclick="sendDJPrompt(this.dataset.q)">How do I make a song?</button><button type="button" class="dj-prompt-chip" data-q="Open settings" onclick="sendDJPrompt(this.dataset.q)">Open settings</button><button type="button" class="dj-prompt-chip" data-q="Chill Sunday vibes" onclick="sendDJPrompt(this.dataset.q)">Chill Sunday vibes</button><button type="button" class="dj-prompt-chip" data-q="Hype me up" onclick="sendDJPrompt(this.dataset.q)">Hype me up</button><button type="button" class="dj-prompt-chip" data-q="Kampala nights" onclick="sendDJPrompt(this.dataset.q)">Kampala nights</button><button type="button" class="dj-prompt-chip" data-q="What's new" onclick="sendDJPrompt(this.dataset.q)">What's new</button></div>
+        <div class="yai-chips" role="group" aria-label="Quick prompts"><button type="button" class="dj-prompt-chip new" data-q="What can you do?" onclick="sendDJPrompt(this.dataset.q)">What can you do?</button><button type="button" class="dj-prompt-chip" data-q="Songs like Yoyo" onclick="sendDJPrompt(this.dataset.q)">Songs like Yoyo</button><button type="button" class="dj-prompt-chip" data-q="Where are my downloads?" onclick="sendDJPrompt(this.dataset.q)">Where are my downloads?</button><button type="button" class="dj-prompt-chip" data-q="How do I make a song?" onclick="sendDJPrompt(this.dataset.q)">How do I make a song?</button><button type="button" class="dj-prompt-chip" data-q="Open settings" onclick="sendDJPrompt(this.dataset.q)">Open settings</button><button type="button" class="dj-prompt-chip" data-q="Chill Sunday vibes" onclick="sendDJPrompt(this.dataset.q)">Chill Sunday vibes</button><button type="button" class="dj-prompt-chip" data-q="Hype me up" onclick="sendDJPrompt(this.dataset.q)">Hype me up</button><button type="button" class="dj-prompt-chip" data-q="Kampala nights" onclick="sendDJPrompt(this.dataset.q)">Kampala nights</button><button type="button" class="dj-prompt-chip" data-q="What's new" onclick="sendDJPrompt(this.dataset.q)">What's new</button></div>
         <div class="dj-chat-area" id="djChatArea" role="log" aria-live="polite">
           <div class="dj-message"><div class="dj-msg-avatar"></div><div class="dj-msg-bubble">Sssup! I'm YAPS AI, built right into the app. Ask me for music by mood, artist or length, or ask how to do anything in YAPSMusic and I'll show you.</div></div>
           <div class="yai-caps" id="yaiCaps"></div>
@@ -8569,7 +8500,6 @@ a.djx-row{color:inherit;text-decoration:none}
         <div class="smart-filter-btn" onclick="smartFilter(this);renderExploreSection('new')">New Releases</div>
         <div class="smart-filter-btn" onclick="smartFilter(this);renderExploreSection('trending')">Trending</div>
         <div class="smart-filter-btn" onclick="smartFilter(this);renderExploreSection('tiktok')">TikTok Hits</div>
-        <div class="smart-filter-btn" onclick="smartFilter(this);renderExploreSection('gospel')">Gospel</div>
       </div>
       <div id="explore-content" style="padding:0 24px 32px;"></div>
     </section>
@@ -10212,6 +10142,7 @@ async function _loadRemoteTracks() {
       // SECURITY: these values come from user uploads and are later placed into innerHTML and inline onclick="" strings.
       // Make them inert plain text / https URLs before they enter the catalogue.
       r.title = _safeText(r.title, 150); r.artist = _safeText(r.artist, 150); r.genre = _safeText(r.genre, 40);
+      if (/^gospel$/i.test(r.genre)) return; // Gospel songs are not shown in the app
       r.tags = Array.isArray(r.tags) ? r.tags.slice(0, 12).map(x => _safeText(x, 30)) : [];
       r.artwork_url = _safeUrl(r.artwork_url); r.audio_url = _safeUrl(r.audio_url); r.audio_url_low = _safeUrl(r.audio_url_low); r.audio_url_std = _safeUrl(r.audio_url_std);
       const existing = tracks.find(x => String(x.id) === id);
@@ -10770,31 +10701,6 @@ const tracks = [
   { id:7, title:"Mine", artist:"Vinka", img:"images/Vinka.png", genre:"Afropop", plays:"1.2M", likes:"22K", duration:"3:33", audioSrc:"audio/Mine - Vinka (erycom)_1775090955.mp3", tags:["Uganda","Trending","Afropop"], region:"Central", youtubeId:"q7nDibNmIRA" },
   { id:206, title:"Malidadi", artist:"Mimi Kampala ft. Pallaso", img:"images/yaps-music-cover.jpg", genre:"Afrobeats", plays:"0", likes:"0", duration:"2:39", audioSrc:"audio/Mimi_Kampala__Pallaso_-_Malidadi.mp3", tags:["Uganda","Trending","New","Afrobeats"], region:"Central", savedAt: Date.now(), youtubeId:"N8FrVBQG1EU" },
   { id:204, title:"Mukomboti", artist:"Ava Peace", img:"images/Ava peace.png", genre:"Afrobeats", plays:"0", likes:"0", duration:"2:52", audioSrc:"audio/Ava_Peace_-_Mukomboti.mp3", tags:["Uganda","Trending","New","Afrobeats"], region:"Central", savedAt: Date.now(), youtubeId:"v-LBkRJadQE" },
-  { id:196, title:"Grave Into Gardens", artist:"Elevation Worship ft. Brandon Lake", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"7:32", audioSrc:"audio/Elevation_Worship_-_Grave_Into_Gardens.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"R8oxVCFGsgY" },
-  { id:195, title:"Here Again (Worthy)", artist:"Elevation Worship", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"9:03", audioSrc:"audio/Elevation_Worship_-_Here_Again_Worthy.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"zfLcdBuB7NY" },
-  { id:194, title:"10,000 Reasons (Bless the Lord)", artist:"Matt Redman", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"4:20", audioSrc:"audio/Matt_Redman_-_10000_Reasons_Bless_The_Lord.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"XtwIT8JjddM" },
-  { id:193, title:"Oceans (Where Feet May Fail)", artist:"Hillsong UNITED", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"9:00", audioSrc:"audio/Hillsong_UNITED_-_Oceans_Where_Feet_May_Fail.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"dy9nwe9_xzw" },
-  { id:192, title:"Build My Life", artist:"Pat Barrett", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"4:06", audioSrc:"audio/Pat_Barrett_-_Build_My_Life.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"Z32HiCoFzlU" },
-  { id:190, title:"Battle Belongs", artist:"Phil Wickham", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"4:47", audioSrc:"audio/Phil_Wickham_-_Battle_Belongs.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"qtvQNzPHn-w" },
-  { id:189, title:"This Is Amazing Grace", artist:"Phil Wickham", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"4:38", audioSrc:"audio/Phil_Wickham_-_This_Is_Amazing_Grace.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"XFRjr_x-yxU" },
-  { id:188, title:"Reckless Love", artist:"Cory Asbury", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"5:31", audioSrc:"audio/Cory_Asbury_-_Reckless_Love.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"M-qWMqzSwys" },
-  { id:187, title:"King of Heaven", artist:"Ryan Ofei", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"7:50", audioSrc:"audio/Ryan_Ofei_-_King_Of_Heaven.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"gT9_ebl34cU" },
-  { id:186, title:"I Know Who I Am", artist:"Sinach", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"6:10", audioSrc:"audio/Sinach_-_I_Know_Who_I_Am.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"frtZ4XfoXxM" },
-  { id:185, title:"Way Maker", artist:"Sinach", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"5:05", audioSrc:"audio/Sinach_-_Way_Maker.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"QM8jQHE5AAk" },
-  { id:184, title:"What A Beautiful Name", artist:"Hillsong Worship", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"5:42", audioSrc:"audio/Hillsong_Worship_-_What_A_Beautiful_Name.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"nQWFzMvCfLE" },
-  { id:183, title:"House of the Lord", artist:"Vertical Worship", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"4:50", audioSrc:"audio/Vertical_Worship_-_House_Of_The_Lord.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"3BPy-k4b5cY" },
-  { id:182, title:"Yesu Beera Nange", artist:"Judith Babirye", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"6:17", audioSrc:"audio/Judith_Babirye_-_Yesu_Beera_Nange.mp3", tags:["Weekend","New","Worship","Gospel","Uganda"], region:"Central", savedAt: Date.now(), youtubeId:"4rDNnxEf2fE" },
-  { id:181, title:"Wambatira", artist:"Judith Babirye", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"5:22", audioSrc:"audio/Judith_Babirye_-_Wambatira.mp3", tags:["Weekend","New","Worship","Gospel","Uganda"], region:"Central", savedAt: Date.now(), youtubeId:"_aKNIgtfTBQ" },
-  { id:180, title:"Omukisa Gwa Mukama", artist:"Judith Babirye", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"4:36", audioSrc:"audio/Judith_Babirye_-_Omukisa_Gwa_Mukama.mp3", tags:["Weekend","New","Worship","Gospel","Uganda"], region:"Central", savedAt: Date.now(), youtubeId:"2hc_JtrX3SY" },
-  { id:179, title:"Katonda Tageya (Lopela Katonda)", artist:"Gabie Ntaate", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"2:29", audioSrc:"audio/Gabie_Ntaate_-_Katonda_Tageya.mp3", tags:["Weekend","New","Worship","Gospel","Uganda"], region:"Central", savedAt: Date.now(), youtubeId:"1YU_5beDImE" },
-  { id:178, title:"Gwasembayo", artist:"Gabie Ntaate", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"3:45", audioSrc:"audio/Gabie_Ntaate_-_Gwasembayo.mp3", tags:["Weekend","New","Worship","Gospel","Uganda"], region:"Central", savedAt: Date.now(), youtubeId:"-DJGf_Not8w" },
-  { id:177, title:"Brag About God", artist:"Gabie Ntaate", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"3:50", audioSrc:"audio/Gabie_Ntaate_-_Brag_About_God.mp3", tags:["Weekend","New","Worship","Gospel","Uganda"], region:"Central", savedAt: Date.now(), youtubeId:"4DJWY_ZXekI" },
-  { id:176, title:"What A Friend We Have In Jesus", artist:"Traditional Hymn", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"4:16", audioSrc:"audio/Christian_Hymn_-_What_A_Friend_We_Have_In_Jesus.mp3", tags:["Weekend","New","Worship","Gospel","Hymn"], region:"International", savedAt: Date.now(), youtubeId:"EkUUgsKlA6k" },
-  { id:175, title:"Do It Again (Live)", artist:"Elevation Worship", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"10:15", audioSrc:"audio/Do-It-Again-Live-Elevation-Worship.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"0B_lnQIITxU" },
-  { id:174, title:"King Of My Heart", artist:"David Funk", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"9:01", audioSrc:"audio/David_Funk_-_King_Of_My_Heart.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"SdoETXDRl5k" },
-  { id:173, title:"Raise A Hallelujah", artist:"Dante Bowe & Jenn Johnson", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"6:14", audioSrc:"audio/Dante_Bowe_Jenn_Johnson_-_Raise_A_Hallelujah.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"-9lWVs3XD9E" },
-  { id:172, title:"Firm Foundation (He Won't)", artist:"Cody Carnes", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"6:22", audioSrc:"audio/Cody_Carnes_-_Firm_Foundation_He_Wont.mp3", tags:["Weekend","New","Worship","Gospel"], region:"International", savedAt: Date.now(), youtubeId:"x9ndiD0_qNk" },
-  { id:171, title:"Jesus Keep Me Near The Cross", artist:"Traditional Hymn", img:"images/g2w-gospel-to-the-world.png", genre:"Gospel", plays:"0", likes:"0", duration:"3:05", audioSrc:"audio/Christian_Hymn_-_Jesus_Keep_Me_Near_The_Cross.mp3", tags:["Weekend","New","Worship","Gospel","Hymn"], region:"International", savedAt: Date.now(), youtubeId:"MxRnzJT5mvo" },
   { id:169, title:"Dangerous", artist:"Ceaserous", img:"images/Ceaserous - Dangerous.jpg", genre:"Afrobeats", plays:"1.5M", likes:"28K", duration:"3:27", audioSrc:"audio/Ceaserous - Dangerous.mp3", tags:["Uganda","Trending","New","Afrobeats"], region:"Central", savedAt: Date.now(), youtubeId:"D-6fppei-Sg" },
   { id:168, title:"Ndi Omu", artist:"Ava Peace", img:"images/Ava peace.png", genre:"Afrobeats", plays:"120K", likes:"6.2K", duration:"2:55", audioSrc:"audio/Ava Peace - Ndi Omu.mp3", tags:["Uganda","Popular","Afrobeats"], region:"Central", savedAt: Date.now(), youtubeId:"X4dgo2yx49s" },
   { id:165, title:"Miracles (Extended)", artist:"James Ploh ft. A Pass & Kiboo", img:"images/Apass.png", genre:"Dancehall", plays:"0", likes:"0", duration:"2:56", audioSrc:"audio/James_Ploh_Official_-_Miracles_Extended_-_A_Pass___Kiboo.mp3", tags:["Uganda","Trending","New","Dancehall","Collab"], region:"Central", savedAt: Date.now(), youtubeId:"dAvMAr1dr_I" },
@@ -10813,7 +10719,6 @@ const tracks = [
   { id:18, title:"Oyaya", artist:"Lutty Neika", img:"images/Neika Oyaya.jpg", genre:"Afropop", plays:"690K", likes:"13K", duration:"3:19", audioSrc:"audio/Lutty Neika - Oyaya.mp3", tags:["Uganda","Trending"], region:"Central", youtubeId:"0QFll0AevhA" },
   { id:19, title:"Yandalula", artist:"Pawaboy", img:"images/Pawaboy.jpg", genre:"Afropop", plays:"690K", likes:"13K", duration:"3:19", audioSrc:"audio/Pawaboy - Yandalula.mp3", tags:["Uganda","Trending"], region:"Central", youtubeId:"vtIc5wNj7vA" },
   { id:21, title:"Addict", artist:"Azawi", img:"images/Azawi.png", genre:"Afrobeats", plays:"1.4M", likes:"26K", duration:"3:45", audioSrc:"audio/Addict - Azawi (erycom)_1774696906.mp3", tags:["Uganda","Trending","Afrobeats"], region:"Central", youtubeId:"xM8ka6vdreA" },
-  { id:22, title:"Number Mojja", artist:"Levixone ft. Winnie Nwagi", img:"images/levixon.jpg", genre:"Gospel", plays:"950K", likes:"18K", duration:"4:02", audioSrc:"audio/Number Moja - Levixone & Winnie Nwagi (erycom)_1777669338.mp3", tags:["Uganda","Gospel","Collab"], region:"Central", youtubeId:"r4ZP7m1Xaco" },
   { id:23, title:"Go", artist:"Karole Kasita", img:"images/Karole kasita.jpg", genre:"Afropop", plays:"820K", likes:"15K", duration:"3:27", audioSrc:"audio/Karole Kasita ft Elijah Kitaka - Go (Remix).mp3", tags:["Uganda","Trending","New","Afropop"], region:"Central", youtubeId:"iNg24Ka0lxY" },
   { id:32, title:"Biggwa", artist:"Liam Voice & Fik Fameica", img:"images/Liam_Voice.png", genre:"Afropop", plays:"880K", likes:"16K", duration:"3:42", audioSrc:"audio/Liam Voice & Fik Fameica - Biggwa.mp3", tags:["Uganda","Collab","Afropop"], region:"Central", youtubeId:"ZQliCRDaTvo" },
   { id:51, title:"Baddie Remix", artist:"Shannon ft. Fik Fameica, AaronX, Tojo & DJ Lito", img:"images/Fik_Fameica.png", genre:"Afropop", plays:"540K", likes:"10K", duration:"3:45", audioSrc:"audio/Shannon ft. Fik Fameica, AaronX, Tojo & DJ Lito - Baddie Remix.mp3", tags:["Uganda","Remix","Collab","TikTok"], region:"Central", youtubeId:"WG0OIU90JB8" },
@@ -10848,15 +10753,14 @@ function regionsAvailable() {
 // ── QUICK VIBES — curated mood playlists (instant, no AI DJ) ──
 // trackIndices reference positions in the tracks[] array above (0-based).
 const _quickVibePlaylists = [
-  { id:'qv-chill',     emoji:'', name:'Chill Sunday Vibes', trackIndices:[35,17] },
-  { id:'qv-hype',      emoji:'', name:'Hype Me Up',         trackIndices:[53,62,55,15] },
+  { id:'qv-chill',     emoji:'', name:'Chill Sunday Vibes', trackIndices:[17] },
+  { id:'qv-hype',      emoji:'', name:'Hype Me Up',         trackIndices:[37,15] },
   { id:'qv-heartbreak',emoji:'', name:'Heartbreak Hour',    trackIndices:[1] },
-  { id:'qv-kampala',   emoji:'', name:'Kampala Nights',     trackIndices:[32,14,2,48] },
-  { id:'qv-gospel',    emoji:'', name:'Gospel Sunday',      trackIndices:[46] },
-  { id:'qv-party',     emoji:'', name:'Party Starter',      trackIndices:[8,62,33,53] },
-  { id:'qv-rainy',     emoji:'', name:'Rainy Day Feels',    trackIndices:[17,35] },
-  { id:'qv-workout',   emoji:'', name:'Workout Mode',       trackIndices:[53,55] },
-  { id:'qv-latenight', emoji:'', name:'Late Night Drive',   trackIndices:[17,35,1] },
+  { id:'qv-kampala',   emoji:'', name:'Kampala Nights',     trackIndices:[14,2] },
+  { id:'qv-party',     emoji:'', name:'Party Starter',      trackIndices:[8,37] },
+  { id:'qv-rainy',     emoji:'', name:'Rainy Day Feels',    trackIndices:[17] },
+  { id:'qv-workout',   emoji:'', name:'Workout Mode',       trackIndices:[] },
+  { id:'qv-latenight', emoji:'', name:'Late Night Drive',   trackIndices:[17,1] },
 ];
 
 // Returns { pl, curated } — looks up a playlist by id from user playlists first,
@@ -11155,8 +11059,6 @@ const playlists = [
     t => t.tags && t.tags.includes("Trending")),
   _mkPlaylist("pl-kampala", "Kampala Vibes", 22, ["Trending","Uganda"], "Trending sounds straight from the city",
     t => t.region === "Central" && t.tags && t.tags.includes("Trending")),
-  _mkPlaylist("pl-gospel", "Gospel Sunday", 6, ["Gospel","Uganda"], "Worship and praise for your Sunday",
-    t => t.genre === "Gospel" || (t.tags && t.tags.includes("Gospel"))),
   _mkPlaylist("pl-luganda", "Luganda Hits", 14, ["Luganda","Uganda"], "Your favourite Luganda jams",
     t => t.genre === "Luganda Pop" || (t.tags && t.tags.includes("Luganda"))),
   _mkPlaylist("pl-afrobeats", "Afrobeats Wave", 18, ["Afrobeats"], "Smooth Afrobeats from the region and beyond",
@@ -11185,7 +11087,6 @@ const quickVibes = [
   { id:"qv-hype",       cls:"qv-c-hype",       title:"Hype me up",         tracks:30, artistNames:["Fik Fameica","A Pass","Feffe Bussi","Vyroota"] },
   { id:"qv-heartbreak", cls:"qv-c-heartbreak", title:"Heartbreak hour",    tracks:20, artistNames:["Levixone","Ben Hunter","Joshua Baraka","Rema Namakula"] },
   { id:"qv-kampala",    cls:"qv-c-kampala",    title:"Kampala nights",     tracks:28, artistNames:["King Saha","John Blaq","Vyroota","Pawaboy"] },
-  { id:"qv-gospel",     cls:"qv-c-gospel",     title:"Gospel Sunday",      tracks:22, artistNames:["Levixone","Juliana Kanyomozi","Karole Kasita","Rema Namakula"] },
   { id:"qv-party",      cls:"qv-c-party",      title:"Party starter",      tracks:35, artistNames:["Sheebah","Spice Diana","Vinka","Azawi"] },
   { id:"qv-rainy",      cls:"qv-c-rainy",      title:"Rainy day feels",    tracks:18, artistNames:["Joshua Baraka","Winnie Nwagi","Ben Hunter","Rema Namakula"] },
   { id:"qv-workout",    cls:"qv-c-workout",    title:"Workout mode",       tracks:26, artistNames:["Fik Fameica","A Pass","Alien Skin","Liam Voice"] },
@@ -11194,7 +11095,6 @@ const quickVibes = [
 
 const genres = [
   { name:"Afrobeats", img:"https://images.unsplash.com/photo-1571330735066-03aaa9429d89?w=300&q=70&auto=format" },
-  { name:"Gospel", img:"https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=300&q=70&auto=format" },
   { name:"Hip Hop", img:"https://images.unsplash.com/photo-1468164016595-6108e4c60b8d?w=300&q=70&auto=format" },
   { name:"Dancehall", img:"https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300&q=70&auto=format" },
   { name:"R&B / Soul", img:"https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=300&q=70&auto=format" },
@@ -11917,13 +11817,8 @@ let _homeRendered = false;
 // normal catalogue with Gospel tracks excluded. Nothing else on the app
 // (search, library, the dedicated Gospel tab, etc.) is affected.
 function isGospelWeekend() {
-  try {
-    const day = new Intl.DateTimeFormat('en-US', { timeZone: 'Africa/Kampala', weekday: 'short' }).format(new Date());
-    return day === 'Sat' || day === 'Sun';
-  } catch (e) {
-    const d = new Date().getDay();
-    return d === 0 || d === 6;
-  }
+  // Weekend Gospel-only mode removed: sections show the normal catalogue every day.
+  return false;
 }
 function gospelWeekendPool(sourceTracks) {
   return isGospelWeekend()
@@ -15142,7 +15037,7 @@ let _artistFilter = 'All';
 let _artistSearch = '';
 let _currentArtistProfile = null;
 
-const ATP_GENRES = ['All', 'Afrobeats', 'Gospel', 'Hip Hop', 'R&B', 'Dancehall'];
+const ATP_GENRES = ['All', 'Afrobeats', 'Hip Hop', 'R&B', 'Dancehall'];
 let _atpTimer = null, _atpReturn = 'home', _atpFirst = true;
 const _atpReduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 const _atpEsc = x => String(x == null ? '' : x).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
@@ -15650,7 +15545,6 @@ function renderExploreSection(section) {
     html += `<div class="explore-section-title">Mood Collections</div>`;
     html += `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:24px;">
       ${exploreMoodCard('','Afrobeats Bangers','linear-gradient(135deg,var(--accent-dark),var(--accent))','Afrobeats')}
-      ${exploreMoodCard('','Gospel Praise','linear-gradient(135deg,var(--accent),var(--accent-light))','Gospel')}
       ${exploreMoodCard('','Ugandan Classics','linear-gradient(135deg,color-mix(in srgb,var(--accent-dark) 55%,#000),var(--accent-dark))','Afropop')}
       ${exploreMoodCard('','Dance Floor','linear-gradient(145deg,var(--accent-dark),var(--accent-light))','Dancehall')}
       ${exploreMoodCard('','Hip Hop UG','linear-gradient(125deg,color-mix(in srgb,var(--accent-dark) 40%,#000),var(--accent))','Hip Hop')}
@@ -15749,33 +15643,6 @@ function renderExploreSection(section) {
       html += `<div class="explore-track-grid">${remixes.map(t => exploreTrackCard(t)).join('')}</div>`;
     }
 
-  } else if (section === 'gospel') {
-    const gospelTracks = tracks.filter(t => t.genre === 'Gospel' || t.tags.includes('Gospel'));
-
-    // ── Gospel hero banner ──
-    html += `
-      <div style="
-        background:linear-gradient(135deg,#1561d6,#1565c0);
-        border-radius:16px;padding:28px 24px;margin-bottom:24px;text-align:center;">
-        <div style="font-size:40px;margin-bottom:10px;"></div>
-        <div style="font-size:20px;font-weight:900;margin-bottom:4px;">Gospel & Worship</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:16px;">Ugandan gospel, praise & worship music</div>
-        <button onclick="playTrack(${tracks.indexOf(gospelTracks[0] || tracks[0])})" style="background:#fff;color:#1561d6;border:none;border-radius:24px;padding:10px 24px;font-weight:800;font-size:13px;cursor:pointer;"><i class="fas fa-play"></i> Play Gospel Mix</button>
-      </div>`;
-
-    html += `<div class="explore-section-title" style="margin-top:0;">Gospel Praise</div>`;
-    html += `<div class="explore-track-grid">${gospelTracks.slice(0,8).map(t => exploreTrackCard(t)).join('')}</div>`;
-
-    // ── Gospel artists ──
-    const gospelArtists = artists.filter(a => {
-      return tracks.some(t => _artistMatchRegex(a.name).test(t.artist.toLowerCase()) && (t.genre === 'Gospel' || t.tags.includes('Gospel')));
-    });
-    if (gospelArtists.length) {
-      html += `<div class="explore-section-title">Gospel Artists</div>`;
-      html += `<div style="display:flex;gap:12px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none;">
-        ${gospelArtists.map(a => exploreArtistSpotlight(a)).join('')}
-      </div>`;
-    }
   }
 
   container.innerHTML = html || '<div style="padding:40px;text-align:center;color:var(--dim);">Nothing here yet, check back soon!</div>';
@@ -16873,7 +16740,7 @@ function _ytThumb(id) { return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 //  YouTube-backed videos), so content stays in sync with the
 //  rest of the app.
 // ══════════════════════════════════════════════════════════
-const yv2Categories = ['All', 'Trending', 'New Releases', 'Afrobeats', 'Ugandan Music', 'Hip Hop', 'Gospel'];
+const yv2Categories = ['All', 'Trending', 'New Releases', 'Afrobeats', 'Ugandan Music', 'Hip Hop'];
 let _yv2Category = 'All';
 let _yv2HeroIdx = 0;
 let _yv2HeroTimer = null;
@@ -17308,7 +17175,6 @@ setTimeout(() => {
 // excludes/includes it from the Recommended row (saved on this device).
 const tasteData = [
   { img:'images/img-07-2eee2d73.jpg', name:'Afrobeats',    pct:72 },
-  { img:'images/img-08-f9824601.jpg', name:'Gospel',       pct:58 },
   { img:'images/img-09-6ae12395.jpg', name:'Bongo Flava',  pct:45 },
   { img:'images/img-10-fd5cda78.jpg', name:'Dancehall',    pct:41 },
   { img:'images/img-11-c4e1b948.jpg', name:'R&B',          pct:35 },
@@ -17702,11 +17568,6 @@ const _djVibeDB = [
     messages:["Kampala at night hits different. Windows down, volume up.","Kololo, Nakasero, Bugolobi, wherever you are, this set brings the city with it.","The city never sleeps and neither does this set. Jangu, let's ride."],
     profile:{ g:{'Afrobeats':2.5,'Luganda Pop':2.5,'Afropop':2}, t:{Luganda:1,Uganda:0.5}, r:{Central:0.5} },
     dna:{ energy:72, danceability:78, mood:65, tempo:75, Uganda_factor:97 } },
-  { id:'gospel', why:'worship',
-    keys:['gospel','praise','worship','church','sunday morning','jesus','god','faith','holy','prayer','amen','gospel sunday','hymn','hymns','pray'],
-    messages:["This one is for the Most High. Gospel Sunday energy, let these songs lift you.","Blessings on blessings. These tracks will fill your spirit.","Before the week starts, fill up spiritually. This set hits the soul."],
-    profile:{ g:{'Gospel':5}, t:{Worship:1,Gospel:1,Hymn:0.5} },
-    dna:{ energy:55, danceability:45, mood:90, tempo:50, Uganda_factor:88 } },
   { id:'party', why:'dancefloor',
     keys:['party','dance','dancefloor','wedding','function','celebrate','bash','party starter','friday party','turn the party','house party','birthday'],
     messages:["The party has officially started! DJ YAPS has the aux, nobody is sitting down.","Function mode ACTIVATED. From the first track to the last, this floor stays moving.","Nkwatako! This set is built to make people dance, no exceptions."],
@@ -17923,7 +17784,7 @@ const _DJ_JOKES = [
 function _djSmalltalk(msg) {
   const t = msg.trim();
   if (/^\s*(hi|hello|hey|hiya|sup|yo|howzit|mambo|wassup|what'?s up|oli otya|good morning|good afternoon|good evening)\b[\s!.?]*$/.test(t)) {
-    return "Hey! Give me a mood, an artist or a genre, or try “30 minutes of gospel” or “songs like Yoyo”.";
+    return "Hey! Give me a mood, an artist or a genre, or try “30 minutes of party” or “songs like Yoyo”.";
   }
   if (t.length < 40 && (/\bhow are you\b|\bhow'?s it going\b|\bhow do you do\b/.test(t) || /^oli otya\b/.test(t))) {
     return "All good and ready to spin. What are we listening to?";
@@ -21041,10 +20902,10 @@ window._yapsDeepLink(_plParams.get('page'), _plParams.get('go'), true);
 //  Renders from the SAME `quickVibes` array as the homepage coverflow and
 //  opens playlists through the existing openQuickVibe(id).
 // ══════════════════════════════════════════════════════════
-const _QVP_CATS = ['All','Chill','Hype','Heartbreak','Kampala','Gospel','Party','Workout','Love','Late Night'];
+const _QVP_CATS = ['All','Chill','Hype','Heartbreak','Kampala','Party','Workout','Love','Late Night'];
 const _QVP_CAT_IDS = {
   'Chill':['qv-chill','qv-rainy'], 'Hype':['qv-hype','qv-workout'], 'Heartbreak':['qv-heartbreak','qv-rainy'],
-  'Kampala':['qv-kampala','qv-latenight'], 'Gospel':['qv-gospel'], 'Party':['qv-party'],
+  'Kampala':['qv-kampala','qv-latenight'], 'Party':['qv-party'],
   'Workout':['qv-workout'], 'Love':['qv-heartbreak','qv-chill'], 'Late Night':['qv-latenight']
 };
 const _qvpState = { cat:'All', q:'' };
@@ -21198,7 +21059,7 @@ navigate = function(page) {
 //  data or playback logic of its own: card tap → openPlaylist(id) (existing
 //  detail panel), play button → openQuickVibe(id) (existing open + play + queue).
 // ══════════════════════════════════════════════════════════
-const _PLP_CATS = ['All','Trending','Uganda','Gospel','Afrobeats','Luganda','R&B','TikTok','East Africa'];
+const _PLP_CATS = ['All','Trending','Uganda','Afrobeats','Luganda','R&B','TikTok','East Africa'];
 const _plpState = { cat:'All', q:'' };
 let _plpPrevPage = 'home';
 let _plpBound = false;
@@ -21379,7 +21240,7 @@ navigate = function(page) {
 //  release date, so nothing is invented for them.
 //  Playback/like/queue/playlist/download/share all call the existing functions.
 // ══════════════════════════════════════════════════════════
-const _NRP_CATS = ['All','Today','This Week','This Month','Afrobeats','Hip Hop','R&B','Gospel','Dancehall','Luganda','Ugandan','East Africa'];
+const _NRP_CATS = ['All','Today','This Week','This Month','Afrobeats','Hip Hop','R&B','Dancehall','Luganda','Ugandan','East Africa'];
 const _NRP_BATCH = 24;
 const _NRP_DAY = 864e5;
 const _NRP_FALLBACK_IMG = 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&q=70&auto=format';
@@ -21425,7 +21286,6 @@ function _nrpMatchesCat(t, cat) {
     case 'Afrobeats': return /afrobeats?/i.test(g) || _nrpHasTag(t, /^afrobeats?$/i);
     case 'Hip Hop': return /hip.?hop/i.test(g) || _nrpHasTag(t, /^hip.?hop$/i);
     case 'R&B': return /^(r&b|rnb)$/i.test(g.trim()) || _nrpHasTag(t, /^(r&b|rnb)$/i);
-    case 'Gospel': return /gospel/i.test(g) || _nrpHasTag(t, /^gospel$/i);
     case 'Dancehall': return /dancehall/i.test(g) || _nrpHasTag(t, /^dancehall$/i);
     case 'Luganda': return /luganda/i.test(g) || _nrpHasTag(t, /^luganda$/i);
     case 'Ugandan': return _nrpHasTag(t, /^ugandan?$/i) || /^(central|eastern|western|northern)$/i.test(r);
@@ -21895,14 +21755,28 @@ function _ehPlays(v) {
   if (!m) return 0;
   return parseFloat(m[1].replace(/,/g, '')) * ({ K: 1e3, M: 1e6, B: 1e9 }[(m[2] || '').toUpperCase()] || 1);
 }
+// Put track ids here to force songs to the top of Exclusive Hits, in this order (e.g. [201, 3]). Empty = ranked automatically.
+const EXCLUSIVE_HITS_PINNED_IDS = [];
 function renderExclusiveHits() {
   const row = document.getElementById('exclusive-hits-row');
   const head = document.getElementById('exclusive-hits-head');
   if (!row || !tracks) return;
-  const pool = gospelWeekendPool(tracks)
-    .filter(t => t && t.img && (t.year ? Number(t.year) >= 2013 : !t.savedAt) && _ehPlays(t.plays) > 0)
-    .sort((a, b) => _ehPlays(b.plays) - _ehPlays(a.plays))
-    .slice(0, 12);
+  // Not tied to the weekend Gospel-only rule: this is a catalog section, so it uses every track.
+  // Ranking: hand-picked ids first (EXCLUSIVE_HITS_PINNED_IDS, in that order), then everything else by
+  // engagement (plays + 20 x likes). At most 2 songs per lead artist so one artist can't fill the list.
+  const leadArtist = t => String(t.artist || '').split(/\s+(?:ft\.?|feat\.?|featuring|&|x)\s+|,/i)[0].trim().toLowerCase();
+  const score = t => _ehPlays(t.plays) + 20 * _ehPlays(t.likes);
+  const eligible = tracks.filter(t => t && t.img && (t.year ? Number(t.year) >= 2013 : !t.savedAt) && score(t) > 0);
+  const pinned = EXCLUSIVE_HITS_PINNED_IDS.map(id => eligible.find(t => t.id === id)).filter(Boolean);
+  const rest = eligible.filter(t => !pinned.includes(t)).sort((a, b) => score(b) - score(a));
+  const perArtist = {};
+  const pool = [];
+  [...pinned, ...rest].forEach(t => {
+    const k = leadArtist(t);
+    if (pool.length >= 12 || (perArtist[k] || 0) >= 2) return;
+    perArtist[k] = (perArtist[k] || 0) + 1;
+    pool.push(t);
+  });
   if (head) head.style.display = pool.length ? '' : 'none';
   row.style.display = pool.length ? 'flex' : 'none';
   const e = _tvcEsc;
@@ -21913,13 +21787,26 @@ function renderExclusiveHits() {
       const i = tracks.indexOf(t);
       const plays = String(t.plays || '0');
       return `<div class="qvl-row" role="button" tabindex="0" onclick="_ehPlay(${i}, this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();_ehPlay(${i}, this);}">
-        <div class="qvl-thumb"><img src="${e(t.img)}" alt="" loading="lazy" decoding="async"></div>
-        <div class="qvl-info"><div class="qvl-title">${e(t.title)}</div><div class="qvl-sub">${e(t.artist)} \u2022 ${e(plays)} plays</div></div>
-        <button type="button" class="qvl-more" aria-label="Play ${e(t.title)}" onclick="event.stopPropagation();_ehPlay(${i}, this.closest('.qvl-row'))"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
+        <div class="qvl-thumb"><img src="${e(t.img)}" alt="" loading="lazy" decoding="async"><span class="qvl-eq" aria-hidden="true"><i></i><i></i><i></i></span></div>
+        <div class="qvl-info"><div class="qvl-title">${e(t.title)}</div><div class="qvl-sub">${t.explicit ? '<b class="qvl-badge" title="Explicit" aria-label="Explicit">E</b>' : ''}<span>${e(t.artist)} \u2022 ${e(plays)} plays</span></div></div>
+        <button type="button" class="qvl-more" aria-label="More options for ${e(t.title)}" onclick="event.stopPropagation();_ehMenu(${i})"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
       </div>`;
     }).join('') + '</div>';
   }
   row.innerHTML = html;
+  row.removeAttribute('aria-busy');
+  window._ehIndices = pool.map(t => tracks.indexOf(t));
+}
+function _ehPlayAll() {
+  const list = window._ehIndices || [];
+  if (!list.length) { showToast('No tracks to play'); return; }
+  // Make the whole list the queue so songs continue in order
+  _activeQueue = list.slice(); _activeQueueLabel = 'Exclusive Hits'; _activeQueueScope = ['home']; _pendingQueue = null;
+  const first = document.querySelector('#exclusive-hits-row .qvl-row');
+  document.querySelectorAll('#exclusive-hits-row .qvl-row.is-active').forEach(r => r.classList.remove('is-active'));
+  if (first) first.classList.add('is-active');
+  playTrack(list[0]);
+  showToast('Playing Exclusive Hits');
 }
 function _ehPlay(i, el) {
   document.querySelectorAll('#exclusive-hits-row .qvl-row.is-active').forEach(r => r.classList.remove('is-active'));
@@ -23232,7 +23119,11 @@ function _updateOfflineBanner() {
   if (!card) return;
   document.documentElement.classList.toggle('is-offline', _isOffline());
   if (_isOffline()) {
-    if (!_offlineAlertDismissed) card.classList.add('show');
+    if (!_offlineAlertDismissed && !card.classList.contains('show')) {
+      card.classList.add('show');
+      clearTimeout(window._oacTimer);
+      window._oacTimer = setTimeout(function () { _offlineAlertDismissed = true; card.classList.remove('show'); }, 6000); // auto-hide; offline dot stays
+    }
   } else {
     card.classList.remove('show');
     _offlineAlertDismissed = false; // reset so it re-appears next time we go offline
@@ -26162,7 +26053,6 @@ h1, h2, h3, h4, h5, h6,
   const EVENTS = [
     { id:'live-night-1', artists:['Azawi','Joshua Baraka','Fik Fameica'], title:'YAPS Live Night Vol. 1', cat:'Concerts', start:'2026-10-24T19:00', city:'Kampala', venue:'Venue to be announced', price:'UGX 30,000', icon:'microphone-lines', colors:['#1d4ed8','#0b1a4a'], desc:'An evening of live performances from rising Ugandan artists, hosted by YAPSMusic. Doors open at 6 PM.', ticketUrl:'' },
     { id:'afrobeats-fest', artists:['Eddy Kenzo','Joshua Baraka','Winnie Nwagi','Sheebah'], title:'Afrobeats Festival', cat:'Festivals', start:'2026-11-14T16:00', city:'Kampala', venue:'Venue to be announced', price:'UGX 50,000', icon:'drum', colors:['#b8892b','#3b2a08'], desc:'A full day of Afrobeats, Bongo Flava and dancehall across the main stage, with food and craft vendors.', ticketUrl:'' },
-    { id:'gospel-sessions', artists:['Levixone','Wilson Bugembe'], title:'Gospel Worship Sessions', cat:'Concerts', start:'2026-11-01T15:00', city:'Entebbe', venue:'Venue to be announced', price:'Free', icon:'church', colors:['#6d28d9','#1e1b4b'], desc:'An afternoon of live gospel music and worship. Free entry, all are welcome.', ticketUrl:'' },
     { id:'release-party', artists:['Vinka','Kapeke','Pawaboy'], title:'New Releases Listening Party', cat:'Listening Parties', start:'2026-10-16T20:00', city:'Online', venue:'Live on YAPSMusic', price:'Free', icon:'headphones', colors:['#0891b2','#082f49'], desc:'Be first to hear the newest drops with the artists, live. Join from anywhere.', ticketUrl:'' },
     { id:'masterclass', artists:['Maurice Kirya'], title:'Artist Masterclass: Release Strategy', cat:'Workshops', start:'2026-10-30T18:00', city:'Online', venue:'Live video session', price:'Free', icon:'chalkboard-user', colors:['#0f766e','#052e2b'], desc:'Learn how to plan, release and promote your music, with a live Q&A at the end.', ticketUrl:'' },
     { id:'cypher', artists:['Navio','Fik Fameica','Cando'], title:'Hip-Hop Cypher Showcase', cat:'Concerts', start:'2026-12-05T18:30', city:'Jinja', venue:'Venue to be announced', price:'UGX 20,000', icon:'headset', colors:['#be123c','#2a0a14'], desc:'Cyphers, battles and live sets from the region\u2019s sharpest MCs.', ticketUrl:'' },
@@ -26453,9 +26343,6 @@ h1, h2, h3, h4, h5, h6,
     { id:'studio-sessions', people:['Maurice Kirya','Eddy Kenzo'], title:'Studio Sessions', host:'Hosted by YAPS Studio', cat:'Interviews', icon:'headphones', colors:['#b8892b','#3b2a08'],
       desc:'Long-form interviews with producers, singers and rappers about how their songs are made.',
       episodes:[ {title:'Inside the Beat', guest:'Maurice Kirya', date:'2026-10-01', mins:51, audioUrl:''}, {title:'Writing in Luganda', guest:'Eddy Kenzo', date:'2026-09-24', mins:36, audioUrl:''} ] },
-    { id:'gospel-hour', people:['Levixone','Wilson Bugembe'], title:'The Gospel Hour', host:'Hosted by YAPS Studio', cat:'Gospel', icon:'church', colors:['#6d28d9','#1e1b4b'],
-      desc:'Worship stories, testimonies and new gospel music from across East Africa.',
-      episodes:[ {title:'Songs That Carry Us', guest:'Levixone', date:'2026-09-30', mins:33, audioUrl:''}, {title:'Choir to Chart', guest:'Wilson Bugembe', date:'2026-09-23', mins:40, audioUrl:''} ] },
     { id:'music-business', people:['Bebe Cool','Jose Chameleone'], title:'Music Business Basics', host:'Hosted by YAPS Studio', cat:'Business', icon:'chart-line', colors:['#0f766e','#052e2b'],
       desc:'Practical advice for artists on royalties, contracts, marketing and building a sustainable career.',
       episodes:[ {title:'Getting Paid for Your Music', guest:'Bebe Cool', date:'2026-09-29', mins:29, audioUrl:''}, {title:'Release Day Checklist', guest:'Jose Chameleone', date:'2026-09-22', mins:31, audioUrl:''} ] },
@@ -26466,7 +26353,7 @@ h1, h2, h3, h4, h5, h6,
       desc:'The history, the hits and the people who built the Afrobeats wave.',
       episodes:[ {title:'Origins of the Wave', guest:'Eddy Kenzo', date:'2026-09-27', mins:44, audioUrl:''}, {title:'Kampala Meets Lagos', guest:'Joshua Baraka', date:'2026-09-20', mins:39, audioUrl:''} ] }
   ];
-  const CATS = ['All', 'Music Talk', 'Interviews', 'Gospel', 'Business', 'Culture'];
+  const CATS = ['All', 'Music Talk', 'Interviews', 'Business', 'Culture'];
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const S = { cat:'All' };
@@ -27697,7 +27584,7 @@ html[data-mode="light"] .yv-share-sheet,html[data-mode="light"] .yv-comments-pan
 html[data-mode="light"] .oos-title,html[data-mode="light"] .p2p-title,html[data-mode="light"] .lp-line.active,html[data-mode="light"] .pc-card p b,html[data-mode="light"] .evp-date b,html[data-mode="light"] .evp-lt,html[data-mode="light"] .evp-lu b,html[data-mode="light"] .pdp-with b,html[data-mode="light"] .pdp-f b,html[data-mode="light"] .ern-sub b,html[data-mode="light"] .ern-dest .ern-rt b{color:var(--text)}
 html[data-mode="light"] .oos-icon-wrap .oos-badge{background:var(--surface)}
 html[data-mode="light"] input,html[data-mode="light"] textarea,html[data-mode="light"] select{color:var(--text)}
-html[data-mode="light"] ::placeholder{color:var(--dim);opacity:1}
+
 /* ── Now Playing screen: light appearance (was dark-only with hard-coded colours) ── */
 html[data-mode="light"] #nowPlayingScreen{--yp-panel:rgba(255,255,255,.92);--yp-edge:rgba(99,102,241,.34);color:var(--text,#0b1a3d);
  background:radial-gradient(circle at 0% 0%,rgba(25,230,140,.22) 0%,transparent 34%),radial-gradient(circle at 100% 2%,rgba(168,85,247,.22) 0%,transparent 36%),radial-gradient(circle at 100% 100%,rgba(168,85,247,.16) 0%,transparent 34%),radial-gradient(circle at 0% 88%,rgba(25,230,140,.14) 0%,transparent 30%),var(--bg,#f4f6ff)}
@@ -27988,7 +27875,7 @@ const CATS=[
 {id:'lang',n:'Language & Region',s:'English, Luganda & more',it:[
  sel('lang','Language',Object.keys(window._i18n||{en:1}).map(k=>[k,(window._langMeta&&_langMeta[k]&&_langMeta[k].native)||k]),{g:()=>ls('yaps_language','en'),st:v=>{typeof applyLanguage==='function'&&applyLanguage(v)}}),
  sel('region','Country / Region',[['UG','Uganda'],['KE','Kenya'],['TZ','Tanzania'],['RW','Rwanda'],['NG','Nigeria'],['ZA','South Africa'],['GB','United Kingdom'],['US','United States'],['OT','Other']]),
- sel('content','Content preferences',[['all','Everything'],['local','Local first'],['gospel','Gospel & worship'],['clean','Clean content only']])]},
+ sel('content','Content preferences',[['all','Everything'],['local','Local first'],['clean','Clean content only']])]},
 {id:'privacy',n:'Privacy & Security',s:'Control who sees what',it:[
  tg('priv','Private Account','Approve followers manually',{after:updatePrivacySettings}),
  sel('whoFollow','Who can follow me',[['everyone','Everyone'],['approved','Approved only']],{after:updatePrivacySettings}),
@@ -28578,7 +28465,7 @@ async function submitUpload() {
 
 // ── Releases manager (My releases · Review queue · Setup check) ──
 const _REL = { tab: 'mine', rows: [] };
-const _GENRES = ['Afrobeats', 'Gospel', 'Worship', 'Hip Hop', 'Dancehall', 'Kidandali', 'Reggae', 'R&B', 'Pop', 'Other'];
+const _GENRES = ['Afrobeats', 'Worship', 'Hip Hop', 'Dancehall', 'Kidandali', 'Reggae', 'R&B', 'Pop', 'Other'];
 function _relEnsure() {
   if (document.getElementById('relModal')) return;
   const st = document.createElement('style');
@@ -28878,15 +28765,15 @@ async function runOfflineCheck() {
   var G = function (s, n, re, ico) { return { key: s + ':' + n, scope: s, name: n, re: re, ico: ico || 'fa-music' }; };
   var GENRES = [
     G('uganda', 'Luganda Pop', /luganda/), G('uganda', 'Afrobeats', /afrobeat/), G('uganda', 'Afropop', /afropop/),
-    G('uganda', 'Gospel', /gospel|worship|hymn/, 'fa-church'), G('uganda', 'Dancehall', /dancehall|ragga/),
+    G('uganda', 'Dancehall', /dancehall|ragga/),
     G('uganda', 'Hip Hop', /hip.?hop|\brap\b/, 'fa-microphone'), G('uganda', 'Kadongo Kamu', /kadongo/),
     G('uganda', 'R&B / Soul', /r&b|rnb|soul/), G('uganda', 'Traditional', /traditional|folk|cultural/, 'fa-drum'),
     G('africa', 'Afrobeats', /afrobeat/), G('africa', 'Amapiano', /amapiano/), G('africa', 'Bongo Flava', /bongo/),
-    G('africa', 'Gengetone', /genge/), G('africa', 'Highlife', /highlife/), G('africa', 'Afro Gospel', /gospel|worship/, 'fa-church'),
+    G('africa', 'Gengetone', /genge/), G('africa', 'Highlife', /highlife/),
     G('africa', 'Afropop', /afropop/),
     G('world', 'Pop', /\bpop\b/), G('world', 'Hip Hop', /hip.?hop|\brap\b/, 'fa-microphone'), G('world', 'R&B / Soul', /r&b|rnb|soul/),
     G('world', 'Reggae', /reggae/), G('world', 'Rock', /\brock\b/, 'fa-guitar'), G('world', 'Latin', /latin|reggaeton/),
-    G('world', 'Electronic', /electronic|house|edm/, 'fa-bolt'), G('world', 'Gospel & Worship', /gospel|worship|hymn/, 'fa-church'),
+    G('world', 'Electronic', /electronic|house|edm/, 'fa-bolt'), 
     G('world', 'Classical', /classical/)
   ];
   var st = { tab: 'all', q: '', timer: null };
@@ -31584,11 +31471,11 @@ const SC_TIMEOUT_MS=5*60*1000;   /* give up on a generation after 5 minutes */
 const SC_POLL_MS=2500;
 
 /* ---------- options ---------- */
-const GENRES=['Afrobeat','Afropop','Amapiano','Hip-Hop','R&B','Dancehall','Gospel','Pop','EDM','Reggae','Lo-fi','Other'];
+const GENRES=['Afrobeat','Afropop','Amapiano','Hip-Hop','R&B','Dancehall','Pop','EDM','Reggae','Lo-fi','Other'];
 const MOODS=['Happy','Romantic','Sad','Energetic','Inspirational','Chill','Dark','Emotional','Party'];
 const LANGS=['Auto (from description)','English','Luganda','Swahili','French','Spanish','Portuguese','Hindi','Arabic','Other'];
 const KEYN=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-const BPM_DEF={'Afrobeat':104,'Afropop':100,'Amapiano':112,'Hip-Hop':90,'R&B':85,'Dancehall':98,'Gospel':80,'Pop':110,'EDM':128,'Reggae':76,'Lo-fi':75,'Other':100};
+const BPM_DEF={'Afrobeat':104,'Afropop':100,'Amapiano':112,'Hip-Hop':90,'R&B':85,'Dancehall':98,'Pop':110,'EDM':128,'Reggae':76,'Lo-fi':75,'Other':100};
 const SUGGEST=[
  {t:'Create an Afrobeat hit',p:'Create an upbeat Afrobeat hit with a catchy hook, warm percussion and a feel-good melody.',g:'Afrobeat'},
  {t:'Make a romantic song',p:'Make a romantic song about falling in love, with soft melodies and heartfelt lyrics.',m:'Romantic'},
@@ -33496,7 +33383,7 @@ html body #dev-all .dev-all-list{padding-left:clamp(8px,2vw,28px);padding-right:
     var vv = window.visualViewport; if (!vv) return;
     var kb = (window.innerHeight - vv.height) > 120;
     if (!kb) { sh.style.removeProperty('--cn-h'); return; }
-    var top = sh.getBoundingClientRect().top;
+    var top = sh.getBoundingClientRect().top - document.body.getBoundingClientRect().top;
     sh.style.setProperty('--cn-h', Math.max(220, vv.height - Math.max(0, top)) + 'px');
     var m = $('cnMsgs'); if (m && S.chat) m.scrollTop = m.scrollHeight;
   }
@@ -34938,8 +34825,19 @@ html :is(.hub-tab,.filter-chip,.atp-chip,.disc-chip,.dj-prompt-chip,.dv-chip,.ev
 html .hero-btn{backdrop-filter:none;-webkit-backdrop-filter:none}
 html:not([data-theme]) :is(button,a)[style*="background:var(--accent)"],html:not([data-theme]) :is(button,a)[style*="background: var(--accent)"]{background:var(--neon-btn)!important;color:#fff!important;border-color:transparent!important}
 html[data-theme="aurora"] :is(button,a)[style*="background:var(--accent)"],html[data-theme="aurora"] :is(button,a)[style*="background: var(--accent)"]{background:var(--aurora-btn)!important;color:#fff!important;border-color:transparent!important}
-/* Bottom navigation: transparent background (page content shows through behind the buttons) */
-#bottomNav::before{content:"";position:absolute;z-index:0;left:-10px;right:-10px;top:-8px;bottom:-10px;background:transparent}
+/* Bottom nav (phones): page extends underneath; nav is a soft dark glass strip with bright icons/labels.
+   All bottom-nav overrides live in this one block. */
+@media (max-width:768px){
+  html #layout{margin-bottom:0!important;height:calc(100dvh - var(--topbar-h))!important}
+  html #main{padding-bottom:calc(var(--mnav-h) + var(--player-h))!important;background:transparent!important}
+  html #bottomNav{left:0!important;right:0!important;bottom:0!important;height:calc(68px + env(safe-area-inset-bottom,0px))!important;padding-bottom:env(safe-area-inset-bottom,0px);
+    background:linear-gradient(180deg,rgba(5,8,20,0) 0%,rgba(5,8,20,.8) 35%,rgba(5,8,20,.94) 100%)!important;
+    border:0!important;box-shadow:none!important;backdrop-filter:blur(10px) saturate(1.3)!important;-webkit-backdrop-filter:blur(10px) saturate(1.3)!important}
+  html .bn-item{background:transparent!important;color:#fff!important}
+  html .bn-item span{color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.6)!important;font-weight:700}
+  html .bn-item.active span{color:var(--accent-lighter,#fff)!important}
+  html .bn-svg-icon{filter:brightness(1.35) drop-shadow(0 0 4px var(--accent-glow)) drop-shadow(0 1px 2px rgba(0,0,0,.8))!important}
+}
 /* Phones (bottom nav visible): no MENU button, everything lives in the bottom nav + Profile. Large screens keep the sidebar. */
 @media (max-width:768px){html #hamburgerBtn,html .yv-hamburger-btn{display:none!important}}
 .ad-artists{display:flex;gap:8px;margin-left:auto;flex-shrink:0}
@@ -35136,7 +35034,7 @@ window.yaiGo=function(k){try{const i=k.indexOf(':'),t=k.slice(0,i),v=k.slice(i+1
 // Feature guide: [pattern, answer, ...[button label, action]]. Every action calls something that already exists in the app.
 const K=[];const k=(re,say,...b)=>K.push({re:new RegExp(re),say,b});
 k('what can you do|what do you do|features?|what.{0,20}(app|yaps).{0,12}(do|have|offer)|guide|tour|how to use','I can build sets by mood, length or artist, control playback, and show you every part of YAPSMusic. <b>Listen:</b> Home, Trending, New Releases, Charts, Artists, Genres, Quick Vibes, Podcasts, Videos. <b>Library:</b> Likes, Playlists, Downloads, History, Queue. <b>Create:</b> DJ Studio, AI Song Creator, Upload. <b>Community:</b> Messages, Community Chat, Events. Ask about any of them.',['Settings','s:home'],['Help Center','f:help']);
-k('yaps ai|ai dj|voice|microphone|mic\\b','Tell me a mood, artist or length (“30 minutes of gospel”), say “songs like…”, or control playback (pause, skip, volume 50, rewind 10 seconds, sleep timer). I can like, queue and save playlists, mute artists, and open any page. Tap the mic to speak. Turn me or recommendations on or off, pick a mood, or reset what I learned in Settings, AI &amp; DJ.',['AI &amp; DJ settings','s:ai']);
+k('yaps ai|ai dj|voice|microphone|mic\\b','Tell me a mood, artist or length (“30 minutes of party”), say “songs like…”, or control playback (pause, skip, volume 50, rewind 10 seconds, sleep timer). I can like, queue and save playlists, mute artists, and open any page. Tap the mic to speak. Turn me or recommendations on or off, pick a mood, or reset what I learned in Settings, AI &amp; DJ.',['AI &amp; DJ settings','s:ai']);
 k('home page|\\bhome\\b|recommended','Home has your recommendations, trending songs, new releases, recently played and featured artists and albums.',['Open Home','p:home']);
 k('trending','Trending Songs shows what listeners are playing most right now.',['Trending Songs','p:stream'],['Trending Videos','p:trending-videos']);
 k('new releases?|latest (songs|music)','New Releases lists the newest tracks on YAPS.',['New Releases','p:new-releases']);
@@ -35378,6 +35276,14 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-j],[
 @media (max-width: 1024px) {
   html.kb-open #bottomNav, html.kb-open #player-bar { display: none !important; }
 }
+@media (max-width: 1024px) {
+  /* Keyboard open: keep header visible, pin the app to the visible area, no empty strip above the keyboard */
+  html.kb-open { --mnav-h: 0px; }
+  html.kb-open body { position: fixed; top: 0; left: 0; right: 0; width: 100%; overflow: hidden;
+    height: calc(var(--vh, 1vh) * 100) !important; transform: translateY(var(--vvt, 0px)); }
+  html.kb-open #layout { margin-bottom: 0 !important; height: calc(var(--vh, 1vh) * 100 - var(--topbar-h)) !important; }
+  html.kb-open #main { padding-bottom: 0 !important; }
+}
 </style>
 <script>
 (function () {
@@ -35420,6 +35326,13 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-j],[
   if (vv) vv.addEventListener('resize', onVV);
   window.addEventListener('orientationchange', function () { base = 0; seen = false; setTimeout(function () { if (!typing(document.activeElement)) show(); }, 300); });
   window.addEventListener('pagehide', function () { seen = false; show(); });
+  // Follow the visual viewport so the header stays on screen while the keyboard is up
+  function pin() {
+    if (!vv) return;
+    root.style.setProperty('--vvt', (root.classList.contains('kb-open') ? Math.max(0, vv.offsetTop) : 0) + 'px');
+  }
+  if (vv) { vv.addEventListener('resize', pin); vv.addEventListener('scroll', pin); }
+  new MutationObserver(pin).observe(root, { attributes: true, attributeFilter: ['class'] });
 })();
 </script>
 <style>
@@ -35528,6 +35441,177 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-j],[
   build();
   var saved=+ls(KEY)||0;
   if(saved>0){setLinks(saved);setManifest(saved)}
+})();
+</script>
+<!-- PROFILE MENU: small settings (gear) button on each row; lets the signed-in user attach their own uploaded songs to that feature -->
+<style>
+.acct-hub .acct-card .fgear{position:absolute;right:40px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);background:var(--card2);border:1px solid var(--border);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.acct-hub .acct-card .fgear svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.acct-hub .acct-card .fgear:active{color:var(--accent-light);border-color:var(--accent-light)}
+#fgPicks{border-top:1px solid var(--border);padding:12px 14px 6px}
+#fgPicks .fgp-top{font-size:13px;font-weight:800;color:var(--accent-light);margin-bottom:4px}
+#fgPicks .fgp-h{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:10px 0 2px}
+#fgPicks .fgp-row{display:flex;align-items:center;gap:12px;padding:7px 0;cursor:pointer}
+#fgPicks .fgp-row img{width:44px;height:44px;border-radius:6px;object-fit:cover;background:var(--card2);flex:none}
+#fgPicks .fgp-t{flex:1;min-width:0}
+#fgPicks .fgp-t b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#fgPicks .fgp-t span{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#fgPicks .fgp-row i{color:var(--muted);font-size:12px;margin-right:6px}
+#fgSheetWrap{position:fixed;inset:0;z-index:100000;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.55)}
+#fgSheetWrap.open{display:flex}
+#fgSheet{width:100%;max-width:560px;max-height:78vh;display:flex;flex-direction:column;background:var(--card);color:var(--text);border-radius:18px 18px 0 0;border:1px solid var(--border);padding:14px 16px calc(16px + env(safe-area-inset-bottom))}
+#fgSheet .fg-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
+#fgSheet h3{font-size:17px;font-weight:800;margin:0}
+#fgSheet .fg-x{width:36px;height:36px;border:0;border-radius:50%;background:var(--card2);color:var(--text);font-size:18px;cursor:pointer}
+#fgSheet .fg-sub{font-size:12.5px;color:var(--muted);margin:0 0 10px}
+#fgSheet .fg-list{overflow-y:auto;flex:1}
+#fgSheet .fg-row{display:flex;align-items:center;gap:12px;padding:8px 2px;cursor:pointer}
+#fgSheet .fg-row img{width:46px;height:46px;border-radius:6px;object-fit:cover;background:var(--card2);flex:none}
+#fgSheet .fg-t{flex:1;min-width:0}
+#fgSheet .fg-t b{display:block;font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#fgSheet .fg-t span{display:block;font-size:12.5px;color:var(--muted)}
+#fgSheet .fg-row input{width:22px;height:22px;accent-color:var(--accent);flex:none}
+#fgSheet .fg-play{width:34px;height:34px;border:0;border-radius:50%;background:var(--card2);color:var(--text);cursor:pointer;flex:none}
+#fgSheet .fg-empty{padding:22px 4px;text-align:center;color:var(--muted);font-size:14px}
+</style>
+<script>
+(function(){
+  function U(){try{return (typeof _demoUser!=='undefined'&&_demoUser)||null}catch(e){return null}}
+  var FEATS=['Account','Premium','Connect','Calls','Upload','Downloads','Queue','Settings & more'];
+  var GEAR='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
+  var LSK=function(){return 'yaps_feat_songs_v2_'+(((U()&&U().id))||'me')};
+  function all(){try{return JSON.parse(localStorage.getItem(LSK())||'{}')||{}}catch(e){return {}}}
+  function load(f){var a=all()[f];return Array.isArray(a)?a:[]}
+  var _t=null;
+  function push(o){ // save to the signed-in account (user metadata), so picks follow the user to other devices
+    clearTimeout(_t);_t=setTimeout(function(){try{if(window.sb&&U())sb.auth.updateUser({data:{feature_songs:o}}).catch(function(){})}catch(e){}},800)}
+  function save(f,a){var o=all();if(a.length)o[f]=a;else delete o[f];try{localStorage.setItem(LSK(),JSON.stringify(o))}catch(e){}push(o);render()}
+  function pull(){ // merge account copy (if any) into this device, account wins
+    try{if(!(window.sb&&U()))return;sb.auth.getUser().then(function(r){var m=r&&r.data&&r.data.user&&r.data.user.user_metadata;var remote=m&&m.feature_songs;if(remote&&typeof remote==='object'){try{localStorage.setItem(LSK(),JSON.stringify(remote))}catch(e){}render()}}).catch(function(){})}catch(e){}}
+  function render(){
+    var host=document.getElementById('fgPicks');if(!host)return;
+    var o=all(),names=Object.keys(o).filter(function(f){return o[f].length});
+    if(!U()||!names.length){host.hidden=true;host.innerHTML='';return}
+    var html='';
+    names.forEach(function(f){var ts=window.getFeatureSongs(f);if(!ts.length)return;
+      html+='<div class="fgp-h">'+esc(f)+'</div>'+ts.map(function(t){return '<div class="fgp-row" role="button" tabindex="0" data-i="'+tracks.indexOf(t)+'"><img src="'+esc(t.img)+'" alt="" loading="lazy"><span class="fgp-t"><b>'+esc(t.title)+'</b><span>'+esc(t.artist)+'</span></span><i class="fas fa-play"></i></div>'}).join('')});
+    host.innerHTML='<div class="fgp-top">Songs you added</div>'+html;host.hidden=!html;
+    host.querySelectorAll('.fgp-row').forEach(function(r){var go=function(){playTrack(+r.getAttribute('data-i'))};r.onclick=go;r.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}});
+  }
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function mine(){var u=U();if(!u)return null;return tracks.filter(function(t){return t.uploaderId&&String(t.uploaderId)===String(u.id)})}
+  function wrap(){var w=document.getElementById('fgSheetWrap');if(w)return w;w=document.createElement('div');w.id='fgSheetWrap';w.innerHTML='<div id="fgSheet" role="dialog" aria-modal="true"></div>';w.addEventListener('click',function(e){if(e.target===w)w.classList.remove('open')});document.body.appendChild(w);return w}
+  window.openFeatureSongs=function(f){
+    if(!U()){showToast('Sign in to add your songs');try{openModal('auth')}catch(e){}return}
+    var list=mine(),sel=load(f),w=wrap(),s=document.getElementById('fgSheet');
+    var body=!list.length?'<div class="fg-empty">You have not uploaded any songs yet.<br>Use Upload to add your music, then come back here.</div>':
+      '<div class="fg-list">'+list.map(function(t){var id=String(t.id);return '<label class="fg-row"><img src="'+esc(t.img)+'" alt="" loading="lazy"><span class="fg-t"><b>'+esc(t.title)+'</b><span>'+esc(t.artist)+'</span></span><button type="button" class="fg-play" aria-label="Play" data-play="'+tracks.indexOf(t)+'"><i class="fas fa-play" style="font-size:12px"></i></button><input type="checkbox" data-id="'+esc(id)+'"'+(sel.indexOf(id)>-1?' checked':'')+'></label>'}).join('')+'</div>';
+    s.innerHTML='<div class="fg-h"><h3>'+esc(f)+' settings</h3><button type="button" class="fg-x" aria-label="Close">✕</button></div><p class="fg-sub">Songs you uploaded. Tick the ones to add to '+esc(f)+'.</p>'+body;
+    s.querySelector('.fg-x').onclick=function(){w.classList.remove('open')};
+    s.querySelectorAll('input[data-id]').forEach(function(c){c.onchange=function(){var a=load(f),id=c.getAttribute('data-id'),i=a.indexOf(id);if(c.checked&&i<0)a.push(id);if(!c.checked&&i>-1)a.splice(i,1);save(f,a);showToast(c.checked?'Added to '+f:'Removed from '+f)}});
+    s.querySelectorAll('[data-play]').forEach(function(b){b.onclick=function(e){e.preventDefault();e.stopPropagation();playTrack(+b.getAttribute('data-play'))}});
+    w.classList.add('open');
+  };
+  window.getFeatureSongs=function(f){var ids=load(f);return tracks.filter(function(t){return ids.indexOf(String(t.id))>-1})};
+  function init(){
+    var main=document.getElementById('acctMain');
+    if(main&&!document.getElementById('fgPicks')){var h=document.createElement('div');h.id='fgPicks';h.hidden=true;main.appendChild(h)}
+    render();pull();
+    document.querySelectorAll('#acctMain .acct-card').forEach(function(card){
+      if(card.querySelector('.fgear'))return;
+      var t=card.querySelector('.ac-title');if(!t)return;
+      var name=t.textContent.replace(/\s+/g,' ').trim();
+      var g=document.createElement('span');g.className='fgear';g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',name+' settings');g.innerHTML=GEAR;
+      function open(e){e.preventDefault();e.stopPropagation();openFeatureSongs(name)}
+      g.addEventListener('click',open);g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' ')open(e)});
+      card.appendChild(g);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  try{var _nav=window.navigate;if(typeof _nav==='function')window.navigate=function(pg){var r=_nav.apply(this,arguments);if(pg==='profile'){render();pull()}return r}}catch(e){}
+})();
+</script>
+<!-- EXCLUSIVE HITS: the three-dot menu -->
+<style>
+#ehMenuWrap{position:fixed;inset:0;z-index:100001;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.55)}
+#ehMenuWrap.open{display:flex}
+#ehMenu{width:100%;max-width:560px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:18px 18px 0 0;padding:14px 8px calc(10px + env(safe-area-inset-bottom))}
+#ehMenu .ehm-h{display:flex;align-items:center;gap:12px;padding:0 10px 12px;border-bottom:1px solid var(--border);margin-bottom:6px}
+#ehMenu .ehm-h img{width:48px;height:48px;border-radius:6px;object-fit:cover;background:var(--card2);flex:none}
+#ehMenu .ehm-h b{display:block;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ehMenu .ehm-h span{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ehMenu .ehm-h div{min-width:0}
+#ehMenu button.ehm-i{display:flex;align-items:center;gap:16px;width:100%;padding:13px 12px;border:0;border-radius:12px;background:transparent;color:var(--text);font-size:15px;text-align:left;cursor:pointer}
+#ehMenu button.ehm-i:active{background:var(--card2)}
+#ehMenu button.ehm-i i{width:20px;text-align:center;color:var(--muted)}
+</style>
+<script>
+(function(){
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function wrap(){var w=document.getElementById('ehMenuWrap');if(w)return w;w=document.createElement('div');w.id='ehMenuWrap';w.innerHTML='<div id="ehMenu" role="dialog" aria-modal="true"></div>';w.addEventListener('click',function(e){if(e.target===w)w.classList.remove('open')});document.addEventListener('keydown',function(e){if(e.key==='Escape')w.classList.remove('open')});document.body.appendChild(w);return w}
+  function artistOf(t){try{return artists.find(function(a){return _artistMatchRegex(a.name).test(String(t.artist).toLowerCase())})||null}catch(e){return null}}
+  window._ehMenu=function(i){
+    var t=tracks[i];if(!t)return;var w=wrap(),m=document.getElementById('ehMenu');
+    var liked=false;try{liked=_likedTracks.has(i)}catch(e){}
+    var items=[['play','fa-play','Play'],['next','fa-forward','Play next'],['queue','fa-list','Add to queue'],['pl','fa-plus','Add to playlist'],['like',liked?'fa-heart-broken':'fa-heart',liked?'Remove from liked songs':'Add to liked songs'],['dl','fa-download','Download'],['share','fa-share-alt','Share']];
+    if(artistOf(t))items.push(['artist','fa-user','Go to artist']);
+    m.innerHTML='<div class="ehm-h"><img src="'+esc(t.img)+'" alt=""><div><b>'+esc(t.title)+'</b><span>'+esc(t.artist)+'</span></div></div>'+items.map(function(x){return '<button type="button" class="ehm-i" data-a="'+x[0]+'"><i class="fas '+x[1]+'"></i>'+x[2]+'</button>'}).join('');
+    m.querySelectorAll('.ehm-i').forEach(function(b){b.onclick=function(){var a=b.getAttribute('data-a');w.classList.remove('open');act(a,i,t)}});
+    w.classList.add('open');
+  };
+  function act(a,i,t){
+    try{
+      if(a==='play'){var row=document.querySelector('#exclusive-hits-row .qvl-row[onclick*="_ehPlay('+i+',"]');_ehPlay(i,row)}
+      else if(a==='next')playNextInQueue(i);
+      else if(a==='queue')addToQueue(i);
+      else if(a==='pl')showAddToPlaylist(i);
+      else if(a==='like')toggleLikeTrack(i);
+      else if(a==='dl')downloadTrack(i);
+      else if(a==='artist'){var ar=artistOf(t);if(ar)openArtistProfileByName(ar.name)}
+      else if(a==='share'){
+        var data={title:t.title,text:t.title+' by '+t.artist+' on YAPS Music',url:location.origin&&location.origin!=='null'?location.origin+location.pathname:location.href};
+        if(navigator.share)navigator.share(data).catch(function(){});
+        else if(navigator.clipboard)navigator.clipboard.writeText(data.text+' '+data.url).then(function(){showToast('Link copied')},function(){showToast('Could not copy')});
+        else showToast('Sharing is not available here');
+      }
+    }catch(e){try{showToast('Something went wrong')}catch(_){}}
+  }
+})();
+</script>
+<!-- NOW PLAYING: highlight the song that is playing in every list (rows, cards, Exclusive Hits, added songs) -->
+<style>
+.track-card.is-playing .tc-title, .fgp-row.is-playing b, .qvl-row.is-active .qvl-title { color: var(--accent-light); }
+.track-card.is-playing .tc-art { box-shadow: 0 0 0 2px var(--accent-light); }
+.tc-art .qvl-eq, .fgp-row > .qvl-eq { display: none; }
+.track-card.is-playing .tc-art .qvl-eq { display: flex; right: 8px; bottom: 8px; }
+.fgp-row.is-playing > .qvl-eq { display: flex; position: static; margin-right: 6px; }
+body.yaps-paused .qvl-eq i { animation-play-state: paused; }
+</style>
+<script>
+(function(){
+  var RE=/(?:playTrack|_ehPlay)\((\d+)/;
+  function eq(){var e=document.createElement('span');e.className='qvl-eq';e.setAttribute('aria-hidden','true');e.innerHTML='<i></i><i></i><i></i>';return e}
+  function idxOf(el){var m=RE.exec(el.getAttribute('onclick')||'');if(m)return +m[1];var d=el.getAttribute('data-i');return d!=null&&d!==''?+d:-1}
+  function sync(){
+    try{
+      var playing=(typeof _hasPlayedOnce!=='undefined'&&_hasPlayedOnce)?currentTrack:-1;
+      document.body.classList.toggle('yaps-paused',!(typeof isPlaying!=='undefined'&&isPlaying));
+      document.querySelectorAll('.track-card, .qvl-row:not(.qvl-skel), .fgp-row').forEach(function(el){
+        var on=playing>=0&&idxOf(el)===playing;
+        if(el.classList.contains('qvl-row'))el.classList.toggle('is-active',on);
+        else el.classList.toggle('is-playing',on);
+        if(on&&!el.classList.contains('qvl-row')){
+          var host=el.classList.contains('track-card')?el.querySelector('.tc-art'):el;
+          if(host&&!host.querySelector(':scope > .qvl-eq')){var q=eq();if(el.classList.contains('fgp-row'))host.insertBefore(q,host.querySelector('i.fa-play')||null);else host.appendChild(q)}
+        }
+      });
+    }catch(e){}
+  }
+  var t=null;function later(){clearTimeout(t);t=setTimeout(sync,60)}
+  try{var _pt=window.playTrack;if(typeof _pt==='function')window.playTrack=function(){var r=_pt.apply(this,arguments);later();setTimeout(sync,300);return r}}catch(e){}
+  ['play','pause','ended'].forEach(function(ev){try{audioEngine.addEventListener(ev,later)}catch(e){}});
+  try{new MutationObserver(function(muts){for(var i=0;i<muts.length;i++){var n=muts[i].target;if(n&&n.id==='exclusive-hits-row'||n.id==='fgPicks'||(n.classList&&(n.classList.contains('scroll-row')||n.classList.contains('qvl-scroller')))){later();return}}}).observe(document.body,{childList:true,subtree:true})}catch(e){}
+  document.addEventListener('DOMContentLoaded',later);later();
 })();
 </script>
 </body>
