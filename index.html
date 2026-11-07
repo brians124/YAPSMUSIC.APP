@@ -6507,6 +6507,7 @@ html:not([data-theme]) .page.active::before {
 .artist-card-full .acf-msg-btn:active{transform:scale(.95)}
 #sidebar #nav-connect .badge{margin-left:auto}
 #apJoinBtn[hidden],[data-cnjoin][hidden]{display:none!important}
+.tp-fade{animation:tpFade .5s ease}@keyframes tpFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@media (prefers-reduced-motion:reduce){.tp-fade{animation:none}}
 </style>
 <style id="communityChatCss">
 /* ══ COMMUNITY CHAT (merged from community.html) — everything scoped to #page-community ══ */
@@ -6549,6 +6550,14 @@ html[data-theme="aurora"] #page-community .cc-msg.me .cc-b,html:not([data-theme]
 #page-community .cc-jbtn.joined{border-color:rgba(var(--au-rgb),.45);box-shadow:none;background:rgba(var(--au-rgb),.06);color:var(--muted)}
 #page-community .cc-jbtn:disabled{opacity:.5;cursor:default}
 @media (max-width:480px){#page-community .cc-live span{display:none}#page-community .cc-jbtn{padding:8px 14px}#page-community .cc-jbtn i,#page-community .cc-jbtn .cc-lg{display:none}#page-community .cc-head{gap:9px;padding:10px 12px}}
+#page-community .cc-pin[hidden]{display:none}
+#page-community .cc-pin{flex:none;display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border);background:linear-gradient(90deg,var(--accent-dim),transparent)}
+#page-community .cc-pin img{width:40px;height:40px;border-radius:9px;object-fit:cover;flex:none}
+#page-community .cc-pin-t{min-width:0;flex:1}
+#page-community .cc-pin-t small{display:block;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-lighter,var(--accent))}
+#page-community .cc-pin-t b{display:block;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-community .cc-pin-t span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-community .cc-pin button{flex:none;width:38px;height:38px;border-radius:50%;border:0;color:#fff;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-dark))}
 #page-community .cc-note{flex:none;text-align:center;font-size:12px;color:var(--gold);background:var(--gold-dim);padding:5px 12px}
 #page-community .cc-form,#page-community .cc-signin{flex:none;display:flex;align-items:flex-end;gap:10px;padding:10px 12px;border-top:1px solid var(--border);background:var(--surface)}
 /* Signed-in users never see "Sign in to join" (display:flex was overriding the hidden attribute); the message bar has no background behind the input and send button */
@@ -7692,6 +7701,9 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
       </div>
     </div>
 
+    <!-- LIVE NOW + SONG OF THE DAY (filled by the script at the end of the page) -->
+    <div id="homeLive" class="hl-wrap" hidden></div>
+
     <!-- AD BANNER — shown to Free users, hidden automatically for Premium -->
     <div id="homeAdBanner" class="home-ad">
       <div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 100%;">
@@ -7708,6 +7720,9 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
         <button type="button" class="ad-art" title="Jose Chameleone" aria-label="Jose Chameleone" onclick="openArtistProfileByName('Jose Chameleone')"><b>J</b><img src="images/Jose Chameleon.jpg" alt="" loading="lazy" onerror="this.remove()"></button>
       </div>
     </div>
+
+    <!-- SONG OF THE DAY (filled by the home Live Now / Song of the Day script) -->
+    <div id="homeSotd" class="sotd-wrap" hidden></div>
 
     <div class="hub-tabs" data-hub="home"></div>
 
@@ -8719,6 +8734,7 @@ a.djx-row{color:inherit;text-decoration:none}
           <button class="cc-jbtn" id="ccJoin" type="button" aria-label="Join community"><i class="fas fa-user-plus"></i><b>Join<span class="cc-lg"> Community</span></b></button>
         </div>
         <div class="cc-note" id="ccNote" hidden>Preview mode: messages are saved on this device only.</div>
+        <div class="cc-pin" id="ccPin" hidden></div>
         <div class="cc-log" id="ccLog" role="log" aria-live="polite" aria-label="Messages"></div>
         <div class="cc-pick" id="ccPick" hidden>
           <div class="cc-pick-h"><b>Request a song</b><button type="button" id="ccPickX" aria-label="Close"><i class="fas fa-xmark"></i></button></div>
@@ -20442,6 +20458,25 @@ async function saveTaste() {
   _gsRenderHome();
   try { if (sb) await sb.auth.updateUser({ data: { taste: picked } }); } catch (e) { /* stays on this device */ }
 }
+// "Picked for you" rotates every 10 minutes: a seeded shuffle keyed to the 10-minute slot + user, so it is stable inside a slot and changes at the next one
+const TASTE_SLOT_MS = 10 * 60 * 1000;
+function _tastePicksNow(taste, n) {
+  const pool = tracks.map((t, i) => ({ t, i })).filter(x => taste.includes(x.t.genre) && x.t.audioSrc);
+  let seed = Math.floor(Date.now() / TASTE_SLOT_MS);
+  const uid = String((_demoUser && _demoUser.id) || '');
+  for (let k = 0; k < uid.length; k++) seed = (seed * 31 + uid.charCodeAt(k)) >>> 0;
+  const rnd = () => { seed = (seed + 0x6D2B79F5) >>> 0; let x = seed; x = Math.imul(x ^ (x >>> 15), x | 1); x ^= x + Math.imul(x ^ (x >>> 7), x | 61); return ((x ^ (x >>> 14)) >>> 0) / 4294967296; };
+  for (let k = pool.length - 1; k > 0; k--) { const j = Math.floor(rnd() * (k + 1)); [pool[k], pool[j]] = [pool[j], pool[k]]; }
+  return pool.slice(0, n);
+}
+(function _tasteTick() {
+  const wait = TASTE_SLOT_MS - (Date.now() % TASTE_SLOT_MS) + 500;
+  setTimeout(() => {
+    if (!document.hidden) { try { _gsRenderHome(); } catch (e) {} }   // hidden tabs redraw on return (visibilitychange)
+    _tasteTick();
+  }, wait);
+})();
+
 function _gsHomeIsActive() {
   if (!_demoUser || !sb) return false;
   const created = Date.parse((window._yapsProfile && window._yapsProfile.created_at) || 0);
@@ -20460,9 +20495,9 @@ function _gsRenderHome() {
   }
   const taste = _tasteGet();
   if (taste.length) {
-    const picks = tracks.map((t, i) => ({ t, i })).filter(x => taste.includes(x.t.genre) && x.t.audioSrc).slice(0, 12);
-    if (picks.length) html += `<div class="section-head" style="padding:16px 16px 10px;"><h2>Picked for you</h2></div>
-      <div class="scroll-row" style="padding:0 16px 8px;gap:12px;">${picks.map(({ t, i }) => `
+    const picks = _tastePicksNow(taste, 12);
+    if (picks.length) html += `<div class="section-head" style="padding:16px 16px 10px;"><h2>Picked for you</h2><span style="font-size:11px;color:var(--muted);">Fresh picks every 10 min</span></div>
+      <div class="scroll-row tp-fade" style="padding:0 16px 8px;gap:12px;">${picks.map(({ t, i }) => `
       <div class="track-card" onclick="playTrack(${i})"><div class="tc-art"><img src="${t.img}" alt="${_escHtml(t.title)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;"><div class="tc-play"><i class="fas fa-play"></i></div></div>
       <div class="tc-title">${_escHtml(t.title)}</div><div class="tc-artist">${_escHtml(t.artist)}</div></div>`).join('')}</div>
       <div style="padding:0 16px 8px;"><button class="btn-ghost" style="padding:6px 12px;font-size:12px;" onclick="openTaste()">Edit my picks</button></div>`;
@@ -26139,6 +26174,7 @@ h1, h2, h3, h4, h5, h6,
     { id:'cypher', artists:['Navio','Fik Fameica','Cando'], title:'Hip-Hop Cypher Showcase', cat:'Concerts', start:'2026-12-05T18:30', city:'Jinja', venue:'Venue to be announced', price:'UGX 20,000', icon:'headset', colors:['#be123c','#2a0a14'], desc:'Cyphers, battles and live sets from the region\u2019s sharpest MCs.', ticketUrl:'' },
     { id:'year-end', artists:['Bebe Cool','Jose Chameleone','Sheebah'], title:'Year-End Countdown Concert', cat:'Festivals', start:'2026-12-31T21:00', city:'Kampala', venue:'Venue to be announced', price:'UGX 80,000', icon:'champagne-glasses', colors:['#c2410c','#2b1005'], desc:'Ring in the new year with a night of headline performances and a midnight countdown.', ticketUrl:'' }
   ];
+  window.yapsEventsList = EVENTS;   // read by the home page Live Now strip
   const CATS = ['All', 'Concerts', 'Festivals', 'Listening Parties', 'Workshops'];
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -34683,6 +34719,15 @@ function autoGrow() { var i = $("ccInput"); i.style.height = "auto"; i.style.hei
 
 function isHub() { return COMMUNITY === "yaps-connect"; }   // the shared room for all listeners
 function creatorInHub() { return isHub() && S.me && S.me.role !== "fan"; }   // artists, DJs and promoters have their own community, so no join button in the hub
+function paintPin() {
+  var box = $("ccPin"); if (!box) return;
+  var d = isHub() && typeof window.yapsSongOfTheDay === "function" ? window.yapsSongOfTheDay() : null;
+  if (!d) { box.hidden = true; box.innerHTML = ""; return; }
+  var t = d.track, img = safeUrl(t.img) || (/^images\//.test(t.img || "") ? t.img : "");
+  box.innerHTML = (img ? '<img src="' + esc(img) + '" alt="">' : "") + '<div class="cc-pin-t"><small>\uD83D\uDCCC Song of the Day \u00B7 talk about it here</small><b>' + esc(t.title) + '</b><span>' + esc(t.artist || "") + '</span></div><button type="button" id="ccPinPlay" aria-label="Play song of the day"><i class="fas fa-play"></i></button>';
+  box.hidden = false;
+  $("ccPinPlay").onclick = function () { try { playTrack(d.index); } catch (e) {} };
+}
 function paintMe() {
   $("ccSignin").hidden = !!S.me; $("ccForm").hidden = !S.me;
   $("ccJoin").style.display = (S.me && S.me.real && !creatorInHub()) ? "" : "none";   // Join / Leave button is only for users with an account
@@ -34788,7 +34833,7 @@ async function start(opts) {
   tag.classList.toggle("off", !S.live); tag.lastChild.textContent = S.live ? "Live" : "Preview";
   $("ccNote").hidden = S.live;
   $("ccReq").hidden = !/^dj-/.test(COMMUNITY); $("ccPick").hidden = true;
-  paintMe();
+  paintMe(); paintPin();
   S.joined = await API.isJoined(); members = await API.count();
   if (my !== bootId) return;
   paintJoin();
@@ -35697,6 +35742,136 @@ body.yaps-paused .qvl-eq i { animation-play-state: paused; }
   ['play','pause','ended'].forEach(function(ev){try{audioEngine.addEventListener(ev,later)}catch(e){}});
   try{new MutationObserver(function(muts){for(var i=0;i<muts.length;i++){var n=muts[i].target;if(n&&n.id==='exclusive-hits-row'||n.id==='fgPicks'||(n.classList&&(n.classList.contains('scroll-row')||n.classList.contains('qvl-scroller')))){later();return}}}).observe(document.body,{childList:true,subtree:true})}catch(e){}
   document.addEventListener('DOMContentLoaded',later);later();
+})();
+</script>
+<style id="home-live-sotd-css">
+.hl-wrap[hidden],.sotd-wrap[hidden]{display:none!important}
+.hl-wrap{padding:14px 0 2px}
+.hl-head{display:flex;align-items:center;gap:8px;padding:0 16px 10px}
+.hl-head h2{font-size:17px;font-weight:800;margin:0}
+.hl-dot{width:9px;height:9px;border-radius:50%;background:#ef4444;box-shadow:0 0 0 0 rgba(239,68,68,.6);animation:hlPulse 1.6s infinite}
+@keyframes hlPulse{70%{box-shadow:0 0 0 8px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
+.hl-row{display:flex;gap:14px;overflow-x:auto;padding:4px 16px 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+.hl-row::-webkit-scrollbar{display:none}
+.hl-item{flex:0 0 76px;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;padding:0;color:var(--text);font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hl-ring{position:relative;width:68px;height:68px;border-radius:50%;padding:3px;background:var(--border)}
+.hl-item.live .hl-ring{background:conic-gradient(#ef4444,#f59e0b,#ef4444)}
+.hl-av{width:100%;height:100%;border-radius:50%;border:2px solid var(--bg);background-size:cover;background-position:center;display:grid;place-items:center;color:#fff;font-weight:800;font-size:22px;overflow:hidden}
+.hl-tag{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);font-size:9px;font-weight:800;letter-spacing:.05em;padding:2px 7px;border-radius:8px;background:var(--card2,var(--card));color:var(--muted);border:1px solid var(--border);white-space:nowrap}
+.hl-item.live .hl-tag{background:#ef4444;color:#fff;border-color:#ef4444}
+.hl-name{font-size:11.5px;font-weight:700;line-height:1.2;max-width:76px;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:4px}
+.hl-sub{font-size:10px;color:var(--muted);max-width:76px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sotd-wrap{padding:12px 16px 4px}
+.sotd{position:relative;display:flex;gap:14px;align-items:center;padding:14px;border-radius:18px;border:1px solid var(--border);overflow:hidden;background:linear-gradient(135deg,var(--surface,var(--bg)),var(--bg))}   /* same dark blue as the app background (follows the theme) */
+.sotd>*{position:relative}
+.sotd-art{flex:0 0 96px;width:96px;height:96px;border-radius:14px;object-fit:cover;box-shadow:0 10px 24px -8px rgba(0,0,0,.5)}
+.sotd-body{min-width:0;flex:1}
+.sotd-k{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-light,var(--accent))}
+.sotd-t{font-size:18px;font-weight:800;line-height:1.2;margin:3px 0 1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sotd-a{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sotd-n{font-size:12px;color:var(--muted);margin-top:4px}
+.sotd-btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.sotd-btns button{padding:8px 14px;font-size:13px;font-weight:700;border-radius:20px;cursor:pointer;font-family:inherit}
+.sotd-btns .sotd-d{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+@media (max-width:420px){.sotd-art{flex-basis:82px;width:82px;height:82px}.sotd-t{font-size:16px}}
+@media (prefers-reduced-motion:reduce){.hl-dot{animation:none}}
+</style>
+<script id="home-live-sotd-js">
+/* ── HOME: Live Now strip + Song of the Day ── */
+(function () {
+  'use strict';
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+  var safeUrl = function (u) { u = String(u || ''); return /^(https?:\/\/|images\/|\/|data:image\/)/i.test(u) ? u : ''; };
+  var HOUR = 36e5, rooms = [], roomsAt = 0;
+  var G = ['#1d4ed8,#0b1a4a', '#b8892b,#3b2a08', '#0891b2,#082f49', '#be123c,#2a0a14', '#0f766e,#052e2b', '#7c3aed,#2e1065'];
+
+  function artistImg(n) { try { var a = (typeof artists !== 'undefined') && artists.find(function (x) { return x.name === n; }); return a && a.img || ''; } catch (e) { return ''; } }
+  function clock(d) { return d.toLocaleTimeString('en-GB', { hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase(); }
+  function dayWord(d, now) {
+    var a = new Date(now); a.setHours(0, 0, 0, 0); var b = new Date(d); b.setHours(0, 0, 0, 0);
+    var n = Math.round((b - a) / 864e5); return n <= 0 ? 'Today' : n === 1 ? 'Tomorrow' : d.toLocaleDateString('en-GB', { weekday: 'short' });
+  }
+
+  /* items: {key,name,sub,img,grad,live,start,go} */
+  function collect() {
+    var now = Date.now(), out = [];
+    (window.yapsEventsList || []).forEach(function (e, i) {
+      var st = new Date(e.start).getTime(); if (isNaN(st)) return;
+      var live = now >= st && now <= st + 4 * HOUR, soon = st > now && st - now <= 24 * HOUR;
+      if (!live && !soon) return;
+      var img = ''; (e.artists || []).some(function (n) { img = artistImg(n); return !!img; });
+      out.push({ key: 'e' + e.id, name: e.title, live: live, start: st, img: img, grad: (e.colors || [])[0] ? e.colors.join(',') : G[i % G.length],
+        sub: live ? 'On now' : dayWord(new Date(st), now) + ' ' + clock(new Date(st)), go: function () { navigate('events'); } });
+    });
+    rooms.forEach(function (r, i) {
+      var st = r.starts_at ? new Date(r.starts_at).getTime() : NaN; if (isNaN(st) || r.status !== 'active') return;
+      var live = now >= st && now <= st + 5 * HOUR, soon = st > now && st - now <= 24 * HOUR;
+      if (!live && !soon) return;
+      out.push({ key: 'r' + r.id, name: r.name, live: live, start: st, img: safeUrl(r.image_url), grad: G[(i + 2) % G.length],
+        sub: live ? 'Chat is open' : dayWord(new Date(st), now) + ' ' + clock(new Date(st)), go: function () { if (window.cnOpenRoom) window.cnOpenRoom(r.id); else navigate('connect'); } });
+    });
+    out.sort(function (a, b) { return (b.live - a.live) || (a.start - b.start); });
+    return out.slice(0, 12);
+  }
+  var picked = {};
+  function renderLive() {
+    var box = document.getElementById('homeLive'); if (!box) return;
+    var items = collect();
+    if (!items.length) { box.hidden = true; box.innerHTML = ''; return; }
+    picked = {}; items.forEach(function (x) { picked[x.key] = x; });
+    var anyLive = items.some(function (x) { return x.live; });
+    box.innerHTML = '<div class="hl-head">' + (anyLive ? '<span class="hl-dot"></span>' : '<i class="fas fa-calendar-day" style="color:var(--accent-light)"></i>') + '<h2>' + (anyLive ? 'Live Now' : 'Coming Up Tonight') + '</h2></div>'
+      + '<div class="hl-row">' + items.map(function (x) {
+        var img = safeUrl(x.img);
+        return '<button type="button" class="hl-item' + (x.live ? ' live' : '') + '" data-k="' + esc(x.key) + '" aria-label="' + esc(x.name) + (x.live ? ', live now' : '') + '">'
+          + '<span class="hl-ring"><span class="hl-av" style="' + (img ? "background-image:url('" + esc(img) + "')" : 'background:linear-gradient(135deg,' + esc(x.grad) + ')') + '">' + (img ? '' : esc(String(x.name).trim().charAt(0).toUpperCase())) + '</span>'
+          + '<span class="hl-tag">' + (x.live ? 'LIVE' : 'SOON') + '</span></span>'
+          + '<span class="hl-name">' + esc(x.name) + '</span><span class="hl-sub">' + esc(x.sub) + '</span></button>';
+      }).join('') + '</div>';
+    box.hidden = false;
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('#homeLive .hl-item'); if (!b) return;
+    var x = picked[b.getAttribute('data-k')]; if (x) { try { x.go(); } catch (er) {} }
+  });
+  function loadRooms() {
+    if (!window.sb || !window.sb.rpc || Date.now() - roomsAt < 60000) return;
+    roomsAt = Date.now();
+    window.sb.rpc('connect_list_rooms', { p_kind: 'event', p_q: null, p_limit: 30, p_offset: 0 }).then(function (r) {
+      if (r && !r.error && Array.isArray(r.data)) { rooms = r.data; renderLive(); }
+    }).catch(function () { });
+  }
+
+  /* Song of the Day: one pick per local day, no repeats until the whole library has been used */
+  function dayNum() { var d = new Date(); return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())) / 864e5); }
+  function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+  function pickSong() {
+    var list = []; try { list = tracks.map(function (t, i) { return { t: t, i: i }; }).filter(function (x) { return x.t && x.t.audioSrc && x.t.title && x.t.img; }); } catch (e) { return null; }
+    if (!list.length) return null;
+    list.sort(function (a, b) { return String(a.t.id).localeCompare(String(b.t.id), undefined, { numeric: true }); });   // stable order, so a new upload does not reshuffle the cycle
+    var n = list.length, step = 7919 % n || 1; while (gcd(step, n) !== 1) step++;
+    return list[(dayNum() * step) % n];
+  }
+  window.yapsSongOfTheDay = function () { var p = pickSong(); return p ? { track: p.t, index: p.i } : null; };
+  function renderSotd() {
+    var box = document.getElementById('homeSotd'); if (!box) return;
+    var p = pickSong(); if (!p) { box.hidden = true; return; }
+    var t = p.t, img = safeUrl(t.img), key = dayNum() + ':' + t.id;
+    if (box.dataset.k === key) return; box.dataset.k = key;
+    var meta = [t.genre && t.genre !== 'All' ? t.genre : '', t.plays && t.plays !== '0' ? t.plays + ' plays' : ''].filter(Boolean).join(' · ');
+    box.innerHTML = '<div class="sotd" style="--sotd-img:url(\'' + esc(img) + '\')"><img class="sotd-art" src="' + esc(img) + '" alt="" loading="lazy">'
+      + '<div class="sotd-body"><div class="sotd-k"><i class="fas fa-sun"></i> Song of the Day</div><div class="sotd-t">' + esc(t.title) + '</div><div class="sotd-a">' + esc(t.artist) + '</div>'
+      + (meta ? '<div class="sotd-n">' + esc(meta) + '</div>' : '')
+      + '<div class="sotd-btns"><button type="button" class="btn-primary" id="sotdPlay"><i class="fas fa-play"></i> Play</button><button type="button" class="sotd-d" id="sotdTalk"><i class="fas fa-comments"></i> Discuss</button></div></div></div>';
+    box.hidden = false;
+    box.querySelector('#sotdPlay').onclick = function () { try { playTrack(p.i); } catch (e) {} };
+    box.querySelector('#sotdTalk').onclick = function () { try { window.openCommunity({ artist: '', c: 'yaps-connect' }); } catch (e) { navigate('community'); } };
+  }
+
+  function all() { try { renderLive(); renderSotd(); loadRooms(); } catch (e) { } }
+  window.addEventListener('load', function () { setTimeout(all, 600); setTimeout(all, 3500); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) all(); });
+  setInterval(function () { if (!document.hidden) all(); }, 60000);   // moves Soon → Live, and rolls to the next song at midnight
 })();
 </script>
 </body>
