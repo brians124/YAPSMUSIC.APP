@@ -3875,7 +3875,7 @@ html { -webkit-tap-highlight-color: transparent; }
   width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3);
   border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite;
 }
-
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── SUCCESS SCREEN ── */
 .signup-success {
@@ -6586,106 +6586,189 @@ html[data-theme="aurora"] #page-community .cc-btn,html:not([data-theme]) #page-c
 <!-- Header styles up-front so the header looks right while the loading screen is up (copy of studio-chrome below, which still applies last) -->
 <style id="studio-chrome-early">
 /* ══ STUDIO HEADER + SIDEBAR CHROME — ported from studio.html (champagne-gold on navy, Playfair + Archivo) ══ */
-
-
-
-
-
-
+:root{--serif:'Playfair Display',Georgia,'Times New Roman',serif;--sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --au:#ffc94d;--au2:#ffe7a8;--au3:#b9861f;--au-rgb:255,201,77;
+ --logo-g:linear-gradient(180deg,#fff3c9 0,#ffc94d 48%,#b9861f 100%);--topbar-h:68px}
+html[data-theme="crimson"]{--au:#ff5c6b;--au2:#ffc2c8;--au3:#b3121f;--au-rgb:255,92,107;--logo-g:linear-gradient(180deg,#ffe3e6 0,#ff5c6b 48%,#b3121f 100%)}
+html[data-theme="emerald"]{--au:#22e08a;--au2:#b8ffdb;--au3:#159e5f;--au-rgb:34,224,138;--logo-g:linear-gradient(180deg,#e4fff0 0,#22e08a 48%,#159e5f 100%)}
+html[data-theme="violet"]{--au:#a96bff;--au2:#e0ccff;--au3:#6a2fd6;--au-rgb:169,107,255;--logo-g:linear-gradient(180deg,#f1e8ff 0,#a96bff 48%,#6a2fd6 100%)}
+html[data-theme="aurora"]{--au:#19e68c;--au2:#9bffd0;--au3:#0ea66b;--au-rgb:25,230,140;--logo-g:linear-gradient(100deg,#19e68c,#19c3ff 40%,#8b5cf6 70%,#e040fb)}
+html[data-mode="light"]{--au:#9a6700;--au2:#7a5200;--au3:#8a5d00;--au-rgb:154,103,0;--logo-g:linear-gradient(180deg,#d9a21b 0,#9a6700 55%,#6b4600 100%)}
 
 /* header bar */
-
-
-
-
+html:root #topbar{position:fixed;overflow:visible;height:var(--topbar-h);padding:0 18px;gap:18px;
+ background:linear-gradient(90deg,color-mix(in srgb,var(--bg) 96%,transparent),color-mix(in srgb,var(--bg) 45%,transparent)),var(--bg);
+ border-bottom:1px solid transparent!important;
+ border-image:linear-gradient(90deg,var(--au3),rgba(var(--au-rgb),.15) 40%,var(--border) 70%,transparent) 1!important}
+#topbar .earth-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+#topbar .earth{position:absolute;right:18%;top:-190px;width:420px;height:420px;border-radius:50%;pointer-events:none;
+ background:radial-gradient(circle at 40% 70%,rgba(var(--au-rgb),.18),color-mix(in srgb,var(--accent) 20%,transparent) 45%,transparent 70%)}
+#topbar>*:not(.earth-wrap){position:relative}
 
 /* logo */
-
-
-
+#topbar .topbar-logo{display:block;padding:0;cursor:pointer;text-decoration:none;letter-spacing:0}
+#topbar .topbar-logo .logo{display:block;font:900 42px/1 var(--serif);letter-spacing:.01em;background:var(--logo-g);
+ -webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 14px rgba(var(--au-rgb),.35))}
+#topbar .topbar-logo .logo small{display:block;font:700 10.5px var(--sans);letter-spacing:.42em;color:var(--au2);
+ -webkit-text-fill-color:var(--au2);margin-top:3px;padding-left:2px}
 
 /* title block — same as studio.html .ttl (replaces the search bar) */
-
-
-
-
-
+#topbar .ttl{flex:0 1 auto;min-width:0;font:800 30px/1.05 var(--serif);letter-spacing:.005em;text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:2px}
+#topbar .ttl b{color:var(--au);font-weight:800}
+#topbar .ttl p{font:500 14px var(--sans);letter-spacing:.02em;color:var(--muted);margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#topbar .sp{flex:1 1 0;min-width:0}
+#topbar .topbar-logo,#topbar .topbar-nav,#hamburgerBtn{flex:none}
 
 /* round gold icon buttons (.ic) */
 #topbar .topbar-nav{gap:12px}
-
-
-
-
-
-
+#topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:42px;height:42px;border-radius:50%;padding:0;
+ border:1.5px solid rgba(var(--au-rgb),.55);background:rgba(var(--au-rgb),.07);color:var(--au);font-size:18px;flex:none;display:grid;place-items:center;cursor:pointer;transition:all .2s}
+#topbar .topbar-avatar{font-size:13px;font-weight:800;background:linear-gradient(135deg,rgba(var(--au-rgb),.35),rgba(var(--au-rgb),.1))}
+#topbar .topbar-icon-btn:hover,#topbar .topbar-guest-avatar:hover,#topbar .topbar-avatar:hover{border-color:var(--au);background:rgba(var(--au-rgb),.16);color:var(--au2)}
+#topbar .topbar-bell-btn{position:relative}
+#topbar .tb-ico{width:1.2em;height:1.2em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block}
+#topbar .topbar-bell-badge{top:-3px;right:-3px;background:var(--au);color:#1a1204;border-color:var(--bg)}
 
 /* AI DJ + Upload pills (.aibtn) */
-
-
-
-
-
-
+#topbar .aibtn,#topbar .btn-upload-tiktok.aibtn{position:relative;display:flex;align-items:center;gap:12px;padding:8px 16px;border-radius:16px;
+ border:1.5px solid var(--au);text-align:left;cursor:pointer;color:var(--au2);transform:none;
+ background:linear-gradient(180deg,rgba(var(--au-rgb),.16),rgba(var(--au-rgb),.05));
+ box-shadow:0 0 22px rgba(var(--au-rgb),.22),inset 0 0 14px rgba(var(--au-rgb),.10)}
+#topbar .aibtn:hover{background:linear-gradient(180deg,rgba(var(--au-rgb),.26),rgba(var(--au-rgb),.1));transform:none}
+#topbar .aibtn b{display:block;font:800 15px var(--sans);letter-spacing:.02em;color:var(--au2)}
+#topbar .aibtn>span>span{display:block;font-size:11.5px;color:var(--muted);font-weight:500}
+#topbar .aibtn .ic{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--au);background:rgba(var(--au-rgb),.08);color:var(--au);display:grid;place-items:center;font-size:15px;flex:none}
+#topbar .btn-upload-arrow{width:34px;height:34px;font-size:18px;background:rgba(var(--au-rgb),.08);border:1.5px solid var(--au);color:var(--au)}
 
 /* MENU button (drawer toggle) */
-
-
+#hamburgerBtn{height:34px;width:auto;padding:0 12px;border-radius:12px;border:1.5px solid rgba(var(--au-rgb),.55);background:rgba(var(--au-rgb),.07);
+ color:var(--au);font:700 13px 'Archivo Narrow',var(--sans);letter-spacing:.04em;place-items:center}
+#hamburgerBtn:hover{border-color:var(--au);background:rgba(var(--au-rgb),.16);color:var(--au2)}
 
 /* sidebar lettering (rest of the sidebar already identical to studio) */
-
-
+#sidebar .sidebar-label{color:var(--au3)}
+#sidebar .sidebar-header{padding-top:max(20px,env(safe-area-inset-top))}
 
 /* compact header sizes — same steps as studio */
-
-
-
-
+@media(max-width:1280px){#topbar .ttl{font-size:24px}#topbar .ttl p{display:none}}
+@media(max-width:820px){
+ #topbar .ttl{font-size:20px}
+ :root{--topbar-h:56px}
+ html:root #topbar{padding:0 10px;gap:8px}
+ #topbar .topbar-logo .logo{font-size:30px}
+ #topbar .aibtn,#topbar .btn-upload-tiktok.aibtn{padding:3px 10px;border-radius:12px;gap:8px}
+ #topbar .aibtn .ic,#topbar .btn-upload-arrow{width:26px;height:26px;font-size:13px}
+ #topbar .aibtn b{font-size:13px}#topbar .aibtn>span>span{display:none}
+ #topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:34px;height:34px;font-size:15px}
+ #topbar .topbar-nav{gap:8px}
+ #topbar .earth-wrap{display:none}
+}
+@media(max-width:560px){#topbar .ttl{display:none}}
+@media(orientation:portrait) and (max-width:820px){#topbar .topbar-logo .logo{font-size:26px}#topbar .topbar-logo .logo small{display:none}}
 /* Small phones: keep AI DJ, Upload, Sign-in, Notifications and Settings ALL visible.
    Nothing is hidden any more - the buttons just shrink (labels turn into icons) so the row always fits. */
-
-
-
-
+@media(max-width:480px){
+ :root{--topbar-h:50px}
+ html:root #topbar{padding:0 8px;gap:6px}
+ #topbar #fsBtn{display:none}                       /* fullscreen is not supported on most phones */
+ #topbar #aiTop{display:flex}                       /* AI DJ stays visible (was display:none) */
+ #topbar #aiTop>span:last-child{display:none}       /* ...as an icon-only button */
+ #topbar #aiTop{padding:3px;border-radius:50%}
+ #topbar .btn-upload-tiktok.aibtn b{font-size:12px}
+ #topbar .topbar-nav{gap:5px;min-width:0;flex:0 0 auto}
+ #hamburgerBtn{height:32px;padding:0 9px;font-size:12px;border-radius:10px}
+ #topbar .topbar-logo .logo{font-size:23px}
+ #topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:32px;height:32px;font-size:14px}
+}
+@media(max-width:400px){
+ #topbar .btn-upload-tiktok.aibtn>span:last-child{display:none}   /* Upload becomes icon-only */
+ #topbar .btn-upload-tiktok.aibtn{padding:3px;border-radius:50%}
+ #topbar .aibtn .ic,#topbar .btn-upload-arrow{width:24px;height:24px;font-size:12px}
+ #topbar .topbar-nav{gap:4px}
+ #topbar .topbar-logo .logo{font-size:21px}
+}
+@media(max-width:340px){
+ html:root #topbar{padding:0 6px;gap:4px}
+ #topbar .topbar-logo .logo{font-size:19px}
+ #topbar .topbar-icon-btn,#topbar .topbar-guest-avatar,#topbar .topbar-avatar{width:30px;height:30px}
+ #topbar .aibtn .ic,#topbar .btn-upload-arrow{width:22px;height:22px}
+ #hamburgerBtn{padding:0 7px}
+}
+@media(orientation:landscape) and (max-height:520px){
+ :root{--topbar-h:46px}
+ #topbar .ttl{font-size:17px}
+ #topbar .topbar-logo .logo{font-size:24px}#topbar .topbar-logo .logo small{display:none}
+}
 
 /* sidebar = slide-in drawer (opened by MENU) — studio breakpoints, full height, above header */
-
-
+@media(max-width:899px),(orientation:landscape) and (max-height:520px){
+ html #hamburgerBtn{display:grid}
+ html #sidebar{position:fixed;top:0;bottom:0;left:0;width:min(80vw,300px);z-index:310;display:flex!important;
+  box-shadow:4px 0 24px rgba(0,0,0,.5);transform:translateX(-105%);visibility:hidden;
+  transition:transform .28s cubic-bezier(.4,0,.2,1),visibility 0s .28s}
+ html #sidebar.open{transform:none;visibility:visible;transition:transform .28s cubic-bezier(.4,0,.2,1)}
+ html #sidebarOverlay.open{display:block;z-index:300;background:rgba(0,0,0,.6)}
+ #layout{margin-left:0}
+}
+@media(min-width:900px) and (min-height:521px){html #hamburgerBtn{display:none}}
 
 /* ===== PREMIUM / AURORA skin — same extruded 3D lettering as studio.html ===== */
-
-
-
-
-
-
-
-
+html[data-theme="aurora"] #topbar .topbar-logo .logo{display:inline-flex;align-items:center;gap:.2em;font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:40px;font-weight:900;letter-spacing:.005em;line-height:1;
+ background:linear-gradient(180deg,#fff 0%,#fff 45%,#d4c4ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+ filter:drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c) drop-shadow(4px 4px 0 #2c1470) drop-shadow(0 8px 10px rgba(0,0,0,.7)) drop-shadow(0 0 16px rgba(224,64,251,.45))}
+html[data-theme="aurora"] #topbar .topbar-logo .logo::before{content:"";flex:none;width:1.05em;height:1.05em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2319e68c'/%3E%3Cstop offset='.5' stop-color='%2319c3ff'/%3E%3Cstop offset='1' stop-color='%23e040fb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M16 10 54 32 16 54Z' fill='url(%23g)' stroke='url(%23g)' stroke-width='11' stroke-linejoin='round'/%3E%3Cpath d='M30 42a5 5 0 1 1-3-4.6V23l15-3.4v14.6a5 5 0 1 1-3-4.6V26l-9 2Z' fill='%23fff'/%3E%3C/svg%3E") center/contain no-repeat;-webkit-text-fill-color:initial}
+html[data-theme="aurora"] #topbar .topbar-logo .logo small{display:inline;margin:0;padding:0;font:900 1em var(--sans);letter-spacing:.005em;
+ background:linear-gradient(100deg,#19e68c,#19c3ff 35%,#8b5cf6 68%,#e040fb);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+html[data-theme="aurora"] #topbar .ttl{font-family:'Archivo',system-ui,sans-serif;font-weight:900;letter-spacing:.04em;
+ background:linear-gradient(180deg,#fff,#e9e0ff 60%,#b9a2ff);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+ filter:drop-shadow(1px 1px 0 #6a3fe0) drop-shadow(2px 2px 0 #4a28b0) drop-shadow(3px 3px 0 #301a80) drop-shadow(0 6px 8px rgba(0,0,0,.65))}
+html[data-theme="aurora"] #topbar .ttl b{background:linear-gradient(180deg,#cfffe9 0%,#19e68c 45%,#19c3ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;font-weight:900}
+@media(max-width:820px){html[data-theme="aurora"] #topbar .topbar-logo .logo{font-size:30px}}
+@media(orientation:portrait) and (max-width:820px){html[data-theme="aurora"] #topbar .topbar-logo .logo{font-size:21px}html[data-theme="aurora"] #topbar .ttl{display:none}}
+@media(orientation:landscape) and (max-height:520px){html[data-theme="aurora"] #topbar .topbar-logo .logo{font-size:24px}}
 
 /* ===== HERO: shorter carousel + same extruded 3D lettering as the YAPSMUSIC header ===== */
+.hero-carousel { --hero-h: 180px; }
+.hero-content { padding: 12px 18px; }
+@media (min-width: 768px)  { .hero-carousel { --hero-h: 240px; } .hero-content { padding: 18px 36px; } }
+@media (min-width: 1024px) { .hero-carousel { --hero-h: 290px; } .hero-content { padding: 26px 52px; } }
+@media (min-width: 1440px) { .hero-carousel { --hero-h: 350px; } .hero-content { padding: 34px 68px; } }
+@media (min-width: 1920px) { .hero-carousel { --hero-h: 410px; } }
+@media (min-width: 768px) and (max-height: 700px) { .hero-carousel { --hero-h: 230px; } }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+html .hero-title, html[data-theme] .hero-title {
+  font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif !important;
+  font-weight: 900 !important; text-transform: uppercase; letter-spacing: .005em; line-height: 1.04;
+  font-size: 20px; margin-bottom: 6px;
+  background: linear-gradient(180deg,#fff 0%,#fff 45%,#d4c4ff 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c)
+          drop-shadow(0 6px 8px rgba(0,0,0,.7)) drop-shadow(0 0 14px rgba(224,64,251,.4));
+}
+html .hero-title em, html[data-theme] .hero-title em {
+  font-style: normal; padding-right: .06em;
+  background: linear-gradient(100deg,#19e68c,#19c3ff 35%,#8b5cf6 68%,#e040fb);
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+}
+html .hero-sub { margin-bottom: 8px; }
+html .hero-btn { padding: 7px 16px; font-size: 12px; }
+@media (min-width: 768px) {
+  html .hero-title, html[data-theme] .hero-title { font-size: 27px; margin-bottom: 8px;
+    filter: drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c) drop-shadow(4px 4px 0 #2c1470)
+            drop-shadow(0 8px 10px rgba(0,0,0,.7)) drop-shadow(0 0 16px rgba(224,64,251,.45)); }
+  html .hero-sub { margin-bottom: 10px; }
+  html .hero-btn { padding: 8px 18px; font-size: 13px; }
+}
+@media (min-width: 1024px) { html .hero-title, html[data-theme] .hero-title { font-size: 34px; } }
+@media (min-width: 1440px) { html .hero-title, html[data-theme] .hero-title { font-size: 42px; } }
+@media (min-width: 1920px) { html .hero-title, html[data-theme] .hero-title { font-size: 48px; } }
+@media (min-width: 768px) and (max-height: 700px) { html .hero-title, html[data-theme] .hero-title { font-size: 26px; } }
 
 /* ===== HOME: search bar above the hero (reuses .search-big from the Search page) ===== */
-
-
-
-
+.home-search { padding: 12px 16px 12px; }
+.home-search .search-big { margin-bottom: 0; }
+.home-search .search-big input { min-width: 0; }
+@media (min-width: 768px) { .home-search { padding: 14px 24px 14px; } .home-search .search-big { max-width: 720px; } }
 </style>
 <!-- ═══════════════════════════════════════════════════════════
      YAPS LOADING SCREEN, shown only the first time the app is opened (per session).
@@ -23119,11 +23202,7 @@ function _updateOfflineBanner() {
   if (!card) return;
   document.documentElement.classList.toggle('is-offline', _isOffline());
   if (_isOffline()) {
-    if (!_offlineAlertDismissed && !card.classList.contains('show')) {
-      card.classList.add('show');
-      clearTimeout(window._oacTimer);
-      window._oacTimer = setTimeout(function () { _offlineAlertDismissed = true; card.classList.remove('show'); }, 6000); // auto-hide; offline dot stays
-    }
+    if (!_offlineAlertDismissed) card.classList.add('show');
   } else {
     card.classList.remove('show');
     _offlineAlertDismissed = false; // reset so it re-appears next time we go offline
@@ -27584,7 +27663,7 @@ html[data-mode="light"] .yv-share-sheet,html[data-mode="light"] .yv-comments-pan
 html[data-mode="light"] .oos-title,html[data-mode="light"] .p2p-title,html[data-mode="light"] .lp-line.active,html[data-mode="light"] .pc-card p b,html[data-mode="light"] .evp-date b,html[data-mode="light"] .evp-lt,html[data-mode="light"] .evp-lu b,html[data-mode="light"] .pdp-with b,html[data-mode="light"] .pdp-f b,html[data-mode="light"] .ern-sub b,html[data-mode="light"] .ern-dest .ern-rt b{color:var(--text)}
 html[data-mode="light"] .oos-icon-wrap .oos-badge{background:var(--surface)}
 html[data-mode="light"] input,html[data-mode="light"] textarea,html[data-mode="light"] select{color:var(--text)}
-
+html[data-mode="light"] ::placeholder{color:var(--dim);opacity:1}
 /* ── Now Playing screen: light appearance (was dark-only with hard-coded colours) ── */
 html[data-mode="light"] #nowPlayingScreen{--yp-panel:rgba(255,255,255,.92);--yp-edge:rgba(99,102,241,.34);color:var(--text,#0b1a3d);
  background:radial-gradient(circle at 0% 0%,rgba(25,230,140,.22) 0%,transparent 34%),radial-gradient(circle at 100% 2%,rgba(168,85,247,.22) 0%,transparent 36%),radial-gradient(circle at 100% 100%,rgba(168,85,247,.16) 0%,transparent 34%),radial-gradient(circle at 0% 88%,rgba(25,230,140,.14) 0%,transparent 30%),var(--bg,#f4f6ff)}
@@ -34825,13 +34904,14 @@ html :is(.hub-tab,.filter-chip,.atp-chip,.disc-chip,.dj-prompt-chip,.dv-chip,.ev
 html .hero-btn{backdrop-filter:none;-webkit-backdrop-filter:none}
 html:not([data-theme]) :is(button,a)[style*="background:var(--accent)"],html:not([data-theme]) :is(button,a)[style*="background: var(--accent)"]{background:var(--neon-btn)!important;color:#fff!important;border-color:transparent!important}
 html[data-theme="aurora"] :is(button,a)[style*="background:var(--accent)"],html[data-theme="aurora"] :is(button,a)[style*="background: var(--accent)"]{background:var(--aurora-btn)!important;color:#fff!important;border-color:transparent!important}
-/* Bottom nav (phones): page extends underneath; nav is a soft dark glass strip with bright icons/labels.
-   All bottom-nav overrides live in this one block. */
+/* Bottom navigation: transparent background (page content shows through behind the buttons) */
+#bottomNav::before{content:"";position:absolute;z-index:0;left:-10px;right:-10px;top:-8px;bottom:-10px;background:transparent}
+/* Bottom nav truly transparent: page extends underneath it (no solid strip behind the buttons) */
 @media (max-width:768px){
   html #layout{margin-bottom:0!important;height:calc(100dvh - var(--topbar-h))!important}
   html #main{padding-bottom:calc(var(--mnav-h) + var(--player-h))!important;background:transparent!important}
   html #bottomNav{left:0!important;right:0!important;bottom:0!important;height:calc(68px + env(safe-area-inset-bottom,0px))!important;padding-bottom:env(safe-area-inset-bottom,0px);
-    background:linear-gradient(180deg,rgba(5,8,20,0) 0%,rgba(5,8,20,.8) 35%,rgba(5,8,20,.94) 100%)!important;
+    background:linear-gradient(180deg,rgba(5,8,20,0) 0%,rgba(5,8,20,.72) 38%,rgba(5,8,20,.88) 100%)!important;
     border:0!important;box-shadow:none!important;backdrop-filter:blur(10px) saturate(1.3)!important;-webkit-backdrop-filter:blur(10px) saturate(1.3)!important}
   html .bn-item{background:transparent!important;color:#fff!important}
   html .bn-item span{color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.6)!important;font-weight:700}
