@@ -7370,14 +7370,14 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
     <svg class="bn-svg-icon" viewBox="0 0 24 24"><circle class="bn-stroke" cx="12" cy="12" r="9"/><path class="bn-fill" d="M15.9 8.1l-2.2 5.6-5.6 2.2 2.2-5.6z"/></svg>
     <span data-i18n="bn_search">Discover</span>
   </div>
-  <div class="bn-item" id="bn-video" onclick="navigate('video');updateBottomNav('video')">
+  <div class="bn-item" id="bn-studio" onclick="openStudioIntro()">
     <svg class="bn-svg-icon" viewBox="0 0 24 24">
-      <circle class="bn-stroke" cx="12" cy="12" r="9"/>
-      <path class="bn-fill" d="M10 8.3v7.4c0 .6.65 1 1.2.65l5.9-3.7c.5-.32.5-1.06 0-1.38l-5.9-3.7C10.65 7.3 10 7.7 10 8.3z"/>
-      <line class="bn-stroke" x1="12" y1="1.4" x2="12" y2="3.1" stroke-width="1.4"/>
-      <line class="bn-stroke" x1="12" y1="20.9" x2="12" y2="22.6" stroke-width="1.4"/>
+      <path class="bn-stroke" d="M6 3.5v17M12 3.5v17M18 3.5v17" stroke-width="1.6"/>
+      <circle class="bn-fill" cx="6" cy="9" r="2.6"/>
+      <circle class="bn-fill" cx="12" cy="15.5" r="2.6"/>
+      <circle class="bn-fill" cx="18" cy="8" r="2.6"/>
     </svg>
-    <span data-i18n="bn_video">Video</span>
+    <span data-i18n="bn_studio">Studio</span>
   </div>
   <div class="bn-item" id="bn-library" onclick="navigate('library');updateBottomNav('library')">
     <svg class="bn-svg-icon" viewBox="0 0 24 24">
@@ -8819,38 +8819,55 @@ a.djx-row{color:inherit;text-decoration:none}
 
     <!-- PROFILE PAGE -->
     <section class="page" id="page-profile">
+      <!-- ACCOUNT HEADER -->
+      <div class="acx-head">
+        <span class="acx-head-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4.2" fill="currentColor"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z" fill="currentColor"/></svg></span>
+        <div class="acx-head-t"><h2>Account</h2><p>Manage your account and enjoy more features</p></div>
+        <span class="acx-eq" aria-hidden="true"><svg class="acx-note" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="18" r="2.6" fill="currentColor"/><circle cx="17" cy="16" r="2.6" fill="currentColor"/></svg><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      </div>
       <div class="profile-banner" id="profileBannerEl"></div>
       <input type="file" id="avatarFileInput" accept="image/*" style="display:none" onchange="if(this.files[0])_uploadAvatarPhoto(this.files[0])">
       <input type="file" id="coverFileInput" accept="image/*" style="display:none" onchange="if(this.files[0])_uploadCoverPhoto(this.files[0])">
-      <div class="profile-info">
+      <!-- USER CARD -->
+      <div class="profile-info acx-user">
         <div class="profile-avatar" id="profileAvatarEl"></div>
         <div class="profile-meta">
           <div class="profile-name"><span>Guest</span></div>
           <div class="profile-handle">Sign in to see your account</div>
-          <div class="profile-bio" id="profileBioEl" style="display:none;font-size:13px;color:var(--text);margin:-2px 0 10px;max-width:420px;"></div>
-          <div class="profile-stats">
-            <div class="profile-stat" style="cursor:pointer" role="button" tabindex="0" onclick="openFollowList('followers')"><div class="ps-num">0</div><div class="ps-lbl">Followers</div></div>
-            <div class="profile-stat" style="cursor:pointer" role="button" tabindex="0" onclick="openFollowList('following')"><div class="ps-num">0</div><div class="ps-lbl">Following</div></div>
-            <div class="profile-stat"><div class="ps-num">0</div><div class="ps-lbl">Tracks</div></div>
-            <div class="profile-stat"><div class="ps-num">0</div><div class="ps-lbl">Plays</div></div>
+          <div class="profile-bio" id="profileBioEl" style="display:none;"></div>
+          <div class="acx-plan-row">
+            <span class="acx-plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="currentColor"/></svg><span class="acx-free">Free Account</span><span class="acx-prem">Premium Account</span></span>
+            <button type="button" class="acx-view" onclick="if(!_demoUser){showToast('Sign in to manage your account');openModal('auth');return;}openEditProfileModal()">Edit Profile <i class="acx-chev"></i></button>
           </div>
         </div>
       </div>
+      <div class="profile-stats acx-stats">
+        <div class="profile-stat" style="cursor:pointer" role="button" tabindex="0" onclick="openFollowList('followers')"><div class="ps-num">0</div><div class="ps-lbl">Followers</div></div>
+        <div class="profile-stat" style="cursor:pointer" role="button" tabindex="0" onclick="openFollowList('following')"><div class="ps-num">0</div><div class="ps-lbl">Following</div></div>
+        <div class="profile-stat"><div class="ps-num">0</div><div class="ps-lbl">Tracks</div></div>
+        <div class="profile-stat"><div class="ps-num">0</div><div class="ps-lbl">Plays</div></div>
+      </div>
       <div class="profile-actions">
         <button class="btn-primary" onclick="if(!_demoUser){showToast('Sign in to follow people');openModal('auth');return;}showToast('Open a profile from People You May Know to follow them')"><i class="fas fa-user-plus"></i> Follow</button>
+      </div>
+      <!-- GO PREMIUM (gold crown banner) -->
+      <div class="gp-card" id="profileGoPremium" onclick="openSubscriptionModal()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSubscriptionModal()}">
+        <div class="gp-text">
+          <div class="gp-title"><span class="gp-free">Go Premium</span><span class="gp-prem">YAPS Premium</span></div>
+          <div class="gp-sub"><span class="gp-free">Unlock more features, remove ads and enjoy a better experience!</span><span class="gp-prem">Ad-free listening, higher audio quality and unlimited downloads.</span></div>
+        </div>
+        <span class="gp-btn"><span class="gp-free">Upgrade</span><span class="gp-prem">Manage</span><i class="acx-chev"></i></span>
       </div>
       <!-- ACCOUNT HUB: swipeable glass cards. Holds everything the desktop sidebar has, so phones need no MENU button -->
       <div class="acct-hub" id="acctHub">
         <!-- Simple list: only the everyday items. Everything else lives behind "Settings & more". -->
         <div class="acct-list" id="acctMain" role="list">
-          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb" onclick="if(!_demoUser){showToast('Sign in to manage your account');openModal('auth');return;}openEditProfileModal()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c0-3.5 3-5.5 6.5-5.5"/><path d="M14 20l.6-2.6 5-5 2 2-5 5z"/></svg></span></span><span class="ac-title">Account</span><span class="ac-desc">Edit your profile, photo and details.</span></button>
-          <button type="button" class="acct-card" style="--c:#fbbf24;--c2:#f97316" onclick="openSubscriptionModal()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z"/></svg></span></span><span class="ac-title">Premium</span><span class="ac-desc">Go ad-free with higher audio quality.</span></button>
-          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#22d3ee" onclick="navigate('connect')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 14c2.8 0 5 1.8 5 4.5"/></svg></span></span><span class="ac-title">Connect</span><span class="ac-desc">Join communities of fans and artists.</span></button>
-          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="navigate('messages')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span></span><span class="ac-title">Calls</span><span class="ac-desc">Message and call friends and artists.</span></button>
-          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#8b5cf6" onclick="navigate('upload')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9.5 4 4 0 0 1 17.5 18"/><path d="M12 17v-6M9 13.5l3-3 3 3"/></svg></span></span><span class="ac-title">Upload</span><span class="ac-desc">Share your music with the world.</span></button>
-          <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#19e68c" onclick="_p2pGoToDownloads()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10M8 10.5l4 4 4-4"/><path d="M5 19h14"/></svg></span></span><span class="ac-title">Downloads</span><span class="ac-desc">Songs saved for offline listening.</span></button>
-          <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#e040fb" onclick="toggleQueue()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h12M4 12h12M4 17h7"/><path d="M18 14l3 2.5-3 2.5z"/></svg></span></span><span class="ac-title">Queue</span><span class="ac-desc">See what plays next.</span></button>
-          <button type="button" class="acct-card acct-moreBtn" style="--c:#8b5cf6;--c2:#6366f1" onclick="acctMore(true)"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span></span><span class="ac-title">Settings &amp; more</span></button>
+          <button type="button" class="acct-card" style="--c:#3b82f6;--c2:#1d4ed8" onclick="navigate('connect')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 14c2.8 0 5 1.8 5 4.5"/></svg></span></span><span class="ac-title">Connect</span><span class="ac-desc">Be part of our community</span></button>
+          <button type="button" class="acct-card" style="--c:#22e05a;--c2:#12a63f" onclick="navigate('messages')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span></span><span class="ac-title">Calls</span><span class="ac-desc">Make and receive calls</span></button>
+          <button type="button" class="acct-card" style="--c:#a855f7;--c2:#6d28d9" onclick="navigate('upload')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9.5 4 4 0 0 1 17.5 18"/><path d="M12 17v-6M9 13.5l3-3 3 3"/></svg></span></span><span class="ac-title">Upload</span><span class="ac-desc">Share your music</span></button>
+          <button type="button" class="acct-card" style="--c:#ff4d4d;--c2:#c81e1e" onclick="_p2pGoToDownloads()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10M8 10.5l4 4 4-4"/><path d="M5 19h14"/></svg></span></span><span class="ac-title">Downloads</span><span class="ac-desc">Your downloaded songs</span></button>
+          <button type="button" class="acct-card" style="--c:#2dd4bf;--c2:#0ea5e9" onclick="toggleQueue()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h12M4 12h12M4 17h7"/><path d="M18 14l3 2.5-3 2.5z"/></svg></span></span><span class="ac-title">Queue</span><span class="ac-desc">Your play queue</span></button>
+          <button type="button" class="acct-card acct-moreBtn" style="--c:#3b82f6;--c2:#1d4ed8" onclick="acctMore(true)"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span></span><span class="ac-title">Settings &amp; More</span><span class="ac-desc">App settings, support and more</span></button>
         </div>
         <div id="acctMore" hidden>
           <button type="button" class="acct-back" onclick="acctMore(false)"><span class="acct-chev"></span> Settings &amp; more</button>
@@ -8866,6 +8883,7 @@ a.djx-row{color:inherit;text-decoration:none}
           </div>
           <div class="acct-group">Library &amp; explore</div>
           <div class="acct-list" role="list">
+          <button type="button" class="acct-card" style="--c:#f43f5e;--c2:#e040fb" onclick="navigate('video')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="3"/><path d="M10.5 9.5v5l4-2.5z" fill="currentColor"/></svg></span></span><span class="ac-title">Videos</span><span class="ac-desc">Music videos and trending clips.</span></button>
           <button type="button" class="acct-card" style="--c:#38bdf8;--c2:#6366f1" onclick="navigate('device')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></svg></span></span><span class="ac-title">On device</span><span class="ac-desc">Play songs stored on your phone.</span></button>
           <button type="button" class="acct-card" style="--c:#e040fb;--c2:#8b5cf6" onclick="djxOpenPage('djs')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3.5" y="13" width="4" height="6.5" rx="1.5"/><rect x="16.5" y="13" width="4" height="6.5" rx="1.5"/></svg></span></span><span class="ac-title">DJs</span><span class="ac-desc">Mixes from Ugandan DJs.</span></button>
           <button type="button" class="acct-card" style="--c:#fb923c;--c2:#f43f5e" onclick="navigate('podcasts')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6"/></svg></span></span><span class="ac-title">Podcasts</span><span class="ac-desc">Shows and episodes to follow.</span></button>
@@ -8898,6 +8916,34 @@ a.djx-row{color:inherit;text-decoration:none}
       </div>
       <!-- PEOPLE YOU MAY KNOW (replaces the old Tracks / Albums / Playlists tabs on the profile page) -->
       <div class="pymk-wrap" id="profile-list"></div>
+    </section>
+
+<script>window.stpOpenDJ=function(k){try{if(window.djxOpenProfile){window.djxOpenProfile(k);return}}catch(e){}try{navigate("djs")}catch(e){}};</script>
+    <!-- STUDIO WELCOME PAGE -->
+    <section class="page" id="page-studio-intro">
+      <div class="stp-wrap">
+        <!-- HERO: same design as the Home hero -->
+        <div class="hero-carousel stp-hero-home">
+          <div class="hero-slides" style="width:100%;transform:none">
+            <div class="hero-slide hs-active" style="width:100%">
+              <img fetchpriority="high" decoding="async" class="hero-slide-img" src="images/studio-hero-art.jpg" alt="YAPS Studio">
+              <div class="hero-content">
+                <div class="hero-tag">YAPS Studio</div>
+                <div class="hero-title">Create.<br>Mix.<br><em>Share.</em></div>
+                <div class="hero-sub">Turn your musical ideas into reality.</div>
+                <button type="button" class="hero-btn" onclick="studioIntroStart()">Start Studio <i class="fas fa-chevron-right" style="font-size:10px;"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="stp-x" onclick="studioIntroClose()" aria-label="Close">&#10005;</button>
+        <div class="stp-what"><b class="y3d y3d-g y3d-live">What You Can Do</b></div>
+        <div class="stp-tiles"><div class="stp-tile"><img src="images/studio-mix.jpg" alt="" loading="lazy"><b>Mix Tracks</b><span>Create amazing mixes</span></div><div class="stp-tile"><img src="images/studio-rec.jpg" alt="" loading="lazy"><b>Record Audio</b><span>Capture your voice or songs</span></div><div class="stp-tile"><img src="images/studio-ai.jpg" alt="" loading="lazy"><b>Create Songs</b><span>With AI &amp; beats</span></div><div class="stp-tile"><img src="images/studio-edit.jpg" alt="" loading="lazy"><b>Edit &amp; Master</b><span>Perfect your music</span></div><div class="stp-tile"><img src="images/studio-pub.jpg" alt="" loading="lazy"><b>Publish to YAPS</b><span>Share your music with the world</span></div></div>
+        <div class="home-ad stp-featbox"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 auto;"><i class="fas fa-headphones" style="color:var(--accent);flex-shrink:0;"></i><div style="min-width:0;"><div style="font-size:12.5px;font-weight:700;">Featured DJs &amp; Promoters</div><div style="font-size:11px;color:var(--muted);">Tap a profile to open it</div></div></div><div class="ad-artists" role="group" aria-label="DJs and promoter"><button type="button" class="ad-art" title="DJ Shiru" aria-label="DJ Shiru" onclick="stpOpenDJ('n:shiru')"><b>S</b><img src="images/dj-shiru.webp" alt="" loading="lazy" onerror="this.remove()"></button><button type="button" class="ad-art" title="Julius Kyazze (Promoter)" aria-label="Julius Kyazze (Promoter)" onclick="stpOpenDJ('n:juliuskyazze')"><b>J</b><img src="images/julius-kyazze.png" alt="" loading="lazy" onerror="this.remove()"></button><button type="button" class="ad-art" title="DJ Zahara Toto" aria-label="DJ Zahara Toto" onclick="stpOpenDJ('n:zaharatoto')"><b>Z</b><img src="images/dj-zahara-toto.webp" alt="" loading="lazy" onerror="this.remove()"></button></div></div>
+        <div class="stp-creator"><div class="stp-cr-img"><img src="images/studio-art.jpg" alt="" loading="lazy"></div><div class="stp-cr-txt"><div class="stp-ct"><span class="y3d y3d-s">Be a Creator,</span><span class="y3d y3d-s y3d-g y3d-live">Not Just a Listener</span></div><ul class="stp-ticks"><li>Easy to Use</li><li>Powerful Tools</li><li>Share Your Talent</li></ul></div></div>
+        <div class="stp-foot"><button type="button" class="stp-go" onclick="studioIntroStart()">Start Studio</button>
+          <label class="stp-skip"><input type="checkbox" id="stpSkip">Don&rsquo;t show again</label></div>
+      </div>
     </section>
 
     <!-- ══ OWNER DASHBOARD PAGE ══ -->
@@ -13301,6 +13347,7 @@ function _syncProfileHeader() {
   const bioEl = document.getElementById('profileBioEl');
 
   if (_demoUser) {
+    page.classList.add('acx-in');
     nameEl.textContent = _demoUser.name || 'YAPS User';
     handleEl.textContent = '@' + (_demoUser.username || (_demoUser.name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '')) +
       (_demoUser.accountType === 'artist' ? ' · Artist' : _demoUser.accountType === 'dj' ? ' · DJ' : _demoUser.accountType === 'promoter' ? ' · Promoter' : '') +
@@ -13316,7 +13363,7 @@ function _syncProfileHeader() {
         ? `<img loading="lazy" decoding="async" src="${_demoUser.avatar}" alt="${_demoUser.name}" style="width:100%;height:100%;object-fit:cover;">`
         : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-weight:800;font-size:32px;">${(_demoUser.name || 'Y')[0].toUpperCase()}</div>`;
       avatarBox.innerHTML = photoHTML +
-        `<div class="profile-photo-edit-btn avatar-edit-btn" onclick="document.getElementById('avatarFileInput').click()" title="Change profile photo"><i class="fas fa-camera"></i></div>`;
+        `<div class="profile-photo-edit-btn avatar-edit-btn" onclick="document.getElementById('avatarFileInput').click()" title="Change profile photo"><i class="fas fa-pen"></i></div>`;
     }
 
     if (bannerEl) {
@@ -13347,6 +13394,7 @@ function _syncProfileHeader() {
           : '<button class="btn-ghost" onclick="openMyCommunity()"><i class="fas fa-headphones"></i> Join Listeners Hub</button>'}`;
     }
   } else {
+    page.classList.remove('acx-in');
     nameEl.textContent = 'Guest';
     handleEl.textContent = 'Sign in to see your account';
     if (bioEl) { bioEl.textContent = ''; bioEl.style.display = 'none'; }
@@ -14494,7 +14542,7 @@ const _i18n = {
     nav_datasaver: 'Data Saver', nav_language: 'Language', nav_privacy: 'Privacy & Security',
     nav_helpcenter: 'Help Center', nav_report: 'Report a Problem', nav_feedback: 'Send Feedback',
     nav_about: 'About YAPSMusic', nav_share: 'Share App', nav_rate: 'Rate App', nav_invite: 'Invite Friends',
-    bn_home: 'Home', bn_search: 'Discover', bn_video: 'Video', bn_library: 'My Music', bn_profile: 'Profile',
+    bn_home: 'Home', bn_search: 'Discover', bn_video: 'Video', bn_studio: 'Studio', bn_library: 'My Music', bn_profile: 'Profile',
     badge_free: 'Free', badge_owner: 'Owner',
     search_ph: 'Search artists, tracks, playlists...'
   },
@@ -14514,7 +14562,7 @@ const _i18n = {
     nav_datasaver: 'Okutereeza Data', nav_language: 'Olulimi', nav_privacy: 'Eby\u2019Ekyama n\u2019Obukuumi',
     nav_helpcenter: 'Ekifo ky\u2019Obuyambi', nav_report: 'Waayo Ekizibu', nav_feedback: 'Tuwe Endowooza',
     nav_about: 'Ku YAPSMusic', nav_share: 'Gabana App', nav_rate: 'Wa App Emiwendo', nav_invite: 'Yita Mikwano',
-    bn_home: 'Awaka', bn_search: 'Zuula', bn_video: 'Vidiyo', bn_library: 'Omuziki Gwange', bn_profile: 'Profayiro',
+    bn_home: 'Awaka', bn_search: 'Zuula', bn_video: 'Vidiyo', bn_studio: 'Studio', bn_library: 'Omuziki Gwange', bn_profile: 'Profayiro',
     badge_free: 'Bwereere', badge_owner: 'Nnannyini',
     search_ph: 'Noonya bayimbi, ennyimba, playlisti...'
   },
@@ -14534,7 +14582,7 @@ const _i18n = {
     nav_datasaver: 'Kuokoa Data', nav_language: 'Lugha', nav_privacy: 'Faragha na Usalama',
     nav_helpcenter: 'Kituo cha Msaada', nav_report: 'Ripoti Tatizo', nav_feedback: 'Tuma Maoni',
     nav_about: 'Kuhusu YAPSMusic', nav_share: 'Shiriki Programu', nav_rate: 'Kadiria Programu', nav_invite: 'Alika Marafiki',
-    bn_home: 'Nyumbani', bn_search: 'Gundua', bn_video: 'Video', bn_library: 'Muziki Wangu', bn_profile: 'Wasifu',
+    bn_home: 'Nyumbani', bn_search: 'Gundua', bn_video: 'Video', bn_studio: 'Studio', bn_library: 'Muziki Wangu', bn_profile: 'Wasifu',
     badge_free: 'Bure', badge_owner: 'Mmiliki',
     search_ph: 'Tafuta wasanii, nyimbo, orodha za kucheza...'
   }
@@ -20890,14 +20938,14 @@ function closeSidebar() { _sbSet(false); }
 // ── BOTTOM NAV SYNC ──
 const _bnPageMap = {
   'home': 'bn-home', 'stream': 'bn-home',
-  'video': 'bn-video',
+  'video': 'bn-search',
   'search': 'bn-search', 'charts': 'bn-search', 'explore': 'bn-search',
   'ai-dj': 'bn-home',
   'library': 'bn-library', 'playlist': 'bn-library',
   'profile': 'bn-profile', 'notifications': 'bn-profile',
   'messages': 'bn-profile', 'upload': 'bn-profile', 'artists': 'bn-search',
   'quickvibes': 'bn-home', 'playlists': 'bn-home', 'new-releases': 'bn-home',
-  'device': 'bn-library', 'trending-videos': 'bn-video', 'new-videos': 'bn-video',
+  'device': 'bn-library', 'trending-videos': 'bn-search', 'new-videos': 'bn-search', 'studio-intro': 'bn-studio',
   'earnings': 'bn-profile', 'dashboard': 'bn-profile', 'connect': 'bn-profile', 'community': 'bn-profile',
 };
 function updateBottomNav(page) {
@@ -35056,8 +35104,8 @@ window.acctMore=function(open){
 <script id="yaps-nav-reorg-js">
 (function(){
   var HUBS={
-    home:[['rec','Recommended','fa-wand-magic-sparkles'],['trend','Trending songs','fa-fire'],['new','New releases','fa-star'],['recent','Recently played','fa-clock-rotate-left'],['feat','Featured artists & albums','fa-microphone-lines']],
-    discover:[['search','Search','fa-magnifying-glass'],['artalb','Artists & albums','fa-user'],['genres','Genres','fa-shapes'],['charts','Charts','fa-ranking-star'],['artists','Artist discovery','fa-compass']],
+    home:[['rec','Recommended','fa-wand-magic-sparkles'],['trend','Trending songs','fa-fire'],['new','New releases','fa-star'],['recent','Recently played','fa-clock-rotate-left'],['feat','Featured artists & albums','fa-microphone-lines'],['videos','Videos','fa-film']],
+    discover:[['search','Search','fa-magnifying-glass'],['artalb','Artists & albums','fa-user'],['genres','Genres','fa-shapes'],['charts','Charts','fa-ranking-star'],['artists','Artist discovery','fa-compass'],['videos','Videos','fa-film']],
     video:[['music','Music videos','fa-film'],['trend','Trending videos','fa-fire'],['feed','Discovery feed','fa-play'],['cats','Categories','fa-layer-group']]
   };
   function $(id){return document.getElementById(id)}
@@ -35070,11 +35118,13 @@ window.acctMore=function(open){
     if(k==='trend')t=prevHead('trending-row');
     if(k==='new')t=prevHead('new-releases-home-row');
     if(k==='recent'){t=$('recently-played-head');msg='Nothing played yet. Your recent songs will show here'}
+    if(k==='videos'){navigate('video');return}
     if(k==='feat')t=prevHead('artists-row');
     if(vis(t))scrollTo(t);else if(msg&&typeof showToast==='function')showToast(msg);
   }
   function discoverGo(k){
     var mi=$('mainSearchInput'),main=$('main');
+    if(k==='videos'){navigate('video');return}
     if(k==='charts'){navigate('charts');return}
     if(k==='artists'){navigate('artists');return}
     function onSearch(fn){
@@ -35872,6 +35922,185 @@ body.yaps-paused .qvl-eq i { animation-play-state: paused; }
   window.addEventListener('load', function () { setTimeout(all, 600); setTimeout(all, 3500); });
   document.addEventListener('visibilitychange', function () { if (!document.hidden) all(); });
   setInterval(function () { if (!document.hidden) all(); }, 60000);   // moves Soon → Live, and rolls to the next song at midnight
+})();
+</script>
+
+<style id="acx-glass-css">
+/* ═══ ACCOUNT (Profile page) — blue glass design + gold "Go Premium" card; same gold card on Home ═══ */
+.acx-chev{display:inline-block;width:7px;height:7px;border-right:2.5px solid currentColor;border-top:2.5px solid currentColor;transform:rotate(45deg);margin-left:5px;flex:none}
+html #page-profile{--acx-glass:linear-gradient(135deg,rgba(48,112,255,.36),rgba(16,36,128,.66));--acx-line:rgba(96,165,250,.62);--acx-soft:#b9d0ff;
+  position:relative;color:#fff;padding-bottom:28px;min-height:100%;
+  background:transparent}
+html #page-profile::before{display:none!important}
+html #page-profile .profile-banner{display:none}
+/* header */
+html #page-profile .acx-head{display:flex;align-items:center;gap:14px;max-width:640px;margin:0 auto;padding:16px 16px 6px;position:relative}
+html #page-profile .acx-head-ico{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;flex:none;color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(147,197,253,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+html #page-profile .acx-head-ico svg{width:26px;height:26px}
+html #page-profile .acx-head-t{min-width:0}
+html #page-profile .acx-head-t h2{margin:0;font-size:30px;font-weight:800;letter-spacing:-.5px;line-height:1.05;color:#fff}
+html #page-profile .acx-head-t p{margin:4px 0 0;font-size:13px;line-height:1.3;color:var(--acx-soft)}
+html #page-profile .acx-eq{display:none;margin-left:auto;align-items:flex-end;gap:4px;height:36px;color:#5aa8ff;position:relative;flex:none;padding-top:14px}
+html #page-profile .acx-eq i{width:6px;border-radius:1px;background:repeating-linear-gradient(180deg,#3d8dff 0 4px,transparent 4px 6px);filter:drop-shadow(0 0 4px rgba(61,141,255,.8))}
+html #page-profile .acx-eq i:nth-of-type(1){height:45%}html #page-profile .acx-eq i:nth-of-type(2){height:70%}html #page-profile .acx-eq i:nth-of-type(3){height:55%}html #page-profile .acx-eq i:nth-of-type(4){height:90%}html #page-profile .acx-eq i:nth-of-type(5){height:62%}html #page-profile .acx-eq i:nth-of-type(6){height:38%}
+html #page-profile .acx-note{position:absolute;right:0;top:-8px;width:26px;height:26px;color:#7dbdff}
+@media (min-width:480px){html #page-profile .acx-eq{display:flex}}
+/* user card */
+html #page-profile .acx-user{width:calc(100% - 32px);max-width:608px;box-sizing:border-box;margin:10px auto 0;padding:16px;display:flex;flex-direction:row;align-items:center;gap:16px;border-radius:24px;position:relative;z-index:1;
+  background:var(--acx-glass);border:1.5px solid var(--acx-line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 12px 30px -14px rgba(0,0,0,.7),0 0 22px -8px rgba(59,130,246,.7)}
+html #page-profile .profile-avatar{width:84px;height:84px;flex:none;border:3px solid #fff;overflow:visible;font-size:30px;box-shadow:0 6px 18px -6px rgba(0,0,0,.6)}
+html #page-profile .profile-avatar>:not(.profile-photo-edit-btn){border-radius:50%;object-fit:cover}
+html #page-profile .avatar-edit-btn{width:30px;height:30px;right:-4px;bottom:-4px;font-size:12px;background:linear-gradient(180deg,#3c8bff,#1c4fd6);border:2px solid #fff}
+html #page-profile .profile-meta{flex:1;min-width:0;padding:0}
+html #page-profile .profile-name{display:flex;align-items:center;gap:7px;font-size:23px;font-weight:800;letter-spacing:-.3px;line-height:1.1;color:#fff}
+html #page-profile .profile-name span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html #page-profile.acx-in .profile-name::after{content:"✓";flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#2f80ff;color:#fff;font-size:12px;font-weight:900;box-shadow:0 0 10px rgba(47,128,255,.85)}
+html #page-profile .profile-handle{margin:4px 0 0;font-size:14px;color:var(--acx-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html #page-profile .profile-bio{margin:6px 0 0;font-size:13px;line-height:1.35;color:#e6efff;max-width:420px}
+html #page-profile .acx-plan-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 10px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(147,197,253,.3)}
+html #page-profile .acx-plan{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#fff}
+html #page-profile .acx-plan svg{width:26px;height:26px;color:#fbbf24;filter:drop-shadow(0 0 6px rgba(251,191,36,.7))}
+html #page-profile .acx-prem{display:none}
+html[data-premium] #page-profile .acx-free{display:none}
+html[data-premium] #page-profile .acx-prem{display:inline;color:#ffd66b}
+html #page-profile .acx-view{display:inline-flex;align-items:center;padding:9px 14px;border-radius:999px;border:1px solid rgba(147,197,253,.6);background:linear-gradient(180deg,#3f8dff,#1c4fd6);color:#fff;font:700 13px/1 inherit;font-family:inherit;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 16px -6px rgba(37,99,235,.95);-webkit-tap-highlight-color:transparent}
+html #page-profile .profile-actions [onclick*="openEditProfileModal"]{display:none}
+html #page-profile .acx-view{padding:8px 11px;font-size:12px}
+html #page-profile .acx-plan{font-size:13px;gap:6px}
+html #page-profile .acx-plan svg{width:22px;height:22px}
+html #page-profile .acx-view:active{transform:scale(.97)}
+/* stats */
+html #page-profile .acx-stats{width:calc(100% - 32px);max-width:608px;box-sizing:border-box;margin:12px auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+html #page-profile .acx-stats .profile-stat{padding:9px 4px;border-radius:16px;text-align:center;background:var(--acx-glass);border:1px solid rgba(96,165,250,.4)}
+html #page-profile .acx-stats .ps-num{font-size:16px;font-weight:800;color:#fff}
+html #page-profile .acx-stats .ps-lbl{font-size:11px;color:var(--acx-soft)}
+/* actions */
+html #page-profile .profile-actions{width:100%;max-width:640px;box-sizing:border-box;margin:12px auto 0;padding:0 16px;display:flex;flex-wrap:wrap;gap:8px}
+html #page-profile .profile-actions button{flex:1 1 auto;justify-content:center;padding:11px 14px;border-radius:14px;font-size:13px;font-weight:700;color:#fff;border:1px solid rgba(147,197,253,.5);background:var(--acx-glass);box-shadow:none;text-shadow:none}
+html #page-profile .profile-actions .btn-primary{background:linear-gradient(180deg,#3f8dff,#1c4fd6);border-color:rgba(147,197,253,.6)}
+/* Go Premium card */
+.gp-card{
+  background:linear-gradient(90deg,rgba(0,0,0,0) 26%,rgba(0,0,0,.4) 62%),url(images/premium-bg.jpg) left center/cover no-repeat,linear-gradient(120deg,#3a2600,#0a0600 55%,#3a2800);
+  border:2px solid rgba(255,196,48,.85);box-shadow:0 0 22px -4px rgba(255,180,30,.55),inset 0 0 18px rgba(255,200,60,.16);color:#fff}
+html #page-profile .gp-card{position:relative;width:calc(100% - 32px);max-width:608px;box-sizing:border-box;margin:14px auto 0;min-height:132px;border-radius:22px;overflow:hidden;cursor:pointer;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;padding:14px 14px 14px clamp(104px,33%,230px);-webkit-tap-highlight-color:transparent}
+html #page-profile .gp-card:active{transform:scale(.99)}
+.gp-title{font-weight:800;line-height:1.05;background:linear-gradient(180deg,#fff4b0,#ffc61f 58%,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;filter:drop-shadow(0 2px 6px rgba(0,0,0,.7))}
+.gp-title{font-size:27px}
+.gp-sub{margin-top:5px;font-size:12.5px;line-height:1.35;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.85);max-width:34ch}
+.gp-btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 18px;border-radius:999px;border:0;font-weight:800;font-size:15px;color:#2a1800;
+  background:linear-gradient(180deg,#ffe46b,#ffb400);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 6px 18px -4px rgba(255,170,0,.7);text-shadow:none;flex:none;cursor:pointer}
+.gp-prem{display:none}
+html[data-premium] .gp-free{display:none}
+html[data-premium] .gp-prem{display:inline}
+@media (min-width:480px){html #page-profile .gp-card{flex-direction:row;align-items:center;justify-content:space-between;gap:14px}.gp-title{font-size:30px}.gp-sub{font-size:13px}}
+/* tiles */
+html #page-profile .acct-hub{width:100%;max-width:640px;box-sizing:border-box;margin:14px auto 0;padding:0 16px}
+html #page-profile .acct-hub #acctMain{display:grid;grid-template-columns:1fr 1fr;gap:12px;background:none;border:0;border-radius:0;overflow:visible;margin:0}
+html #page-profile .acct-hub #acctMain .acct-card{position:relative;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"ico title" "ico desc";column-gap:10px;row-gap:2px;align-items:center;align-content:center;width:auto;min-width:0;min-height:74px;padding:10px 24px 10px 10px;margin:0;
+  border:1.5px solid rgba(96,165,250,.58);border-radius:20px;background:var(--acx-glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 8px 22px -12px rgba(0,0,0,.7),0 0 16px -8px rgba(59,130,246,.7);color:#fff;text-align:left}
+html #page-profile .acct-hub #acctMain .acct-card:active{transform:scale(.97);background:var(--acx-glass)}
+html #page-profile .acct-hub #acctMain .ac-top{grid-area:ico;grid-row:1/3;margin:0}
+html #page-profile .acct-hub #acctMain .ac-ico{width:42px;height:42px;border-radius:50%;color:#fff;
+  background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.55),transparent 46%),linear-gradient(145deg,var(--c),var(--c2));box-shadow:0 0 0 2px rgba(255,255,255,.22),0 6px 14px -4px var(--c)}
+html #page-profile .acct-hub #acctMain .ac-ico svg{width:22px;height:22px;stroke-width:2}
+html #page-profile .acct-hub #acctMain .ac-title{grid-area:title;align-self:end;font-size:14.5px;font-weight:700;line-height:1.15;color:#fff;overflow-wrap:anywhere}
+html #page-profile .acct-hub #acctMain .ac-desc{grid-area:desc;align-self:start;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:11px;line-height:1.3;color:var(--acx-soft)}
+html #page-profile .acct-hub #acctMain .acct-card::after{position:absolute;right:11px;top:50%;margin:0;width:7px;height:7px;border-color:#fff;opacity:.95;transform:translateY(-50%) rotate(45deg)}
+html #page-profile .acct-hub #acctMain .acct-card .fgear{right:5px;top:5px;transform:none;width:22px;height:22px;background:rgba(255,255,255,.12);border-color:rgba(147,197,253,.4);color:var(--acx-soft)}
+html #page-profile .acct-hub #acctMain .acct-card .fgear svg{width:12px;height:12px}
+html #page-profile .acct-hub #acctMain .acct-card.acct-moreBtn .ac-title{color:#fff}
+html #page-profile #fgPicks{grid-column:1/-1;border:1.5px solid rgba(96,165,250,.45);border-radius:18px;background:var(--acx-glass);padding:12px 14px 6px}
+html #page-profile #fgPicks .fgp-top{color:#ffd66b}
+html #page-profile #fgPicks .fgp-t b{color:#fff}
+/* "Settings & more" sub-lists: same glass look */
+html #page-profile #acctMore .acct-back{color:#fff}
+html #page-profile #acctMore .acct-chev{border-color:#fff}
+html #page-profile #acctMore .acct-group{color:var(--acx-soft)}
+html #page-profile #acctMore .acct-list{background:var(--acx-glass);border:1.5px solid rgba(96,165,250,.5);border-radius:20px;box-shadow:0 8px 22px -12px rgba(0,0,0,.7),0 0 16px -8px rgba(59,130,246,.6)}
+html #page-profile #acctMore .acct-card{color:#fff}
+html #page-profile #acctMore .acct-card+.acct-card{border-top:1px solid rgba(147,197,253,.18)}
+html #page-profile #acctMore .acct-card:active{background:rgba(255,255,255,.08)}
+html #page-profile #acctMore .acct-card::after{border-color:#fff}
+html #page-profile #acctMore .ac-ico{width:36px;height:36px;border-radius:50%;color:#fff;background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.5),transparent 46%),linear-gradient(145deg,var(--c),var(--c2));box-shadow:0 0 0 2px rgba(255,255,255,.18)}
+html #page-profile #acctMore .ac-title{color:#fff}
+@media (max-width:380px){
+  html #page-profile .acx-head-t h2{font-size:26px}
+  html #page-profile .acx-user{gap:12px;padding:14px 12px}
+  html #page-profile .profile-avatar{width:72px;height:72px}
+  html #page-profile .acct-hub #acctMain{gap:10px}
+  html #page-profile .acct-hub #acctMain .ac-ico{width:38px;height:38px}
+}
+</style>
+
+<style id="studio-intro-css">
+#page-studio-intro{color:#fff;background:linear-gradient(180deg,#07123f 0%,#040a2a 55%,#030720 100%);min-height:100%;padding-bottom:24px}
+#page-studio-intro .stp-wrap{max-width:none;margin:0 auto;position:relative}
+#page-studio-intro .stp-hero-home .hero-slide-img{object-position:center 62%}
+#page-studio-intro .stp-hero-home{border-radius:0 0 16px 16px}
+#page-studio-intro .stp-wrap>:not(.hero-carousel):not(.stp-x){max-width:640px;margin-left:auto;margin-right:auto}
+#page-studio-intro .stp-hero{position:relative;overflow:hidden;min-height:clamp(250px,72vw,330px);background:radial-gradient(80% 90% at 20% 30%,#0b2a8f,#050e38 70%);border-bottom:1px solid #2f7bff}
+#page-studio-intro .stp-hero-art{position:absolute;right:0;top:0;height:100%;width:auto;max-width:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%)}
+#page-studio-intro .stp-eq{position:absolute;left:62px;top:10px;display:flex;align-items:flex-end;gap:5px;height:34px;filter:drop-shadow(0 0 6px rgba(61,141,255,.9))}
+#page-studio-intro .stp-eq i{width:9px;background:repeating-linear-gradient(180deg,#46a0ff 0 5px,transparent 5px 7px)}
+#page-studio-intro .stp-eq i:nth-child(1){height:40%}#page-studio-intro .stp-eq i:nth-child(2){height:60%}#page-studio-intro .stp-eq i:nth-child(3){height:80%}#page-studio-intro .stp-eq i:nth-child(4){height:100%}#page-studio-intro .stp-eq i:nth-child(5){height:75%}#page-studio-intro .stp-eq i:nth-child(6){height:55%}#page-studio-intro .stp-eq i:nth-child(7){height:35%}
+#page-studio-intro .stp-hero-txt{position:relative;z-index:1;padding:44px 14px 18px;max-width:62%}
+#page-studio-intro .stp-hero-txt,#page-studio-intro .stp-hero-txt *{font-family:'Archivo','Arial Black',Impact,sans-serif}
+#page-studio-intro .stp-logo{margin:0;display:flex;flex-direction:column;line-height:.88;font-style:italic;font-weight:900;letter-spacing:-2px}
+#page-studio-intro .stp-yaps{font-size:clamp(46px,14.5vw,84px);background:linear-gradient(180deg,#fff 0%,#c9d3e6 55%,#8fa0c0 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 3px 0 #2a3558) drop-shadow(0 7px 10px rgba(0,0,0,.65))}
+#page-studio-intro .stp-studio{font-size:clamp(50px,16vw,92px);margin-left:-2px;background:linear-gradient(180deg,#8fe0ff 0%,#2ba0ff 50%,#0b5fe0 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 3px 0 #06307a) drop-shadow(0 8px 12px rgba(0,0,0,.65))}
+#page-studio-intro .stp-tag{display:inline-flex;align-items:center;gap:8px;margin:8px 0 12px;padding:5px 14px;border-radius:3px;background:linear-gradient(180deg,#fff,#b8c4de);border:1px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.5);color:#0b1230;font-style:italic;font-weight:900;font-size:clamp(13px,4vw,20px)}
+#page-studio-intro .stp-tag i{width:7px;height:7px;border-radius:50%;background:#1d6bff}
+#page-studio-intro .stp-welcome{margin:0;font-size:clamp(17px,5.4vw,28px);font-weight:900;font-style:italic;line-height:1.1;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+#page-studio-intro .stp-welcome b{color:#35d0ff}
+#page-studio-intro .stp-sub{margin:3px 0 0;font-size:clamp(11.5px,3.4vw,16px);font-style:italic;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.8)}
+@media (min-width:600px){#page-studio-intro .stp-hero-txt{padding-top:50px}#page-studio-intro .stp-eq{left:70px}}
+#page-studio-intro .stp-x{position:absolute;top:10px;right:10px;width:36px;height:36px;display:grid;place-items:center;border:1.5px solid rgba(255,255,255,.7);border-radius:6px;background:rgba(0,0,0,.55);color:#fff;font-size:20px;line-height:1;cursor:pointer}
+#page-studio-intro .stp-what{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 12px;background:none;border-top:0;border-bottom:0;}
+#page-studio-intro .stp-what{justify-content:space-between}#page-studio-intro .stp-what::before,#page-studio-intro .stp-what::after{content:"";flex:1;max-width:70px;height:2px;background:linear-gradient(90deg,transparent,#8cc4ff)}
+#page-studio-intro .stp-what::after{transform:scaleX(-1)}
+#page-studio-intro .stp-what>b.y3d{text-shadow:none;letter-spacing:-.3px;font-size:24px;line-height:1.1;padding-bottom:4px}
+#page-studio-intro .stp-what>b{font-size:23px;font-weight:900;font-style:italic;letter-spacing:-.3px;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+#page-studio-intro .stp-tiles{display:flex;flex-wrap:nowrap;justify-content:flex-start;gap:10px;padding:14px 12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding:0 12px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y;scrollbar-width:none}#page-studio-intro .stp-tiles::-webkit-scrollbar{display:none}
+#page-studio-intro .stp-tile{flex:0 0 clamp(138px,40vw,170px);scroll-snap-align:start;box-sizing:border-box;padding:6px 4px 9px;text-align:center;border:1.5px solid #2a86ff;border-radius:6px;background:linear-gradient(180deg,#071a58,#030b2c);box-shadow:inset 0 0 14px rgba(42,134,255,.25)}
+
+#page-studio-intro .stp-tile img{display:block;width:100%;height:68px;object-fit:contain;margin-bottom:4px;-webkit-mask-image:radial-gradient(closest-side,#000 72%,transparent 100%);mask-image:radial-gradient(closest-side,#000 72%,transparent 100%)}
+#page-studio-intro .stp-tile b{display:block;font-size:13px;font-weight:800;font-style:italic;line-height:1.15}
+#page-studio-intro .stp-tile span{display:block;margin-top:2px;font-size:10.5px;font-style:italic;line-height:1.25;color:#cfe2ff}
+#page-studio-intro .stp-creator{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 12px;border-top:0;border-bottom:0;background:linear-gradient(180deg,#06134a,#030a2b)}
+#page-studio-intro .stp-creator img{width:64px;height:64px;object-fit:cover;border-radius:6px;flex:none}
+#page-studio-intro .stp-ct{flex:1 1 150px;min-width:0;font-size:23px;font-weight:900;font-style:italic;line-height:1.05;letter-spacing:-.4px}
+#page-studio-intro .stp-ct em{display:block;color:#35b4ff;text-shadow:0 0 14px rgba(53,180,255,.6)}
+#page-studio-intro .stp-ticks{flex:1 1 100%;display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;padding:0;list-style:none}
+#page-studio-intro .stp-ticks li{display:flex;align-items:center;gap:7px;font-size:13px;font-style:italic}
+#page-studio-intro .stp-ticks li::before{content:"✓";display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:linear-gradient(180deg,#3f8dff,#1c4fd6);font-style:normal;font-size:12px;font-weight:900;box-shadow:0 0 8px rgba(63,141,255,.8)}
+@media (min-width:480px){#page-studio-intro .stp-ticks{flex:0 0 auto;flex-direction:column}}
+#page-studio-intro .stp-creator{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center}#page-studio-intro .stp-cr-img{min-width:0}#page-studio-intro .stp-creator .stp-cr-img img{display:block;width:100%;height:auto;aspect-ratio:1/1;max-height:260px;object-fit:cover;border-radius:10px}#page-studio-intro .stp-cr-txt{min-width:0;display:flex;flex-direction:column;gap:12px}#page-studio-intro .stp-ct{flex:none;font-size:clamp(18px,5.6vw,26px);line-height:1.08}#page-studio-intro .stp-ct .y3d{display:block;font-style:italic;text-shadow:none;letter-spacing:-.3px;margin-bottom:6px}#page-studio-intro .stp-cr-txt .stp-ticks{flex:none;flex-direction:column;flex-wrap:nowrap}
+
+#page-studio-intro .stp-foot{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 12px}
+#page-studio-intro .stp-go{flex:1 1 200px;display:flex;align-items:center;justify-content:center;gap:12px;padding:15px 18px;border:2px solid #7fb6ff;border-radius:6px;color:#fff;cursor:pointer;font:900 22px/1 inherit;font-family:inherit;font-style:italic;background:linear-gradient(180deg,#3f8dff,#1448d0);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 22px -4px rgba(63,141,255,.95);text-shadow:0 2px 6px rgba(0,0,0,.5)}
+#page-studio-intro .stp-go::before{content:"";width:0;height:0;border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
+#page-studio-intro .stp-go:active{transform:scale(.98)}
+#page-studio-intro .stp-skip{display:flex;align-items:center;gap:9px;font-size:14px;font-style:italic;cursor:pointer;color:#e6efff}
+#page-studio-intro .stp-skip input{appearance:none;-webkit-appearance:none;width:22px;height:22px;border-radius:50%;border:2px solid #cfe2ff;background:transparent;display:grid;place-items:center;cursor:pointer;margin:0}
+#page-studio-intro .stp-skip input:checked{background:#2f7bff;border-color:#7fb6ff}
+#page-studio-intro .stp-skip input:checked::after{content:"✓";font-size:13px;font-weight:900;color:#fff}
+</style>
+<script id="studio-intro-js">
+(function(){
+  var KEY='yaps_studio_intro_seen';
+  function seen(){try{return localStorage.getItem(KEY)==='1'}catch(e){return false}}
+  function mark(){try{localStorage.setItem(KEY,'1')}catch(e){}}
+  window.openStudioIntro=function(){
+    if(seen()){openStudio();return}
+    navigate('studio-intro');updateBottomNav('studio-intro');var m=document.getElementById('main');if(m)m.scrollTop=0;
+  };
+  window.studioIntroStart=function(){
+    var c=document.getElementById('stpSkip');if(c&&c.checked)mark();
+    openStudio();
+  };
+  window.studioIntroClose=function(){navigate('home');updateBottomNav('home')};
 })();
 </script>
 </body>
