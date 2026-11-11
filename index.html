@@ -6860,6 +6860,8 @@ html.yl-skip #yapsLoader{display:none!important}
   font-family:'Kaushan Script','Brush Script MT',cursive;font-style:italic;font-size:clamp(17px,5.2vw,25px);line-height:1.3;background:linear-gradient(90deg,#19f5a8,#a64bff);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 #yapsLoader .yl-foot b{display:block;font-weight:400;margin-left:clamp(14px,5vw,40px)}
 @media (max-height:740px) and (max-width:700px){#yapsLoader .yl-foot,#yapsLoader .yl-eq,#yapsLoader .yl-note{display:none}}
+/* tagline sat on top of the last checklist row on most phones (about 800px tall): hide it unless the screen is tall enough */
+@media (max-width:700px) and (max-height:900px){#yapsLoader .yl-foot{display:none}}
 /* ── LIGHT MODE loading screen (Settings → Appearance → Light) ── */
 html[data-mode="light"] #yapsLoader{color:#0b1a3d;
   background:radial-gradient(60% 40% at 100% 8%,rgba(25,230,140,.16),transparent 70%),radial-gradient(60% 40% at 0% 6%,rgba(224,64,251,.14),transparent 70%),radial-gradient(120% 75% at 50% 0%,#ffffff 0%,#f2f6ff 40%,#e6eeff 75%,#dbe6ff 100%)}
@@ -7068,6 +7070,7 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
     <h1>YAPS Music (YAPSMusic): Stream Music from Uganda and Around the World</h1>
     <p>YAPS Music, also known as YAPS, YAPSMusic or YAPS AI, is a free app and platform to stream, discover and share music from Uganda, Africa and around the world. The catalogue includes Afrobeats, Bongo Flava, Luganda Pop, Afropop, Dancehall and R&amp;B from Kampala and across Uganda. Browse trending songs and featured artists below.</p>
     <p><a href="songs.html">Browse all YAPS Music songs and artists</a></p>
+    <p><a href="song/">Browse all uploaded songs on YAPS Music</a></p>
     <h2 data-i18n="h_trending_songs">Trending Songs on YAPSMusic</h2>
     <ul>
       <li>"Nigina" by Hoozambe D.Star (Afrobeats)</li>
@@ -7496,6 +7499,9 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
         </div>
         <div class="sidebar-item" id="nav-dj-studio" onclick="openStudio()">
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect class="f" x="3" y="14" width="4.5" height="7" rx="1.8"/><rect class="f" x="16.5" y="14" width="4.5" height="7" rx="1.8"/></svg> <span>DJ Studio</span>
+        </div>
+        <div class="sidebar-item" id="nav-song-lab" onclick="navigate('song-lab')">
+          <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M10 3c.7 4.6 2.3 7.3 6 8.5-3.7 1.2-5.3 3.9-6 8.5-.7-4.6-2.3-7.3-6-8.5 3.7-1.2 5.3-3.9 6-8.5z"/></svg> <span>Create with YAPS AI</span>
         </div>
         <div class="sidebar-item" id="nav-song-creator" onclick="openSongCreator()">
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M9 17.5V6l10-2v11.5"/><circle class="f" cx="6.8" cy="17.5" r="2.6"/><circle class="f" cx="16.8" cy="15.5" r="2.6"/></svg> <span>AI Song Creator</span>
@@ -8288,7 +8294,7 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
           <label class="form-label">Artwork / Thumbnail</label>
           <div class="upload-zone" style="margin:0;padding:24px;" id="artworkUploadZone" onclick="document.getElementById('artworkFileInput').click()">
             <i class="fas fa-image" style="font-size:28px;color:var(--accent);margin-bottom:8px;"></i>
-            <div id="artworkUploadLabel" style="font-size:13px;font-weight:600;">Upload artwork</div>
+            <div id="artworkUploadLabel" style="font-size:13px;font-weight:600;">Add a cover image (recommended)</div>
             <div style="font-size:12px;color:var(--muted);">JPG, PNG · min 1400×1400px</div>
           </div>
         </div>
@@ -8428,6 +8434,11 @@ a.djx-row{color:inherit;text-decoration:none}
           <button type="button" class="yai-send" onclick="sendDJMessage()" title="Send" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
+    </section>
+
+    <!-- SONG LAB PAGE (Create with YAPS AI — guided steps) -->
+    <section class="page" id="page-song-lab" aria-label="Create a song with YAPS AI">
+      <div class="sl-wrap" id="slRoot"></div>
     </section>
 
     <!-- MESSAGES PAGE -->
@@ -8848,7 +8859,7 @@ a.djx-row{color:inherit;text-decoration:none}
         <div class="profile-stat"><div class="ps-num">0</div><div class="ps-lbl">Plays</div></div>
       </div>
       <div class="profile-actions">
-        <button class="btn-primary" onclick="if(!_demoUser){showToast('Sign in to follow people');openModal('auth');return;}showToast('Open a profile from People You May Know to follow them')"><i class="fas fa-user-plus"></i> Follow</button>
+        <button class="btn-primary" onclick="if(!_demoUser){showToast('Sign in to follow people');openModal('auth');return;}showToast('Open a profile from New on YAPS to follow them')"><i class="fas fa-user-plus"></i> Follow</button>
       </div>
       <!-- GO PREMIUM (gold crown banner) -->
       <div class="gp-card" id="profileGoPremium" onclick="openSubscriptionModal()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openSubscriptionModal()}">
@@ -10295,7 +10306,7 @@ async function _loadRemoteTracks() {
       r.tags = Array.isArray(r.tags) ? r.tags.slice(0, 12).map(x => _safeText(x, 30)) : [];
       r.artwork_url = _safeUrl(r.artwork_url); r.audio_url = _safeUrl(r.audio_url); r.audio_url_low = _safeUrl(r.audio_url_low); r.audio_url_std = _safeUrl(r.audio_url_std);
       const existing = tracks.find(x => String(x.id) === id);
-      const img = r.artwork_url || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&q=70&auto=format';
+      const img = r.artwork_url || (window._yapsCover ? window._yapsCover(r.title, r.artist) : '');
       const _up = r.user_id || r.uploader_id || r.owner_id || null;
       if (existing) { existing.audioUrl = r.audio_url; existing.audioUrlLow = r.audio_url_low || null; existing.audioUrlStd = r.audio_url_std || null; existing._remote = true; if (_up) existing.uploaderId = _up; if (!existing.img) existing.img = img; return; }
       tracks.push({
@@ -11752,6 +11763,7 @@ function navigate(page) {
   if (page === 'events') { if (typeof renderEventsPage === 'function') renderEventsPage(); }
   if (page === 'connect') { if (typeof renderConnectPage === 'function') renderConnectPage(); }
   if (page === 'community') { if (typeof renderCommunityPage === 'function') renderCommunityPage(); }
+  if (page === 'song-lab') { if (typeof renderSongLab === 'function') renderSongLab(); }
   document.getElementById('main').scrollTop = 0;
   _resetHorizontalScrollRows(pageEl);
 }
@@ -13394,7 +13406,7 @@ function _syncProfileHeader() {
         <button class="btn-primary" onclick="navigate('upload')"><i class="fas fa-upload"></i> Upload a track</button>
         <button class="btn-ghost" onclick="openEditProfileModal()"><i class="fas fa-user-edit"></i> Edit Profile</button>
         ${['artist','dj','promoter'].includes(_demoUser.accountType)
-          ? '<button class="btn-ghost" onclick="openMyCommunity()"><i class="fas fa-people-group"></i> Join Community</button>'
+          ? '<button class="btn-ghost" onclick="openMyCommunity()"><i class="fas fa-people-group"></i> Join Community</button><button class="btn-ghost" onclick="openCommunity()"><i class="fas fa-headphones"></i> Listeners Hub</button>'
           : '<button class="btn-ghost" onclick="openMyCommunity()"><i class="fas fa-headphones"></i> Join Listeners Hub</button>'}`;
     }
   } else {
@@ -16371,7 +16383,7 @@ function clearUploadFile() {
   document.getElementById('audioFileInput').value = '';
   const zone = document.getElementById('artworkUploadZone');
   zone.style.backgroundImage = '';
-  document.getElementById('artworkUploadLabel').textContent = 'Upload Artwork (optional)';
+  document.getElementById('artworkUploadLabel').textContent = 'Add a cover image (recommended)';
   document.getElementById('uploadTitle').value = '';
   const artistInput = document.getElementById('uploadArtist'); if (artistInput) artistInput.value = '';
   const albumInput = document.getElementById('uploadAlbum'); if (albumInput) albumInput.value = '';
@@ -16435,6 +16447,8 @@ async function _submitUploadInner() {
   if (_uploadedAudioFile.size > _MAX_AUDIO) { showToast('Audio file is too large (max 50 MB). Export a smaller MP3.'); goToUploadStep(1); return; }
   if (_uploadedArtworkFile && (!_checkImageFile(_uploadedArtworkFile) || _uploadedArtworkFile.size > _MAX_ART)) { if (_uploadedArtworkFile.size > _MAX_ART) showToast('Artwork is too large (max 10 MB)'); goToUploadStep(3); return; }
 
+  if (!_uploadedArtworkFile && !confirm('This song has no cover image. Listeners find songs faster when they can see a cover.\n\nOK = upload without a cover\nCancel = go back and add one')) { goToUploadStep(3); return; }
+
   const ownerUpload = _isOwner();
   // Everyone is asked "Is this song trending?". Owner uploads go straight into Trending Now;
   // other artists send a request (TrendingRequest tag) that the owner confirms in the review queue.
@@ -16483,7 +16497,8 @@ async function _submitUploadInner() {
     let audioUrl  = null;   // R2 public URL (remote mode)
     let artworkUrl = _uploadedArtworkFile
       ? URL.createObjectURL(_uploadedArtworkFile)
-      : 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&q=70&auto=format';
+      : (window._yapsCover ? window._yapsCover(title, customArtist || (_demoUser && _demoUser.name) || '') : '');
+    const _hasArt = !!_uploadedArtworkFile;   // no cover -> store nothing; the app draws an initials cover for it
 
     if (isRemote) {
       const artistName = customArtist || (ownerUpload ? 'YAPS Official' : (_demoUser.name || 'Yaps Artist'));
@@ -16507,7 +16522,7 @@ async function _submitUploadInner() {
       const savedTrack = await api('/api/tracks', { method: 'POST', body: {
         title: String(title).slice(0, 150), artist: String(artistName).slice(0, 100),
         genre: String(genre).slice(0, 40), duration: String(duration).slice(0, 10), explicit: _uploadExplicit,
-        tags: [...baseTags].slice(0, 20).map(String), audio_url: audioUrl, artwork_url: artworkUrl,
+        tags: [...baseTags].slice(0, 20).map(String), audio_url: audioUrl, artwork_url: _hasArt ? artworkUrl : null,
       } });
 
       clearInterval(fakeProgress);
@@ -16572,10 +16587,10 @@ async function _submitUploadInner() {
     }, 900);
 
     // Tell the uploader's followers about the new song.
-    if (isRemote && !window._lastUploadPending) notifyFollowersOfRelease(title, artworkUrl);
+    if (isRemote && !window._lastUploadPending) notifyFollowersOfRelease(title, _hasArt ? artworkUrl : "");
     // Let every listener know when the official account drops something new.
     if (ownerUpload) {
-      sendNotification({ toUserId: null, type: 'release', trackTitle: title, trackImg: artworkUrl, body: `New release: "${title}"` });
+      sendNotification({ toUserId: null, type: 'release', trackTitle: title, trackImg: _hasArt ? artworkUrl : "", body: `New release: "${title}"` });
     }
 
   } catch (err) {
@@ -20702,15 +20717,15 @@ let _pymkPool = null;
 async function renderPeopleYouMayKnow(force) {
   const box = document.getElementById('profile-list');
   if (!box) return;
-  const head = `<div class="pymk-head"><h3>People you may know</h3>
+  const head = `<div class="pymk-head"><h3>New on YAPS</h3>
     <button class="pymk-refresh" onclick="renderPeopleYouMayKnow(true)" aria-label="Refresh suggestions"><i class="fas fa-rotate"></i></button></div>`;
   if (!_demoUser) {
-    box.innerHTML = head + `<div class="pymk-empty"><i class="fas fa-user-group"></i><div>People you may know will appear here after you sign in</div></div>`;
+    box.innerHTML = head + `<div class="pymk-empty"><i class="fas fa-user-group"></i><div>New people on YAPS will appear here after you sign in</div></div>`;
     return;
   }
   const cta = `<div class="pymk-cta" onclick="openProfileMessage()" role="button" tabindex="0">
       <i class="fas fa-address-book"></i>
-      <div><b>Find friends from your contacts</b><small>See which of your phone contacts already use YAPS and chat with them</small></div>
+      <div><b>Find friends from your contacts</b><small>Only people who have your number saved and allowed contact search can match. Your contacts are never stored.</small></div>
       <i class="fas fa-chevron-right"></i></div>`;
   // Nudge: friends can only find you by phone once you've saved your number
   let phoneBanner = '';
@@ -20729,9 +20744,11 @@ async function renderPeopleYouMayKnow(force) {
   try {
     if (!sb) throw new Error('offline');
     if (!_pymkPool || force) {
-      const { data, error } = await sb.from('yaps_profiles')
+      const q = col => sb.from('yaps_profiles')
         .select('id,username,full_name,avatar_url,account_type')
-        .neq('id', _demoUser.id).order('updated_at', { ascending: false }).limit(80);
+        .neq('id', _demoUser.id).order(col, { ascending: false }).limit(80);
+      let { data, error } = await q('created_at');          // newest members first
+      if (error) ({ data, error } = await q('updated_at'));  // column missing → fall back
       if (error) throw error;
       _pymkPool = (data || []).filter(u => u.full_name || u.username);
     }
@@ -20743,7 +20760,7 @@ async function renderPeopleYouMayKnow(force) {
       <button class="btn-ghost" onclick="inviteFriendsToYaps()"><i class="fas fa-share-alt"></i> Invite friends</button></div>`;
     box.innerHTML = head + phoneBanner + cta + rows;
   } catch (e) {
-    console.warn('People you may know failed:', e);
+    console.warn('New on YAPS failed:', e);
     box.innerHTML = head + phoneBanner + cta + `<div class="pymk-empty"><i class="fas fa-wifi"></i><div>Couldn't load suggestions right now</div>
       <button class="btn-ghost" onclick="renderPeopleYouMayKnow(true)">Try again</button></div>`;
   }
@@ -21092,6 +21109,34 @@ function _qvpCover(v) {
   const a = (v.artistNames || []).length ? artists.find(x => x.name === v.artistNames[0]) : null;
   return (a && a.img) || _QVP_FALLBACK_IMG;
 }
+// Songs that represent a Quick Vibe: the vibe's own tracks first, then songs by its featured artists (max 4, no repeats).
+function _qvpSongs(v) {
+  const out = [], seen = new Set();
+  const add = t => { if (t && !seen.has(t.id)) { seen.add(t.id); out.push(t); } };
+  try {
+    const pl = (typeof _quickVibePlaylists !== 'undefined') ? _quickVibePlaylists.find(p => p.id === v.id) : null;
+    if (pl) pl.trackIndices.forEach(i => add(tracks[i]));
+    (v.artistNames || []).forEach(n => {
+      const nm = String(n).toLowerCase();
+      tracks.filter(t => String(t.artist || '').toLowerCase().includes(nm)).slice(0, 2).forEach(add);
+    });
+  } catch (e) {}
+  return out.slice(0, 4);
+}
+const _QVP_TILE_BG = ['linear-gradient(135deg,#19e68c,#3b6bff)','linear-gradient(135deg,#3b6bff,#a64bff)','linear-gradient(135deg,#a64bff,#e040fb)','linear-gradient(135deg,#00c6ff,#19e68c)'];
+// Cover = collage of real song artwork. If a picture fails to load it is removed and the coloured tile with the song's initial shows instead.
+function _qvpCoverHTML(v) {
+  const songs = _qvpSongs(v);
+  if (!songs.length) {
+    return `<span class="qvp-grid-art n1"><span class="qvp-tile" style="background:${_QVP_TILE_BG[0]}"><i class="fas fa-music"></i></span></span>`;
+  }
+  const tiles = songs.map((t, i) => {
+    const letter = _qvpEsc(String(t.title || '?').trim().charAt(0).toUpperCase() || '?');
+    const src = t.img ? `<img src="${_qvpEsc(encodeURI(String(t.img)))}" alt="" loading="lazy" decoding="async" onerror="this.remove()">` : '';
+    return `<span class="qvp-tile" style="background:${_QVP_TILE_BG[i % _QVP_TILE_BG.length]}"><b>${letter}</b>${src}</span>`;
+  }).join('');
+  return `<span class="qvp-grid-art n${songs.length}">${tiles}</span>`;
+}
 function _qvpMatchesCat(v, cat) {
   if (cat === 'All') return true;
   if ((_QVP_CAT_IDS[cat] || []).includes(v.id)) return true;
@@ -21119,8 +21164,8 @@ function renderQuickVibesPage() {
     const name = _qvpEsc(v.title);
     const n = v.tracks + (v.tracks === 1 ? ' track' : ' tracks');
     return `<li class="qvp-card" data-id="${_qvpEsc(v.id)}">
-      <div class="qvp-media"><img src="${_qvpEsc(_qvpCover(v))}" alt="${name} Quick Vibe cover art" loading="lazy" decoding="async"><span class="qvp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
-      <div class="qvp-info"><div class="qvp-name">${name}</div><div class="qvp-meta">${n}</div></div>
+      <div class="qvp-media">${_qvpCoverHTML(v)}<span class="qvp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
+      <div class="qvp-info"><div class="qvp-name">${name}</div><div class="qvp-meta">${n}</div><div class="qvp-songs">${_qvpEsc(_qvpSongs(v).map(t => t.title).slice(0, 3).join(' · '))}</div></div>
       <button type="button" class="qvp-open" aria-label="Play ${name}, ${n}"></button>
     </li>`;
   }).join('');
@@ -21489,7 +21534,7 @@ function _nrpCardHTML(t, i) {
   const img = _nrpEsc(t.img || _NRP_FALLBACK_IMG);
   const badge = _nrpIsFresh(t) ? '<span class="nrp-badge">NEW</span>' : '';
   return `<li class="nrp-card" style="--i:${i}" data-id="${_nrpEsc(t.id)}">
-    <div class="nrp-art"><img src="${img}" alt="${title} cover art" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${_NRP_FALLBACK_IMG}'">${badge}<span class="nrp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
+    <div class="nrp-art"><img src="${t.img?img:window._yapsCover(t.title,t.artist)}" data-t="${title}" data-a="${artist}" alt="${title} cover art" loading="lazy" decoding="async" onerror="window._yapsImgErr(this)">${badge}<span class="nrp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
     <div class="nrp-foot"><div class="nrp-info"><div class="nrp-name">${title}</div><div class="nrp-artist">${artist}</div></div>
       <button type="button" class="nrp-more" data-act="menu" aria-label="More options for ${title}" aria-haspopup="dialog"><i class="fas fa-ellipsis-v" aria-hidden="true"></i></button></div>
     <button type="button" class="nrp-open" data-act="play" aria-label="Play ${title} by ${artist}"></button>
@@ -21642,7 +21687,7 @@ function _nrpOpenSheet(id, btn) {
   const sh = _nrpMakeSheet();
   sh.dataset.id = String(id);
   _nrpMenuBtn = btn || null;
-  document.getElementById('nrpSheetImg').src = t.img || _NRP_FALLBACK_IMG;
+  { const _si = document.getElementById('nrpSheetImg'); _si.dataset.yfb=''; _si.setAttribute('data-t', t.title||''); _si.setAttribute('data-a', t.artist||''); _si.alt = (t.title||'') + ' cover art'; _si.src = t.img || window._yapsCover(t.title, t.artist); }
   document.getElementById('nrpSheetTitle').textContent = t.title;
   document.getElementById('nrpSheetArtist').textContent = t.artist;
   const liked = typeof _likedTracks !== 'undefined' && _likedTracks.has(i);
@@ -27327,19 +27372,21 @@ h1, h2, h3, h4, h5, h6,
   function goto(page){ if (typeof currentPage!=='undefined' && currentPage!=='dj-profile' && currentPage!=='djs') prevPage = currentPage; navigate(page); }
 
   const promoterTabs = ['about','events','book'], promoterTabNames = { about:'About', events:'Events', book:'Work with them' };
+  // Only real https:// addresses may become links. esc() stops quote break-outs but not javascript: or data: URLs.
+  const su = u => { u = String(u == null ? '' : u).trim(); return /^https:\/\/[^\s"'<>`\\]+$/i.test(u) ? u : ''; };
   function contactLinks(d){
     const c = d.contact||{}, L = d.links||{}, out = [];
-    if (L.whatsapp) out.push(`<a href="${esc(L.whatsapp)}" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> WhatsApp</a>`);
+    if (su(L.whatsapp)) out.push(`<a href="${esc(su(L.whatsapp))}" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> WhatsApp</a>`);
     if (c.phone) out.push(`<a href="tel:${esc(String(c.phone).replace(/[^+\d]/g,''))}"><i class="fas fa-phone"></i> Call</a>`);
     if (c.email) out.push(`<a href="mailto:${esc(c.email)}"><i class="fas fa-envelope"></i> Email</a>`);
-    if (c.website) out.push(`<a href="${esc(c.website)}" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Website</a>`);
+    if (su(c.website)) out.push(`<a href="${esc(su(c.website))}" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> Website</a>`);
     return out;
   }
   function eventRow(e){
     const dt = e.date ? new Date(e.date) : null, ok = dt && !isNaN(dt);
     const inner = `<div class="djx-ev-date">${ok?`<b>${dt.getDate()}</b><span>${dt.toLocaleString(undefined,{month:'short'})}</span>`:'<i class="fas fa-calendar"></i>'}</div>
       <div class="djx-row-main"><div class="djx-row-t">${esc(e.title||'Event')}</div><div class="djx-row-s">${[e.venue,ok?dt.toLocaleDateString(undefined,{weekday:'short',year:'numeric',month:'short',day:'numeric'}):''].filter(Boolean).map(esc).join(' · ')}</div></div>`;
-    return e.link ? `<a class="djx-row" href="${esc(e.link)}" target="_blank" rel="noopener noreferrer">${inner}</a>` : `<div class="djx-row">${inner}</div>`;
+    return su(e.link) ? `<a class="djx-row" href="${esc(su(e.link))}" target="_blank" rel="noopener noreferrer">${inner}</a>` : `<div class="djx-row">${inner}</div>`;
   }
   function promoterBody(d){
     if (profTab==='events') {
@@ -27365,7 +27412,7 @@ h1, h2, h3, h4, h5, h6,
     const isP = d.kind==='promoter';
     const list = isP ? [] : mixesOf(d), isF = follows.has(d.key);
     const links = [['instagram','fa-instagram','Instagram'],['youtube','fa-youtube','YouTube'],['tiktok','fa-tiktok','TikTok'],['whatsapp','fa-whatsapp','WhatsApp'],['twitter','fa-x-twitter','X'],['facebook','fa-facebook','Facebook']]
-      .filter(x=>d.links[x[0]] && !(isP && x[0]==='whatsapp')).map(x=>`<a href="${esc(d.links[x[0]])}" target="_blank" rel="noopener noreferrer"><i class="fab ${x[1]}"></i> ${x[2]}</a>`).concat(isP?contactLinks(d):[]).join('');
+      .filter(x=>su(d.links[x[0]]) && !(isP && x[0]==='whatsapp')).map(x=>`<a href="${esc(su(d.links[x[0]]))}" target="_blank" rel="noopener noreferrer"><i class="fab ${x[1]}"></i> ${x[2]}</a>`).concat(isP?contactLinks(d):[]).join('');
     let body;
     if (isP) body = promoterBody(d);
     else if (profTab==='about') body = `<div class="djx-about">${d.bio?esc(d.bio):'This DJ hasn’t added a bio yet.'}</div>`;
@@ -27524,6 +27571,31 @@ h1, h2, h3, h4, h5, h6,
 </script>
 
 <script>
+/* Cover fallback: when a song has no cover (or the image fails to load / is offline) show an on-device placeholder
+   with the song's initials, so every card stays identifiable. No network needed. */
+(function(){
+  function hue(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))%360;return h}
+  function ini(t){var w=String(t||'').replace(/[^\p{L}\p{N}\s]/gu,' ').trim().split(/\s+/).filter(Boolean);
+    return ((w[0]||'?').charAt(0)+(w[1]?w[1].charAt(0):'')).toUpperCase()}
+  function x(s){return String(s||'').replace(/[&<>"']/g,'')}
+  window._yapsCover=function(title,artist){
+    var h=hue(String(title)+String(artist)),a=String(artist||'');if(a.length>22)a=a.slice(0,21)+'\u2026';
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl('+h+',60%,38%)"/><stop offset="1" stop-color="hsl('+((h+55)%360)+',65%,16%)"/></linearGradient></defs><rect width="400" height="400" fill="url(#g)"/><text x="200" y="215" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="130" fill="rgba(255,255,255,.92)">'+x(ini(title))+'</text><text x="200" y="330" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="26" fill="rgba(255,255,255,.7)">'+x(a)+'</text></svg>';
+    return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)};
+  window._yapsImgErr=function(im){im.onerror=null;im.src=window._yapsCover(im.getAttribute('data-t'),im.getAttribute('data-a'))};
+  /* Safety net for every other list/row/sheet: any <img> that fails (or has an empty src) becomes a generated cover. */
+  document.addEventListener('error',function(e){
+    var im=e.target;if(!im||im.tagName!=='IMG'||im.hasAttribute('data-nofb'))return;
+    var src=im.getAttribute('src')||'';if(src.indexOf('data:')===0||im.dataset.yfb)return;
+    if(/logo|icon|flag|emoji/i.test(im.className+' '+im.id+' '+src))return;
+    var t=im.getAttribute('data-t')||(im.getAttribute('alt')||'').replace(/\s*cover art\s*$/i,'');
+    if(!t){var c=im.closest('[data-title],.track-row,.track-card');var n=c&&c.querySelector('.tr-title,.tc-title,.disc-t,b');t=n?n.textContent:'';}
+    if(!t)return;
+    im.dataset.yfb='1';im.src=window._yapsCover(t,im.getAttribute('data-a')||'');
+  },true);
+})();
+</script>
+<script>
 /* ══════════════════════════════════════════════════════════
    SECTION "SEE ALL" PAGES , one dedicated page per home section
    trending · uganda · for-you · recent · downloads · dj-mixes
@@ -27645,7 +27717,7 @@ h1, h2, h3, h4, h5, h6,
     const end=Math.min(S.shown,list.length);
     if(S.rendered<end){let h='';for(let i=S.rendered;i<end;i++){const t=list[i];
       h+=`<li class="nrp-card" style="--i:${(i-S.rendered)%12}" data-id="${esc(t.id)}">
-        <div class="nrp-art"><img src="${esc(t.img)}" alt="${esc(t.title)} cover art" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${FALLBACK}'"><span class="nrp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
+        <div class="nrp-art"><img src="${t.img&&t.img!==FALLBACK?esc(t.img):window._yapsCover(t.title,t.artist)}" data-t="${esc(t.title)}" data-a="${esc(t.artist)}" alt="${esc(t.title)} cover art" loading="lazy" decoding="async" onerror="window._yapsImgErr(this)"><span class="nrp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
         <div class="nrp-foot"><div class="nrp-info"><div class="nrp-name">${esc(t.title)}</div><div class="nrp-artist">${esc(t.artist)}</div></div>
           ${t.menu?`<button type="button" class="nrp-more" data-act="menu" aria-label="More options for ${esc(t.title)}" aria-haspopup="dialog"><i class="fas fa-ellipsis-v" aria-hidden="true"></i></button>`:''}</div>
         <button type="button" class="nrp-open" data-act="play" aria-label="Play ${esc(t.title)} by ${esc(t.artist)}"></button></li>`}
@@ -28919,6 +28991,30 @@ async function runOfflineCheck() {
 .disc-empty{padding:40px 24px;text-align:center;color:var(--dim)}
 .disc-empty b{display:block;color:var(--text);font-size:16px;margin:10px 0 4px}
 .disc-recent .disc-chip{font-weight:500}
+.disc-ggrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px 24px 4px}
+.disc-gtile{position:relative;aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:0;padding:0;cursor:pointer;text-align:left;font-family:inherit;color:#fff;background:linear-gradient(135deg,hsl(var(--h),55%,34%),hsl(calc(var(--h) + 50),60%,16%));box-shadow:0 4px 14px rgba(0,0,0,.35);transition:transform .15s}
+.disc-gtile:active{transform:scale(.97)}
+.disc-gtile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.disc-gtile .gt-ico{position:absolute;right:10px;top:8px;font-size:26px;opacity:.28}
+.disc-gtile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,18,.05) 25%,rgba(5,7,18,.88))}
+.disc-gtile .gt-txt{position:absolute;left:12px;right:10px;bottom:9px;z-index:1}
+.disc-gtile b{display:block;font-size:15px;font-weight:800;line-height:1.15;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.disc-gtile small{font-size:11px;font-weight:600;color:rgba(255,255,255,.8)}
+.disc-soon-l{padding:10px 24px 0;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.disc-soon{padding:6px 12px;border-radius:16px;border:1px dashed var(--border);color:var(--muted);font-size:12px;font-weight:500;background:none;font-family:inherit;cursor:pointer}
+@media (max-width:480px){.disc-ggrid,.disc-soon-l{padding-left:16px;padding-right:16px}}
+.disc-hot{display:flex;flex-wrap:wrap;gap:8px;padding:6px 24px 4px}
+.disc-hot button{padding:6px 12px;border-radius:16px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12.5px;font-weight:600;font-family:inherit;cursor:pointer}
+.disc-hot button i{color:var(--accent-lighter);margin-right:6px;font-size:11px}
+.disc-top{display:flex;align-items:center;gap:12px;margin:10px 24px 4px;padding:12px;border-radius:16px;background:linear-gradient(135deg,rgba(25,245,168,.16),rgba(166,75,255,.22));border:1px solid var(--border);cursor:pointer}
+.disc-top .covers{display:flex;flex:none}
+.disc-top .covers img{width:44px;height:44px;border-radius:10px;object-fit:cover;border:2px solid var(--bg);margin-left:-12px}
+.disc-top .covers img:first-child{margin-left:0}
+.disc-top b{display:block;font-size:14.5px}
+.disc-top small{font-size:11.5px;color:var(--muted)}
+.disc-top>i{margin-left:auto;color:var(--dim);font-size:12px}
+.disc-mood{flex:0 0 132px;height:78px;border-radius:14px;padding:10px;position:relative;overflow:hidden;cursor:pointer;color:#fff;border:0;text-align:left;font-family:inherit;font-weight:800;font-size:13.5px;line-height:1.2;display:flex;align-items:flex-end;background:linear-gradient(135deg,hsl(var(--h),60%,38%),hsl(calc(var(--h) + 55),65%,18%));box-shadow:0 4px 12px rgba(0,0,0,.3)}
+@media (max-width:480px){.disc-hot{padding-left:16px;padding-right:16px}.disc-top{margin-left:16px;margin-right:16px}}
 .disc-note{margin:6px 24px 0;padding:8px 12px;border-radius:10px;background:rgba(245,165,36,.1);color:#f5a524;font-size:11.5px;line-height:1.5}
 @media (max-width:480px){.disc-bar,.disc-sec,.disc-row,.disc-chips,.disc-srow{padding-left:16px;padding-right:16px}.disc-note{margin-left:16px;margin-right:16px}}
 </style>
@@ -29104,26 +29200,96 @@ async function runOfflineCheck() {
   }
   function videoList() { return tracks.filter(function (t) { return isCatalogue(t) && t.youtubeId; }).slice(0, 10); }
 
+  /* ---------- trending searches / charts card / moods ---------- */
+  function hotArtists() {
+    var tot = {};
+    tracks.forEach(function (t) { if (!isCatalogue(t)) return;
+      var w = 1 + (typeof _parsePlayCount === 'function' ? _parsePlayCount(t.plays) : 0);
+      artistsOf(t).slice(0, 1).forEach(function (a) { var o = tot[a] || (tot[a] = { n: String(t.artist).split(/\s+(?:ft\.?|feat\.?|featuring|x|&)\s+|,\s*/i)[0].trim(), w: 0 }); o.w += w; });
+    });
+    return Object.keys(tot).map(function (k) { return tot[k]; }).sort(function (a, b) { return b.w - a.w; }).slice(0, 8);
+  }
+  function hotHTML() {
+    var h = hotArtists(); if (!h.length) return '';
+    return '<div class="disc-sec"><h3>Trending searches</h3></div><div class="disc-hot">' + h.map(function (x) {
+      return '<button data-act="recent" data-q="' + esc(x.n) + '"><i class="fas fa-arrow-trend-up"></i>' + esc(x.n) + '</button>'; }).join('') + '</div>';
+  }
+  function topCardHTML() {
+    var l = trendingList().slice(0, 3); if (!l.length) return '';
+    return '<div class="disc-top" role="button" tabindex="0" data-act="charts"><div class="covers">' + l.map(function (t) {
+      return '<img src="' + esc(t.img) + '" data-t="' + esc(t.title) + '" data-a="' + esc(t.artist) + '" alt="" loading="lazy">'; }).join('') + '</div>' +
+      '<div><b>Top 10 charts</b><small>See what Uganda is streaming this week</small></div><i class="fas fa-chevron-right"></i></div>';
+  }
+  /* Moods fill themselves from genre/tags, so they grow as you add songs. A mood shows once it has 3+ playable tracks. */
+  var MOODS = [
+    { id: 'chill',  name: 'Chill',          re: /r&b|rnb|soul|chill|acoustic|slow|love|afropop/ },
+    { id: 'party',  name: 'Party Starter',  re: /afrobeat|dancehall|amapiano|party|dance|genge|bongo/ },
+    { id: 'hype',   name: 'Hype Me Up',     re: /hip.?hop|\brap\b|dancehall|drill|trap|hype|workout/ },
+    { id: 'love',   name: 'Love & Feelings',re: /love|r&b|rnb|soul|romantic|heartbreak|luganda/ },
+    { id: 'kampala',name: 'Kampala Nights', re: /luganda|kadongo|afrobeat|afropop|uganda/ },
+    { id: 'late',   name: 'Late Night Drive',re: /r&b|rnb|soul|chill|slow|afropop/ },
+    { id: 'roots',  name: 'Roots & Culture',re: /traditional|folk|cultural|kadongo|reggae/ }
+  ];
+  function moodTracks(m) { return tracks.filter(function (t) { return isCatalogue(t) && m.re.test(genreText(t)); }); }
+  function featuredArtistsHTML() {
+    var l = artistIndex().filter(function (a) { return a.img && a.count; })
+      .sort(function (a, b) { return b.count - a.count || (parseFloat(b.followers) || 0) - (parseFloat(a.followers) || 0); }).slice(0, 12);
+    if (l.length < 3) return '';
+    return '<div class="disc-sec"><h3>Artists to follow <a href="#" data-act="allArtists" style="font-size:12px;color:var(--accent);font-weight:600;margin-left:auto">See all</a></h3></div><div class="disc-row">' + l.map(artistCard).join('') + '</div>';
+  }
+  function moodsHTML() {
+    var v = MOODS.map(function (m) { return { m: m, n: moodTracks(m).length }; }).filter(function (x) { return x.n >= 3; });
+    if (!v.length) return '';
+    return head('Moods', null, 'Tap a mood to start playing') + '<div class="disc-row">' + v.map(function (x) {
+      return '<button class="disc-mood" style="--h:' + genreHue(x.m.id) + '" data-act="mood" data-id="' + x.m.id + '"><span>' + esc(x.m.name) + '<small style="display:block;font-weight:600;opacity:.8;font-size:11px">' + x.n + ' tracks</small></span></button>'; }).join('') + '</div>';
+  }
+  function playMood(id) {
+    var m = MOODS.filter(function (x) { return x.id === id; })[0]; if (!m) return;
+    var idx = moodTracks(m).map(function (t) { return tracks.indexOf(t); });
+    for (var i = idx.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var tmp = idx[i]; idx[i] = idx[j]; idx[j] = tmp; }
+    idx = idx.slice(0, 30); if (!idx.length) return;
+    playTrack(idx[0]);
+    try { window._queuedTracks = idx.slice(1); _queuedTracks = idx.slice(1); if (typeof renderQueue === 'function') renderQueue(); } catch (e) {}
+    showToast('Playing ' + m.name);
+  }
+
   function recentHTML() {
     var r = lsGet(LS_RECENT, []); if (!r.length) return '';
     return '<div class="disc-sec disc-recent"><h3>Recent searches <a href="#" data-act="clearRecent" style="font-size:11px;color:var(--accent);font-weight:600;margin-left:auto">Clear</a></h3></div><div class="disc-chips" style="padding-top:2px">' +
       r.map(function (q) { return '<button class="disc-chip" data-act="recent" data-q="' + esc(q) + '"><i class="fas fa-clock-rotate-left" style="font-size:11px;color:var(--dim)"></i>' + esc(q) + '</button>'; }).join('') + '</div>';
   }
+  /* First track in the genre with a usable cover; tracks with no cover (or a cover that fails to load) fall back to a gradient tile. */
+  function genreCover(list) {
+    for (var i = 0; i < list.length; i++) { var im = list[i].img; if (im && String(im).trim() && !/^(null|undefined)$/.test(im)) return im; }
+    return '';
+  }
+  function genreHue(key) { var h = 0; for (var i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) % 360; return h; }
   function genreBlock(scope) {
-    var gs = GENRES.filter(function (g) { return g.scope === scope; });
-    return head(SCOPES[scope], null) + '<div class="disc-chips">' + gs.map(function (g) {
-      var n = catalogueFor(g).length;
-      var label = n ? n + ' tracks' : (samplesOn() ? 'Sample' : 'Coming soon');
-      return '<button class="disc-chip' + (n ? '' : ' smp') + '" data-act="genre" data-key="' + esc(g.key) + '">' + esc(g.name) + ' <small>' + label + '</small></button>';
+    var gs = GENRES.filter(function (g) { return g.scope === scope; }), live = [], soon = [];
+    gs.forEach(function (g) { var l = catalogueFor(g); (l.length ? live : soon).push({ g: g, l: l }); });
+    live.sort(function (a, b) { return b.l.length - a.l.length; });
+    var out = head(SCOPES[scope], null);
+    if (live.length) out += '<div class="disc-ggrid">' + live.map(function (x) {
+      var cov = genreCover(x.l), n = x.l.length;
+      return '<button class="disc-gtile" style="--h:' + genreHue(x.g.key) + '" data-act="genre" data-key="' + esc(x.g.key) + '">' +
+        '<i class="fas ' + x.g.ico + ' gt-ico"></i>' +
+        (cov ? '<img src="' + esc(cov) + '" alt="" loading="lazy" onerror="this.remove()">' : '') +
+        '<span class="gt-txt"><b>' + esc(x.g.name) + '</b><small>' + n + (n === 1 ? ' track' : ' tracks') + '</small></span></button>';
     }).join('') + '</div>';
+    if (soon.length) out += '<div class="disc-soon-l">Coming soon <a href="#" data-act="upload" style="text-transform:none;letter-spacing:0;color:var(--accent);margin-left:6px">Be the first, upload yours</a></div><div class="disc-chips" style="padding-top:8px">' + soon.map(function (x) {
+      return '<button class="disc-soon" data-act="genre" data-key="' + esc(x.g.key) + '">' + esc(x.g.name) + '</button>';
+    }).join('') + '</div>';
+    return out;
   }
   function renderHome() {
     var el = $('disc-home'); if (!el) return;
-    var rec = recommendedList(), html = recentHTML();
+    var rec = recommendedList(), html = recentHTML() + hotHTML() + topCardHTML();
     html += head('Trending', 'cat', D_isLive() ? 'Most listened to on YAPS in the last 7 days' : 'Editor\'s picks. Live ranking starts once enough listens are recorded.') + '<div class="disc-row">' + trendingList().map(card).join('') + '</div>';
     html += head('New releases', 'cat') + '<div class="disc-row">' + newList().map(card).join('') + '</div>';
     html += head(rec.personal ? 'Recommended for you' : 'Popular picks', 'cat', rec.personal ? (rec.reasons.length ? 'Because you like ' + rec.reasons.join(' and ') : 'Based on what you like, follow and play') : 'Like a few songs and this row becomes personal') + '<div class="disc-row">' + rec.list.map(card).join('') + '</div>';
+    html += featuredArtistsHTML();
     var vids = videoList(); if (vids.length) html += head('Music videos', 'cat') + '<div class="disc-row">' + vids.map(videoCard).join('') + '</div>';
+    html += moodsHTML();
     html += head('Browse by genre', null, 'Uganda, Africa and the rest of the world') +
       (samplesOn() ? '<div class="disc-note">Genres marked <b>Sample</b> have no tracks in the YAPS catalogue yet. Their pages show clearly labelled placeholders that cannot be played.</div>' : '') +
       genreBlock('uganda') + genreBlock('africa') + genreBlock('world') + '<div style="height:24px"></div>';
@@ -29183,24 +29349,35 @@ async function runOfflineCheck() {
     refresh();
   };
 
-  function openGenre(key) {
+  function sortGenre(list, mode) {
+    var l = list.slice();
+    if (mode === 'plays') l.sort(function (a, b) { return (typeof _parsePlayCount === 'function' ? _parsePlayCount(b.plays) - _parsePlayCount(a.plays) : 0); });
+    else if (mode === 'new') l.sort(function (a, b) { return (b.savedAt || 0) - (a.savedAt || 0); });
+    else if (mode === 'az') l.sort(function (a, b) { return String(a.title).localeCompare(String(b.title)); });
+    return l;
+  }
+  window._genreSortSet = function (m) { openGenre(window._genreKey, m, true); };
+  function openGenre(key, sortMode, keepScroll) {
     var g = GENRES.filter(function (x) { return x.key === key; })[0]; if (!g) return;
-    var list = catalogueFor(g), samples = (samplesOn() && needsSamples(g)) ? sampleItems(g) : [];
-    var hero = $('genre-detail-img'); if (hero) { hero.src = list[0] ? list[0].img : ''; hero.style.display = list[0] ? '' : 'none'; }
-    var box = $('genre-detail-hero'); if (box) box.style.background = list[0] ? '' : 'linear-gradient(135deg,var(--accent-dark),var(--bg))';
+    sortMode = sortMode || 'default'; window._genreKey = key;
+    var list = sortGenre(catalogueFor(g), sortMode), samples = (samplesOn() && needsSamples(g)) ? sampleItems(g) : [];
+    var cov = genreCover(list), hero = $('genre-detail-img'); if (hero) { hero.dataset.yfb = ''; hero.setAttribute('data-t', g.name); hero.src = cov || window._yapsCover(g.name, SCOPES[g.scope]); hero.style.display = list.length ? '' : 'none'; }
+    var box = $('genre-detail-hero'); if (box) box.style.background = list.length ? '' : 'linear-gradient(135deg,var(--accent-dark),var(--bg))';
     $('genre-detail-title').textContent = g.name;
     $('genre-detail-meta').textContent = SCOPES[g.scope] + ' · ' + list.length + (list.length === 1 ? ' track' : ' tracks');
     var title = document.querySelector('#genre-detail-view .genre-detail-section-title');
     if (title) title.innerHTML = esc(SCOPES[g.scope]) + ' · <span id="genre-track-count">' + list.length + '</span> catalogue tracks ' + pill('cat');
     window._genreShown = Math.min(list.length, 40); window._genreList = list;
-    var html = list.length ? list.slice(0, 40).map(function (t) { return trackRowHTML(t, tracks.indexOf(t)); }).join('') + (list.length > 40 ? '<div id="genre-more-wrap" style="text-align:center;padding:14px 0 22px"><button class="btn-primary" style="padding:9px 20px" onclick="_genreMore()">Show more (' + (list.length - 40) + ' left)</button></div>' : '') :
-      '<div style="padding:24px 0;text-align:center;color:var(--dim)"><i class="fas fa-music" style="font-size:30px;display:block;margin-bottom:10px"></i>No ' + esc(g.name) + ' tracks from ' + esc(SCOPES[g.scope]) + ' in the catalogue yet.</div>';
+    var sortBar = list.length > 3 ? '<div class="disc-chips" style="padding:0 0 10px">' + [['default', 'Default'], ['plays', 'Most played'], ['new', 'Newest'], ['az', 'A–Z']].map(function (m) {
+      return '<button class="disc-soon" style="' + (sortMode === m[0] ? 'border-style:solid;border-color:var(--accent);color:var(--text)' : '') + '" onclick="_genreSortSet(\'' + m[0] + '\')">' + m[1] + '</button>'; }).join('') + '</div>' : '';
+    var html = sortBar + (list.length ? list.slice(0, 40).map(function (t) { return trackRowHTML(t, tracks.indexOf(t)); }).join('') + (list.length > 40 ? '<div id="genre-more-wrap" style="text-align:center;padding:14px 0 22px"><button class="btn-primary" style="padding:9px 20px" onclick="_genreMore()">Show more (' + (list.length - 40) + ' left)</button></div>' : '') :
+      '<div style="padding:24px 0;text-align:center;color:var(--dim)"><i class="fas fa-music" style="font-size:30px;display:block;margin-bottom:10px"></i>No ' + esc(g.name) + ' tracks from ' + esc(SCOPES[g.scope]) + ' in the catalogue yet.<br><button class="btn-primary" style="margin-top:14px;padding:10px 20px" onclick="navigate(\'upload\')"><i class="fas fa-upload"></i> Upload the first one</button></div>');
     if (samples.length) html += head('Sample content', 'smp', 'Placeholders only. They cannot be played and are not real releases.') + samples.map(sampleRow).join('');
     $('genre-tracks-list').innerHTML = html;
     window._genreTrackIndices = list.map(function (t) { return tracks.indexOf(t); });
     $('genre-browse-view').style.display = 'none';
     $('genre-detail-view').classList.add('active');
-    var m = $('main'); if (m) m.scrollTop = 0;
+    var m = $('main'); if (m && !keepScroll) m.scrollTop = 0;
   }
 
   window._genreMore = function () {
@@ -29222,6 +29399,10 @@ async function runOfflineCheck() {
       if (known) { remember(nm); openArtistProfileByName(nm); } else { st.tab = 'songs'; setQuery(nm); }
     }
     else if (a === 'genre') openGenre(el.getAttribute('data-key'));
+    else if (a === 'charts') navigate('charts');
+    else if (a === 'allArtists') { if (typeof atpOpen === 'function') atpOpen(); }
+    else if (a === 'upload') navigate('upload');
+    else if (a === 'mood') playMood(el.getAttribute('data-id'));
     else if (a === 'recent') setQuery(el.getAttribute('data-q'));
     else if (a === 'clearRecent') { lsSet(LS_RECENT, []); refresh(); }
     else if (a === 'tab') { st.tab = el.getAttribute('data-tab'); refresh(); }
@@ -36148,5 +36329,274 @@ html #page-profile #acctMore .ac-title{color:#fff}
   document.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var t=e.target.closest&&e.target.closest('#page-studio-intro .stp-tile[data-go]');if(t){e.preventDefault();window.studioIntroTile(t.dataset.go)}});
 })();
 </script>
+<style>
+/* ═══ SONG LAB — "Create with YAPS AI" guided page (additive; scoped to #page-song-lab) ═══ */
+#page-song-lab .sl-wrap{max-width:760px;margin:0 auto;padding:16px 16px 40px}
+#page-song-lab .sl-head h2{font-size:24px;font-weight:800;margin:0 0 4px;background:var(--neon-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+#page-song-lab .sl-head p{margin:0 0 14px;color:var(--muted);font-size:14px;line-height:1.5}
+#page-song-lab .sl-steps{display:flex;gap:6px;margin:0 0 16px}
+#page-song-lab .sl-dot{flex:1;height:5px;border-radius:99px;background:var(--card2)}
+#page-song-lab .sl-dot.on{background:var(--neon-grad)}
+#page-song-lab .sl-card{background:var(--card);border-radius:16px;padding:16px}
+#page-song-lab .sl-card h3{margin:0 0 4px;font-size:17px}
+#page-song-lab .sl-sub{margin:0 0 12px;color:var(--muted);font-size:13px}
+#page-song-lab label.sl-f{display:block;margin:0 0 12px;font-size:12px;color:var(--muted);font-weight:700}
+#page-song-lab .sl-f input,#page-song-lab .sl-f select,#page-song-lab .sl-f textarea{display:block;width:100%;margin-top:6px;padding:11px 12px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:15px;line-height:1.45;font-weight:500;font-family:inherit;box-sizing:border-box}
+#page-song-lab .sl-f textarea{min-height:96px;resize:vertical}
+#page-song-lab textarea#slLyrics{min-height:300px}
+#page-song-lab .sl-f input:focus,#page-song-lab .sl-f select:focus,#page-song-lab .sl-f textarea:focus{outline:2px solid var(--accent-light);outline-offset:1px}
+#page-song-lab .sl-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+#page-song-lab .sl-chip{border:0;border-radius:99px;padding:8px 13px;background:var(--card2);color:var(--text);font-size:13px;cursor:pointer}
+#page-song-lab .sl-chip:hover,#page-song-lab .sl-chip.on{background:var(--accent-dim);outline:1px solid var(--accent)}
+#page-song-lab .sl-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:520px){#page-song-lab .sl-row{grid-template-columns:1fr}}
+#page-song-lab .sl-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+#page-song-lab .sl-btn{border:0;border-radius:12px;padding:12px 18px;font-size:14px;font-weight:700;font-family:inherit;color:#fff;background:var(--neon-btn);cursor:pointer}
+#page-song-lab .sl-btn.alt{background:var(--card2);color:var(--text)}
+#page-song-lab .sl-btn:disabled{opacity:.5;cursor:default}
+#page-song-lab .sl-note{margin:10px 0 0;font-size:12.5px;color:var(--muted);line-height:1.5}
+#page-song-lab .sl-badge{display:inline-block;margin:0 0 10px;padding:4px 10px;border-radius:99px;font-size:11.5px;font-weight:800;background:var(--accent-dim);color:var(--accent-light)}
+#page-song-lab .sl-badge.warn{background:var(--gold-dim);color:var(--gold)}
+/* Brand look: deep navy like the YAPS AI art, with the neon green · cyan · purple · magenta accents.
+   Applies to the default (Neon) theme in dark mode; other themes and light mode keep their own colors via the app variables. */
+#page-song-lab{--sl-bg:var(--bg);--sl-card:var(--card);--sl-card2:var(--card2);--sl-input:var(--surface);--sl-line:var(--border)}
+html:not([data-theme]):not([data-mode="light"]) #page-song-lab{--sl-bg:#000d29;--sl-card:#0a1a44;--sl-card2:#12265c;--sl-input:#06143a;--sl-line:#24408a}
+#page-song-lab{background:radial-gradient(120% 60% at 50% 0%,var(--sl-card2) 0%,var(--sl-bg) 62%);min-height:100%}
+#page-song-lab .sl-card{background:var(--sl-card);border:1px solid var(--sl-line);box-shadow:0 8px 28px rgba(0,0,0,.28)}
+#page-song-lab .sl-dot,#page-song-lab .sl-chip,#page-song-lab .sl-btn.alt{background:var(--sl-card2)}
+#page-song-lab .sl-chip{border:1px solid var(--sl-line)}
+#page-song-lab .sl-f input,#page-song-lab .sl-f select,#page-song-lab .sl-f textarea{background:var(--sl-input);border-color:var(--sl-line)}
+#page-song-lab .sl-dot.on{background:var(--neon-grad)}
+#page-song-lab .sl-btn:not(.alt){box-shadow:0 0 16px var(--accent-dim)}
+/* Tablet (portrait + landscape): wider layout, bigger touch targets, roomier text areas */
+@media (min-width:700px){
+  #page-song-lab .sl-wrap{max-width:940px;padding:28px 32px 56px}
+  #page-song-lab .sl-head h2{font-size:30px}
+  #page-song-lab .sl-head p{font-size:16px;margin-bottom:20px}
+  #page-song-lab .sl-steps{gap:10px;margin-bottom:22px}
+  #page-song-lab .sl-dot{height:7px}
+  #page-song-lab .sl-card{padding:28px;border-radius:20px}
+  #page-song-lab .sl-card h3{font-size:21px}
+  #page-song-lab .sl-sub,#page-song-lab .sl-note{font-size:15px}
+  #page-song-lab label.sl-f{font-size:13.5px;margin-bottom:16px}
+  #page-song-lab .sl-f input,#page-song-lab .sl-f select{min-height:52px;font-size:17px;padding:13px 16px}
+  #page-song-lab .sl-f textarea{font-size:17px;padding:14px 16px;min-height:150px}
+  #page-song-lab textarea#slLyrics{min-height:440px}
+  #page-song-lab .sl-row{grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:end}
+  #page-song-lab .sl-chips{gap:10px}
+  #page-song-lab .sl-chip{padding:11px 18px;font-size:15px;min-height:44px}
+  #page-song-lab .sl-actions{gap:14px;margin-top:20px}
+  #page-song-lab .sl-btn{min-height:50px;padding:14px 28px;font-size:16px}
+}
+@media (min-width:700px) and (max-width:1100px) and (orientation:landscape){
+  #page-song-lab textarea#slLyrics{min-height:300px}
+}
+</style>
+<script>
+/* ═══ SONG LAB — "Create with YAPS AI" (additive module) ═══
+   Needs from the app: navigate(), showToast(), openSongCreator(), _demoUser, sb, _yaiEndpoint().
+   Entry points: navigate('song-lab')  →  renderSongLab()                                      */
+(function () {
+  var GENRES = ['Afrobeat','Afropop','Amapiano','Hip-Hop','R&B','Dancehall','Pop','EDM','Reggae','Lo-fi','Other'];   // same lists as the AI Song Creator
+  var MOODS  = ['Happy','Romantic','Sad','Energetic','Inspirational','Chill','Dark','Emotional','Party'];
+  var LANGS  = ['English','Luganda','Swahili','French','Spanish','Portuguese','Hindi','Arabic','Other'];
+  var IDEAS  = [
+    { t: 'Never giving up', p: 'An uplifting song about never giving up, even when life in the city is hard.', g: 'Afrobeat', m: 'Inspirational' },
+    { t: 'Love at first dance', p: 'A romantic song about meeting someone special at a wedding dance.', g: 'Afropop', m: 'Romantic' },
+    { t: 'Weekend party', p: 'A loud, happy song for Friday night with friends.', g: 'Amapiano', m: 'Party' },
+    { t: 'Missing home', p: 'A calm, emotional song about missing family back in the village.', g: 'R&B', m: 'Emotional' },
+    { t: 'Hustle and rise', p: 'A confident song about working hard from nothing to success.', g: 'Hip-Hop', m: 'Energetic' }
+  ];
+  var KEY = 'yaps_songlab_draft';
+  var S = { step: 1, title: '', idea: '', genre: 'Afrobeat', mood: 'Inspirational', lang: 'English', lyrics: '', source: '', busy: false };
+  var built = false;
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function toast(m) { try { showToast(m); } catch (e) { alert(m); } }
+  function opts(list, cur) { return list.map(function (x) { return '<option' + (x === cur ? ' selected' : '') + '>' + esc(x) + '</option>'; }).join(''); }
+
+  function load() { try { var d = JSON.parse(localStorage.getItem(KEY) || 'null'); if (d && typeof d === 'object') { Object.keys(S).forEach(function (k) { if (k !== 'busy' && d[k] != null) S[k] = d[k]; }); } } catch (e) {} }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify({ step: S.step, title: S.title, idea: S.idea, genre: S.genre, mood: S.mood, lang: S.lang, lyrics: S.lyrics, source: S.source })); } catch (e) {} }
+
+  function dots() { var h = ''; for (var i = 1; i <= 4; i++) h += '<span class="sl-dot' + (i <= S.step ? ' on' : '') + '"></span>'; return '<div class="sl-steps" aria-label="Step ' + S.step + ' of 4">' + h + '</div>'; }
+
+  function view() {
+    var h = '<div class="sl-head"><h2>Create a song with YAPS AI</h2><p>Four quick steps: your idea, the style, the lyrics, then finish it in the AI Song Creator.</p></div>' + dots() + '<div class="sl-card">';
+    if (S.step === 1) {
+      h += '<h3>1 · What is your song about?</h3><p class="sl-sub">One or two sentences is enough. Tap an idea to start.</p><div class="sl-chips">' +
+        IDEAS.map(function (x, i) { return '<button type="button" class="sl-chip" data-idea="' + i + '">' + esc(x.t) + '</button>'; }).join('') + '</div>' +
+        '<label class="sl-f">Song title (optional)<input id="slTitle" maxlength="120" placeholder="Name your song" value="' + esc(S.title) + '"></label>' +
+        '<label class="sl-f">Your idea<textarea id="slIdea" maxlength="800" placeholder="Example: A happy Afrobeat song about my village and my mother">' + esc(S.idea) + '</textarea></label>' +
+        '<div class="sl-actions"><button type="button" class="sl-btn" data-go="2">Next</button></div>';
+    } else if (S.step === 2) {
+      h += '<h3>2 · Pick the style</h3><p class="sl-sub">This sets the sound and the language of your lyrics.</p><div class="sl-row">' +
+        '<label class="sl-f">Genre<select id="slGenre">' + opts(GENRES, S.genre) + '</select></label>' +
+        '<label class="sl-f">Mood<select id="slMood">' + opts(MOODS, S.mood) + '</select></label>' +
+        '<label class="sl-f">Lyrics language<select id="slLang">' + opts(LANGS, S.lang) + '</select></label></div>' +
+        '<div class="sl-actions"><button type="button" class="sl-btn alt" data-go="1">Back</button><button type="button" class="sl-btn" data-go="3">Next</button></div>';
+    } else if (S.step === 3) {
+      h += '<h3>3 · Write the lyrics</h3><p class="sl-sub">YAPS AI writes a first draft. You can edit every line.</p>';
+      if (S.source === 'ai') h += '<span class="sl-badge">Written by YAPS AI</span>';
+      else if (S.source === 'starter') h += '<span class="sl-badge warn">Starter outline, not AI. Fill in the lines yourself.</span>';
+      h += '<label class="sl-f">Lyrics<textarea id="slLyrics" placeholder="Tap “Write with YAPS AI”, or type your own lyrics here.">' + esc(S.lyrics) + '</textarea></label>' +
+        '<div class="sl-actions"><button type="button" class="sl-btn" id="slGen"' + (S.busy ? ' disabled' : '') + '>' + (S.busy ? 'Writing…' : (S.lyrics ? 'Write again' : 'Write with YAPS AI')) + '</button>' +
+        '<button type="button" class="sl-btn alt" data-go="2">Back</button><button type="button" class="sl-btn alt" data-go="4">Next</button></div>' +
+        '<p class="sl-note" id="slNote"></p>';
+    } else {
+      h += '<h3>4 · Finish your song</h3><p class="sl-sub">The AI Song Creator turns these lyrics into music, vocals and cover art.</p>' +
+        '<p class="sl-note"><b>' + esc(S.title || 'Untitled song') + '</b> · ' + esc(S.genre) + ' · ' + esc(S.mood) + ' · ' + esc(S.lang) + '</p>' +
+        '<div class="sl-actions"><button type="button" class="sl-btn" id="slSend">Open in AI Song Creator</button>' +
+        '<button type="button" class="sl-btn alt" id="slCopy">Copy lyrics</button><button type="button" class="sl-btn alt" data-go="3">Back</button></div>' +
+        '<p class="sl-note">Music generation needs your AI Song API connected in the Song Creator settings. Your title, idea, style and lyrics are filled in for you.</p>' +
+        '<div class="sl-actions"><button type="button" class="sl-btn alt" id="slNew">Start a new song</button></div>';
+    }
+    return h + '</div>';
+  }
+
+  function grab() {   // read the current step's inputs into S
+    var v = function (id) { var e = $(id); return e ? e.value : null; };
+    if (v('slTitle') !== null) S.title = v('slTitle').trim();
+    if (v('slIdea') !== null) S.idea = v('slIdea').trim();
+    if (v('slGenre') !== null) S.genre = v('slGenre');
+    if (v('slMood') !== null) S.mood = v('slMood');
+    if (v('slLang') !== null) S.lang = v('slLang');
+    if (v('slLyrics') !== null) { var t = v('slLyrics'); if (t !== S.lyrics) { S.lyrics = t; if (S.source === 'ai') S.source = 'edited'; } }
+  }
+  function paint() { $('slRoot').innerHTML = view(); save(); }
+
+  function go(n) {
+    grab();
+    if (n >= 2 && !S.idea) { toast('Tell us what the song is about first.'); n = 1; }
+    if (n === 4 && !S.lyrics.trim()) { toast('Add some lyrics first, or let YAPS AI write them.'); n = 3; }
+    S.step = n; paint(); $('main') && ($('main').scrollTop = 0);
+  }
+
+  function starter() {
+    var i = S.idea || 'your idea';
+    return '[Verse 1]\n(4 lines: set the scene. Idea: ' + i + ')\n\n[Chorus]\n(4 lines: the main message people will sing along to)\n\n[Verse 2]\n(4 lines: what happens next)\n\n[Chorus]\n(repeat the chorus)\n\n[Bridge]\n(2 lines: a change of feeling)\n\n[Chorus]\n(final chorus)';
+  }
+
+  async function askAI() {
+    var ep = (typeof _yaiEndpoint === 'function') ? _yaiEndpoint() : '';
+    if (!ep || typeof _demoUser === 'undefined' || !_demoUser) return null;   // AI needs the server + a signed-in user (same rule as YAPS AI chat)
+    var prompt = 'Write original song lyrics.\nTitle: ' + (S.title || 'choose a fitting title') + '\nGenre: ' + S.genre + '\nMood: ' + S.mood + '\nLanguage: ' + S.lang +
+      '\nIdea: ' + S.idea + '\nUse section labels like [Verse 1], [Chorus], [Verse 2], [Chorus], [Bridge], [Chorus]. Reply with only the lyrics.';
+    var headers = { 'Content-Type': 'application/json' };
+    var s = await sb.auth.getSession();
+    if (s && s.data && s.data.session) headers.Authorization = 'Bearer ' + s.data.session.access_token;
+    var ctl = new AbortController(), timer = setTimeout(function () { ctl.abort(); }, 45000);
+    try {
+      var res = await fetch(ep + '/api/ai/chat', { method: 'POST', headers: headers, signal: ctl.signal, body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], catalogue: [], now_playing: null }) });
+      if (res.status === 429) return { limit: true };
+      if (!res.ok) return null;
+      var j = await res.json(), t = String(j.message || '').trim();
+      return (t.length > 60 && /\[[^\]]+\]/.test(t)) ? { text: t } : null;   // must look like lyrics, otherwise treat as a miss
+    } catch (e) { return null; } finally { clearTimeout(timer); }
+  }
+
+  async function generate() {
+    grab(); if (S.busy) return;
+    if (S.lyrics.trim() && S.source !== 'starter' && !confirm('Replace the current lyrics with a new draft?')) return;
+    S.busy = true; paint();
+    var r = await askAI(), note = '';
+    if (r && r.text) { S.lyrics = r.text; S.source = 'ai'; }
+    else {
+      S.lyrics = starter(); S.source = 'starter';
+      note = (r && r.limit) ? 'You have used today’s YAPS AI questions. Here is a starter outline instead.'
+        : (typeof _demoUser !== 'undefined' && !_demoUser) ? 'Sign in to let YAPS AI write the lyrics. Here is a starter outline instead.'
+        : 'YAPS AI could not be reached right now. Here is a starter outline you can fill in.';
+    }
+    S.busy = false; paint(); if (note && $('slNote')) $('slNote').textContent = note;
+  }
+
+  function sendToCreator() {
+    grab(); save();
+    if (typeof openSongCreator !== 'function') { toast('The AI Song Creator is not available here.'); return; }
+    openSongCreator();
+    var tries = 0, iv = setInterval(function () {
+      var d = null; try { var fr = document.getElementById('songCreatorFrame'); d = fr && fr.contentDocument; } catch (e) {}
+      var g = d && d.getElementById('scGenre');
+      if (g && g.options.length && d.getElementById('scPrompt') && d.getElementById('scLyrics')) {
+        clearInterval(iv);
+        var set = function (id, val, ev) { var e = d.getElementById(id); if (!e || val == null) return; e.value = val; e.dispatchEvent(new Event(ev || 'input', { bubbles: true })); };
+        var has = function (id, val) { var e = d.getElementById(id); return e && [].some.call(e.options, function (o) { return o.value === val || o.text === val; }); };
+        set('scTitle', S.title); set('scPrompt', S.idea);
+        if (has('scGenre', S.genre)) set('scGenre', S.genre, 'change');
+        if (has('scMood', S.mood)) set('scMood', S.mood, 'change');
+        if (has('scLang', S.lang)) set('scLang', S.lang, 'change');
+        set('scLyrics', S.lyrics);
+      } else if (++tries > 40) { clearInterval(iv); toast('Song Creator opened. Use “Copy lyrics” and paste them in.'); }
+    }, 150);
+  }
+
+  async function copy() {
+    grab();
+    try { await navigator.clipboard.writeText(S.lyrics); toast('Lyrics copied'); }
+    catch (e) { var a = document.createElement('textarea'); a.value = S.lyrics; a.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(a); a.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (x) {} a.remove(); toast(ok ? 'Lyrics copied' : 'Could not copy. Select the lyrics and copy by hand.'); }
+  }
+
+  function bind() {
+    $('slRoot').addEventListener('click', function (e) {
+      var b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.go) return go(+b.dataset.go);
+      if (b.dataset.idea != null) { var x = IDEAS[+b.dataset.idea]; S.title = S.title || x.t; S.idea = x.p; S.genre = x.g; S.mood = x.m; return paint(); }
+      if (b.id === 'slGen') return generate();
+      if (b.id === 'slSend') return sendToCreator();
+      if (b.id === 'slCopy') return copy();
+      if (b.id === 'slNew') { if (confirm('Clear this song and start over?')) { S = { step: 1, title: '', idea: '', genre: 'Afrobeat', mood: 'Inspirational', lang: 'English', lyrics: '', source: '', busy: false }; paint(); } }
+    });
+    $('slRoot').addEventListener('input', function () { grab(); save(); });
+  }
+
+  window.renderSongLab = function () {
+    if (!$('slRoot')) return;
+    if (!built) { built = true; load(); S.busy = false; bind(); }
+    paint();
+  };
+})();
+</script>
+<style>
+/* Community chat: keep the room header (icon, name, description, Join/Leave) pinned while the keyboard is open.
+   Cause: .cc-app is sized with 100dvh, which does not shrink on Android when the keyboard opens, so the page grew taller
+   than the visible area and the browser scrolled the header up under the app top bar. */
+@media (max-width:1024px){
+  html.kb-open #page-community .cc-app{height:calc(var(--vh,1vh)*100 - var(--topbar-h,0px))!important}
+  html.kb-open #page-community .cc-head{position:sticky;top:0;z-index:6;background:var(--surface)}
+  html.kb-open #main:has(#page-community.active){overflow:hidden!important}
+}
+</style>
+<script>
+(function(){
+  /* Safety net: while typing in the community chat, make sure nothing has scrolled the header out of view. */
+  function pin(){
+    var m=document.getElementById('main'), pg=document.getElementById('page-community');
+    if(!m||!pg||!pg.classList.contains('active'))return;
+    if(m.scrollTop)m.scrollTop=0;
+    var log=document.getElementById('ccLog'); if(log)log.scrollTop=log.scrollHeight;
+  }
+  function run(){pin();setTimeout(pin,120);setTimeout(pin,350);}
+  document.addEventListener('focusin',function(e){if(e.target&&e.target.id==='ccInput')run();});
+  if(window.visualViewport)window.visualViewport.addEventListener('resize',function(){
+    var a=document.activeElement; if(a&&a.id==='ccInput')run();
+  });
+})();
+</script>
+<style>
+/* Quick Vibes page: every card shows a collage of the songs inside it (never an empty gradient) */
+#page-quickvibes .qvp-media{aspect-ratio:1/1;position:relative;overflow:hidden;border-radius:12px;background:#0a1a44}
+#page-quickvibes .qvp-grid-art{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px}
+#page-quickvibes .qvp-grid-art.n1{grid-template-columns:1fr;grid-template-rows:1fr}
+#page-quickvibes .qvp-grid-art.n2{grid-template-rows:1fr}
+#page-quickvibes .qvp-grid-art.n3 .qvp-tile:first-child{grid-row:span 2}
+#page-quickvibes .qvp-tile{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#fff;min-width:0;min-height:0}
+#page-quickvibes .qvp-tile b{font-size:28px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.35)}
+#page-quickvibes .qvp-tile i{font-size:34px;opacity:.9}
+#page-quickvibes .qvp-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#page-quickvibes .qvp-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.45));pointer-events:none}
+#page-quickvibes .qvp-play{z-index:3}
+#page-quickvibes .qvp-info{display:block}
+#page-quickvibes .qvp-songs{margin-top:3px;font-size:11.5px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.9}
+</style>
 </body>
 </html>
