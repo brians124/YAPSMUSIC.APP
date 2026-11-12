@@ -220,3 +220,28 @@ self.addEventListener('notificationclick', event => {
     await self.clients.openWindow(target);
   })());
 });
+/* Add this to the END of your sw.js (outside any other handler). */
+self.addEventListener('push', function (event) {
+  var d = {};
+  try { d = event.data ? event.data.json() : {}; } catch (e) { d = { title: 'YAPS Music', body: event.data ? event.data.text() : '' }; }
+  event.waitUntil(self.registration.showNotification(d.title || 'YAPS Music', {
+    body: d.body || '',
+    icon: d.icon || 'images/icon-192.png',
+    badge: 'images/icon-192.png',
+    image: d.image,
+    tag: d.tag,
+    data: { url: d.url || '/' }
+  }));
+});
+
+self.addEventListener('notificationclick', function (event) {
+  event.notification.close();
+  var url = (event.notification.data && event.notification.data.url) || '/';
+  event.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (list) {
+    for (var i = 0; i < list.length; i++) {
+      if ('focus' in list[i]) { list[i].navigate && list[i].navigate(url); return list[i].focus(); }
+    }
+    return self.clients.openWindow(url);
+  }));
+});
+        
