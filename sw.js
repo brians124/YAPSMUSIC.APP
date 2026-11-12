@@ -4,8 +4,11 @@
  *
  * Bump VERSION on every deploy that changes index.html or other shell files —
  * that is what triggers the in-app "update available" bar.
+ * The split files (styles.css, app.js, studio*.css/js, song-creator-embed.html) are linked with ?v=N.
+ * When one changes: raise its ?v=N in index.html / studio.html / app.js AND in PRECACHE below, then raise VERSION.
+ * (bump-version.py does all of that in one go.)
  */
-const VERSION = 'v6';
+const VERSION = 'v7';
 const SHELL_CACHE   = 'yaps-shell-'   + VERSION;
 const RUNTIME_CACHE = 'yaps-runtime-' + VERSION;
 const IMAGE_CACHE   = 'yaps-images-'  + VERSION;
@@ -20,7 +23,14 @@ const NAV_TIMEOUT = 4000;  // ms to wait for network before falling back to cach
 const PRECACHE = [
   './',
   'index.html',
+  'styles.css?v=1',
+  'app.js?v=1',
+  'song-creator-embed.html?v=1',
   'studio.html',
+  'studio.css?v=1',
+  'studio-2.css?v=1',
+  'studio-app.js?v=1',
+  'yaps-colors.css',
   'manifest.json',
   'images/yaps-cover.png?v=2',
   'images/yaps-music-cover.jpg',
@@ -49,6 +59,9 @@ const PRECACHE = [
 const CDN_HOSTS = ['cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com', 'cdnjs.cloudflare.com'];
 // Never touched by the SW: live data, auth, and third-party streaming.
 const BYPASS_HOSTS = /(\.supabase\.co|youtube\.com|youtu\.be|ytimg\.com|googlevideo\.com|onrender\.com)$/i;
+// Split app files. Sub-resource requests for these are answered from SHELL_CACHE (where PRECACHE put them),
+// so the app and the DJ Studio open offline even if they were never fetched at runtime.
+const SHELL_ASSET = /\/(styles\.css|app\.js|song-creator-embed\.html|studio\.html|studio\.css|studio-2\.css|studio-app\.js|yaps-colors\.css)$/;
 const MEDIA_EXT = /\.(mp3|m4a|aac|wav|ogg|opus|flac|mp4|webm|mov)$/i;
 
 const OFFLINE_HTML = '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
@@ -132,6 +145,22 @@ async function cacheFirst(event, cacheName, max) {
   }
 }
 
+async function shellAsset(event) {
+  const cache = await caches.open(SHELL_CACHE);
+  const req = event.request;
+  const cached = await cache.match(req);                       // exact URL, so a new ?v=N never gets the old file
+  const versioned = new URL(req.url).searchParams.has('v');
+  const fromNet = () => fetch(req).then(res => {
+    if (res && res.ok) cache.put(req, res.clone()).catch(() => {});
+    return res;
+  });
+  if (cached) {
+    if (!versioned) event.waitUntil(fromNet().catch(() => {}));   // unversioned (studio.html, yaps-colors.css): refresh quietly for next time
+    return cached;
+  }
+  try { return await fromNet(); } catch (e) { return Response.error(); }   // after "Clear cache" this refills the shell on first use
+}
+
 function shellKey(url) {
   return new URL(url.pathname.endsWith('/') ? url.pathname + 'index.html' : url.pathname, url.origin).href;
 }
@@ -172,6 +201,10 @@ self.addEventListener('fetch', event => {
   }
 
   if (url.origin === self.location.origin) {
+    if (SHELL_ASSET.test(url.pathname)) {
+      event.respondWith(shellAsset(event));
+      return;
+    }
     if (req.destination === 'image') {
       event.respondWith(staleWhileRevalidate(event, IMAGE_CACHE, MAX_IMAGES));
     } else {
@@ -200,6 +233,7 @@ self.addEventListener('push', event => {
     body: d.body || '',
     icon: d.icon || 'images/yaps-cover.png',
     badge: d.badge || 'images/yaps-cover.png',
+    image: d.image || undefined,   // big picture, kept from the duplicate handler that was removed
     tag: d.tag || undefined,
     data: { url: d.url || './' }
   }));
@@ -220,28 +254,3 @@ self.addEventListener('notificationclick', event => {
     await self.clients.openWindow(target);
   })());
 });
-/* Add this to the END of your sw.js (outside any other handler). */
-self.addEventListener('push', function (event) {
-  var d = {};
-  try { d = event.data ? event.data.json() : {}; } catch (e) { d = { title: 'YAPS Music', body: event.data ? event.data.text() : '' }; }
-  event.waitUntil(self.registration.showNotification(d.title || 'YAPS Music', {
-    body: d.body || '',
-    icon: d.icon || 'images/icon-192.png',
-    badge: 'images/icon-192.png',
-    image: d.image,
-    tag: d.tag,
-    data: { url: d.url || '/' }
-  }));
-});
-
-self.addEventListener('notificationclick', function (event) {
-  event.notification.close();
-  var url = (event.notification.data && event.notification.data.url) || '/';
-  event.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (list) {
-    for (var i = 0; i < list.length; i++) {
-      if ('focus' in list[i]) { list[i].navigate && list[i].navigate(url); return list[i].focus(); }
-    }
-    return self.clients.openWindow(url);
-  }));
-});
-        
