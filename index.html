@@ -3297,72 +3297,128 @@ html { -webkit-tap-highlight-color: transparent; }
 }
 .pb-queue-btn:hover { color: var(--accent); }
 
-/* ── Floating draggable MINI PLAYER CARD — same dark neon look as the full-screen player (green → purple), replaces the old round bubble ──
-   Cover + title/artist, gradient seek bar, shuffle/prev/play/next/repeat/like, volume + cast. Drag it anywhere; tap the cover or title to open the full player. ── */
+/* ── MINI PLAYER — responsive docked bar (replaces the old draggable floating card) ──
+   Phones (≤768px): rounded bar floating just above the bottom nav — cover, title/artist, like, play, next,
+   with a thin seek line along the bottom edge. Tap the bar to open the full player.
+   Tablet / desktop (≥769px): full-width bar along the bottom like Spotify / Apple Music —
+   left: cover + title + like · centre: shuffle/prev/play/next/repeat + seek bar with times ·
+   right: mute + volume + cast + open-full-player.
+   It stays visible the whole time a song is playing. The X only shows while paused (it just hides the bar). ── */
 #miniBubble {
   --yp-g: #19e68c; --yp-c: #22d3ee; --yp-p: #8b5cf6; --yp-m: #d946ef;
-  position: fixed; z-index: 950; display: none; flex-direction: column; gap: 4px;
-  width: min(calc(100vw - 16px), 400px); box-sizing: border-box;
-  padding: 10px 12px 8px 10px; border-radius: 26px; border: 2px solid transparent;
+  position: fixed; z-index: 950; display: none; box-sizing: border-box;
+  left: 8px; right: 8px; bottom: calc(var(--mnav-h) + 2px);
+  height: 66px; padding: 0 8px 12px 8px; align-items: center; gap: 4px;
+  border-radius: 18px; border: 1.5px solid transparent;
   background: linear-gradient(160deg, rgba(14,20,56,.97), rgba(6,9,30,.97)) padding-box,
               linear-gradient(135deg, var(--yp-g), var(--yp-p) 60%, var(--yp-m)) border-box;
-  box-shadow: 0 14px 34px rgba(0,0,0,.6), 0 0 22px rgba(139,92,246,.4), 0 0 34px rgba(25,230,140,.14);
+  box-shadow: 0 10px 28px rgba(0,0,0,.55), 0 0 18px rgba(139,92,246,.32);
   color: #fff; font-family: 'Poppins','Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
-  cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+  cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;
 }
-#miniBubble.dragging { cursor: grabbing; transition: none !important; box-shadow: 0 18px 40px rgba(0,0,0,.7), 0 0 30px rgba(139,92,246,.65), 0 0 40px rgba(25,230,140,.25); }
-#miniBubble:not(.dragging) { transition: left .18s ease, top .18s ease; }
+#miniBubble.mc-on { display: flex; animation: mc-in .22s ease-out; }
+@keyframes mc-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+#miniBubble *, #miniBubble *::before, #miniBubble *::after { box-sizing: border-box; }
 #miniBubble svg { display: block; }
 :where(#miniBubble button) { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.mc-tabs { position: absolute; right: 8px; top: -15px; display: flex; align-items: center; gap: 6px; }
-.mc-tab { display: flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px; border-radius: 16px; color: #fff !important;
-  background: linear-gradient(135deg, var(--yp-g), #4f6cf0 55%, var(--yp-p)); box-shadow: 0 5px 16px rgba(99,102,241,.5); font-size: 13px; font-weight: 600; }
-.mc-tab svg { width: 15px; height: 15px; }
-.mc-x { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  background: rgba(16,24,64,.95) !important; border: 1px solid rgba(99,102,241,.45) !important; box-shadow: 0 3px 10px rgba(0,0,0,.5); color: #fff !important; }
-.mc-x svg { width: 14px; height: 14px; }
-.mc-main { display: flex; gap: 12px; align-items: flex-start; margin-top: 2px; }
-.mc-art { position: relative; flex: 0 0 auto; width: 88px; height: 88px; border-radius: 18px; overflow: hidden; background: #0a1030;
-  border: 2px solid transparent; cursor: pointer;
-  background: linear-gradient(#0a1030,#0a1030) padding-box, linear-gradient(135deg, var(--yp-g), var(--yp-p)) border-box; box-shadow: 0 0 16px rgba(139,92,246,.45); }
-.mc-art img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; border-radius: 15px; }
-.mc-brand { position: absolute; left: 0; bottom: 0; display: flex; align-items: center; gap: 4px; padding: 3px 9px 3px 6px;
-  border-top-right-radius: 12px; background: linear-gradient(135deg, #0f9d63, #5b3fd6); color: #fff; font-size: 9px; line-height: 1.05; pointer-events: none; }
-.mc-brand svg { width: 14px; height: 14px; flex: none; }
-.mc-brand b { display: block; font-size: 11px; font-weight: 700; letter-spacing: .02em; }
-.mc-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.mc-title { font-size: 18px; line-height: 1.2; font-weight: 700; color: #fff; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
-.mc-artist { font-size: 14px; line-height: 1.25; font-weight: 500; color: var(--yp-g); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
-.mc-bar { position: relative; height: 24px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
-.mc-bar::before { content: ""; position: absolute; left: 0; right: 0; height: 6px; border-radius: 99px; background: rgba(99,102,241,.22); }
-.mc-fill { position: absolute; left: 0; height: 6px; border-radius: 99px; background: linear-gradient(90deg, var(--yp-g), var(--yp-c) 45%, var(--yp-p)); width: 0; }
-.mc-knob { position: absolute; width: 20px; height: 20px; margin-left: -10px; border-radius: 50%; left: 0;
-  background: radial-gradient(circle at 35% 30%, #fff, #e4dcff 55%, #b9a6ff); box-shadow: 0 0 0 3px rgba(139,92,246,.35), 0 0 12px rgba(139,92,246,.9); }
-.mc-times { display: flex; justify-content: space-between; font-size: 12px; font-weight: 500; color: #e6e9ff; font-variant-numeric: tabular-nums; margin-top: -3px; }
-.mc-ctrl { display: flex; align-items: center; justify-content: space-between; margin-top: 2px; }
-.mc-b { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #fff !important; position: relative; }
+#miniBubble button:focus-visible, #miniBubble .mc-bar:focus-visible, #miniBubble .mc-vbar:focus-visible { outline: 2px solid var(--yp-c); outline-offset: 2px; }
+
+/* left: cover + title/artist + like */
+.mc-left { display: flex; align-items: center; gap: 10px; flex: 1 1 auto; min-width: 0; }
+.mc-art { position: relative; flex: 0 0 auto; width: 46px; height: 46px; border-radius: 10px; overflow: hidden; background: #0a1030; box-shadow: 0 0 12px rgba(139,92,246,.4); }
+.mc-art img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.mc-eq { position: absolute; left: 4px; bottom: 4px; display: none; align-items: flex-end; gap: 2px; height: 12px; padding: 2px 3px; border-radius: 4px; background: rgba(5,7,22,.7); }
+.mc-eq i { display: block; width: 3px; height: 100%; border-radius: 1px; background: var(--yp-g); transform-origin: bottom; animation: mc-eq .9s ease-in-out infinite; }
+.mc-eq i:nth-child(2) { animation-delay: .2s; background: var(--yp-c); }
+.mc-eq i:nth-child(3) { animation-delay: .4s; background: var(--yp-p); }
+@keyframes mc-eq { 0%, 100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
+#miniBubble.playing .mc-eq { display: flex; }
+.mc-info { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.mc-title { font-size: 14px; line-height: 1.25; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mc-artist { font-size: 12px; line-height: 1.25; font-weight: 500; color: var(--yp-g); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+
+/* buttons */
+.mc-b { width: 36px; height: 36px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #fff !important; position: relative; transition: background .15s, transform .1s; }
 .mc-b svg { width: 22px; height: 22px; }
-#mbShuffle, #mbRepeat { color: var(--yp-g) !important; opacity: .8; }
+.mc-b:active { transform: scale(.92); }
+#mbShuffle, #mbRepeat { color: var(--yp-g) !important; opacity: .7; }
 #mbShuffle.on, #mbRepeat.on { opacity: 1; filter: drop-shadow(0 0 7px rgba(25,230,140,.9)); }
-.mc-b.one::after { content: "1"; position: absolute; right: 3px; top: 2px; font-size: 9px; font-weight: 700; color: var(--yp-g); }
-.mc-heart { color: rgba(255,255,255,.55) !important; }
-.mc-heart svg { fill: none; stroke: currentColor; stroke-width: 2.2; }
+.mc-b.one::after { content: "1"; position: absolute; right: 4px; top: 3px; font-size: 9px; font-weight: 700; color: var(--yp-g); }
+.mc-heart { color: rgba(255,255,255,.6) !important; }
+.mc-heart svg { fill: none; stroke: currentColor; stroke-width: 2.2; width: 21px; height: 21px; }
 .mc-heart.liked { color: var(--yp-g) !important; filter: drop-shadow(0 0 7px rgba(25,230,140,.6)); }
 .mc-heart.liked svg { fill: currentColor; }
-.mc-play { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff !important; flex: none;
-  border: 3px solid transparent !important;
+.mc-play { width: 42px; height: 42px; flex: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff !important;
+  border: 2.5px solid transparent !important;
   background: linear-gradient(#070c26,#070c26) padding-box, linear-gradient(135deg, var(--yp-g), var(--yp-p) 60%, var(--yp-m)) border-box !important;
-  box-shadow: 0 0 16px rgba(139,92,246,.55), 0 0 28px rgba(25,230,140,.16); }
-.mc-play svg { width: 22px; height: 22px; }
-.mc-vol { display: flex; align-items: center; gap: 10px; }
-.mc-vol .mc-b { width: 28px; height: 28px; }
-.mc-vol .mc-b svg { width: 20px; height: 20px; }
-.mc-vol .mc-cast { color: var(--yp-c) !important; margin-left: auto; }
-.mc-vbar { position: relative; flex: 0 1 46%; height: 20px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
-.mc-vbar::before { content: ""; position: absolute; left: 0; right: 0; height: 5px; border-radius: 99px; background: rgba(99,102,241,.22); }
-.mc-vbar .mc-fill { height: 5px; }
-.mc-vbar .mc-knob { width: 16px; height: 16px; margin-left: -8px; }
-@media (max-width: 360px) { .mc-art { width: 76px; height: 76px; } .mc-title { font-size: 16px; } .mc-b { width: 30px; } }
+  box-shadow: 0 0 14px rgba(139,92,246,.5); transition: transform .1s; }
+.mc-play:active { transform: scale(.93); }
+.mc-play svg { width: 20px; height: 20px; }
+
+/* centre: transport + seek */
+.mc-center { display: contents; }
+.mc-ctrl { display: flex; align-items: center; gap: 2px; flex: none; }
+.mc-ctrl #mbShuffle, .mc-ctrl #mbRepeat { display: none; }
+.mc-seekrow { position: absolute; left: 14px; right: 14px; bottom: 0; height: 16px; display: flex; align-items: center; }
+.mc-time { display: none; font-size: 11px; font-weight: 500; color: #c9cffc; font-variant-numeric: tabular-nums; min-width: 38px; }
+.mc-time:first-child { text-align: right; }
+.mc-bar { position: relative; flex: 1 1 auto; height: 16px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
+.mc-bar::before { content: ""; position: absolute; left: 0; right: 0; height: 3px; border-radius: 99px; background: rgba(129,140,248,.25); }
+.mc-fill { position: absolute; left: 0; height: 3px; border-radius: 99px; background: linear-gradient(90deg, var(--yp-g), var(--yp-c) 45%, var(--yp-p)); width: 0; pointer-events: none; }
+.mc-knob { position: absolute; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; left: 0; opacity: 0; transition: opacity .15s; pointer-events: none;
+  background: radial-gradient(circle at 35% 30%, #fff, #e4dcff 55%, #b9a6ff); box-shadow: 0 0 0 3px rgba(139,92,246,.35), 0 0 10px rgba(139,92,246,.9); }
+
+/* right: volume / cast / expand / close */
+.mc-right { display: flex; align-items: center; justify-content: flex-end; gap: 4px; flex: none; }
+.mc-volgroup, .mc-expand { display: none; }
+.mc-x { width: 32px; height: 32px; background: rgba(16,24,64,.95) !important; border: 1px solid rgba(99,102,241,.45) !important; }
+.mc-x svg { width: 14px; height: 14px; }
+#miniBubble.playing .mc-x { display: none; }    /* no close while a song is playing */
+.mc-vbar { position: relative; flex: 1 1 auto; height: 16px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
+.mc-vbar::before { content: ""; position: absolute; left: 0; right: 0; height: 4px; border-radius: 99px; background: rgba(129,140,248,.25); }
+.mc-vbar .mc-fill { height: 4px; }
+.mc-vbar .mc-knob { width: 12px; height: 12px; margin-left: -6px; }
+.mc-cast { color: var(--yp-c) !important; }
+
+/* small phones */
+@media (max-width: 480px) { #mbPrev { display: none; } }
+@media (max-width: 360px) { .mc-art { width: 42px; height: 42px; } .mc-title { font-size: 13px; } .mc-b { width: 32px; } .mc-heart { display: none; } }
+
+/* tablet / desktop: full-width docked bar */
+@media (min-width: 769px) {
+  #miniBubble {
+    left: 0; right: 0; bottom: 0; height: 84px; padding: 0 20px; border: 0; border-radius: 0;
+    border-top: 1px solid rgba(139,92,246,.45);
+    background: linear-gradient(180deg, rgba(16,22,60,.985), rgba(5,7,22,.995));
+    box-shadow: 0 -10px 30px rgba(0,0,0,.45), 0 -1px 0 rgba(25,230,140,.12);
+    gap: 24px;
+  }
+  #miniBubble.mc-on { display: grid; grid-template-columns: minmax(200px, 1fr) minmax(340px, 640px) minmax(200px, 1fr); align-items: center; animation: none; }
+  .mc-left { gap: 14px; }
+  .mc-art { width: 56px; height: 56px; border-radius: 8px; cursor: pointer; }
+  .mc-title { font-size: 15px; cursor: pointer; }
+  .mc-title:hover { text-decoration: underline; }
+  .mc-artist { font-size: 13px; }
+  .mc-center { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 0; }
+  .mc-ctrl { gap: 10px; }
+  .mc-ctrl #mbShuffle, .mc-ctrl #mbRepeat, #mbPrev { display: flex; }
+  .mc-seekrow { position: static; width: 100%; height: 18px; gap: 10px; }
+  .mc-time { display: block; }
+  .mc-bar { height: 18px; }
+  .mc-bar::before, .mc-fill { height: 4px; }
+  .mc-bar:hover .mc-knob, .mc-bar:focus-visible .mc-knob, .mc-vbar:hover .mc-knob { opacity: 1; }
+  .mc-right { gap: 8px; }
+  .mc-volgroup { display: flex; align-items: center; gap: 6px; width: min(210px, 100%); }
+  .mc-volgroup .mc-b { width: 32px; height: 32px; }
+  .mc-volgroup .mc-b svg { width: 20px; height: 20px; }
+  .mc-expand { display: flex; }
+  .mc-heart { display: flex; }
+  .mc-play { width: 46px; height: 46px; }
+  .mc-play svg { width: 22px; height: 22px; }
+}
+@media (hover: hover) { .mc-b:hover { background: rgba(255,255,255,.09); } }
+@media (min-width: 1600px) { #miniBubble.mc-on { grid-template-columns: minmax(260px, 1fr) minmax(420px, 760px) minmax(260px, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .mc-eq i, #miniBubble.mc-on { animation: none; } }
 
 /* ── MODALS ── */
 .modal-overlay {
@@ -9198,34 +9254,41 @@ a.djx-row{color:inherit;text-decoration:none}
   <span id="pbCurrent"></span><div id="progressFill"></div><span id="pbTotal"></span><div id="volFill"></div><i id="factsBtn"></i>
 </div>
 
-<!-- FLOATING MINI PLAYER — draggable bubble, follows the user to any page and
-     any spot on screen. Shown instead of the docked bar off the home page. -->
+<!-- MINI PLAYER — docked + responsive: floating bar above the bottom nav on phones, full-width bar along the
+     bottom on tablet/desktop. Same element ids as before, so all playback code keeps working. -->
 <div id="miniBubble" role="region" aria-label="Mini player">
-  <div class="mc-tabs">
-    <button type="button" class="mc-tab" id="mbTab" aria-label="Open full player"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 20V10h4v10zM10 20V4h4v16zM16 20v-7h4v7z"/></svg><span>YAPS Music</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
-    <button type="button" class="mc-x" id="mbClose" aria-label="Close mini player"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
-  </div>
-  <div class="mc-main">
-    <div class="mc-art" id="mbArt"><img loading="lazy" decoding="async" id="mbImg" src="" alt="Now Playing"><span class="mc-brand"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 18V6l10-2v12" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg><span><b>YAPS</b>Music</span></span></div>
+  <div class="mc-left">
+    <div class="mc-art" id="mbArt"><img loading="lazy" decoding="async" id="mbImg" src="" alt="Now Playing"><span class="mc-eq" aria-hidden="true"><i></i><i></i><i></i></span></div>
     <div class="mc-info">
       <div class="mc-title" id="mbTitle">Song title</div>
       <div class="mc-artist" id="mbArtist">Artist</div>
-      <div class="mc-bar" id="mbSeek" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="100"><div class="mc-fill" id="mbFill"></div><div class="mc-knob" id="mbKnob"></div></div>
-      <div class="mc-times"><span id="mbCur">00:00</span><span id="mbTot">00:00</span></div>
     </div>
-  </div>
-  <div class="mc-ctrl">
-    <button type="button" class="mc-b" id="mbShuffle" aria-label="Shuffle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg></button>
-    <button type="button" class="mc-b" id="mbPrev" aria-label="Previous song"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 5h2.4v14H5zM20 5v14L8.5 12z"/></svg></button>
-    <button type="button" class="mc-play" id="mbPlayBtn" aria-label="Play or pause"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" id="mbPlayIcon"><path d="M8 5v14l11-7z"/></svg></button>
-    <button type="button" class="mc-b" id="mbNext" aria-label="Next song"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5H19v14h-2.4zM4 5v14l11.5-7z"/></svg></button>
-    <button type="button" class="mc-b" id="mbRepeat" aria-label="Repeat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button>
     <button type="button" class="mc-b mc-heart" id="mbHeart" aria-label="Like"><svg viewBox="0 0 24 24" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.8 6.6 4.8c2 0 3.5 1.1 4.4 2.5.9-1.4 2.4-2.5 4.4-2.5 3.6 0 5.7 3.6 4.2 7C19.5 16.4 12 21 12 21z"/></svg></button>
   </div>
-  <div class="mc-vol">
-    <button type="button" class="mc-b" id="mbMute" aria-label="Mute"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9z"/><path id="mbVolWave" d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke-linecap="round" stroke-width="2.2"/></svg></button>
-    <div class="mc-vbar" id="mbVol" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100"><div class="mc-fill" id="mbVolFill"></div><div class="mc-knob" id="mbVolKnob"></div></div>
-    <button type="button" class="mc-b mc-cast" id="mbCast" aria-label="Cast to a device"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"/><path d="M2 12a9 9 0 0 1 8 8"/><path d="M2 16a5 5 0 0 1 4 4"/><circle cx="2.8" cy="20" r="1" fill="currentColor"/></svg></button>
+
+  <div class="mc-center">
+    <div class="mc-ctrl">
+      <button type="button" class="mc-b" id="mbShuffle" aria-label="Shuffle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg></button>
+      <button type="button" class="mc-b" id="mbPrev" aria-label="Previous song"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 5h2.4v14H5zM20 5v14L8.5 12z"/></svg></button>
+      <button type="button" class="mc-play" id="mbPlayBtn" aria-label="Play or pause"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" id="mbPlayIcon"><path d="M8 5v14l11-7z"/></svg></button>
+      <button type="button" class="mc-b" id="mbNext" aria-label="Next song"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.6 5H19v14h-2.4zM4 5v14l11.5-7z"/></svg></button>
+      <button type="button" class="mc-b" id="mbRepeat" aria-label="Repeat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button>
+    </div>
+    <div class="mc-seekrow">
+      <span class="mc-time" id="mbCur">00:00</span>
+      <div class="mc-bar" id="mbSeek" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="mc-fill" id="mbFill"></div><div class="mc-knob" id="mbKnob"></div></div>
+      <span class="mc-time" id="mbTot">00:00</span>
+    </div>
+  </div>
+
+  <div class="mc-right">
+    <div class="mc-volgroup">
+      <button type="button" class="mc-b" id="mbMute" aria-label="Mute"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3 9v6h4l5 4V5L7 9z"/><path id="mbVolWave" d="M16 8.5a5 5 0 0 1 0 7" fill="none" stroke-linecap="round" stroke-width="2.2"/></svg></button>
+      <div class="mc-vbar" id="mbVol" role="slider" tabindex="0" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div class="mc-fill" id="mbVolFill"></div><div class="mc-knob" id="mbVolKnob"></div></div>
+      <button type="button" class="mc-b mc-cast" id="mbCast" aria-label="Cast to a device"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"/><path d="M2 12a9 9 0 0 1 8 8"/><path d="M2 16a5 5 0 0 1 4 4"/><circle cx="2.8" cy="20" r="1" fill="currentColor"/></svg></button>
+    </div>
+    <button type="button" class="mc-b mc-expand" id="mbTab" aria-label="Open full player"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+    <button type="button" class="mc-b mc-x" id="mbClose" aria-label="Hide mini player"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
   </div>
 </div>
 
@@ -11344,22 +11407,27 @@ function _updatePlayerBarVisibility() {
   _updateMiniBubbleVisibility();
 }
 
-// ── Floating draggable MINI PLAYER CARD ──
-// Shown on every page once a track has been played (hidden while the DJ Studio / Song Creator are open, or after the X is tapped
-// until playback starts again or another song is chosen). Position is draggable and remembered.
-let _mbDismissed = false, _mbDismissedIdx = -1, _mbWasPlaying = false, _mbTimer = null;
+// ── MINI PLAYER (responsive docked bar) ──
+// Phones: floating bar above the bottom nav. Tablet/desktop: full-width bar along the bottom.
+// It stays visible for as long as a song is playing — including after leaving the full Now Playing screen.
+// The X button only exists while paused: it hides the bar without touching playback, and starting any song brings it back.
+// While visible it reserves its own height in --player-h so page content is never covered.
+let _mbDismissed = false, _mbDismissedIdx = -1, _mbTimer = null, _mbSig = '';
+
+function _mbPlayerH() { return window.matchMedia('(min-width: 769px)').matches ? 84 : 76; }
 
 function _updateMiniBubbleVisibility() {
   const bubble = document.getElementById('miniBubble');
   if (!bubble) return;
-  const hiddenByX = _mbDismissed && _mbDismissedIdx === currentTrack;
-  if (_mbDismissed && !hiddenByX) _mbDismissed = false;   // a different song was chosen: bring the card back
-  const show = _hasPlayedOnce && !window.__studioOpen && !window.__scOpen && !hiddenByX;
-  const was = bubble.style.display === 'flex';
-  bubble.style.display = show ? 'flex' : 'none';
+  // playing = never hidden; a different song also un-hides it
+  if (_mbDismissed && (isPlaying || _mbDismissedIdx !== currentTrack)) _mbDismissed = false;
+  const show = (_hasPlayedOnce || isPlaying) && !window.__studioOpen && !window.__scOpen && !_mbDismissed;
+  const was = bubble.classList.contains('mc-on');
+  bubble.style.display = '';
+  bubble.classList.toggle('mc-on', show);
+  document.documentElement.style.setProperty('--player-h', show ? _mbPlayerH() + 'px' : '0px');
   if (show) {
     _mbSyncNowPlaying();
-    if (!was && window._mbRestore) window._mbRestore();
     if (!_mbTimer) _mbTimer = setInterval(_mbTick, 250);
   } else if (_mbTimer) { clearInterval(_mbTimer); _mbTimer = null; }
 }
@@ -11382,19 +11450,24 @@ function _mbProgress() {
   return { cur: cur, dur: dur, pct: Math.max(0, Math.min(100, pct || 0)) };
 }
 
-// light update, runs 4x a second while the card is visible: progress, times, volume
+// light update, runs 4x a second while the bar is visible: progress, times, volume, like/shuffle/repeat state
 function _mbTick() {
+  // song or play/pause changed from anywhere (full player, keyboard, headset…): refresh cover/title/icon
+  const sig = currentTrack + '|' + (isPlaying ? 1 : 0);
+  if (sig !== _mbSig) { _mbSig = sig; _mbSyncNowPlaying(); return; }
   const p = _mbProgress();
   const f = document.getElementById('mbFill'), k = document.getElementById('mbKnob'), c = document.getElementById('mbCur'), d = document.getElementById('mbTot');
   if (f) f.style.width = p.pct + '%';
   if (k) k.style.left = p.pct + '%';
   if (c) c.textContent = _mbFmt(p.cur);
   if (d) d.textContent = _mbFmt(p.dur);
+  const sk = document.getElementById('mbSeek'); if (sk) sk.setAttribute('aria-valuenow', Math.round(p.pct));
   let v = 1; try { v = audioEngine.muted ? 0 : audioEngine.volume; } catch (e) {}
-  const vf = document.getElementById('mbVolFill'), vk = document.getElementById('mbVolKnob'), vw = document.getElementById('mbVolWave');
+  const vf = document.getElementById('mbVolFill'), vk = document.getElementById('mbVolKnob'), vw = document.getElementById('mbVolWave'), vb = document.getElementById('mbVol');
   if (vf) vf.style.width = (v * 100) + '%';
   if (vk) vk.style.left = (v * 100) + '%';
   if (vw) vw.style.display = v > 0 ? '' : 'none';
+  if (vb) vb.setAttribute('aria-valuenow', Math.round(v * 100));
   const hb = document.getElementById('mbHeart');
   if (hb) hb.classList.toggle('liked', !!(typeof _likedTracks !== 'undefined' && _likedTracks.has(currentTrack)));
   const sb = document.getElementById('mbShuffle'); if (sb) sb.classList.toggle('on', !!shuffleOn);
@@ -11404,9 +11477,7 @@ function _mbTick() {
 function _mbSyncNowPlaying() {
   const bubble = document.getElementById('miniBubble');
   if (!bubble) return;
-  // playback just started again after the X was tapped: show the card again
-  if (isPlaying && !_mbWasPlaying && _mbDismissed) { _mbDismissed = false; _mbWasPlaying = !!isPlaying; _updateMiniBubbleVisibility(); return; }
-  _mbWasPlaying = !!isPlaying;
+  _mbSig = currentTrack + '|' + (isPlaying ? 1 : 0);
   const t = tracks[currentTrack];
   const img = document.getElementById('mbImg');
   if (img && t && img.getAttribute('src') !== t.img) img.src = t.img;
@@ -11416,88 +11487,57 @@ function _mbSyncNowPlaying() {
   bubble.classList.toggle('playing', !!isPlaying);
   const icon = document.getElementById('mbPlayIcon');
   if (icon) icon.innerHTML = isPlaying ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>';
+  const pb = document.getElementById('mbPlayBtn'); if (pb) pb.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
   _mbTick();
 }
 
-(function _initMiniBubbleDrag() {
-  const MARGIN = 8, MARGIN_TOP = 20;   // extra room on top for the YAPS Music tab and the X that stick out above the card
-  let bubble, dragging = false, moved = false, startX = 0, startY = 0, origX = 0, origY = 0;
-  const KEY = 'yaps_minicard_pos';
+// safety net: if audio is playing the bar must be on screen (covers any play path that doesn't call the visibility helper)
+setInterval(function () {
+  try {
+    if (!isPlaying) return;
+    const b = document.getElementById('miniBubble');
+    if (b && !b.classList.contains('mc-on')) _updateMiniBubbleVisibility();
+  } catch (e) {}
+}, 500);
 
+(function _initMiniPlayer() {
+  let bubble;
   function clamp(val, min, max) { return Math.max(min, Math.min(max, val)); }
-
-  function place(x, y, save) {
-    const w = bubble.offsetWidth || 340, h = bubble.offsetHeight || 190;
-    x = clamp(x, MARGIN, Math.max(MARGIN, window.innerWidth - w - MARGIN));
-    y = clamp(y, MARGIN_TOP, Math.max(MARGIN_TOP, window.innerHeight - h - MARGIN));
-    bubble.style.left = x + 'px'; bubble.style.top = y + 'px';
-    bubble.style.right = 'auto'; bubble.style.bottom = 'auto';
-    if (save) { try { localStorage.setItem(KEY, JSON.stringify({ x: x, y: y })); } catch (e) {} }
-  }
-
-  function restorePosition() {
-    if (!bubble) bubble = document.getElementById('miniBubble');
-    if (!bubble) return;
-    let pos = null;
-    try { pos = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
-    const w = bubble.offsetWidth || 340, h = bubble.offsetHeight || 190;
-    if (pos && typeof pos.x === 'number' && typeof pos.y === 'number') place(pos.x, pos.y, false);
-    else {
-      // default: bottom centre, just above the bottom nav
-      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--mnav-h')) || 86;
-      place((window.innerWidth - w) / 2, window.innerHeight - navH - h - 12, false);
-    }
-  }
-  window._mbRestore = restorePosition;
-
-  function onPointerDown(e) {
-    if (e.target.closest('button, #mbSeek, #mbVol')) return;   // controls handle themselves; only the card body drags
-    dragging = true; moved = false;
-    bubble.classList.add('dragging');
-    const rect = bubble.getBoundingClientRect();
-    startX = e.clientX; startY = e.clientY; origX = rect.left; origY = rect.top;
-    try { bubble.setPointerCapture(e.pointerId); } catch (x) {}
-  }
-  function onPointerMove(e) {
-    if (!dragging) return;
-    const dx = e.clientX - startX, dy = e.clientY - startY;
-    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
-    place(origX + dx, origY + dy, false);
-  }
-  function onPointerUp() {
-    if (!dragging) return;
-    dragging = false;
-    bubble.classList.remove('dragging');
-    const rect = bubble.getBoundingClientRect();
-    place(rect.left, rect.top, true);
-    if (!moved && typeof openNowPlayingScreen === 'function') openNowPlayingScreen();   // a tap on the card body opens the full player
-  }
-  function onWindowResize() {
-    if (!bubble || bubble.style.display !== 'flex') return;
-    const rect = bubble.getBoundingClientRect();
-    place(rect.left, rect.top, false);
-  }
 
   // a draggable horizontal bar (seek / volume): calls set(fraction 0..1) while the finger/mouse moves
   function slider(el, set) {
+    if (!el) return;
     let on = false;
     function frac(e) { const r = el.getBoundingClientRect(); return r.width ? clamp((e.clientX - r.left) / r.width, 0, 1) : 0; }
-    el.addEventListener('pointerdown', e => { on = true; try { el.setPointerCapture(e.pointerId); } catch (x) {} set(frac(e), false); e.preventDefault(); });
+    el.addEventListener('pointerdown', e => { on = true; try { el.setPointerCapture(e.pointerId); } catch (x) {} set(frac(e), false); e.preventDefault(); e.stopPropagation(); });
     el.addEventListener('pointermove', e => { if (on) set(frac(e), false); });
     const end = e => { if (!on) return; on = false; set(frac(e), true); };
     el.addEventListener('pointerup', end); el.addEventListener('pointercancel', () => { on = false; });
+    el.addEventListener('click', e => e.stopPropagation());
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  function seekTo(f) {
+    currentProgress = f * 100;
+    try { if (audioEngine.src && audioEngine.src !== location.href && audioEngine.duration) audioEngine.currentTime = f * audioEngine.duration; } catch (e) {}
+    try { updateProgress(); } catch (e) {}
+    _mbTick();
+  }
+  function setVol(f) {
+    try { audioEngine.muted = false; audioEngine.volume = clamp(f, 0, 1); } catch (e) {}
+    _mbTick();
+  }
+
+  function init() {
     bubble = document.getElementById('miniBubble');
     if (!bubble) return;
-    bubble.addEventListener('pointerdown', onPointerDown);
-    bubble.addEventListener('pointermove', onPointerMove);
-    bubble.addEventListener('pointerup', onPointerUp);
-    bubble.addEventListener('pointercancel', onPointerUp);
-    window.addEventListener('resize', onWindowResize);
     const $ = id => document.getElementById(id);
     const on = (id, fn) => { const el = $(id); if (el) el.addEventListener('click', e => { e.stopPropagation(); fn(e); }); };
+
+    // tap anywhere on the bar (except buttons / sliders) opens the full player
+    bubble.addEventListener('click', e => {
+      if (e.target.closest('button, #mbSeek, #mbVol')) return;
+      if (typeof openNowPlayingScreen === 'function') openNowPlayingScreen();
+    });
 
     on('mbPlayBtn', () => { if (typeof togglePlay === 'function') togglePlay(); });
     on('mbPrev', () => { if (typeof prevTrack === 'function') prevTrack(); });
@@ -11514,23 +11554,40 @@ function _mbSyncNowPlaying() {
       } catch (e) {}
       if (typeof showToast === 'function') showToast('Casting is not supported on this browser');
     });
+    // X is only visible while paused: it hides the bar, it never stops or interrupts a song
     on('mbClose', () => {
-      if (isPlaying && typeof togglePlay === 'function') togglePlay();   // closing the card stops the music
+      if (isPlaying) return;
       _mbDismissed = true; _mbDismissedIdx = currentTrack;
       _updateMiniBubbleVisibility();
     });
-    // tapping the cover or the title opens the full player (the card body already does this on a tap)
-    slider($('mbSeek'), (f, done) => {
-      currentProgress = f * 100;
-      try { if (audioEngine.src && audioEngine.src !== location.href && audioEngine.duration) audioEngine.currentTime = f * audioEngine.duration; } catch (e) {}
-      try { updateProgress(); } catch (e) {}
-      _mbTick();
+
+    slider($('mbSeek'), (f) => seekTo(f));
+    slider($('mbVol'), (f) => setVol(f));
+
+    // keyboard: arrows on the sliders
+    const sk = $('mbSeek');
+    if (sk) sk.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      let d = 0; try { d = audioEngine.duration || 0; } catch (x) {}
+      if (!d) return;
+      const step = 5 / d;
+      seekTo(clamp(_mbProgress().pct / 100 + (e.key === 'ArrowRight' ? step : -step), 0, 1));
+      e.preventDefault();
     });
-    slider($('mbVol'), (f) => {
-      try { audioEngine.muted = false; audioEngine.volume = f; } catch (e) {}
-      _mbTick();
+    const vl = $('mbVol');
+    if (vl) vl.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      let v = 1; try { v = audioEngine.muted ? 0 : audioEngine.volume; } catch (x) {}
+      setVol(v + (e.key === 'ArrowRight' ? 0.05 : -0.05));
+      e.preventDefault();
     });
-  });
+
+    // phone <-> desktop (rotate / resize): re-reserve the right amount of space
+    window.addEventListener('resize', () => {
+      if (bubble.classList.contains('mc-on')) document.documentElement.style.setProperty('--player-h', _mbPlayerH() + 'px');
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 let queueOpen = false;
 // When set, playback (next/prev/shuffle) is scoped to this list of track
@@ -14066,6 +14123,8 @@ function closeNowPlayingScreen() {
   if (typeof npToggleMore === 'function') npToggleMore(null, false);
   document.getElementById('nowPlayingScreen').classList.remove('open');
   if (_npVisRafId) { cancelAnimationFrame(_npVisRafId); _npVisRafId = null; }
+  // leaving the full player: the mini player must stay up (and un-hide) while music plays
+  try { if (isPlaying) _mbDismissed = false; _updateMiniBubbleVisibility(); } catch (e) {}
 }
 
 function npOnSeekInput(el) {
@@ -33233,11 +33292,11 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-j],[
 <style>
 /* Hide bottom nav + mini player while the on-screen keyboard is open */
 @media (max-width: 1024px) {
-  html.kb-open #bottomNav, html.kb-open #player-bar { display: none !important; }
+  html.kb-open #bottomNav, html.kb-open #player-bar, html.kb-open #miniBubble { display: none !important; }
 }
 @media (max-width: 1024px) {
   /* Keyboard open: keep header visible, pin the app to the visible area, no empty strip above the keyboard */
-  html.kb-open { --mnav-h: 0px; }
+  html.kb-open { --mnav-h: 0px; --player-h: 0px !important; }
   html.kb-open body { position: fixed; top: 0; left: 0; right: 0; width: 100%; overflow: hidden;
     height: calc(var(--vh, 1vh) * 100) !important; transform: translateY(var(--vvt, 0px)); }
   html.kb-open #layout { margin-bottom: 0 !important; height: calc(var(--vh, 1vh) * 100 - var(--topbar-h)) !important; }
@@ -33903,6 +33962,83 @@ html #page-profile .acct-hub #acctMain .ac-desc{padding-right:14px}
 #page-studio-intro .stp-skip input:checked{background:#2f7bff;border-color:#7fb6ff}
 #page-studio-intro .stp-skip input:checked::after{content:"✓";font-size:13px;font-weight:900;color:#fff}
 </style>
+<style id="studio-intro-pro">
+/* ═══ STUDIO PAGE — professional dark-navy skin (overrides #studio-intro-css above) ═══
+   Replaces the bright electric / light-blue outlines, glows, italics and rainbow 3D lettering with a calm dark-navy look:
+   flat navy cards, thin quiet borders, ONE deep-blue accent, plain bold headings. Gold is kept only for Premium. */
+html #page-studio-intro{
+  --sp-bg1:#0a1330; --sp-bg2:#070e26; --sp-bg3:#050a1b;
+  --sp-card:#0d1735; --sp-card2:#101c40; --sp-line:rgba(120,142,210,.20);
+  --sp-text:#eaf0ff; --sp-muted:#98a8d0; --sp-accent:#2f59d1; --sp-accent2:#244bb8; --sp-soft:#8ea6ea;
+  color:var(--sp-text);
+  background:linear-gradient(180deg,var(--sp-bg1) 0%,var(--sp-bg2) 55%,var(--sp-bg3) 100%);
+}
+/* headings: plain, bold, white (no 3D rainbow, no animation) */
+html #page-studio-intro .y3d,html #page-studio-intro .y3d-g,html #page-studio-intro .y3d-s,html #page-studio-intro .y3d-live{
+  font-family:'Archivo',system-ui,sans-serif!important;font-weight:800!important;font-style:normal!important;text-transform:none;letter-spacing:-.01em;
+  background:none!important;color:var(--sp-text)!important;-webkit-text-fill-color:var(--sp-text)!important;
+  filter:none!important;animation:none!important;text-shadow:none!important;
+}
+html #page-studio-intro .stp-what{padding:14px 12px 4px}
+html #page-studio-intro .stp-what>b,html #page-studio-intro .stp-what>b.y3d{font-size:19px;font-style:normal;line-height:1.2;padding-bottom:0}
+html #page-studio-intro .stp-what::before,html #page-studio-intro .stp-what::after{height:1px;background:linear-gradient(90deg,transparent,var(--sp-line))}
+html #page-studio-intro .stp-how-h{font-size:19px;font-style:normal;margin:6px 0 14px}
+html #page-studio-intro .stp-how-h .y3d{font-style:normal}
+html #page-studio-intro .stp-ct{font-style:normal;font-size:clamp(17px,5vw,24px)}
+html #page-studio-intro .stp-ct .y3d{font-style:normal;margin-bottom:4px}
+html #page-studio-intro .stp-x{border:1px solid var(--sp-line);border-radius:10px;background:rgba(6,11,29,.72)}
+
+/* cards: flat navy, thin quiet border, soft shadow (no neon outline / inner glow) */
+html #page-studio-intro .stp-tile,html #page-studio-intro .stp-pc,html #page-studio-intro .stp-faqs details,html #page-studio-intro .stp-featbox{
+  border:1px solid var(--sp-line);border-radius:12px;
+  background:linear-gradient(180deg,var(--sp-card2),var(--sp-card));box-shadow:0 6px 18px rgba(2,6,20,.35);
+}
+html #page-studio-intro .stp-mart{border:1px solid var(--sp-line);border-radius:10px;background:var(--sp-card);box-shadow:0 4px 12px rgba(2,6,20,.35)}
+html #page-studio-intro .stp-tile{padding:8px 8px 11px;text-align:left}
+html #page-studio-intro .stp-tile img{border-radius:8px;height:88px;margin-bottom:8px}
+html #page-studio-intro .stp-tile b{font-style:normal;font-weight:700;font-size:13.5px}
+html #page-studio-intro .stp-tile span{font-style:normal;color:var(--sp-muted);font-size:11px}
+html #page-studio-intro .stp-tile:focus-visible{outline-color:var(--sp-soft)}
+html #page-studio-intro .stp-featbox i.fa-headphones{color:var(--sp-soft)!important}
+
+/* How it works */
+html #page-studio-intro .stp-steps::before{border-top:1px dashed var(--sp-line)}
+html #page-studio-intro .stp-sn{background:#13224f;border:1px solid rgba(142,166,234,.38);box-shadow:none;color:var(--sp-soft)}
+html #page-studio-intro .stp-sn em{background:var(--sp-accent);color:#fff;box-shadow:0 0 0 2px var(--sp-bg2)}
+html #page-studio-intro .stp-step b{font-style:normal;font-weight:700}
+html #page-studio-intro .stp-step span{font-style:normal;color:var(--sp-muted)}
+
+/* Made in YAPS Studio rail */
+html #page-studio-intro .stp-mart i{background:var(--sp-accent);border:1px solid rgba(255,255,255,.22);box-shadow:0 2px 8px rgba(0,0,0,.45)}
+html #page-studio-intro .stp-mc b{font-style:normal;font-weight:700}
+html #page-studio-intro .stp-mc span{font-style:normal;color:var(--sp-muted)}
+
+/* creator banner */
+html #page-studio-intro .stp-creator{background:linear-gradient(180deg,var(--sp-card2),var(--sp-card));border:1px solid var(--sp-line);border-radius:14px;padding:14px}
+html #page-studio-intro .stp-creator .stp-cr-img img{border-radius:10px}
+html #page-studio-intro .stp-ticks li{font-style:normal;color:var(--sp-text)}
+html #page-studio-intro .stp-ticks li::before{background:var(--sp-accent);box-shadow:none}
+
+/* plans (Premium keeps its gold, calmer) */
+html #page-studio-intro .stp-pc.prem{border-color:rgba(245,196,81,.5);box-shadow:0 6px 18px rgba(2,6,20,.35)}
+html #page-studio-intro .stp-pc h4,html #page-studio-intro .stp-pc li{font-style:normal}
+html #page-studio-intro .stp-pp{color:var(--sp-text)}
+html #page-studio-intro .stp-pc li.no i{color:var(--sp-muted)}
+html #page-studio-intro .stp-pbtn{border:0;border-radius:10px;font-style:normal;font-weight:800;background:#f5c451;color:#1a1200}
+
+/* FAQ */
+html #page-studio-intro .stp-faqs summary{font-style:normal;font-weight:700}
+html #page-studio-intro .stp-faqs summary::after{background:#16275a;border:1px solid var(--sp-line);color:var(--sp-soft)}
+html #page-studio-intro .stp-faqs p{font-style:normal;color:var(--sp-muted)}
+
+/* main call-to-action: one clean deep-blue button */
+html #page-studio-intro .stp-go{border:0;border-radius:12px;padding:14px 18px;gap:10px;font-size:16px;font-weight:700;font-style:normal;text-shadow:none;
+  background:linear-gradient(180deg,var(--sp-accent),var(--sp-accent2));box-shadow:0 8px 22px -8px rgba(47,89,209,.75)}
+html #page-studio-intro .stp-go::before{border-left-width:12px;border-top-width:7px;border-bottom-width:7px}
+html #page-studio-intro .stp-skip{font-style:normal;font-size:13px;color:var(--sp-muted)}
+html #page-studio-intro .stp-skip input{border-color:var(--sp-line)}
+html #page-studio-intro .stp-skip input:checked{background:var(--sp-accent);border-color:var(--sp-soft)}
+</style>
 <script id="studio-intro-js">
 (function(){
   var KEY='yaps_studio_intro_seen';
@@ -34234,7 +34370,7 @@ html #nowPlayingScreen{
   background:radial-gradient(circle at 0% 0%,rgba(47,107,255,.30),transparent 38%),radial-gradient(circle at 100% 10%,rgba(139,92,246,.34),transparent 40%),radial-gradient(circle at 100% 100%,rgba(217,70,239,.22),transparent 38%),#050b24;
   left:0; right:0; top:var(--topbar-h,52px); bottom:calc(var(--npx-nav) + env(safe-area-inset-bottom,0px));
 }
-html[data-mode="light"] #nowPlayingScreen{color:#fff;background:radial-gradient(circle at 0% 0%,rgba(47,107,255,.30),transparent 38%),radial-gradient(circle at 100% 10%,rgba(139,92,246,.34),transparent 40%),#050b24}
+/* light mode: see the LIGHT MODE block at the end of this stylesheet (the player used to be forced dark here) */
 html #nowPlayingScreen::before,html #nowPlayingScreen::after{display:none}
 html #nowPlayingScreen .np-card{max-width:none;width:100%}
 html #nowPlayingScreen .npx-body{display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:8px 16px 10px;overflow-y:auto;overflow-x:hidden}
@@ -34382,6 +34518,80 @@ html #nowPlayingScreen #npShuffleBtn.active,html #nowPlayingScreen #npRepeatBtn.
 @media (prefers-reduced-motion:reduce){html #nowPlayingScreen.vinyl-spin .npx-vinyl{animation:none}}
 /* more menu sits under the header on every size */
 html #nowPlayingScreen .np-more{top:62px;right:14px}
+
+/* ═══ LIGHT MODE — big Now Playing player + mini player follow Settings → Appearance → Mode (html[data-mode="light"]) ═══
+   Surfaces/borders/text come from the same variables the rest of the app's light mode uses (--bg, --text, --muted, --dim, --accent),
+   so every colour theme works in light mode. The vivid cyan→blue→violet highlights are kept. */
+html[data-mode="light"] #nowPlayingScreen{
+  --npx-edge:color-mix(in srgb,var(--accent) 30%,#fff); --npx-glass:rgba(255,255,255,.75);
+  color:var(--text);
+  background:radial-gradient(circle at 0% 0%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 40%),radial-gradient(circle at 100% 10%,rgba(139,92,246,.16),transparent 42%),radial-gradient(circle at 100% 100%,rgba(217,70,239,.10),transparent 40%),var(--bg);
+}
+html[data-mode="light"] #nowPlayingScreen .npx-round,
+html[data-mode="light"] #nowPlayingScreen .npx-pillbtn,
+html[data-mode="light"] #nowPlayingScreen .npx-vbtn{color:var(--text)}
+html[data-mode="light"] #nowPlayingScreen .npx-round{background:#fff;box-shadow:0 2px 8px rgba(11,26,61,.12)}
+html[data-mode="light"] #nowPlayingScreen .npx-pillbtn{background:#fff;box-shadow:0 2px 8px rgba(11,26,61,.10)}
+html[data-mode="light"] #nowPlayingScreen .npx-title{color:var(--text)}
+html[data-mode="light"] #nowPlayingScreen .npx-artist{color:var(--accent-lighter)}
+html[data-mode="light"] #nowPlayingScreen .npx-chips span{color:var(--muted);background:color-mix(in srgb,var(--accent) 10%,#fff);border-color:var(--npx-edge)}
+html[data-mode="light"] #nowPlayingScreen .npx-like{background:#fff;color:var(--dim);box-shadow:0 2px 8px rgba(11,26,61,.12)}
+html[data-mode="light"] #nowPlayingScreen .npx-like.liked{color:#ff3b6b;border-color:rgba(255,59,107,.55)}
+html[data-mode="light"] #nowPlayingScreen .npx-like:not(.liked){background:#fff;border:1px solid var(--npx-edge)}
+html[data-mode="light"] #nowPlayingScreen .npx-art{box-shadow:0 10px 30px rgba(11,26,61,.22),0 0 22px rgba(47,107,255,.25)}
+html[data-mode="light"] #nowPlayingScreen #npSeek{background-color:color-mix(in srgb,var(--accent) 22%,#fff)}
+html[data-mode="light"] #nowPlayingScreen #npSeek::-webkit-slider-thumb{box-shadow:0 0 0 4px rgba(47,107,255,.28),0 2px 10px rgba(11,26,61,.35)}
+html[data-mode="light"] #nowPlayingScreen #npSeek::-moz-range-thumb{box-shadow:0 0 0 4px rgba(47,107,255,.28),0 2px 10px rgba(11,26,61,.35)}
+html[data-mode="light"] #nowPlayingScreen .npx-times{color:var(--muted)}
+html[data-mode="light"] #nowPlayingScreen .npx-ctl{background:#fff;color:var(--text);box-shadow:0 2px 8px rgba(11,26,61,.10)}
+html[data-mode="light"] #nowPlayingScreen #npShuffleBtn,
+html[data-mode="light"] #nowPlayingScreen #npRepeatBtn{color:var(--dim)}
+html[data-mode="light"] #nowPlayingScreen #npShuffleBtn.active,
+html[data-mode="light"] #nowPlayingScreen #npRepeatBtn.active{color:#0e8fd1;border-color:rgba(14,143,209,.6);box-shadow:0 0 12px rgba(34,211,238,.3)}
+html[data-mode="light"] #nowPlayingScreen .npx-play{color:var(--text);background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,#22d3ee,#8b5cf6 60%,#d946ef) border-box;box-shadow:0 6px 20px rgba(100,110,255,.35)}
+html[data-mode="light"] #nowPlayingScreen #npVol{background-color:color-mix(in srgb,var(--accent) 24%,#fff)}
+html[data-mode="light"] #nowPlayingScreen #npVol::-webkit-slider-thumb,
+html[data-mode="light"] #nowPlayingScreen #npVol::-moz-range-thumb{background:#fff;box-shadow:0 1px 6px rgba(11,26,61,.4)}
+html[data-mode="light"] #nowPlayingScreen .npx-vol{border-left-color:var(--npx-edge)}
+html[data-mode="light"] #nowPlayingScreen .npx-action{color:var(--text);background:linear-gradient(180deg,#fff,color-mix(in srgb,var(--accent) 7%,#fff));box-shadow:0 2px 10px rgba(11,26,61,.08)}
+html[data-mode="light"] #nowPlayingScreen .npx-action i{color:#0e8fd1}
+html[data-mode="light"] #nowPlayingScreen .npx-action i.npx-pl{color:#6d3fe0}
+html[data-mode="light"] #nowPlayingScreen .npx-action:nth-child(3) i{color:#7c4dff}
+html[data-mode="light"] #nowPlayingScreen .npx-action:nth-child(4) i{color:#c026d3}
+html[data-mode="light"] #nowPlayingScreen .npx-dock{background:rgba(255,255,255,.94);color:var(--text);box-shadow:0 4px 18px rgba(11,26,61,.12)}
+html[data-mode="light"] #nowPlayingScreen .npx-dock img{background:var(--card2)}
+html[data-mode="light"] #nowPlayingScreen #npDockArtist,
+html[data-mode="light"] #nowPlayingScreen .npx-dock-time{color:var(--muted)}
+html[data-mode="light"] #nowPlayingScreen .npx-dock-b{color:var(--text)}
+html[data-mode="light"] #nowPlayingScreen .npx-dock-play{color:var(--text);border-color:#4f7bff;background:rgba(47,107,255,.12)}
+html[data-mode="light"] #nowPlayingScreen .npx-dock-bar::before{background:color-mix(in srgb,var(--accent) 22%,#fff)}
+
+/* mini player in light mode */
+html[data-mode="light"] #miniBubble{
+  background:linear-gradient(160deg,#fff,color-mix(in srgb,var(--accent) 7%,#fff)) padding-box,linear-gradient(135deg,var(--yp-g),var(--yp-p) 60%,var(--yp-m)) border-box;
+  color:var(--text); box-shadow:0 10px 28px rgba(11,26,61,.20),0 0 14px rgba(139,92,246,.16);
+}
+html[data-mode="light"] #miniBubble .mc-title{color:var(--text)}
+html[data-mode="light"] #miniBubble .mc-artist{color:var(--accent-lighter)}
+html[data-mode="light"] #miniBubble .mc-b{color:var(--text) !important}
+html[data-mode="light"] #miniBubble #mbShuffle,
+html[data-mode="light"] #miniBubble #mbRepeat{color:var(--dim) !important}
+html[data-mode="light"] #miniBubble #mbShuffle.on,
+html[data-mode="light"] #miniBubble #mbRepeat.on{color:#0e8fd1 !important;filter:drop-shadow(0 0 6px rgba(34,211,238,.55))}
+html[data-mode="light"] #miniBubble .mc-heart{color:var(--dim) !important}
+html[data-mode="light"] #miniBubble .mc-heart.liked{color:#ff3b6b !important;filter:drop-shadow(0 0 6px rgba(255,59,107,.4))}
+html[data-mode="light"] #miniBubble .mc-cast{color:#0e8fd1 !important}
+html[data-mode="light"] #miniBubble .mc-play{color:var(--text) !important;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(135deg,var(--yp-g),var(--yp-p) 60%,var(--yp-m)) border-box !important;box-shadow:0 4px 14px rgba(139,92,246,.3)}
+html[data-mode="light"] #miniBubble .mc-x{background:#fff !important;border-color:var(--border) !important}
+html[data-mode="light"] #miniBubble .mc-time{color:var(--muted)}
+html[data-mode="light"] #miniBubble .mc-bar::before,
+html[data-mode="light"] #miniBubble .mc-vbar::before{background:color-mix(in srgb,var(--accent) 24%,#fff)}
+html[data-mode="light"] #miniBubble .mc-knob{box-shadow:0 0 0 3px rgba(139,92,246,.28),0 1px 6px rgba(11,26,61,.4)}
+html[data-mode="light"] #miniBubble .mc-eq{background:rgba(255,255,255,.85)}
+@media (min-width:769px){
+  html[data-mode="light"] #miniBubble{background:linear-gradient(180deg,#fff,color-mix(in srgb,var(--accent) 6%,#fff));border-top-color:var(--border);box-shadow:0 -8px 24px rgba(11,26,61,.12)}
+}
+@media (hover:hover){ html[data-mode="light"] #miniBubble .mc-b:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)} }
 
 </style>
 <script id="np-yaps-redesign-js">
