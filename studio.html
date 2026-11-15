@@ -1434,7 +1434,7 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
 </style>
 <body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="bnIconGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--accent-light)"/><stop offset="45%" style="stop-color:var(--accent)"/><stop offset="100%" style="stop-color:var(--accent-dark)"/></linearGradient><linearGradient id="bnIconGradActive" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:var(--accent-lighter)"/><stop offset="45%" style="stop-color:var(--accent-light)"/><stop offset="100%" style="stop-color:var(--accent)"/></linearGradient></defs></svg><div id="app">
 <header><div class="earth"></div>
- <a class="ic" id="homeBtn" href="index.html" aria-label="Back to YAPS Music home"><i class="fas fa-chevron-left" aria-hidden="true"></i> Home</a>
+ <a class="ic" id="homeBtn" href="index.html" aria-label="Go back to where you were" title="Back"><i class="fas fa-arrow-left" aria-hidden="true"></i></a>
  <button class="ic" id="navBtn" aria-label="Open menu" aria-controls="mainNav" aria-expanded="false" style="width:auto;border-radius:12px;padding:0 12px;font:700 13px Archivo Narrow">MENU</button>
  <a class="logo" href="index.html" aria-label="YAPSMusic home" style="text-decoration:none">YAPS<small>MUSIC</small></a>
  <div class="ttl">VIRTUAL <b>DJ STUDIO</b><p>Mix. Create. Record. Publish. Become a DJ.</p></div><div class="sp"></div>
@@ -1514,6 +1514,46 @@ html[data-mode="light"][data-prem="1"] :is(.cf,.mv){color:#26365f!important;-web
    <div class="ce-box off" id="ceBox"><div class="ce-tabs" role="group" aria-label="Celebration sections"><button type="button" class="sm on" data-ct="pads">PADS</button><button type="button" class="sm" data-ct="lib">MY MUSIC</button><button type="button" class="sm" data-ct="ann">ANNOUNCEMENTS</button></div><div id="ceBar"></div><div id="ceBody"></div></div>
    <div class="dp-stat" id="ceSt" role="status" aria-live="polite">Celebration Mode is OFF. Tap OFF to turn it on.</div>
   </section>
+ <section class="pn" id="bm" aria-label="Beat Maker">
+  <div class="dp-top"><div class="hd">BEAT MAKER</div><div class="dp-ctl">
+   <button type="button" class="sm" id="bmPlay" aria-pressed="false">&#9654; PLAY</button>
+   <label class="dp-vol"><span>BPM</span><input type="range" id="bmBpm" min="60" max="180" value="102" aria-label="Beat tempo"><output id="bmBpmO" for="bmBpm">102</output></label>
+   <button type="button" class="sm" data-bsync="0" title="Match the beat tempo to Deck A">SYNC A</button>
+   <button type="button" class="sm" data-bsync="1" title="Match the beat tempo to Deck B">SYNC B</button>
+   <label class="dp-vol"><span>SWING</span><input type="range" id="bmSw" min="0" max="60" value="10" aria-label="Swing"><output id="bmSwO" for="bmSw">10</output></label>
+   <label class="dp-vol"><span>VOL</span><input type="range" id="bmVol" min="0" max="100" value="80" aria-label="Beat volume"><output id="bmVolO" for="bmVol">80</output></label>
+  </div></div>
+  <div class="bm-bar">
+   <select id="bmPre" aria-label="Beat style"></select>
+   <select id="bmKey" aria-label="Bass note"><option value="0">Bass A</option><option value="3">Bass C</option><option value="5">Bass D</option><option value="7">Bass E</option><option value="8">Bass F</option><option value="10">Bass G</option></select>
+   <select id="bmBass" aria-label="Bass sound"><option value="808">808 bass</option><option value="log">Log drum</option></select>
+   <button type="button" class="sm" id="bmRand">RANDOMIZE</button>
+   <button type="button" class="sm" id="bmClr">CLEAR</button>
+   <select id="bmBars" aria-label="Bars to export"><option value="1">1 bar</option><option value="2" selected>2 bars</option><option value="4">4 bars</option><option value="8">8 bars</option></select>
+   <button type="button" class="sm" id="bmWav" title="Download the pattern as a WAV loop">&#11015; WAV LOOP</button>
+  </div>
+  <div class="bm-grid" id="bmGrid"></div>
+  <div class="dp-stat" id="bmSt" role="status" aria-live="polite">Tap the squares to build a pattern, then press PLAY. The beat plays through the master output, so it is recorded in your mix and in clips.</div>
+ </section>
+ <section class="pn" id="clipP" aria-label="Make a clip">
+  <div class="dp-top"><div class="hd">MAKE A CLIP &middot; SHARE ON WHATSAPP, TIKTOK, INSTAGRAM</div></div>
+  <div class="cl-wrap">
+   <div class="cl-form">
+    <div class="cl-row"><label for="clTitle">Mix title</label><input type="text" id="clTitle" maxlength="40" value="My YAPS Mix" autocomplete="off"></div>
+    <div class="cl-row"><label for="clDj">DJ name</label><input type="text" id="clDj" maxlength="32" value="DJ YAPS" autocomplete="off"></div>
+    <div class="cl-row"><label for="clFmt">Shape</label><select id="clFmt"><option value="story">Vertical 9:16 (Status, TikTok, Reels)</option><option value="sq">Square 1:1</option><option value="wide">Wide 16:9 (YouTube)</option></select></div>
+    <div class="cl-row"><label for="clLen">Length</label><select id="clLen"><option value="10">10 seconds</option><option value="15">15 seconds</option><option value="30" selected>30 seconds</option><option value="45">45 seconds</option><option value="60">60 seconds</option></select></div>
+    <div class="cl-row"><label for="clSty">Look</label><select id="clSty"><option value="neon">Neon night</option><option value="sunset">Sunset</option><option value="mono">Black &amp; white</option></select></div>
+    <div class="cl-btns"><button type="button" class="sm" id="clGo">&#9679; RECORD CLIP</button></div>
+    <div class="dp-stat" id="clSt" role="status" aria-live="polite">Start a deck or the beat, then press RECORD CLIP. It captures what you hear, with the animated picture.</div>
+    <div id="clOut" hidden>
+     <video id="clVid" controls playsinline preload="metadata"></video>
+     <div class="cl-btns"><a class="sm" id="clDl" download>&#11015; SAVE CLIP</a><button type="button" class="sm" id="clShare">&#10551; SHARE</button></div>
+    </div>
+   </div>
+   <canvas id="clCv" width="540" height="960" aria-label="Clip preview"></canvas>
+  </div>
+ </section>
  <section class="pn pro" id="pro" aria-label="Pro console"></section><div id="proScrim"></div>
  <section class="pn sc-teaser" id="scTeaser"><span class="ic" aria-hidden="true"></span><div><b>AI SONG CREATOR</b><span class="t">Turn an idea into a brand-new song: lyrics, music, vocals and cover art. AI DJ mixes songs that already exist; Song Creator makes new ones.</span></div><a class="go" id="scOpen" href="song-creator.html" style="text-decoration:none;display:inline-grid;place-items:center">Open Song Creator</a></section>
  <div class="row3" id="tools">
@@ -1748,7 +1788,7 @@ main,.row1,.deck,.mix,.pn{min-width:0}
 <dialog id="tut" aria-label="Quick tutorial"><h2>Welcome to YAPS DJ Studio</h2><div id="tutDots" aria-hidden="true"></div><div id="tutT" style="color:var(--cy);font-weight:700"></div><p id="tutB" style="margin:10px 0 14px;font-size:15px"></p><div id="tutNote"></div><div class="drow"><button class="k" id="tutS">Skip</button><button class="k" id="tutP">Back</button><button class="k pl" id="tutN">Next</button></div></dialog><div id="tutRing" aria-hidden="true"></div>
 <script>(function(){if(window.__phoneHost)return;var e=document.createElement('script');e.id='sbLib';e.async=true;e.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';document.head.appendChild(e)})()</script>
 <script>(function(){var b=document.body,m=document.querySelector('main');if(!m)return;b.classList.add('vdj');b.classList.remove('tools','proOn');
-var T=[['sources','♪ SOURCES'],['pads','▦ LOOP · CUES · FX'],['sampler','◉ SAMPLER'],['dpads','◈ DJ PADS'],['celeb','✺ CELEBRATE'],['ai','✦ AI DJ'],['record','● RECORD'],['export','⇪ EXPORT'],['video','▶ VIDEO'],['pro','⚙ PRO'],['comfort','♥ COMFORT']];
+var T=[['sources','♪ SOURCES'],['pads','▦ LOOP · CUES · FX'],['sampler','◉ SAMPLER'],['dpads','◈ DJ PADS'],['beat','▦ BEAT MAKER'],['celeb','✺ CELEBRATE'],['ai','✦ AI DJ'],['record','● RECORD'],['export','⇪ EXPORT'],['clip','◉ MAKE CLIP'],['video','▶ VIDEO'],['pro','⚙ PRO'],['comfort','♥ COMFORT']];
 var od=document.getElementById('vdock');if(od)od.remove();var d=document.createElement('div');d.id='vdock';d.innerHTML=T.map(function(t){return '<button type="button" data-vp="'+t[0]+'">'+t[1]+'</button>'}).join('')+'<button type="button" data-song="1">♫ SONG</button>';var dk0=document.getElementById('decks');if(dk0&&dk0.parentNode===m)m.insertBefore(d,dk0.nextSibling);else m.appendChild(d);
 d.insertAdjacentHTML('beforeend','<button type=button data-px=helpBtn title="Replay the quick tour">? TOUR</button><button type=button data-px=modeBtn id=vdMode2 title="Switch between Beginner and Pro">MODE</button>');
 var mb2=document.getElementById('modeBtn'),vm2=document.getElementById('vdMode2');
@@ -1899,9 +1939,17 @@ async function readDeviceUploads(){
  catch(e){console.warn('Device uploads unavailable:',e&&e.message)}}
 readShared();
 /* ══════ Stay inside the YAPSMusic app: on phones Studio runs in a rotated frame, so links to the app must open in the whole window ══════ */
-document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a||self===top)return;const h=a.getAttribute('href')||'';if(/^song-creator\.html/.test(h)&&top.openSongCreator){e.preventDefault();try{top.openSongCreator();return}catch(x){}}
+document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a||a.id==='homeBtn'||self===top)return;const h=a.getAttribute('href')||'';if(/^song-creator\.html/.test(h)&&top.openSongCreator){e.preventDefault();try{top.openSongCreator();return}catch(x){}}
  if(!/^index\.html/.test(h))return;
  e.preventDefault();try{if(top.__closeStudio){top.__closeStudio(h);return}top.location.href=new URL(h,top.location.href).href}catch(x){location.href=h}},true);
+/* ══════ Back arrow: return to exactly where the person was ══════
+   Inside the app the Studio is an overlay on top of the page they came from, so closing it shows that page untouched.
+   Opened on its own, it goes back in the browser history (same-site referrer) or falls back to the app. */
+(function(){const b=document.getElementById('homeBtn');if(!b)return;
+ b.addEventListener('click',e=>{e.preventDefault();
+  if(self!==top){try{if(top._studioClose){top._studioClose();return}}catch(x){}try{top.history.back();return}catch(x){}}
+  let same=false;try{same=!!document.referrer&&new URL(document.referrer).origin===location.origin}catch(x){}
+  if(same&&history.length>1)history.back();else location.href='index.html'})})();
 /* ══════ Offline songs: audio saved in this browser (IndexedDB 'yaps_offline_v1'), details in localStorage ══════ */
 const offIds=new Set(),offBusy=new Set();
 const offMeta=()=>{try{return JSON.parse(localStorage.getItem('yaps_offline_meta')||'{}')||{}}catch(e){return{}}};
@@ -4637,7 +4685,9 @@ const KEY='yaps_mic_v1';
 const DEF={gain:100,music:100,duckOn:true,duckDepth:60,duckThr:-38,duckRel:700,preset:'clean',echoOn:false,echoMix:35,echoMs:320,echoFb:35,revOn:false,revMix:30,revSize:'m',guard:true,ec:true,ns:true,inclMix:false,recSrc:'fx',dev:''};
 const PRE={clean:{n:'Clean',hp:90,lo:0,pf:3000,pg:1.5,pq:.8,lp:16000,dr:0},radio:{n:'Radio DJ',hp:320,lo:-4,pf:2200,pg:5,pq:1.1,lp:4200,dr:.15},
  mega:{n:'Megaphone',hp:550,lo:-8,pf:1600,pg:7,pq:1.6,lp:3200,dr:.55},club:{n:'Club hype',hp:110,lo:5,pf:2800,pg:3,pq:.9,lp:12000,dr:.05},
- phone:{n:'Telephone',hp:420,lo:-10,pf:1400,pg:4,pq:1.4,lp:2900,dr:.25}};
+ phone:{n:'Telephone',hp:420,lo:-10,pf:1400,pg:4,pq:1.4,lp:2900,dr:.25},
+ warm:{n:'Warm vocal',hp:80,lo:3,pf:2200,pg:2,pq:.7,lp:9000,dr:.03},bright:{n:'Bright pop',hp:140,lo:-2,pf:4500,pg:5,pq:.9,lp:16000,dr:.02},
+ stadium:{n:'Stadium MC',hp:200,lo:2,pf:2600,pg:6,pq:1,lp:7000,dr:.3}};
 const IRSEC={s:.8,m:1.6,l:3};
 const M=Object.assign({},DEF);
 try{const o=JSON.parse(localStorage.getItem(KEY)||'{}');for(const k in DEF)if(k in o&&typeof o[k]===typeof DEF[k])M[k]=o[k]}catch(e){}
@@ -4891,7 +4941,246 @@ if(document.body)mount();else addEventListener('DOMContentLoaded',mount);
  setTimeout(function(){var ok=false;try{ok=!!f.contentDocument.querySelector('#decks')}catch(e){}
   if(!ok){h.classList.remove('host','rot');f.remove();run()}},3000);
 })();
-</script><div id="rotOv" role="dialog" aria-label="Rotate your phone"><span class="ph" aria-hidden="true">📱</span><div>Turn your phone sideways</div><p>The DJ decks need landscape mode.</p><button id="rotOvGo">GO LANDSCAPE</button><button class="q" id="rotOvX">Stay in portrait</button></div>
+</script><style id="beatClip">
+/* ===== BEAT MAKER + CLIP EXPORT (dock tabs "BEAT MAKER" and "MAKE CLIP") ===== */
+#bm,#clipP{display:none;padding:10px 12px}
+body.vdj[data-vp=beat] #bm{display:block!important;max-height:56vh;overflow:auto;-webkit-overflow-scrolling:touch}
+body.vdj[data-vp=clip] #clipP{display:block!important;max-height:62vh;overflow:auto;-webkit-overflow-scrolling:touch}
+#bm .sm,#clipP .sm{min-width:0;min-height:36px;padding:7px 12px;font-size:13px;letter-spacing:.05em;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:inherit;cursor:pointer}
+#bm select,#clipP select,#clipP input[type=text]{min-height:36px;border-radius:8px;border:1.5px solid var(--bd);background:rgba(var(--card-rgb),.6);color:inherit;font:600 13px var(--sans,system-ui);padding:0 8px;min-width:0}
+#bm #bmPlay[aria-pressed=true]{background:var(--cy,#19c3ff);border-color:var(--cy,#19c3ff);color:#04132e}
+.bm-bar{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:4px 0 10px}
+.bm-grid{display:grid;gap:4px}
+.bm-row{display:grid;grid-template-columns:56px repeat(16,minmax(0,1fr));gap:3px;align-items:stretch}
+.bm-lab{border-radius:8px;border:1.5px solid var(--bd);background:rgba(var(--card-rgb),.6);color:inherit;font:800 11px 'Archivo Narrow',sans-serif;letter-spacing:.06em;padding:0 2px;cursor:pointer;min-height:34px}
+.bm-lab[aria-pressed=true]{opacity:.45;text-decoration:line-through}
+.bm-st{min-height:34px;padding:0;border-radius:6px;border:1.5px solid var(--bd);background:rgba(var(--card-rgb),.45);cursor:pointer;touch-action:manipulation}
+.bm-st.g{background:rgba(255,255,255,.08)}
+.bm-st[aria-pressed=true]{background:var(--rc);border-color:var(--rc);box-shadow:0 0 8px var(--rc)}
+.bm-st.ph{outline:2px solid #fff;outline-offset:-2px}
+.bm-row[data-t=kick]{--rc:#19c3ff}.bm-row[data-t=snare]{--rc:#ff5c8a}.bm-row[data-t=chh]{--rc:#ffc94d}
+.bm-row[data-t=ohh]{--rc:#ffa94d}.bm-row[data-t=perc]{--rc:#19e68c}.bm-row[data-t=bass]{--rc:#8b5cf6}
+.cl-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:14px;align-items:start}
+.cl-row{display:flex;align-items:center;gap:8px;margin:0 0 8px}
+.cl-row label{flex:0 0 74px;font:700 12px 'Archivo Narrow',sans-serif;letter-spacing:.05em;color:var(--tx2)}
+.cl-row input,.cl-row select{flex:1}
+.cl-btns{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+#clGo.on{background:#ff3b5c;border-color:#ff3b5c;color:#fff}
+#clipP #clCv{width:100%!important;height:auto!important;max-height:48vh!important;grid-column:2;grid-row:1;object-fit:contain;border-radius:12px;background:#000;display:block;margin:0 auto;position:static!important}
+#clVid{width:100%;max-height:34vh;border-radius:10px;background:#000;margin-top:8px}
+@media(max-width:700px){.cl-wrap{grid-template-columns:1fr}#clipP #clCv{max-width:260px;grid-column:1;grid-row:auto}.bm-row{grid-template-columns:44px repeat(16,minmax(0,1fr));gap:2px}.bm-st{min-height:30px}}
+</style>
+<script id="beatClipJs">
+/* ===== YAPS BEAT MAKER + CLIP EXPORT =====
+   Additive module. Uses the studio's AudioContext (C), master bus (master), analyser (an) and recorder
+   tap (recDest), so the beat is limited, metered and recorded exactly like the decks.
+   Public hook: window.YAPS_BM */
+(function(){'use strict';
+if(window.__phoneHost||window.YAPS_BM)return;
+const $=s=>document.querySelector(s);
+const say=m=>{try{if(typeof toast==='function')toast(m)}catch(e){}};
+const KEY='yaps_bm_v1',CKEY='yaps_clip_v1';
+const TR=[['kick','KICK'],['snare','SNARE'],['chh','HAT'],['ohh','OPEN'],['perc','PERC'],['bass','BASS']];
+const P=s=>Array.from({length:16},(_,i)=>s[i]==='x'?1:0);
+const PRE={
+ afro:{n:'Afrobeats',bpm:102,sw:12,bass:'808',p:{kick:'x.....x...x.....',snare:'....x.......x...',chh:'x.x.x.x.x.x.x.x.',ohh:'......x.......x.',perc:'..x..x..x..x..x.',bass:'x.....x...x.....'}},
+ amapiano:{n:'Amapiano',bpm:112,sw:8,bass:'log',p:{kick:'x...x...x...x...',snare:'....x.......x...',chh:'..x...x...x...x.',ohh:'x.......x.......',perc:'...x..x....x..x.',bass:'x..x...x..x..x..'}},
+ kidandali:{n:'Kidandali',bpm:120,sw:0,bass:'808',p:{kick:'x...x...x...x...',snare:'..x...x...x...x.',chh:'xxxxxxxxxxxxxxxx',ohh:'................',perc:'x..x..x.x..x..x.',bass:'x.x...x.x.x...x.'}},
+ dancehall:{n:'Dancehall',bpm:96,sw:6,bass:'808',p:{kick:'x...x...x...x...',snare:'...x..x....x..x.',chh:'x.x.x.x.x.x.x.x.',ohh:'................',perc:'.....x.......x..',bass:'x.....x.x.....x.'}},
+ hiphop:{n:'Hip-Hop',bpm:90,sw:14,bass:'808',p:{kick:'x.....x...x.....',snare:'....x.......x...',chh:'x.x.x.x.x.x.x.x.',ohh:'.......x.......x',perc:'................',bass:'x.....x...x.....'}},
+ gospel:{n:'Gospel Pop',bpm:100,sw:0,bass:'808',p:{kick:'x...x...x...x...',snare:'....x.......x...',chh:'xxxxxxxxxxxxxxxx',ohh:'................',perc:'..x...x...x...x.',bass:'x.......x.......'}}
+};
+let S={bpm:102,sw:10,vol:80,pre:'afro',key:0,bass:'808',bars:2,mute:{},pat:{}};
+const loadPre=k=>{const p=PRE[k];S.pre=k;S.bpm=p.bpm;S.sw=p.sw;S.bass=p.bass;S.pat={};TR.forEach(([t])=>S.pat[t]=P(p.p[t]))};
+loadPre('afro');
+try{const o=JSON.parse(localStorage.getItem(KEY)||'null');if(o&&o.pat){for(const k of['bpm','sw','vol','pre','key','bass','bars']){if(o[k]!=null)S[k]=o[k]}
+ TR.forEach(([t])=>{if(Array.isArray(o.pat[t])&&o.pat[t].length===16)S.pat[t]=o.pat[t].map(v=>v?1:0)});if(o.mute)S.mute=o.mute}}catch(e){}
+S.bpm=Math.max(60,Math.min(180,+S.bpm||102));
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+
+/* ---------- synthesized drum voices (work on a live or an offline context) ---------- */
+const nbufs=new WeakMap();
+function noiseBuf(c){let b=nbufs.get(c);if(!b){b=c.createBuffer(1,c.sampleRate,c.sampleRate);const d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;nbufs.set(c,b)}return b}
+function env(g,t,pk,dur){g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(pk,t+.003);g.gain.exponentialRampToValueAtTime(.0001,t+dur)}
+function tone(c,o,type,f0,f1,dur,pk,t){const os=c.createOscillator(),g=c.createGain();os.type=type;os.frequency.setValueAtTime(f0,t);if(f1!==f0)os.frequency.exponentialRampToValueAtTime(Math.max(1,f1),t+dur);env(g,t,pk,dur);os.connect(g);g.connect(o);os.start(t);os.stop(t+dur+.03)}
+function nz(c,o,type,f,q,dur,pk,t){const s=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();s.buffer=noiseBuf(c);fl.type=type;fl.frequency.value=f;fl.Q.value=q;env(g,t,pk,dur);s.connect(fl);fl.connect(g);g.connect(o);s.start(t,Math.random()*.4);s.stop(t+dur+.03)}
+const V={
+ kick:(c,o,t)=>{tone(c,o,'sine',165,42,.34,1,t);tone(c,o,'triangle',900,60,.03,.35,t)},
+ snare:(c,o,t)=>{nz(c,o,'bandpass',1900,.8,.17,.55,t);tone(c,o,'triangle',210,150,.1,.4,t);nz(c,o,'highpass',1200,.5,.03,.25,t+.012)},
+ chh:(c,o,t)=>nz(c,o,'highpass',7500,.7,.045,.28,t),
+ ohh:(c,o,t)=>nz(c,o,'highpass',6500,.7,.24,.22,t),
+ perc:(c,o,t)=>{tone(c,o,'sine',420,300,.14,.45,t);nz(c,o,'bandpass',4200,2,.05,.18,t)},
+ bass:(c,o,t,st)=>{const f=55*Math.pow(2,(+st.key||0)/12);
+  if(st.bass==='log'){const g=f*2;tone(c,o,'sine',g*2.2,g,.3,.85,t);tone(c,o,'triangle',g*4,g*2,.05,.2,t)}
+  else{tone(c,o,'sine',f*1.6,f,.55,.95,t);tone(c,o,'sawtooth',f,f,.25,.1,t)}}
+};
+function playStep(c,o,t,step,st){TR.forEach(([k])=>{if(st.pat[k][step]&&!st.mute[k])V[k](c,o,t,st)})}
+
+/* ---------- live scheduler ---------- */
+let run=false,iv=0,next=0,step=0,out=null;
+function ensure(){try{if(typeof init==='function')init()}catch(e){}
+ if(typeof C==='undefined'||!C||typeof master==='undefined'||!master)return false;
+ if(!out||out.context!==C){out=C.createGain();out.gain.value=S.vol/100;out.connect(master)}return true}
+function mark(s){document.querySelectorAll('#bmGrid .bm-st.ph').forEach(e=>e.classList.remove('ph'));
+ if(s>=0)document.querySelectorAll('#bmGrid .bm-st[data-s="'+s+'"]').forEach(e=>e.classList.add('ph'))}
+function tick(){if(!run||!C)return;const sd=60/S.bpm/4;
+ while(next<C.currentTime+.14){const off=(step%2)?sd*S.sw/100:0,tt=next+off,st=step;playStep(C,out,tt,st,S);
+  setTimeout(()=>{if(run)mark(st)},Math.max(0,(tt-C.currentTime)*1000));next+=sd;step=(step+1)%16}}
+function start(){if(run)return;if(!ensure()){say('Audio could not start. Tap the page once and try again.');return}
+ run=true;step=0;next=C.currentTime+.06;iv=setInterval(tick,25);ui()}
+function stop(){if(!run)return;run=false;clearInterval(iv);mark(-1);ui()}
+const toggle=()=>run?stop():start();
+
+/* ---------- UI ---------- */
+function build(){const g=$('#bmGrid');if(!g)return;
+ g.innerHTML=TR.map(([t,l])=>'<div class="bm-row" data-t="'+t+'"><button type="button" class="bm-lab" data-m="'+t+'" aria-pressed="false" title="Mute or unmute '+l+'">'+l+'</button>'+
+  Array.from({length:16},(_,i)=>'<button type="button" class="bm-st'+((i>>2)%2===0?' g':'')+'" data-s="'+i+'" aria-pressed="false" aria-label="'+l+' step '+(i+1)+'"></button>').join('')+'</div>').join('');
+ const sel=$('#bmPre');sel.innerHTML=Object.keys(PRE).map(k=>'<option value="'+k+'">'+PRE[k].n+'</option>').join('')+'<option value="custom">My pattern</option>'}
+function ui(){
+ TR.forEach(([t])=>{const row=document.querySelector('#bmGrid .bm-row[data-t="'+t+'"]');if(!row)return;
+  row.querySelectorAll('.bm-st').forEach((b,i)=>b.setAttribute('aria-pressed',S.pat[t][i]?'true':'false'));
+  row.querySelector('.bm-lab').setAttribute('aria-pressed',S.mute[t]?'true':'false')});
+ const set=(id,v)=>{const e=$(id);if(e)e.value=v};
+ set('#bmBpm',S.bpm);set('#bmSw',S.sw);set('#bmVol',S.vol);set('#bmKey',S.key);set('#bmBass',S.bass);set('#bmBars',S.bars);set('#bmPre',PRE[S.pre]?S.pre:'custom');
+ const o=(id,v)=>{const e=$(id);if(e)e.textContent=v};o('#bmBpmO',Math.round(S.bpm));o('#bmSwO',S.sw);o('#bmVolO',S.vol);
+ const p=$('#bmPlay');if(p){p.setAttribute('aria-pressed',run?'true':'false');p.innerHTML=run?'&#9632; STOP':'&#9654; PLAY'}}
+function wire(){
+ $('#bmPlay').onclick=toggle;
+ $('#bmGrid').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.m){S.mute[b.dataset.m]=!S.mute[b.dataset.m];save();ui();return}
+  if(b.dataset.s!=null){const t=b.closest('.bm-row').dataset.t,i=+b.dataset.s;S.pat[t][i]=S.pat[t][i]?0:1;S.pre='custom';save();ui();
+   if(S.pat[t][i]&&!run&&ensure())V[t](C,out,C.currentTime+.01,S)}});
+ $('#bmBpm').addEventListener('input',e=>{S.bpm=+e.target.value;save();ui()});
+ $('#bmSw').addEventListener('input',e=>{S.sw=+e.target.value;save();ui()});
+ $('#bmVol').addEventListener('input',e=>{S.vol=+e.target.value;if(out)out.gain.value=S.vol/100;save();ui()});
+ $('#bmKey').onchange=e=>{S.key=+e.target.value;save()};
+ $('#bmBass').onchange=e=>{S.bass=e.target.value;save()};
+ $('#bmBars').onchange=e=>{S.bars=+e.target.value;save()};
+ $('#bmPre').onchange=e=>{const k=e.target.value;if(PRE[k]){loadPre(k);save();ui();say(PRE[k].n+' beat loaded')}};
+ $('#bmClr').onclick=()=>{TR.forEach(([t])=>S.pat[t]=P(''));S.pre='custom';save();ui()};
+ $('#bmRand').onclick=()=>{const pr={kick:[.9,.1],snare:[.05,.5],chh:[.7,.45],ohh:[.05,.2],perc:[.12,.35],bass:[.45,.12]};
+  TR.forEach(([t])=>{S.pat[t]=Array.from({length:16},(_,i)=>{const on=i%4===0?pr[t][0]:pr[t][1];
+   let v=Math.random()<on?1:0;if(t==='snare'&&(i===4||i===12))v=1;if(t==='kick'&&i===0)v=1;return v})});
+  S.pre='custom';save();ui()};
+ document.querySelectorAll('[data-bsync]').forEach(b=>b.onclick=()=>{const d=(typeof D!=='undefined')&&D[+b.dataset.bsync];
+  if(!d||!d.bpm){say('Load a track with a detected BPM on Deck '+(+b.dataset.bsync?'B':'A')+' first');return}
+  S.bpm=Math.max(60,Math.min(180,Math.round(d.bpm*(1+(d.pitch||0)/100))));save();ui();say('Beat tempo set to '+S.bpm+' BPM')});
+ $('#bmWav').onclick=exportWav}
+
+/* ---------- WAV loop export ---------- */
+function wav(buf){const n=buf.length,ch=2,sr=buf.sampleRate,ab=new ArrayBuffer(44+n*ch*2),v=new DataView(ab),w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
+ w(0,'RIFF');v.setUint32(4,36+n*ch*2,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,ch,true);v.setUint32(24,sr,true);v.setUint32(28,sr*ch*2,true);v.setUint16(32,ch*2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*ch*2,true);
+ const L=buf.getChannelData(0),R=buf.numberOfChannels>1?buf.getChannelData(1):L;let o=44;
+ for(let i=0;i<n;i++){for(const x of[L[i],R[i]]){const s=Math.max(-1,Math.min(1,x));v.setInt16(o,s<0?s*32768:s*32767,true);o+=2}}
+ return new Blob([ab],{type:'audio/wav'})}
+async function exportWav(){const OC=window.OfflineAudioContext||window.webkitOfflineAudioContext;if(!OC){say('This browser cannot export audio loops');return}
+ const st=$('#bmSt'),bars=S.bars,sd=60/S.bpm/4,sr=44100,dur=bars*16*sd;
+ try{st.textContent='Rendering loop…';const oc=new OC(2,Math.ceil(sr*dur),sr),o=oc.createGain();o.gain.value=S.vol/100;
+  const lim=oc.createDynamicsCompressor();lim.threshold.value=-3;lim.knee.value=0;lim.ratio.value=20;o.connect(lim);lim.connect(oc.destination);
+  for(let b=0;b<bars;b++)for(let s=0;s<16;s++)playStep(oc,o,(b*16+s)*sd+((s%2)?sd*S.sw/100:0),s,S);
+  const buf=await oc.startRendering(),blob=wav(buf),a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='yaps-beat-'+(PRE[S.pre]?S.pre:'custom')+'-'+Math.round(S.bpm)+'bpm.wav';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  st.textContent='Saved a '+bars+'-bar loop at '+Math.round(S.bpm)+' BPM. Load it on a deck from Phone / Device.'}
+ catch(e){st.textContent='Could not export the loop: '+(e&&e.message||e)}}
+
+/* ---------- CLIP EXPORT ---------- */
+const FM={story:[540,960],sq:[720,720],wide:[960,540]};
+const CL={run:false,mr:null,chunks:[],t0:0,len:30,url:null,img:null,imgSrc:'',cd:0,raf:0,looping:false,mime:''};
+let cfg={title:'My YAPS Mix',dj:'DJ YAPS',fmt:'story',len:30,sty:'neon'};
+try{const o=JSON.parse(localStorage.getItem(CKEY)||'{}');for(const k in cfg)if(typeof o[k]===typeof cfg[k])cfg[k]=o[k]}catch(e){}
+const csave=()=>{try{localStorage.setItem(CKEY,JSON.stringify(cfg))}catch(e){}};
+const THEMES={neon:{bg:['#050712','#1b1048'],g1:'#19e68c',g2:'#8b5cf6',bars:['#19e68c','#22d3ee','#8b5cf6'],tx:'#f2f7ff',dim:'#b4c6f5'},
+ sunset:{bg:['#2b0a3d','#ff5e3a'],g1:'#ffc94d',g2:'#ff3b5c',bars:['#ffc94d','#ff8a3d','#ff3b5c'],tx:'#fff7ee',dim:'#ffe2c4'},
+ mono:{bg:['#000000','#1a1a1a'],g1:'#ffffff',g2:'#888888',bars:['#ffffff','#cccccc','#888888'],tx:'#ffffff',dim:'#bbbbbb'}};
+const nowDeck=()=>(typeof D==='undefined')?null:(D.find(d=>d.on&&d.buf)||D.find(d=>d.on)||D.find(d=>d.buf)||null);
+const anyPlaying=()=>run||((typeof D!=='undefined')&&D.some(d=>d.on));
+function loadArt(){const d=nowDeck(),m=d&&d.art&&/url\(["']?([^"')]+)["']?\)/.exec(d.art),u=m?m[1]:'';
+ if(u===CL.imgSrc)return;CL.imgSrc=u;CL.img=null;if(!u)return;
+ const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{if(CL.imgSrc===u)CL.img=im};im.onerror=()=>{};im.src=u}
+function rr(x,c,X,Y,w,h,r){x.beginPath();x.moveTo(X+r,Y);x.arcTo(X+w,Y,X+w,Y+h,r);x.arcTo(X+w,Y+h,X,Y+h,r);x.arcTo(X,Y+h,X,Y,r);x.arcTo(X,Y,X+w,Y,r);x.closePath()}
+function fit(x,txt,max,size,wt){let s=size;x.font=wt+' '+s+'px "Archivo Narrow",system-ui,sans-serif';while(x.measureText(txt).width>max&&s>14){s-=2;x.font=wt+' '+s+'px "Archivo Narrow",system-ui,sans-serif'}
+ if(x.measureText(txt).width>max){while(txt.length>2&&x.measureText(txt+'…').width>max)txt=txt.slice(0,-1);txt+='…'}return txt}
+let fb=null;
+function draw(){const cv=$('#clCv');if(!cv)return;const [W,H]=FM[cfg.fmt];if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+ const x=cv.getContext('2d'),T=THEMES[cfg.sty]||THEMES.neon,now=performance.now(),wide=W>H;
+ let g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,T.bg[0]);g.addColorStop(1,T.bg[1]);x.fillStyle=g;x.fillRect(0,0,W,H);
+ [[.15,.1,T.g1],[.9,.5,T.g2]].forEach(([a,b,c],i)=>{const r=Math.max(W,H)*(.55+.05*Math.sin(now/900+i));const rg=x.createRadialGradient(W*a,H*b,0,W*a,H*b,r);rg.addColorStop(0,c+'55');rg.addColorStop(1,c+'00');x.fillStyle=rg;x.fillRect(0,0,W,H)});
+ /* audio levels */
+ let lv=new Array(40).fill(0),amp=0;
+ try{if(typeof an!=='undefined'&&an){if(!fb||fb.length!==an.frequencyBinCount)fb=new Uint8Array(an.frequencyBinCount);an.getByteFrequencyData(fb);
+  for(let i=0;i<40;i++){const a=Math.floor(Math.pow(i/40,1.8)*fb.length*.35)+1,b=Math.max(a+1,Math.floor(Math.pow((i+1)/40,1.8)*fb.length*.35)+1);let s=0;for(let k=a;k<b;k++)s+=fb[k];lv[i]=s/(b-a)/255}
+  amp=lv.slice(0,8).reduce((p,q)=>p+q,0)/8}}catch(e){}
+ const d=nowDeck(),pad=Math.round(Math.min(W,H)*.07);
+ /* cover art */
+ loadArt();const art=wide?Math.round(H*.5):Math.round(W*.58),ax=wide?pad*1.4:(W-art)/2,ay=wide?(H-art)/2-H*.08:H*.13,pul=1+amp*.05;
+ x.save();x.translate(ax+art/2,ay+art/2);x.scale(pul,pul);x.translate(-art/2,-art/2);
+ x.shadowColor=T.g2;x.shadowBlur=40;rr(x,0,0,0,art,art,art*.08);x.fillStyle='#10163a';x.fill();x.shadowBlur=0;x.save();rr(x,0,0,0,art,art,art*.08);x.clip();
+ if(CL.img){try{x.drawImage(CL.img,0,0,art,art)}catch(e){}}
+ else{const ag=x.createLinearGradient(0,0,art,art);ag.addColorStop(0,T.g1);ag.addColorStop(1,T.g2);x.fillStyle=ag;x.fillRect(0,0,art,art);x.fillStyle='rgba(0,0,0,.28)';x.font='900 '+art*.5+'px system-ui';x.textAlign='center';x.textBaseline='middle';x.fillText('♪',art/2,art/2+art*.02)}
+ x.restore();x.restore();
+ /* text */
+ const tx=wide?ax+art+pad*1.4:W/2,tw=wide?W-tx-pad*1.4:W-pad*2;x.textAlign=wide?'left':'center';x.textBaseline='alphabetic';
+ let ty=wide?H*.3:ay+art+H*.075;
+ x.fillStyle=T.g1;x.font='800 '+Math.round(Math.min(W,H)*.032)+'px "Archivo Narrow",system-ui,sans-serif';x.fillText('YAPS DJ STUDIO',tx,ty);
+ ty+=Math.round(Math.min(W,H)*.085);x.fillStyle=T.tx;x.fillText(fit(x,(cfg.title||'My YAPS Mix').toUpperCase(),tw,Math.round(Math.min(W,H)*.082),'900'),tx,ty);
+ ty+=Math.round(Math.min(W,H)*.058);x.fillStyle=T.dim;x.fillText(fit(x,'Mixed by '+(cfg.dj||'DJ YAPS'),tw,Math.round(Math.min(W,H)*.042),'700'),tx,ty);
+ if(d&&d.buf&&d.t&&d.t!=='Empty deck'){ty+=Math.round(Math.min(W,H)*.05);x.fillStyle=T.dim;x.globalAlpha=.85;x.fillText(fit(x,'Now playing: '+d.t+(d.ar&&d.ar!=='Local file'?' · '+d.ar:''),tw,Math.round(Math.min(W,H)*.032),'600'),tx,ty);x.globalAlpha=1}
+ /* spectrum */
+ const bx=wide?tx:pad,bw=wide?tw:W-pad*2,bh=wide?H*.26:H*.16,by=wide?H-pad*2.2-bh:H-pad*3.2-bh,n=lv.length,gap=bw/n*.3,w1=(bw-gap*(n-1))/n;
+ const bg=x.createLinearGradient(0,by,0,by+bh);bg.addColorStop(0,T.bars[0]);bg.addColorStop(.5,T.bars[1]);bg.addColorStop(1,T.bars[2]);x.fillStyle=bg;
+ for(let i=0;i<n;i++){const idle=(CL.run||anyPlaying())?0:.06+.04*Math.sin(now/400+i*.6),h=Math.max(4,(lv[i]*1.15+idle)*bh);rr(x,0,bx+i*(w1+gap),by+bh-h,w1,h,Math.min(6,w1/2));x.fill()}
+ /* progress + footer */
+ x.textAlign='center';x.fillStyle=T.dim;x.font='700 '+Math.round(Math.min(W,H)*.028)+'px "Archivo Narrow",system-ui,sans-serif';x.fillText('YAPSMusic · Made in YAPS Studio',wide?W/2:W/2,H-pad*.9);
+ if(CL.run&&CL.t0){const p=Math.min(1,(now-CL.t0)/(CL.len*1000));x.fillStyle='rgba(255,255,255,.18)';x.fillRect(0,0,W,6);x.fillStyle=T.g1;x.fillRect(0,0,W*p,6)}
+ if(CL.cd>0){x.fillStyle='rgba(0,0,0,.5)';x.fillRect(0,0,W,H);x.fillStyle='#fff';x.font='900 '+Math.min(W,H)*.35+'px system-ui';x.textAlign='center';x.textBaseline='middle';x.fillText(String(CL.cd),W/2,H/2)}}
+function loop(){CL.looping=true;draw();const vis=document.body.dataset.vp==='clip'||CL.run||CL.cd>0;
+ if(vis&&!document.hidden)CL.raf=requestAnimationFrame(loop);else CL.looping=false}
+function kick(){if(!CL.looping)loop()}
+const cst=m=>{const e=$('#clSt');if(e)e.textContent=m};
+function pickMime(){if(!window.MediaRecorder)return null;
+ const l=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+ for(const m of l){try{if(MediaRecorder.isTypeSupported(m))return m}catch(e){}}return''}
+async function go(){if(CL.run){finish();return}
+ if(CL.cd>0)return;
+ if(!window.MediaRecorder||!HTMLCanvasElement.prototype.captureStream){cst('Clip recording is not supported in this browser. Try the latest Chrome, Edge or Safari.');return}
+ if(!ensure()||typeof recDest==='undefined'||!recDest){cst('Audio could not start. Tap the page once and try again.');return}
+ if(!anyPlaying()){cst('Nothing is playing. Start a deck or the beat first, then press RECORD CLIP.');say('Start a deck or the beat first');return}
+ cfg.len=+$('#clLen').value;csave();loadArt();
+ for(let i=3;i>0;i--){CL.cd=i;kick();cst('Starting in '+i+'…');await new Promise(r=>setTimeout(r,800))}CL.cd=0;
+ if(!anyPlaying()){cst('Playback stopped, so the clip was cancelled.');return}
+ const cv=$('#clCv'),vs=cv.captureStream(30),at=recDest.stream.getAudioTracks()[0];if(at)vs.addTrack(at);
+ const mt=pickMime();let mr;try{mr=new MediaRecorder(vs,Object.assign(mt?{mimeType:mt}:{},{videoBitsPerSecond:3000000,audioBitsPerSecond:128000}))}catch(e){cst('Could not start recording: '+(e&&e.message||e));return}
+ CL.mr=mr;CL.mime=mr.mimeType||mt||'video/webm';CL.chunks=[];CL.len=cfg.len;
+ mr.ondataavailable=e=>{if(e.data&&e.data.size)CL.chunks.push(e.data)};
+ mr.onstop=()=>{CL.run=false;clearTimeout(CL.to);clearInterval(CL.ti);const b=new Blob(CL.chunks,{type:CL.mime.split(';')[0]});CL.chunks=[];ui2();
+  if(!b.size){cst('The clip came out empty. Try again.');return}
+  if(CL.url)URL.revokeObjectURL(CL.url);CL.url=URL.createObjectURL(b);CL.blob=b;const ext=/mp4/.test(CL.mime)?'mp4':'webm';
+  $('#clVid').src=CL.url;$('#clOut').hidden=false;const a=$('#clDl');a.href=CL.url;a.download='yaps-clip-'+(cfg.title||'mix').replace(/[^\w]+/g,'-').toLowerCase()+'.'+ext;
+  cst('Clip ready ('+Math.round(b.size/1024)+' KB, '+ext.toUpperCase()+'). Preview it, then save or share.')};
+ mr.start(500);CL.run=true;CL.t0=performance.now();ui2();kick();
+ CL.ti=setInterval(()=>{const s=Math.max(0,Math.ceil(CL.len-(performance.now()-CL.t0)/1000));cst('Recording… '+s+'s left. Keep mixing! Tap STOP to finish early.')},250);
+ CL.to=setTimeout(finish,CL.len*1000+80)}
+function finish(){if(CL.mr&&CL.mr.state!=='inactive'){try{CL.mr.stop()}catch(e){CL.run=false;ui2()}}}
+function ui2(){const b=$('#clGo');if(!b)return;b.classList.toggle('on',CL.run);b.innerHTML=CL.run?'&#9632; STOP':'&#9679; RECORD CLIP'}
+async function share(){if(!CL.blob){cst('Record a clip first');return}
+ const ext=/mp4/.test(CL.mime)?'mp4':'webm',f=new File([CL.blob],'yaps-clip.'+ext,{type:CL.blob.type});
+ try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:cfg.title,text:cfg.title+' · mixed by '+cfg.dj+' on YAPS Studio'});return}}catch(e){if(e&&e.name==='AbortError')return}
+ $('#clDl').click();cst('This browser cannot share files directly, so the clip was saved. Share it from your gallery or files app.')}
+function wire2(){
+ const set=(id,v)=>{const e=$(id);if(e)e.value=v};set('#clTitle',cfg.title);set('#clDj',cfg.dj);set('#clFmt',cfg.fmt);set('#clLen',cfg.len);set('#clSty',cfg.sty);
+ $('#clTitle').addEventListener('input',e=>{cfg.title=e.target.value;csave()});$('#clDj').addEventListener('input',e=>{cfg.dj=e.target.value;csave()});
+ $('#clFmt').onchange=e=>{if(CL.run)return;cfg.fmt=e.target.value;csave();kick()};$('#clSty').onchange=e=>{cfg.sty=e.target.value;csave();kick()};
+ $('#clLen').onchange=e=>{cfg.len=+e.target.value;csave()};
+ $('#clGo').onclick=go;$('#clShare').onclick=share;
+ try{new MutationObserver(kick).observe(document.body,{attributes:true,attributeFilter:['data-vp']})}catch(e){}
+ document.addEventListener('visibilitychange',kick);draw()}
+
+function boot(){if(!$('#bm')||!$('#clipP'))return;build();wire();ui();wire2()}
+window.YAPS_BM={start,stop,get running(){return run},get state(){return JSON.parse(JSON.stringify(S))},clip:go};
+if(document.readyState==='loading')addEventListener('DOMContentLoaded',boot);else boot();
+})();
+</script>
+<div id="rotOv" role="dialog" aria-label="Rotate your phone"><span class="ph" aria-hidden="true">📱</span><div>Turn your phone sideways</div><p>The DJ decks need landscape mode.</p><button id="rotOvGo">GO LANDSCAPE</button><button class="q" id="rotOvX">Stay in portrait</button></div>
 <script>(function(){
  if(self!==top||window.__yapsEmbedded||window.__phoneHost)return; /* host frame already shows landscape */
  var ov=document.getElementById('rotOv'),skip=false;

@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <script>window.__yapsInitialSearch=location.search;</script>
+<script>/* back arrow: mark phone/browser Back presses before the pages' own popstate handlers run */
+window.__yapsInPop=0;addEventListener('popstate',function(){window.__yapsInPop=1;setTimeout(function(){window.__yapsInPop=0},0)},true);</script>
 <script>
 /* Password-reset links and failed sign-in links land on the app root: hand them to the separate sign-in page (auth.html) */
 (function(){try{var h=location.hash||'',q=location.search||'';
@@ -8901,15 +8903,18 @@ a.djx-row{color:inherit;text-decoration:none}
       <div class="acct-hub" id="acctHub">
         <!-- Simple list: only the everyday items. Everything else lives behind "Settings & more". -->
         <div class="acct-list" id="acctMain" role="list">
-          <button type="button" class="acct-card" style="--c:#3b82f6;--c2:#1d4ed8" onclick="navigate('connect')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 14c2.8 0 5 1.8 5 4.5"/></svg></span></span><span class="ac-title">Connect</span><span class="ac-desc">Be part of our community</span></button>
-          <button type="button" class="acct-card" style="--c:#22e05a;--c2:#12a63f" onclick="navigate('messages')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span></span><span class="ac-title">Calls</span><span class="ac-desc">Make and receive calls</span></button>
-          <button type="button" class="acct-card" style="--c:#a855f7;--c2:#6d28d9" onclick="navigate('upload')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9.5 4 4 0 0 1 17.5 18"/><path d="M12 17v-6M9 13.5l3-3 3 3"/></svg></span></span><span class="ac-title">Upload</span><span class="ac-desc">Share your music</span></button>
-          <button type="button" class="acct-card" style="--c:#ff4d4d;--c2:#c81e1e" onclick="_p2pGoToDownloads()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10M8 10.5l4 4 4-4"/><path d="M5 19h14"/></svg></span></span><span class="ac-title">Downloads</span><span class="ac-desc">Your downloaded songs</span></button>
-          <button type="button" class="acct-card" style="--c:#2dd4bf;--c2:#0ea5e9" onclick="toggleQueue()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h12M4 12h12M4 17h7"/><path d="M18 14l3 2.5-3 2.5z"/></svg></span></span><span class="ac-title">Queue</span><span class="ac-desc">Your play queue</span></button>
-          <button type="button" class="acct-card acct-moreBtn" style="--c:#3b82f6;--c2:#1d4ed8" onclick="acctMore(true)"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span></span><span class="ac-title">Settings &amp; More</span><span class="ac-desc">App settings, support and more</span></button>
+          <button type="button" class="acct-card acct-moreBtn" style="--c:#3b82f6;--c2:#1d4ed8" onclick="acctMore(true)"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.6"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.6"/></svg></span></span><span class="ac-title">Explore all features</span><span class="ac-desc">Connect, Calls, Upload, Downloads, Queue, Settings and more</span></button>
         </div>
         <div id="acctMore" hidden>
-          <button type="button" class="acct-back" onclick="acctMore(false)"><span class="acct-chev"></span> Settings &amp; more</button>
+          <button type="button" class="acct-back" onclick="acctMore(false)"><span class="acct-chev"></span> Features</button>
+          <div class="acct-group">Everyday</div>
+          <div class="acct-list" role="list">
+          <button type="button" class="acct-card acct-everyday" style="--c:#3b82f6;--c2:#1d4ed8" onclick="navigate('connect')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><path d="M16 14c2.8 0 5 1.8 5 4.5"/></svg></span></span><span class="ac-title">Connect</span><span class="ac-desc">Be part of our community</span></button>
+          <button type="button" class="acct-card acct-everyday" style="--c:#22e05a;--c2:#12a63f" onclick="navigate('messages')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span></span><span class="ac-title">Calls</span><span class="ac-desc">Make and receive calls</span></button>
+          <button type="button" class="acct-card acct-everyday" style="--c:#a855f7;--c2:#6d28d9" onclick="navigate('upload')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-9A6 6 0 0 1 18 9.5 4 4 0 0 1 17.5 18"/><path d="M12 17v-6M9 13.5l3-3 3 3"/></svg></span></span><span class="ac-title">Upload</span><span class="ac-desc">Share your music</span></button>
+          <button type="button" class="acct-card acct-everyday" style="--c:#ff4d4d;--c2:#c81e1e" onclick="_p2pGoToDownloads()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10M8 10.5l4 4 4-4"/><path d="M5 19h14"/></svg></span></span><span class="ac-title">Downloads</span><span class="ac-desc">Your downloaded songs</span></button>
+          <button type="button" class="acct-card acct-everyday" style="--c:#2dd4bf;--c2:#0ea5e9" onclick="toggleQueue()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h12M4 12h12M4 17h7"/><path d="M18 14l3 2.5-3 2.5z"/></svg></span></span><span class="ac-title">Queue</span><span class="ac-desc">Your play queue</span></button>
+          </div>
           <div class="acct-group">Settings</div>
           <div class="acct-list" role="list">
           <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#6366f1" onclick="openSettings()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg></span></span><span class="ac-title">Settings</span><span class="ac-desc">Audio, language, privacy and theme.</span></button>
@@ -13568,10 +13573,10 @@ function _syncProfileHeader() {
 
     if (bannerEl) {
       bannerEl.style.backgroundImage = _demoUser.cover
-        ? `linear-gradient(135deg, rgba(4,14,36,0.55), rgba(10,30,68,0.5)), url('${_demoUser.cover}')`
+        ? `linear-gradient(180deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0) 42%, rgba(0,0,0,0.12) 100%), url('${_demoUser.cover}')`
         : '';
       bannerEl.innerHTML =
-        `<div class="profile-photo-edit-btn banner-edit-btn" onclick="document.getElementById('coverFileInput').click()" title="Change background photo"><i class="fas fa-camera"></i></div>`;
+        `<div class="profile-photo-edit-btn banner-edit-btn" onclick="document.getElementById('coverFileInput').click()" title="Change cover photo"><i class="fas fa-camera"></i><span>${_demoUser.cover ? 'Edit cover' : 'Add cover'}</span></div>`;
     }
 
     // Real counts where we have them; 0 for a fresh account rather than the demo numbers
@@ -32841,12 +32846,14 @@ html[data-theme="aurora"] :is(button,a)[style*="background:var(--accent)"],html[
 </style>
 <script id="acct-more-js">
 window.acctMore=function(open){
-  var m=document.getElementById('acctMore'),l=document.getElementById('acctMain');
-  if(!m||!l)return;
-  m.hidden=!open;l.style.display=open?'none':'';
-  var h=document.getElementById('acctHub');
-  if(h&&h.scrollIntoView)h.scrollIntoView({block:'start'});
+  var m=document.getElementById('acctMore');
+  if(!m)return;
+  m.hidden=!open;
+  document.documentElement.classList.toggle('acct-fullpage',!!open);
+  if(open){m.scrollTop=0;try{var mn=document.getElementById('main');if(mn)mn.scrollTop=0}catch(e){}}
 };
+(function(){try{var _n=window.navigate;if(typeof _n==='function'&&!_n.__acctWrap){window.navigate=function(pg){if(pg!=='profile'){try{window.acctMore(false)}catch(e){}}return _n.apply(this,arguments)};window.navigate.__acctWrap=1}}catch(e){}
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){var m=document.getElementById('acctMore');if(m&&!m.hidden)window.acctMore(false)}});})();
 </script>
 <style id="fullWidthDesktop">
 /* ── Large screens: let these pages use the full width next to the sidebar (no empty bands left and right) ── */
@@ -32981,7 +32988,7 @@ html body #page-ai-dj .yai-composer:focus-within{box-shadow:none;border:0;border
 <script id="yaiFeatureGuide">
 (function(){
 const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const FN={queue:()=>toggleQueue(),studio:()=>{location.href='studio.html'},creator:()=>openSongCreator(),mixes:()=>sapOpen('dj-mixes'),lyrics:()=>openLyrics(),facts:()=>toggleSongFacts(),sleep:()=>openSleepTimer(),speed:()=>cyclePlaybackSpeed(),downloads:()=>_p2pGoToDownloads(),help:()=>openHelpCenter(),sub:()=>openSubscriptionModal(),edit:()=>openEditProfileModal(),rate:()=>openRateAppModal(),install:()=>pwaInstall(),about:()=>openModal('about'),lang:()=>openModal('language'),terms:()=>openLegal('terms'),privacy:()=>openLegal('privacypolicy'),bug:()=>openFeedback('bug'),feedback:()=>openFeedback('feedback'),signin:()=>goAuth('signin'),signup:()=>goAuth('signup'),now:()=>openNowPlaying(),logout:()=>_confirmSidebarLogout()};
+const FN={queue:()=>toggleQueue(),studio:()=>{if(typeof openStudio==='function')openStudio();else location.href='studio.html'},creator:()=>openSongCreator(),mixes:()=>sapOpen('dj-mixes'),lyrics:()=>openLyrics(),facts:()=>toggleSongFacts(),sleep:()=>openSleepTimer(),speed:()=>cyclePlaybackSpeed(),downloads:()=>_p2pGoToDownloads(),help:()=>openHelpCenter(),sub:()=>openSubscriptionModal(),edit:()=>openEditProfileModal(),rate:()=>openRateAppModal(),install:()=>pwaInstall(),about:()=>openModal('about'),lang:()=>openModal('language'),terms:()=>openLegal('terms'),privacy:()=>openLegal('privacypolicy'),bug:()=>openFeedback('bug'),feedback:()=>openFeedback('feedback'),signin:()=>goAuth('signin'),signup:()=>goAuth('signup'),now:()=>openNowPlaying(),logout:()=>_confirmSidebarLogout()};
 window.yaiGo=function(k){try{const i=k.indexOf(':'),t=k.slice(0,i),v=k.slice(i+1);if(t==='p'){navigate(v);try{updateBottomNav(v)}catch(e){}}else if(t==='s')openSettings(v);else if(t==='q'){const q=decodeURIComponent(v);openSettings('home');setTimeout(()=>{const e=document.getElementById('ysQ');if(e){e.value=q;e.dispatchEvent(new Event('input',{bubbles:true}));e.focus()}},400)}else if(t==='m'){const q=decodeURIComponent(v);navigate('search');setTimeout(()=>{try{filterMainSearch(q);const e=document.querySelector('#page-search input');if(e)e.value=q}catch(_){}},300)}else if(t==='n')(window._yaiNav||[])[+v].click();else FN[v]()}catch(e){console.warn('yaiGo',k,e);try{showToast('Could not open that here')}catch(_){}}};
 // Feature guide: [pattern, answer, ...[button label, action]]. Every action calls something that already exists in the app.
 const K=[];const k=(re,say,...b)=>K.push({re:new RegExp(re),say,b});
@@ -33469,7 +33476,7 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-j],[
     var main=document.getElementById('acctMain');
     if(main&&!document.getElementById('fgPicks')){var h=document.createElement('div');h.id='fgPicks';h.hidden=true;main.appendChild(h)}
     render();pull();
-    document.querySelectorAll('#acctMain .acct-card').forEach(function(card){
+    document.querySelectorAll('#acctHub .acct-nogear').forEach(function(card){
       if(card.querySelector('.fgear'))return;
       var t=card.querySelector('.ac-title');if(!t)return;
       var name=t.textContent.replace(/\s+/g,' ').trim();
@@ -34571,5 +34578,178 @@ function _mediaUrlSafe(u) {
   .disc-card{flex:0 0 200px}
 }
 </style>
+<style id="acctExplore">
+/* Profile: one "Explore all features" button opens every feature in a single list */
+html #page-profile .acct-hub #acctMain{grid-template-columns:1fr}
+html #page-profile .acct-hub #acctMain .acct-moreBtn{min-height:84px;padding:14px 34px 14px 14px;border-color:rgba(255,255,255,.35)!important;
+  background:linear-gradient(100deg,rgba(14,166,107,.55),rgba(124,58,237,.72) 60%,rgba(192,38,211,.72))!important}
+html #page-profile .acct-hub #acctMain .acct-moreBtn .ac-ico{width:48px;height:48px}
+html #page-profile .acct-hub #acctMain .acct-moreBtn .ac-title{font-size:17px;padding-right:0}
+html #page-profile .acct-hub #acctMain .acct-moreBtn .ac-desc{font-size:12px;padding-right:0}
+</style>
+<style id="acctFullPage">
+/* Features: full page, WhatsApp-settings style (flat rows, no boxes) */
+html body #page-profile #acctMore:not([hidden]){position:fixed;z-index:60;top:var(--topbar-h,52px);left:0;right:0;bottom:calc(var(--mnav-h,0px) + var(--player-h,0px));display:block;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:var(--bg);padding:0 0 32px;margin:0}
+@media(min-width:769px){html body #page-profile #acctMore:not([hidden]){left:var(--sidebar-w,220px)}}
+html body #page-profile #acctMore>*{max-width:780px;margin-left:auto;margin-right:auto}
+html body #page-profile #acctMore .acct-back{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:14px;width:100%;box-sizing:border-box;margin:0 auto;padding:14px 16px;background:var(--bg);border-bottom:1px solid var(--border);font:700 20px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--text)}
+html body #page-profile #acctMore .acct-chev{width:12px;height:12px;border-color:var(--text);margin:0 4px 0 6px}
+html body #page-profile #acctMore .acct-group{padding:22px 20px 6px;font:700 13px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:.03em;color:var(--accent-lighter,var(--accent-light))}
+html body #page-profile #acctMore .acct-list{background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;margin:0 auto!important;padding:0;overflow:visible;backdrop-filter:none!important}
+html body #page-profile #acctMore .acct-card{position:relative;display:grid!important;grid-template-columns:32px minmax(0,1fr);grid-template-areas:"ico title" "ico desc";column-gap:18px;row-gap:2px;align-items:center;align-content:center;width:100%;min-height:66px;box-sizing:border-box;margin:0;padding:11px 20px!important;border:0!important;border-radius:0!important;box-shadow:none!important;backdrop-filter:none!important;
+  background-color:transparent!important;background-image:linear-gradient(var(--border),var(--border))!important;background-repeat:no-repeat!important;background-position:70px 100%!important;background-size:calc(100% - 90px) 1px!important;color:var(--text);text-align:left}
+html body #page-profile #acctMore .acct-card:active{background-color:rgba(255,255,255,.07)!important}
+@media(hover:hover){html body #page-profile #acctMore .acct-card:hover{background-color:rgba(255,255,255,.05)!important}}
+html body #page-profile #acctMore .acct-card::before,html body #page-profile #acctMore .acct-card::after{display:none!important}
+html body #page-profile #acctMore .ac-top{grid-area:ico;grid-row:1/3;margin:0}
+html body #page-profile #acctMore .ac-ico{width:32px;height:32px;border-radius:0;background:none!important;background-image:none!important;border:0!important;box-shadow:none!important;filter:none!important;color:var(--c,var(--accent-light))}
+html body #page-profile #acctMore .ac-ico::before,html body #page-profile #acctMore .ac-ico::after{display:none!important}
+html body #page-profile #acctMore .ac-ico svg{width:26px;height:26px;stroke:currentColor}
+html body #page-profile #acctMore .ac-title{grid-area:title;align-self:end;font:600 16px/1.25 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--text);padding:0;overflow-wrap:anywhere}
+html body #page-profile #acctMore .ac-desc{grid-area:desc;align-self:start;display:block!important;font:400 13px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--muted);padding:0}
+html body #page-profile #acctMore .acct-card:not(:has(.ac-desc)) .ac-title{grid-row:1/3;align-self:center}
+.acct-hub .fgear,#page-profile .fgear{display:none!important}
+html.acct-fullpage body{overflow:hidden}
+</style>
+<style id="wabProfileCss">
+/* ═══ PROFILE HEADER — WhatsApp Business style: cover photo on top, round profile photo overlapping it ═══
+   The cover is the existing "background photo" (profile.cover_url); this skin was hiding it. Loaded after every other profile skin. */
+html body #page-profile .acx-head{display:none}
+html body #page-profile .profile-banner{display:block;position:relative;overflow:hidden;width:100%;max-width:none;height:172px;margin:0;border-radius:0 0 24px 24px;
+  background-color:#5b21b6;background-image:linear-gradient(135deg,#0ea66b 0%,#7c3aed 62%,#c026d3 100%);background-size:cover;background-position:center;background-repeat:no-repeat}
+html body #page-profile .profile-banner::after{display:none}
+html body #page-profile .profile-banner::before{content:"Account";position:absolute;left:68px;top:23px;z-index:1;font-size:22px;font-weight:800;line-height:1;letter-spacing:-.3px;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.55);pointer-events:none}
+html body #page-profile .banner-edit-btn{top:12px;right:14px;width:auto;height:36px;padding:0 13px;gap:7px;border-radius:999px;font-size:12px;font-weight:700;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.5);color:#fff}
+html body #page-profile .banner-edit-btn:hover{background:var(--accent)}
+html body #page-profile .banner-edit-btn i{font-size:13px}
+/* the card becomes a flat header: photo overlaps the cover, "Edit Profile" sits beside it, details underneath */
+html body #page-profile .acx-user{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"av act" "name name" "handle handle" "bio bio" "plan plan";align-items:end;column-gap:12px;row-gap:0;
+  width:100%;max-width:none;box-sizing:border-box;margin:-52px 0 0;padding:0 16px 4px;border-radius:0;
+  background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html body #page-profile .profile-avatar{grid-area:av;width:104px;height:104px;border:4px solid #fff;font-size:36px;box-shadow:0 8px 22px -8px rgba(0,0,0,.65)}
+html body #page-profile .profile-meta{display:contents}
+html body #page-profile .profile-name{grid-area:name;margin-top:12px;font-size:24px}
+html body #page-profile .profile-handle{grid-area:handle;margin:4px 0 0;font-size:14px;white-space:normal;overflow:visible;text-overflow:clip}
+html body #page-profile .profile-bio{grid-area:bio;margin:8px 0 0;font-size:14px;max-width:none}
+html body #page-profile .acx-plan-row{display:contents}
+html body #page-profile .acx-plan{grid-area:plan;width:100%;box-sizing:border-box;margin-top:14px;padding-top:12px;border-top:1px solid rgba(147,197,253,.3)}
+html body #page-profile .acx-view{grid-area:act;justify-self:end;align-self:end;margin:0 0 6px;padding:9px 14px;font-size:13px}
+@media (max-width:380px){
+  html body #page-profile .profile-banner{height:150px}
+  html body #page-profile .acx-user{margin-top:-46px}
+  html body #page-profile .profile-avatar{width:92px;height:92px}
+  html body #page-profile .profile-name{font-size:22px}
+}
+@media (min-width:641px){
+  html body #page-profile .profile-banner{width:calc(100% - 32px);max-width:608px;margin:14px auto 0;height:200px;border-radius:24px}
+  html body #page-profile .acx-user{width:calc(100% - 32px);max-width:608px;margin:-52px auto 0;padding:0 18px 4px}
+}
+@media (min-width:1200px){
+  html body #page-profile .profile-banner,html body #page-profile .acx-user{max-width:none}
+}
+</style>
+<style id="yapsBackCss">
+/* in-page back arrow (same round button as the New Releases page) */
+.yb-row{display:flex;align-items:center;padding:10px 14px 0}
+.yb-float{position:absolute;top:12px;left:12px;z-index:6}
+html body #page-profile>.yb-float{background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-color:rgba(255,255,255,.5);color:#fff}
+/* COVER PHOTO of songs behind the header of song / artist / video list pages */
+.wab-cover .nrp-header,.wab-cover .tvp-top,.wab-cover .nvp-top,.wab-cover .atp-top{
+  background-color:#0b1030;background-image:var(--wab-img);background-size:var(--wab-size);background-position:var(--wab-pos);background-repeat:no-repeat;
+  padding-top:16px;padding-bottom:16px;border-radius:0 0 24px 24px;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 12px 26px -14px rgba(0,0,0,.75)}
+.wab-cover :is(.nrp-header,.tvp-top,.nvp-top,.atp-top) :is(h1,h2,h3,p,.nrp-sub){color:#fff!important;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.wab-cover .nrp-header .nrp-btn,.wab-cover :is(.tvp-top,.nvp-top,.atp-top) button{background:rgba(0,0,0,.45);color:#fff;border-color:rgba(255,255,255,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+</style>
+<script id="yapsBackArrow">
+/* BACK ARROW — sits on the page itself (not the top bar) and returns to exactly where the person was: the previous page AND its scroll position.
+   Keeps its own list of visited pages (every navigate() is recorded). Pages that already have their own Back step (Artists, New Releases,
+   Trending/New Videos, song lists) keep it and are handed over to it so their history stays consistent.
+   An open DJ Studio / Song Creator closes first, which reveals the page underneath untouched.
+   Also gives song / artist / video list pages a cover photo made from song artwork. */
+(function(){
+  var stack=[],restoring=false,userMoved=false,MAX=40;
+  var OWN={'artists':['atp','atpBack'],'new-releases':['nrp','nrpBack'],'trending-videos':['tvp','tvpBack'],'new-videos':['nvp','nvpBack']};
+  var NOARROW={'home':1,'artists':1,'new-releases':1,'trending-videos':1,'new-videos':1};
+  var COVER={'artists':1,'new-releases':1,'trending-videos':1,'new-videos':1};
+  function cur(){try{return currentPage||'home'}catch(e){return 'home'}}
+  function mainEl(){return document.getElementById('main')}
+  function restoreY(y){
+    if(!(y>0))return;userMoved=false;
+    [0,120,350,800].forEach(function(t){setTimeout(function(){var m=mainEl();if(m&&!userMoved&&m.scrollTop<y)m.scrollTop=y},t)});
+  }
+  ['wheel','touchstart','keydown','mousedown'].forEach(function(ev){addEventListener(ev,function(){userMoved=true},{passive:true,capture:true})});
+
+  /* ── arrow on the page ── */
+  function hasOwnBack(pg){
+    var c=pg.querySelectorAll('button,a,[role=button]');
+    for(var i=0;i<c.length;i++){var e=c[i];if(e.classList.contains('yb-btn'))continue;
+      var l=e.getAttribute('aria-label')||'',id=e.id||'';
+      if((/^(go )?back\b/i.test(l)||/Back$/.test(id)||e.getAttribute('data-sa')==='back')&&e.offsetParent!==null)return true}
+    return false}
+  function mkBtn(){var b=document.createElement('button');b.type='button';b.className='nrp-btn yb-btn';b.setAttribute('aria-label','Go back');b.innerHTML='<i class="fas fa-arrow-left" aria-hidden="true"></i>';b.onclick=function(){window.yapsGoBack()};return b}
+  function ensureArrow(pg,id){
+    if(!pg||NOARROW[id]||/^sa-/.test(id))return;
+    var mine=pg.querySelector(':scope>.yb-row,:scope>.yb-float');
+    if(id==='profile'){if(!mine){var f=mkBtn();f.classList.add('yb-float');pg.appendChild(f)}return}
+    if(mine){if(hasOwnBack(pg)&&mine.parentNode)mine.remove();return}
+    if(hasOwnBack(pg))return;
+    if(getComputedStyle(pg).display!=='block')return;
+    var r=document.createElement('div');r.className='yb-row';r.appendChild(mkBtn());pg.insertBefore(r,pg.firstChild)}
+
+  /* ── cover photo of songs ── */
+  var covList=null,covLen=-1;
+  function covers(){
+    var T=[];try{T=tracks||[]}catch(e){}
+    if(covList&&covLen===T.length)return covList;
+    var seen={},out=[];
+    for(var i=0;i<T.length;i++){var u=T[i]&&T[i].img;if(!u||typeof u!=='string'||seen[u]||/icon-\d+|placeholder|fallback/i.test(u))continue;seen[u]=1;out.push(u)}
+    covLen=T.length;return covList=out}
+  function hash(t){var h=0;for(var i=0;i<t.length;i++)h=(h*31+t.charCodeAt(i))|0;return Math.abs(h)}
+  function applyCover(pg,id){
+    if(!pg||!(COVER[id]||/^sa-/.test(id)))return;
+    var L=covers(),n=Math.min(4,L.length);if(!n){pg.classList.remove('wab-cover');return}
+    var st=hash(id)%L.length,img=['linear-gradient(180deg,rgba(4,8,26,.35),rgba(4,8,26,.84))'],size=['100% 100%'],pos=['0 0'];
+    for(var i=0;i<n;i++){var u=L[(st+i)%L.length],abs;try{abs=new URL(u,document.baseURI).href}catch(e){abs=u}
+      img.push('url("'+abs.replace(/"/g,'%22')+'")');size.push(n===1?'cover':(100/n+0.4)+'% 100%');pos.push(n===1?'center':(i*100/(n-1))+'% 0')}
+    pg.style.setProperty('--wab-img',img.join(','));pg.style.setProperty('--wab-size',size.join(','));pg.style.setProperty('--wab-pos',pos.join(','));
+    pg.classList.add('wab-cover')}
+  function decorate(){var id=cur(),pg=document.getElementById('page-'+id);ensureArrow(pg,id);applyCover(pg,id)}
+
+  var _n=window.navigate;
+  if(typeof _n==='function')window.navigate=function(){
+    var from=cur(),m=mainEl(),fromY=m?m.scrollTop:0;
+    var r=_n.apply(this,arguments);
+    var to=cur();
+    if(to!==from&&!restoring){
+      if(window.__yapsInPop){                       /* phone / browser Back, or a page's own back step: walk back down the list */
+        var i=-1;for(var k=stack.length-1;k>=0;k--){if(stack[k].p===to){i=k;break}}
+        if(i>=0){var y=stack[i].y;stack.length=i;restoreY(y)}else stack.length=0;
+      }else{
+        stack.push({p:from,y:fromY});if(stack.length>MAX)stack.shift();
+      }
+    }
+    try{decorate()}catch(e){}
+    setTimeout(function(){try{decorate()}catch(e){}},600);
+    return r;
+  };
+
+  window.yapsGoBack=function(){
+    try{
+      if(window.__scOpen&&window._songCreatorClose){window._songCreatorClose();return}
+      if(window.__studioOpen&&window._studioClose){window._studioClose();return}
+    }catch(e){}
+    var cp=cur(),own=OWN[cp],hs=history.state||{};
+    if(own&&hs[own[0]]&&typeof window[own[1]]==='function'){window[own[1]]();return}
+    if(/^sa-/.test(cp)&&hs.sap){history.back();return}
+    var t=stack.pop(),target=t?t.p:(cp!=='home'?'home':null);
+    if(!target)return;
+    restoring=true;try{navigate(target)}finally{restoring=false}
+    try{if(typeof updateBottomNav==='function')updateBottomNav(target)}catch(e){}
+    if(t)restoreY(t.y);
+    try{decorate()}catch(e){}
+  };
+  addEventListener('load',function(){try{decorate()}catch(e){}setTimeout(function(){try{decorate()}catch(e){}},1500)});
+})();
+</script>
 </body>
 </html>
