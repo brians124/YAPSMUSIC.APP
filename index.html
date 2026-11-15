@@ -1697,7 +1697,7 @@ body {
 
 /* Large / ultra-wide desktop — keep content readable instead of stretching edge to edge */
 @media (min-width: 1600px) {
-  .yv2-header, .yv2-hero, .yv2-cats, .yv2-section { max-width: 1400px; margin-left: auto; margin-right: auto; }
+  .yv2-header, .yv2-hero, .yv2-cats, .yv2-section { max-width: none; }
   .yv2-hero { margin-top: 18px; margin-bottom: 18px; }
 }
 
@@ -2437,7 +2437,7 @@ body {
    grids and text don't stretch into unreadably long lines. Every page
    sits inside #main, so this applies app-wide, not just to one page. */
 @media (min-width: 1600px) {
-  #main { max-width: 1700px; margin: 0 auto; }
+  #main { max-width: none; margin: 0; }
 }
 
 /* Page sections */
@@ -6099,7 +6099,7 @@ html.is-offline #offlineStatusDot { background: #ff6b6b; }
 @media (max-width:359px){.qvp-name{font-size:13px;}.qvp-heading h1{font-size:20px;}}
 @media (min-width:600px) and (max-width:767px){#page-quickvibes{--qvp-space:12px;}}
 @media (min-width:768px){
-  #page-quickvibes{--qvp-pad:24px;--qvp-maxw:calc(1120px + 48px);--qvp-gap:16px;--qvp-chip-gap:10px;--qvp-space:10px;}
+  #page-quickvibes{--qvp-pad:24px;--qvp-maxw:100%;--qvp-gap:16px;--qvp-chip-gap:10px;--qvp-space:10px;}
   .qvp-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
   .qvp-head-grid{flex-wrap:nowrap;}
   .qvp-search{flex:0 1 320px;order:0;display:flex;}
@@ -6109,7 +6109,7 @@ html.is-offline #offlineStatusDot { background: #ff6b6b; }
 }
 @media (min-width:1024px){.qvp-grid{grid-template-columns:repeat(4,minmax(0,1fr));}}
 @media (min-width:1200px){
-  #page-quickvibes{--qvp-pad:32px;--qvp-maxw:calc(1440px + 64px);--qvp-gap:20px;--qvp-space:12px;}
+  #page-quickvibes{--qvp-pad:32px;--qvp-maxw:100%;--qvp-gap:20px;--qvp-space:12px;}
   .qvp-grid{grid-template-columns:repeat(5,minmax(0,1fr));}
 }
 @media (min-width:1440px){.qvp-grid{grid-template-columns:repeat(6,minmax(0,1fr));}}
@@ -6185,7 +6185,7 @@ html.is-offline #offlineStatusDot { background: #ff6b6b; }
 @media (max-width:359px){.plp-name{font-size:13px;}.plp-heading h1{font-size:20px;}}
 @media (min-width:600px){#page-playlists{--plp-gap:14px;}}
 @media (min-width:768px){
-  #page-playlists{--plp-pad:24px;--plp-maxw:calc(1120px + 48px);--plp-gap:16px;}
+  #page-playlists{--plp-pad:24px;--plp-maxw:100%;--plp-gap:16px;}
   .plp-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
   .plp-head-grid{flex-wrap:nowrap;}
   .plp-search{flex:0 1 320px;order:0;display:flex;}
@@ -6195,7 +6195,7 @@ html.is-offline #offlineStatusDot { background: #ff6b6b; }
   .plp-name{font-size:15px;}
 }
 @media (min-width:1024px){.plp-grid{grid-template-columns:repeat(4,minmax(0,1fr));}}
-@media (min-width:1200px){#page-playlists{--plp-pad:32px;--plp-maxw:calc(1440px + 64px);--plp-gap:20px;}.plp-grid{grid-template-columns:repeat(5,minmax(0,1fr));}}
+@media (min-width:1200px){#page-playlists{--plp-pad:32px;--plp-maxw:100%;--plp-gap:20px;}.plp-grid{grid-template-columns:repeat(5,minmax(0,1fr));}}
 @media (hover:hover) and (pointer:fine){
   .plp-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 12px 30px rgba(0,0,0,.4),0 0 24px var(--accent-dim);}
   .plp-card:hover .plp-art img{transform:scale(1.06);}
@@ -6216,8 +6216,8 @@ html.is-offline #offlineStatusDot { background: #ff6b6b; }
 .sa-page .sap-sub-ico{color:var(--accent);margin-right:6px;}
 .sa-page .sap-cta{display:inline-block;margin-top:12px;padding:12px 20px;border-radius:12px;background:var(--accent);color:#fff;font-weight:800;text-decoration:none;border:0;cursor:pointer;font-family:inherit;}
 @media (min-width:600px) and (max-width:767px){.sa-page{--nrp-cardpad:12px;}}
-@media (min-width:768px){.sa-page{--nrp-pad:24px;--nrp-maxw:calc(1120px + 48px);--nrp-gap:16px;--nrp-chip-gap:10px;--nrp-cardpad:10px;}}
-@media (min-width:1200px){.sa-page{--nrp-pad:32px;--nrp-maxw:calc(1440px + 64px);--nrp-gap:20px;--nrp-cardpad:12px;}}
+@media (min-width:768px){.sa-page{--nrp-pad:24px;--nrp-maxw:100%;--nrp-gap:16px;--nrp-chip-gap:10px;--nrp-cardpad:10px;}}
+@media (min-width:1200px){.sa-page{--nrp-pad:32px;--nrp-maxw:100%;--nrp-gap:20px;--nrp-cardpad:12px;}}
 /* ── NEW RELEASES "See All" page (nrp-*) — existing theme variables only ── */
 #page-new-releases{--nrp-pad:16px;--nrp-maxw:100%;--nrp-gap:12px;--nrp-chip-gap:8px;--nrp-cardpad:8px;--nrp-head-h:64px;padding:0;}
 #page-new-releases .nrp-inner{width:100%;max-width:var(--nrp-maxw);margin-inline:auto;box-sizing:border-box;padding-left:max(var(--nrp-pad),env(safe-area-inset-left));padding-right:max(var(--nrp-pad),env(safe-area-inset-right));}
@@ -6301,7 +6301,7 @@ html.is-offline #offlineStatusDot { background: #ff6b6b; }
 @media (max-width:359px){.nrp-name{font-size:13px;}.nrp-heading h1{font-size:20px;}.nrp-sort-l{display:none;}}
 @media (min-width:600px) and (max-width:767px){#page-new-releases{--nrp-cardpad:12px;}}
 @media (min-width:768px){
-  #page-new-releases{--nrp-pad:24px;--nrp-maxw:calc(1120px + 48px);--nrp-gap:16px;--nrp-chip-gap:10px;--nrp-cardpad:10px;}
+  #page-new-releases{--nrp-pad:24px;--nrp-maxw:100%;--nrp-gap:16px;--nrp-chip-gap:10px;--nrp-cardpad:10px;}
   .nrp-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
   .nrp-heading h1{font-size:26px;}
   .nrp-sub{font-size:14px;}
@@ -6311,7 +6311,7 @@ html.is-offline #offlineStatusDot { background: #ff6b6b; }
   .nrp-sheet-panel{border-bottom:1px solid var(--border);border-radius:20px;}
 }
 @media (min-width:1024px){.nrp-grid{grid-template-columns:repeat(4,minmax(0,1fr));}}
-@media (min-width:1200px){#page-new-releases{--nrp-pad:32px;--nrp-maxw:calc(1440px + 64px);--nrp-gap:20px;--nrp-cardpad:12px;}.nrp-grid{grid-template-columns:repeat(5,minmax(0,1fr));}}
+@media (min-width:1200px){#page-new-releases{--nrp-pad:32px;--nrp-maxw:100%;--nrp-gap:20px;--nrp-cardpad:12px;}.nrp-grid{grid-template-columns:repeat(5,minmax(0,1fr));}}
 @media (min-width:1440px){.nrp-grid{grid-template-columns:repeat(6,minmax(0,1fr));}}
 @media (hover:hover) and (pointer:fine){
   .nrp-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 12px 30px rgba(0,0,0,.4),0 0 24px var(--accent-dim);}
@@ -9227,78 +9227,71 @@ a.djx-row{color:inherit;text-decoration:none}
 <!-- NOW PLAYING SCREEN — YAPS neon full-screen player -->
 <div id="nowPlayingScreen" onclick="if(event.target===this)closeNowPlayingScreen()">
   <div class="np-card">
-   <div class="np-body" id="npBody">
-    <!-- Header: back · YAPS logo · broadcast/share · more -->
-    <header class="np-top">
-      <button class="np-close np-round-btn" onclick="closeNowPlayingScreen()" aria-label="Close player"><i class="fas fa-arrow-left"></i></button>
-      <div class="np-brand">
-        <span class="np-logo3d" role="img" aria-label="YAPSMusic">YAPS<small>MUSIC</small></span>
-        <div class="np-tagline"><span>MUSIC</span><i></i><span>STREAM</span><i></i><span>EARN</span></div>
-      </div>
-      <div class="np-top-right">
-        <button class="np-round-btn np-ghost" onclick="nativeShare(tracks[currentTrack].title, tracks[currentTrack].artist, tracks[currentTrack].id)" aria-label="Broadcast / share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/><path d="M8.2 8.2a5.4 5.4 0 0 0 0 7.6M15.8 8.2a5.4 5.4 0 0 1 0 7.6M5.4 5.4a9.4 9.4 0 0 0 0 13.2M18.6 5.4a9.4 9.4 0 0 1 0 13.2"/></svg></button>
-        <button class="np-round-btn np-ghost" id="npMoreBtn" onclick="npToggleMore(event)" aria-label="More options"><i class="fas fa-ellipsis-v"></i></button>
-      </div>
+   <div class="np-body npx-body" id="npBody">
+    <header class="npx-top">
+      <button class="npx-round" onclick="closeNowPlayingScreen()" aria-label="Close player"><i class="fas fa-arrow-left"></i></button>
+      <span class="npx-badge"><i class="fas fa-music"></i>Now Playing</span>
+      <button class="npx-round npx-more-mobile" onclick="npToggleMore(event)" aria-label="More options"><i class="fas fa-ellipsis-h"></i></button>
     </header>
 
-    <!-- Square art with side equalizers -->
-    <div class="np-stage">
-      <canvas id="npVisCanvas" aria-hidden="true"></canvas>
-      <div class="np-album-ring" id="npAlbumRing">
-        <img loading="lazy" decoding="async" id="npCover" src="" alt="Album cover">
+    <div class="npx-stage">
+      <div class="npx-vinyl" aria-hidden="true"></div>
+      <div class="np-album-ring npx-art" id="npAlbumRing"><img decoding="async" id="npCover" src="" alt="Album cover"></div>
+    </div>
+
+    <div class="npx-meta">
+      <div class="npx-meta-text">
+        <div class="np-title npx-title" id="npTitle">Song Title</div>
+        <div class="np-artist npx-artist" id="npArtist">Artist Name</div>
+        <div class="npx-chips" id="npChips"></div>
+      </div>
+      <div class="npx-acts">
+        <button class="np-heart npx-like" id="npLikeBtn" onclick="toggleLikeTrack(currentTrack)" aria-label="Like"><i class="fas fa-heart"></i><span class="l-off">Like</span><span class="l-on">Liked</span></button>
+        <button class="npx-pillbtn npx-share" onclick="nativeShare(tracks[currentTrack].title, tracks[currentTrack].artist, tracks[currentTrack].id)" aria-label="Share"><i class="fas fa-share-alt"></i><span>Share</span></button>
+        <button class="npx-pillbtn npx-more-desktop" id="npMoreBtn" onclick="npToggleMore(event)" aria-label="More options"><i class="fas fa-ellipsis-h"></i></button>
       </div>
     </div>
 
-    <!-- Title / artist / like -->
-    <div class="np-meta">
-      <div class="np-meta-text">
-        <div class="np-title" id="npTitle">Song Title</div>
-        <div class="np-artist" id="npArtist">Artist Name</div>
-      </div>
-      <button class="np-heart" id="npLikeBtn" onclick="toggleLikeTrack(currentTrack)" title="Like" aria-label="Like"><i class="fas fa-heart"></i></button>
+    <div class="npx-wave" id="npxWave"><canvas id="npVisCanvas" aria-label="Waveform. Tap to seek."></canvas></div>
+
+    <div class="npx-prog">
+      <input type="range" id="npSeek" min="0" max="100" step="0.1" value="0" aria-label="Seek" oninput="npOnSeekInput(this)" onchange="npOnSeekChange(this)">
+      <div class="npx-times"><span id="npCurrentTime">0:00</span><span id="npTotalTime">0:00</span></div>
     </div>
 
-    <!-- Seek bar -->
-    <div class="np-progress-wrap">
-      <input type="range" id="npSeek" min="0" max="100" value="0" aria-label="Seek" oninput="npOnSeekInput(this)" onchange="npOnSeekChange(this)">
-      <div class="np-times">
-        <span id="npCurrentTime">0:00</span>
-        <span id="npTotalTime">0:00</span>
+    <div class="npx-ctrl">
+      <div class="npx-transport">
+        <i class="fas fa-random npx-ctl" id="npShuffleBtn" role="button" tabindex="0" onclick="toggleShuffle()" title="Shuffle" aria-label="Shuffle"></i>
+        <i class="fas fa-step-backward npx-ctl" role="button" tabindex="0" onclick="prevTrack()" title="Previous" aria-label="Previous"></i>
+        <div class="npx-play" id="npPlayPauseBtn" role="button" tabindex="0" onclick="togglePlay()" aria-label="Play or pause"><i class="fas fa-play" id="npPlayPauseIcon"></i></div>
+        <i class="fas fa-step-forward npx-ctl" role="button" tabindex="0" onclick="nextTrack()" title="Next" aria-label="Next"></i>
+        <i class="fas fa-redo npx-ctl" id="npRepeatBtn" role="button" tabindex="0" onclick="toggleRepeat()" title="Repeat" aria-label="Repeat"></i>
+      </div>
+      <div class="npx-vol">
+        <button class="npx-vbtn" id="npxMute" aria-label="Mute"><i class="fas fa-volume-up"></i></button>
+        <input type="range" id="npVol" min="0" max="100" value="100" aria-label="Volume">
+        <button class="npx-vbtn" id="npxFs" aria-label="Fullscreen"><i class="fas fa-expand"></i></button>
       </div>
     </div>
 
-    <!-- Playback controls -->
-    <div class="np-controls">
-      <i class="fas fa-random np-ctrl-btn" id="npShuffleBtn" onclick="toggleShuffle()" title="Shuffle"></i>
-      <i class="fas fa-step-backward np-ctrl-btn" onclick="prevTrack()" title="Previous"></i>
-      <div class="np-play-btn" id="npPlayPauseBtn" onclick="togglePlay()">
-        <i class="fas fa-play" id="npPlayPauseIcon"></i>
-      </div>
-      <i class="fas fa-step-forward np-ctrl-btn" onclick="nextTrack()" title="Next"></i>
-      <i class="fas fa-redo np-ctrl-btn" id="npRepeatBtn" onclick="toggleRepeat()" title="Repeat"></i>
-    </div>
+    <div class="npx-actions" id="npActionsWrap"><div class="npx-actions-row" id="npActions">
+      <button class="npx-action" onclick="downloadTrack(currentTrack)"><i class="fas fa-download"></i><span>Download</span></button>
+      <button class="npx-action" onclick="showAddToPlaylist(currentTrack)"><i class="fas fa-list-ul npx-pl"></i><span>Add to Playlist</span></button>
+      <button class="npx-action" id="npLyricsBtn" onclick="openLyrics()"><i class="fas fa-music"></i><span>Lyrics</span></button>
+      <button class="npx-action" onclick="toggleQueue()"><i class="fas fa-stream"></i><span>Queue</span></button>
+    </div></div>
+    <span id="npSpeedTabVal" hidden></span><span id="npSleepTabVal" hidden></span>
+   </div>
 
-    <!-- Download / Add to Playlist -->
-    <div class="np-pills">
-      <button class="np-pill np-pill-dl" onclick="downloadTrack(currentTrack)"><i class="fas fa-download"></i>Download</button>
-      <button class="np-pill np-pill-pl" onclick="showAddToPlaylist(currentTrack)"><i class="fas fa-music"></i>Add to Playlist</button>
-    </div>
-
-    <!-- Tabs + tagline -->
-    <div class="np-tabs-wrap" id="npActionsWrap">
-      <div class="np-tabs" id="npActions">
-        <button class="np-tab np-lyrics-btn np-tab-default" id="npLyricsBtn" onclick="openLyrics()"><i class="fas fa-music"></i>Lyrics</button>
-        <button class="np-tab" id="npVideoBtn" onclick="openTrackVideo()"><i class="fas fa-square-caret-right"></i>Video</button>
-        <button class="np-tab" onclick="showAddToPlaylist(currentTrack)"><i class="fas fa-plus"></i>Playlist</button>
-        <button class="np-tab" onclick="toggleQueue()"><i class="fas fa-list-ul"></i>Queue</button>
-        <button class="np-tab" onclick="nativeShare(tracks[currentTrack].title, tracks[currentTrack].artist, tracks[currentTrack].id)"><i class="fas fa-share"></i>Share</button>
-        <button class="np-tab" onclick="openDeckPicker(currentTrack)"><i class="fas fa-headphones"></i>DJ Studio</button>
-        <button class="np-tab" onclick="toggleSongFacts()"><i class="fas fa-circle-info"></i>Info</button>
-        <button class="np-tab" id="npSpeedTab" onclick="cyclePlaybackSpeed()"><i class="fas fa-gauge-high"></i>Speed<span class="np-tab-sub always" id="npSpeedTabVal">1X</span></button>
-        <button class="np-tab" id="npSleepTab" onclick="openSleepTimer()"><i class="fas fa-moon"></i>Sleep<span class="np-tab-sub" id="npSleepTabVal"></span></button>
-      </div>
-      <div class="np-footline"><em>Your Music</em><span class="dot"></span><em>Your Earnings</em><span class="dot"></span><em>With <b>YAPSMusic</b></em></div>
-    </div>
+   <!-- docked mini-player, synced with the main player -->
+   <div class="npx-dock" id="npDock">
+     <div class="npx-dock-bar" id="npDockBar" onclick="seekTo(event,this)" aria-label="Seek"><div id="npDockFill"></div></div>
+     <img id="npDockImg" alt="" decoding="async">
+     <div class="npx-dock-info"><div id="npDockTitle"></div><div id="npDockArtist"></div></div>
+     <span class="npx-dock-time" id="npDockTime">0:00 / 0:00</span>
+     <button class="npx-dock-b npx-dock-skip" onclick="prevTrack()" aria-label="Previous"><i class="fas fa-step-backward"></i></button>
+     <button class="npx-dock-play" onclick="togglePlay()" aria-label="Play or pause"><i class="fas fa-play" id="npDockPlayIcon"></i></button>
+     <button class="npx-dock-b npx-dock-skip" onclick="nextTrack()" aria-label="Next"><i class="fas fa-step-forward"></i></button>
    </div>
 
    <!-- 3-dot menu: everything the old action row had that isn't in the new design -->
@@ -9306,6 +9299,7 @@ a.djx-row{color:inherit;text-decoration:none}
    <div class="np-more" id="npMore" role="menu">
      <button class="np-more-item" onclick="npToggleMore(event,false);nativeShare(tracks[currentTrack].title, tracks[currentTrack].artist, tracks[currentTrack].id)"><i class="fas fa-share"></i>Share</button>
      <button class="np-more-item" id="npRepostBtn" onclick="toggleRepost(currentTrack,this)"><i class="fas fa-retweet"></i>Repost</button>
+     <button class="np-more-item" id="npVideoBtn" onclick="npToggleMore(event,false);openTrackVideo()"><i class="fas fa-play-circle"></i>Video</button>
      <button class="np-more-item" onclick="npToggleMore(event,false);openDeckPicker(currentTrack)"><i class="fas fa-headphones"></i>DJ Studio</button>
      <button class="np-more-item" id="npInfoBtn" onclick="npToggleMore(event,false);toggleSongFacts()"><i class="fas fa-info-circle"></i>Song info</button>
      <button class="np-more-item" id="npSpeedBtn" onclick="cyclePlaybackSpeed()"><i class="fas fa-tachometer-alt"></i>Speed <span id="npSpeedLabel" style="margin-left:auto;color:var(--yp-g)">1x</span></button>
@@ -19836,15 +19830,15 @@ function _renderChatMessages() {
       </div>` : '';
     const uploadingHtml = msg._uploading ? `<div class="msg-media-uploading"><i class="fas fa-spinner fa-spin" style="margin-right:5px;"></i> Sending…</div>` : '';
     const mediaHtml = msg.media_type === 'image' ? `
-      <div class="msg-media-share" onclick="event.stopPropagation();openMediaViewer('image','${msg.media_url}')">
-        <img loading="lazy" decoding="async" src="${msg.media_url}" alt="Photo">${uploadingHtml}
+      <div class="msg-media-share" onclick="event.stopPropagation();openMediaViewer('image',${_jsArg(_mediaUrlSafe(msg.media_url))})">
+        <img loading="lazy" decoding="async" src="${_escHtml(_mediaUrlSafe(msg.media_url))}" alt="Photo">${uploadingHtml}
       </div>` : msg.media_type === 'video' ? `
-      <div class="msg-media-share" onclick="event.stopPropagation();openMediaViewer('video','${msg.media_url}')">
-        <video src="${msg.media_url}" muted></video>${uploadingHtml}
+      <div class="msg-media-share" onclick="event.stopPropagation();openMediaViewer('video',${_jsArg(_mediaUrlSafe(msg.media_url))})">
+        <video src="${_escHtml(_mediaUrlSafe(msg.media_url))}" muted></video>${uploadingHtml}
         <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:26px;text-shadow:0 1px 4px rgba(0,0,0,0.6);pointer-events:none;"><i class="fas fa-play-circle"></i></div>
       </div>` : msg.media_type === 'audio' ? `
-      <div class="msg-voice-bubble" data-voice-id="${msg.id}">
-        <div class="msg-voice-play" onclick="event.stopPropagation();_toggleVoicePlay(this,'${msg.media_url}')"><i class="fas fa-play"></i></div>
+      <div class="msg-voice-bubble" data-voice-id="${_escHtml(msg.id)}">
+        <div class="msg-voice-play" onclick="event.stopPropagation();_toggleVoicePlay(this,${_jsArg(_mediaUrlSafe(msg.media_url))})"><i class="fas fa-play"></i></div>
         <div class="msg-voice-track">
           <div class="msg-voice-bar" onclick="event.stopPropagation();_seekVoice(event,this)"><div class="msg-voice-bar-fill"></div></div>
           <div class="msg-voice-duration">${_fmtVoiceDuration(msg.media_duration)}</div>
@@ -27272,7 +27266,7 @@ h1, h2, h3, h4, h5, h6,
 <style id="evpStyles">
 /* ── EVENTS PAGE (premium navy + gold) ── */
 #page-events{--evp-gold:#e8c26a;--evp-gold2:#b8892b;--evp-goldg:linear-gradient(135deg,#f6dc94 0%,#e8c26a 45%,#b8892b 100%);--evp-ink:#0a1230}
-#page-events .evp-wrap{max-width:1100px;margin:0 auto;padding:18px 16px 48px}
+#page-events .evp-wrap{max-width:none;margin:0 auto;padding:18px 16px 48px}
 .evp-top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
 .evp-back{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;display:grid;place-items:center;flex:none}
 .evp-back:active{transform:scale(.94)}
@@ -27550,7 +27544,7 @@ h1, h2, h3, h4, h5, h6,
 <style id="pdpStyles">
 /* ── PODCASTS PAGE (premium navy + gold) ── */
 #page-podcasts{--g1:#e8c26a;--goldg:linear-gradient(135deg,#f6dc94 0%,#e8c26a 45%,#b8892b 100%);--ink:#0a1230}
-#page-podcasts .pdp-wrap{max-width:1100px;margin:0 auto;padding:18px 16px 150px}
+#page-podcasts .pdp-wrap{max-width:none;margin:0 auto;padding:18px 16px 150px}
 .pdp-top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
 .pdp-back{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;display:grid;place-items:center;flex:none}
 .pdp-top h1{font-family:'Playfair Display',Georgia,serif;font-weight:800;font-size:26px;line-height:1.1;margin:0;color:var(--text)}
@@ -34222,6 +34216,360 @@ html:not([data-theme]):not([data-mode="light"]) #page-song-lab{--sl-bg:#000d29;-
 #page-quickvibes .qvp-play{z-index:3}
 #page-quickvibes .qvp-info{display:block}
 #page-quickvibes .qvp-songs{margin-top:3px;font-size:11.5px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.9}
+</style>
+<style id="np-yaps-redesign-css">
+/* ═══ YAPS Music: responsive Now Playing redesign (overrides the earlier np-* styles) ═══ */
+html #nowPlayingScreen{
+  --yp-g:#22d3ee; --yp-c:#38bdf8; --yp-p:#8b5cf6; --yp-m:#d946ef; --npx-blue:#2f6bff;
+  --npx-edge:rgba(96,130,255,.38); --npx-glass:rgba(12,20,60,.62); --npx-nav:0px;
+  --npx-art:clamp(140px,min(80vw,calc(100dvh - var(--topbar-h,52px) - var(--npx-nav) - 500px)),360px);
+  color:#fff; font-family:'Poppins','Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  background:radial-gradient(circle at 0% 0%,rgba(47,107,255,.30),transparent 38%),radial-gradient(circle at 100% 10%,rgba(139,92,246,.34),transparent 40%),radial-gradient(circle at 100% 100%,rgba(217,70,239,.22),transparent 38%),#050b24;
+  left:0; right:0; top:var(--topbar-h,52px); bottom:calc(var(--npx-nav) + env(safe-area-inset-bottom,0px));
+}
+html[data-mode="light"] #nowPlayingScreen{color:#fff;background:radial-gradient(circle at 0% 0%,rgba(47,107,255,.30),transparent 38%),radial-gradient(circle at 100% 10%,rgba(139,92,246,.34),transparent 40%),#050b24}
+html #nowPlayingScreen::before,html #nowPlayingScreen::after{display:none}
+html #nowPlayingScreen .np-card{max-width:none;width:100%}
+html #nowPlayingScreen .npx-body{display:flex;flex-direction:column;align-items:stretch;gap:10px;padding:8px 16px 10px;overflow-y:auto;overflow-x:hidden}
+
+/* header row */
+.npx-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.npx-round,.npx-pillbtn,.npx-vbtn{font-family:inherit;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.npx-round{width:38px;height:38px;border-radius:50%;border:1px solid var(--npx-edge);background:rgba(16,26,76,.8);font-size:16px;display:flex;align-items:center;justify-content:center;padding:0}
+.npx-badge{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 16px;border-radius:999px;font-size:.78rem;font-weight:700;letter-spacing:.02em;background:linear-gradient(90deg,#2f6bff,#22d3ee);box-shadow:0 4px 16px rgba(47,107,255,.4)}
+
+/* artwork (aspect-ratio reserved so nothing shifts while it loads) */
+.npx-stage{position:relative;width:var(--npx-art);aspect-ratio:1/1;margin:0 auto;flex-shrink:0}
+html #nowPlayingScreen .npx-art{position:relative;left:auto;top:auto;transform:none;width:100%;height:auto;aspect-ratio:1/1;border-radius:24px;z-index:2;
+  background:linear-gradient(#0a1233,#0a1233) padding-box,linear-gradient(135deg,#22d3ee,#8b5cf6 60%,#d946ef) border-box;
+  box-shadow:0 0 22px rgba(47,107,255,.5),0 0 44px rgba(139,92,246,.25)}
+html #nowPlayingScreen .npx-art img{width:100%;height:100%;object-fit:cover;border-radius:22px;background:#0a1233}
+.npx-vinyl{display:none}
+
+/* title block */
+.npx-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.npx-meta-text{flex:1;min-width:0}
+html #nowPlayingScreen .npx-title{font-size:clamp(1.3rem,6vw,1.8rem);line-height:1.15;font-weight:700!important;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html #nowPlayingScreen .npx-artist{font-size:clamp(.95rem,4.2vw,1.15rem);font-weight:500!important;color:#9fd8ff;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.npx-chips{display:none;flex-wrap:wrap;gap:8px;margin-top:10px}
+.npx-chips span{font-size:.82rem;color:#d4dcff;padding:4px 12px;border-radius:999px;background:rgba(80,110,255,.16);border:1px solid rgba(96,130,255,.28)}
+.npx-acts{display:flex;align-items:center;gap:10px;flex-shrink:0}
+html #nowPlayingScreen .npx-like{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;gap:8px;padding:0;font:600 .95rem/1 inherit;font-family:inherit;border:1px solid var(--npx-edge);background:rgba(16,26,76,.8);color:rgba(255,255,255,.7);font-size:22px}
+.npx-like span{display:none;font-size:.95rem}
+.npx-like.liked{color:#ff3b6b;border-color:rgba(255,59,107,.55);box-shadow:0 0 16px rgba(255,59,107,.3)}
+.npx-pillbtn{display:none}
+.npx-more-desktop{display:none}
+
+/* waveform */
+.npx-wave{position:relative;width:100%;height:54px;flex-shrink:0}
+html #nowPlayingScreen #npVisCanvas{position:relative;inset:auto;display:block;width:100%;height:100%;pointer-events:auto;cursor:pointer}
+
+/* seek bar */
+.npx-prog{width:100%;flex-shrink:0}
+html #nowPlayingScreen #npSeek{height:8px;margin:6px 0 0;background-color:rgba(96,110,255,.25);background-image:linear-gradient(90deg,#22d3ee,#2f6bff 50%,#8b5cf6)}
+html #nowPlayingScreen #npSeek::-webkit-slider-thumb{width:24px;height:24px;box-shadow:0 0 0 4px rgba(47,107,255,.35),0 0 14px rgba(47,107,255,.8)}
+html #nowPlayingScreen #npSeek::-moz-range-thumb{width:24px;height:24px;box-shadow:0 0 0 4px rgba(47,107,255,.35),0 0 14px rgba(47,107,255,.8)}
+.npx-times{display:flex;justify-content:space-between;margin-top:8px;font-size:.85rem;color:#e6e9ff;font-variant-numeric:tabular-nums}
+
+/* transport */
+.npx-ctrl{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;flex-shrink:0}
+.npx-transport{display:flex;align-items:center;justify-content:space-between;flex:1;min-width:0;gap:4px}
+.npx-ctl{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;cursor:pointer;background:rgba(16,26,76,.75);border:1px solid var(--npx-edge);-webkit-tap-highlight-color:transparent;transition:transform .15s,color .2s}
+.npx-ctl:active{transform:scale(.92)}
+html #nowPlayingScreen #npShuffleBtn,html #nowPlayingScreen #npRepeatBtn{color:#8aa3d6;opacity:1;font-size:20px;filter:none}
+html #nowPlayingScreen #npShuffleBtn.active,html #nowPlayingScreen #npRepeatBtn.active{color:#22d3ee;border-color:rgba(34,211,238,.6);box-shadow:0 0 12px rgba(34,211,238,.35)}
+.npx-play{width:70px;height:70px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;cursor:pointer;border:4px solid transparent;flex-shrink:0;
+  background:linear-gradient(#08103a,#08103a) padding-box,linear-gradient(135deg,#22d3ee,#8b5cf6 60%,#d946ef) border-box;box-shadow:0 0 20px rgba(100,110,255,.55)}
+.npx-play:active{transform:scale(.94)}
+.npx-vol{display:none}
+
+/* action buttons */
+.npx-actions{width:100%;flex-shrink:0}
+.npx-actions-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.npx-action{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:60px;padding:6px 4px;border-radius:20px;color:#fff;cursor:pointer;font-family:inherit;font-size:.74rem;font-weight:500;line-height:1.15;text-align:center;
+  border:1px solid var(--npx-edge);background:linear-gradient(180deg,rgba(24,38,110,.7),rgba(12,20,64,.7));-webkit-tap-highlight-color:transparent;transition:transform .15s,border-color .2s}
+.npx-action i{font-size:20px;color:#38bdf8}.npx-action i.npx-pl{color:#8b5cf6}
+.npx-action:nth-child(3) i{color:#a78bfa}.npx-action:nth-child(4) i{color:#e879f9}
+.npx-action:active{transform:scale(.96);border-color:#8b5cf6}
+
+/* docked mini-player */
+.npx-dock{position:relative;display:flex;align-items:center;gap:10px;flex-shrink:0;margin:0 10px 8px;padding:12px 10px 8px;border-radius:18px;border:1px solid var(--npx-edge);background:rgba(10,18,56,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.npx-dock img{width:44px;height:44px;border-radius:10px;object-fit:cover;background:#0a1233;flex-shrink:0}
+.npx-dock-info{flex:1;min-width:0}
+.npx-dock-info div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#npDockTitle{font-weight:600;font-size:.92rem}#npDockArtist{font-size:.78rem;color:#b9c6ee}
+.npx-dock-time{display:none;font-size:.82rem;color:#d4dcff;font-variant-numeric:tabular-nums}
+.npx-dock-b,.npx-dock-play{border:0;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;background:none}
+.npx-dock-skip{display:none;width:40px;height:40px;font-size:18px}
+.npx-dock-play{width:44px;height:44px;border-radius:50%;font-size:16px;border:2px solid #4f7bff;background:rgba(47,107,255,.2)}
+.npx-dock-bar{position:absolute;left:12px;right:12px;top:0;height:14px;cursor:pointer;display:flex;align-items:center}
+.npx-dock-bar::before{content:'';position:absolute;left:0;right:0;height:3px;border-radius:3px;background:rgba(120,140,255,.25)}
+#npDockFill{position:relative;height:3px;width:0;border-radius:3px;background:linear-gradient(90deg,#22d3ee,#8b5cf6)}
+
+/* ── Tablet and desktop: screen sits beside the sidebar ── */
+@media (min-width:769px){
+  html #nowPlayingScreen{--npx-nav:0px}
+  html #nowPlayingScreen .npx-body{padding:16px 28px 14px}
+  .npx-stage{width:var(--npx-art)}
+  html #nowPlayingScreen{--npx-art:clamp(220px,min(52vw,calc(100dvh - var(--topbar-h,52px) - 330px)),400px)}
+  .npx-wave{height:84px}
+  .npx-action{flex-direction:row;gap:10px;min-height:52px;border-radius:999px;font-size:.92rem}
+  .npx-actions-row{gap:12px}
+}
+@media (min-width:900px){ html #nowPlayingScreen{left:var(--sidebar-w,220px)} }
+/* ── Laptop / desktop: two columns ── */
+@media (min-width:900px) and (min-height:560px){
+  html #nowPlayingScreen .np-card{max-width:1800px;margin:0 auto}
+  html #nowPlayingScreen .npx-body{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"top top" "stage meta" "stage prog" "stage ctrl" "wave wave" "acts acts";
+    column-gap:clamp(28px,4vw,64px);row-gap:10px;align-content:start;padding:16px clamp(20px,3vw,40px) 12px}
+  .npx-top{grid-area:top}.npx-stage{grid-area:stage;align-self:center;width:calc(var(--npx-art) * 1.3)}
+  .npx-meta{grid-area:meta;align-self:end;flex-direction:column;align-items:flex-start;gap:14px}
+  .npx-prog{grid-area:prog;align-self:center}.npx-ctrl{grid-area:ctrl;align-self:start}
+  .npx-wave{grid-area:wave}.npx-actions{grid-area:acts}
+  html #nowPlayingScreen{--npx-art:clamp(200px,min(30vw,calc(100dvh - var(--topbar-h,52px) - 440px)),420px)}
+  html #nowPlayingScreen .npx-art{position:absolute;left:0;top:0;width:var(--npx-art)}
+  .npx-vinyl{display:block;position:absolute;z-index:1;top:3%;left:calc(var(--npx-art) * .38);width:calc(var(--npx-art) * .94);aspect-ratio:1/1;border-radius:50%;
+    background:radial-gradient(circle,#1a1f45 0 9%,#050816 10% 14%,transparent 15%),repeating-radial-gradient(circle,#0b0e22 0 2px,#151a3a 3px 4px);box-shadow:0 8px 30px rgba(0,0,0,.5)}
+  html #nowPlayingScreen.vinyl-spin .npx-vinyl{animation:npxSpin 8s linear infinite}
+  @keyframes npxSpin{to{transform:rotate(360deg)}}
+  .npx-badge{position:static}
+  html #nowPlayingScreen .npx-title{font-size:clamp(2rem,3.4vw,3.2rem);white-space:normal;overflow:visible;text-overflow:clip}
+  html #nowPlayingScreen .npx-artist{font-size:clamp(1.1rem,1.9vw,1.7rem);color:#38bdf8;white-space:normal}
+  .npx-chips{display:flex}
+  .npx-acts{gap:12px}
+  html #nowPlayingScreen .npx-like{width:auto;height:46px;padding:0 22px;border-radius:999px;background:linear-gradient(90deg,#ff2d6f,#ff4f8a);color:#fff;border-color:transparent;font-size:1rem}
+  .npx-like span{display:inline}.npx-like .l-on{display:none}.npx-like .l-off{display:inline}
+  .npx-like.liked .l-on{display:inline}.npx-like.liked .l-off{display:none}
+  html #nowPlayingScreen .npx-like:not(.liked){background:rgba(16,26,76,.8);border:1px solid var(--npx-edge)}
+  .npx-pillbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 20px;border-radius:999px;border:1px solid var(--npx-edge);background:rgba(16,26,76,.7);font-size:1rem}
+  .npx-more-desktop{display:inline-flex;padding:0 18px}
+  .npx-more-mobile{display:none}
+  .npx-ctrl{gap:20px}.npx-transport{flex:0 1 auto;gap:14px}
+  .npx-ctl{width:54px;height:54px;border-radius:50%}
+  .npx-play{width:88px;height:88px;font-size:30px}
+  .npx-vol{display:flex;align-items:center;gap:12px;padding-left:20px;border-left:1px solid rgba(120,140,255,.25);flex:1;min-width:0}
+  .npx-vbtn{background:none;border:0;font-size:20px;width:34px;height:34px;padding:0}
+  #npVol{-webkit-appearance:none;appearance:none;flex:1;min-width:60px;max-width:140px;height:6px;border-radius:6px;background-color:rgba(120,140,255,.28);background-image:linear-gradient(90deg,#22d3ee,#2f6bff);background-repeat:no-repeat;background-size:100% 100%;outline:none;cursor:pointer}
+  #npVol::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;border:0}
+  #npVol::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:0}
+  .npx-times{margin-top:6px}
+  .npx-dock{margin:0 clamp(20px,3vw,40px) 10px;padding:12px 16px 8px}
+  .npx-dock img{width:52px;height:52px}
+  .npx-dock-time{display:block}.npx-dock-skip{display:inline-block}
+  .npx-dock-play{width:50px;height:50px}
+  .npx-dock-info{flex:0 0 22%}
+  .npx-dock-bar{left:calc(16px + 52px + 10px + 22% + 20px);right:auto;width:30%}
+}
+@media (min-width:769px) and (max-width:899px){ .npx-dock-time{display:block}.npx-dock-skip{display:inline-block} }
+/* ── Phones ── */
+@media (max-width:768px){
+  html #nowPlayingScreen{--npx-nav:76px}
+  .npx-dock-skip{display:none}
+}
+@media (min-width:480px) and (max-width:768px){ .npx-dock-skip{display:inline-block} }
+@media (max-width:360px){
+  html #nowPlayingScreen .npx-body{padding:8px 12px 12px;gap:10px}
+  .npx-ctl{width:44px;height:44px;font-size:17px}.npx-play{width:66px;height:66px}
+  .npx-action{font-size:.68rem}
+}
+@media (prefers-reduced-motion:reduce){html #nowPlayingScreen.vinyl-spin .npx-vinyl{animation:none}}
+/* more menu sits under the header on every size */
+html #nowPlayingScreen .np-more{top:62px;right:14px}
+
+</style>
+<script id="np-yaps-redesign-js">
+/* YAPS Music: Now Playing redesign glue. Reuses the existing audio engine and handlers; adds no audio code of its own. */
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function fmt(s) { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+  function realAudio() { return audioEngine.src && audioEngine.src !== location.href && audioEngine.duration; }
+  function seekPct(p) {
+    p = Math.max(0, Math.min(1, p));
+    currentProgress = p * 100;
+    if (realAudio()) audioEngine.currentTime = p * audioEngine.duration;
+    updateProgress();
+  }
+  function isOpen() { var n = $('nowPlayingScreen'); return n && n.classList.contains('open'); }
+
+  /* ---- waveform (replaces the old side equalizer; same canvas + same start/stop hooks) ---- */
+  var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var shape = [], shapeKey = '';
+  function buildShape(key, n) {
+    var h = 2166136261; for (var i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619); }
+    var out = [], v = 0.5;
+    for (var j = 0; j < n; j++) {
+      h ^= h << 13; h ^= h >>> 17; h ^= h << 5;
+      var r = ((h >>> 0) % 1000) / 1000;
+      v = v * 0.55 + r * 0.45;
+      out.push(0.22 + 0.78 * Math.min(1, v * 1.25 * (0.7 + 0.3 * Math.sin(j / 9))));
+    }
+    return out;
+  }
+  window.npDrawVisualizer = function () {
+    if (!_npCanvas || !isOpen()) { _npVisRafId = null; return; }
+    var W = _npCanvas.clientWidth, H = _npCanvas.clientHeight, ctx = _npCtx;
+    if (W && H) {
+      ctx.clearRect(0, 0, W, H);
+      var bw = W < 500 ? 3 : 4, gap = W < 500 ? 2 : 3, n = Math.floor((W + gap) / (bw + gap));
+      var t = tracks[currentTrack], key = String(t ? (t.id != null ? t.id : t.title) : 'x') + ':' + n;
+      if (key !== shapeKey) { shapeKey = key; shape = buildShape(key, n); }
+      var grad = ctx.createLinearGradient(0, 0, W, 0);
+      grad.addColorStop(0, '#22d3ee'); grad.addColorStop(.35, '#2f6bff'); grad.addColorStop(.7, '#8b5cf6'); grad.addColorStop(1, '#d946ef');
+      var base = H * 0.78, maxH = H * 0.74, now = performance.now() / 1000, pct = currentProgress / 100;
+      ctx.fillStyle = grad;
+      for (var i = 0; i < n; i++) {
+        var a = shape[i];
+        if (isPlaying && !reduceMotion) a *= 0.72 + 0.28 * Math.sin(now * 3.2 + i * 0.55) * Math.cos(now * 1.7 + i * 0.21);
+        var h = Math.max(3, a * maxH), x = i * (bw + gap), played = (i / n) <= pct;
+        ctx.globalAlpha = played ? 1 : 0.42;
+        ctx.fillRect(x, base - h, bw, h);
+        ctx.globalAlpha = played ? 0.2 : 0.1;
+        ctx.fillRect(x, base + 2, bw, Math.min(h * 0.35, H - base - 2));
+      }
+      ctx.globalAlpha = 1;
+    }
+    _npVisRafId = requestAnimationFrame(npDrawVisualizer);
+  };
+  var cv = $('npVisCanvas');
+  if (cv) {
+    cv.addEventListener('click', function (e) { var r = cv.getBoundingClientRect(); if (r.width) seekPct((e.clientX - r.left) / r.width); });
+    if (window.ResizeObserver) new ResizeObserver(function () { if (isOpen() && typeof npResizeCanvas === 'function') npResizeCanvas(); }).observe($('npxWave'));
+  }
+
+  /* ---- volume + fullscreen (drive the same audioEngine the mini-player uses) ---- */
+  var vol = $('npVol'), mute = $('npxMute'), fs = $('npxFs');
+  function paintVol() {
+    if (!vol) return;
+    var v = 1; try { v = audioEngine.muted ? 0 : audioEngine.volume; } catch (e) {}
+    if (document.activeElement !== vol) vol.value = Math.round(v * 100);
+    vol.style.backgroundSize = (v * 100) + '% 100%';
+    var ic = mute && mute.firstElementChild; if (ic) ic.className = 'fas ' + (v === 0 ? 'fa-volume-mute' : v < 0.5 ? 'fa-volume-down' : 'fa-volume-up');
+  }
+  if (vol) vol.addEventListener('input', function () { try { audioEngine.muted = false; audioEngine.volume = vol.value / 100; } catch (e) {} paintVol(); });
+  if (mute) mute.addEventListener('click', function () { try { audioEngine.muted = !audioEngine.muted; if (!audioEngine.muted && audioEngine.volume === 0) audioEngine.volume = 0.6; } catch (e) {} paintVol(); });
+  var root = document.documentElement, scr = $('nowPlayingScreen');
+  var canFs = !!(scr && (scr.requestFullscreen || scr.webkitRequestFullscreen));
+  if (fs) {
+    if (!canFs) fs.style.display = 'none';
+    fs.addEventListener('click', function () {
+      var d = document, on = d.fullscreenElement || d.webkitFullscreenElement;
+      try {
+        if (on) (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+        else (scr.requestFullscreen || scr.webkitRequestFullscreen).call(scr);
+      } catch (e) {}
+    });
+    var fsIcon = function () { var on = document.fullscreenElement || document.webkitFullscreenElement; fs.firstElementChild.className = 'fas ' + (on ? 'fa-compress' : 'fa-expand'); };
+    document.addEventListener('fullscreenchange', fsIcon); document.addEventListener('webkitfullscreenchange', fsIcon);
+  }
+
+  /* ---- keep chips, dock and extras in step with the real player state ---- */
+  var lastId = null;
+  function sync() {
+    if (!isOpen()) return;
+    var t = tracks[currentTrack]; if (!t) return;
+    if (lastId !== currentTrack) {
+      lastId = currentTrack;
+      var chips = [];
+      if (t.genre) chips.push(t.genre);
+      if (t.plays && String(t.plays) !== '0') chips.push(t.plays + ' plays');
+      $('npChips').innerHTML = '';
+      chips.forEach(function (c) { var s = document.createElement('span'); s.textContent = c; $('npChips').appendChild(s); });
+      var im = $('npDockImg'); if (im && im.getAttribute('src') !== t.img) im.src = t.img || '';
+      $('npDockTitle').textContent = t.title || ''; $('npDockArtist').textContent = t.artist || '';
+    }
+    var dur = realAudio() ? audioEngine.duration : (function () { var p = String(t._realDuration || t.duration || '0:0').split(':').map(Number); return (p[0] || 0) * 60 + (p[1] || 0); })();
+    var cur = realAudio() ? audioEngine.currentTime : (currentProgress / 100) * dur;
+    $('npDockTime').textContent = fmt(cur) + ' / ' + fmt(dur);
+    $('npDockFill').style.width = currentProgress + '%';
+    $('npDockPlayIcon').className = 'fas ' + (isPlaying ? 'fa-pause' : 'fa-play');
+    var np = $('npTotalTime'); if (np && realAudio()) np.textContent = fmt(audioEngine.duration);
+    scr.classList.toggle('vinyl-spin', !!isPlaying);
+    paintVol();
+  }
+  setInterval(sync, 250);
+  new MutationObserver(function () { lastId = null; sync(); }).observe(scr, { attributes: true, attributeFilter: ['class'] });
+
+  /* keyboard access for the icon-style controls */
+  scr.addEventListener('keydown', function (e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.getAttribute && e.target.getAttribute('role') === 'button') { e.preventDefault(); e.target.click(); }
+  });
+})();
+
+</script>
+<script id="yaps-songs-db">
+/* Optional: if the Supabase table `yaps_songs` exists and has rows, update the built-in songs from it (matched by id).
+   Built-in list stays as the fallback, and array positions never change. */
+(function () {
+  async function loadSongsFromDb() {
+    if (!window.sb) return;
+    try {
+      var r = await window.sb.from('yaps_songs').select('*').order('sort_order', { ascending: true });
+      if (r.error || !r.data || !r.data.length) { window._catalogStatus = 'fallback'; return; }
+      r.data = r.data.filter(function (x) { return x.is_published !== false; });
+      r.data.forEach(function (x) {
+        var f = { title: x.title, artist: x.artist, img: x.img_url, genre: x.genre, plays: x.plays, likes: x.likes, duration: x.duration,
+                  audioSrc: x.audio_src, tags: x.tags ? String(x.tags).split(',').map(function (s) { return s.trim(); }).filter(Boolean) : null,
+                  region: x.region, youtubeId: x.youtube_id };
+        if (x.start_at != null) f.startAt = x.start_at;
+        var ex = tracks.find(function (t) { return t.id === x.id; });
+        if (ex) Object.keys(f).forEach(function (k) { if (f[k] != null) ex[k] = f[k]; });
+        else tracks.push(Object.assign({ id: x.id, savedAt: Date.now(), tags: [] }, f));
+      });
+      var order = r.data.filter(function (x) { return x.trending_rank != null; }).sort(function (a, b) { return a.trending_rank - b.trending_rank; }).map(function (x) { return x.id; });
+      if (order.length) { TRENDING_ORDER_IDS.length = 0; order.forEach(function (i) { TRENDING_ORDER_IDS.push(i); }); }
+      window._catalogStatus = 'database';
+      if (typeof refreshHome === 'function') refreshHome();
+      if (typeof _libReapply === 'function') _libReapply();
+    } catch (e) { window._catalogStatus = 'fallback'; }
+  }
+  window.loadSongsFromDb = loadSongsFromDb;
+  setTimeout(loadSongsFromDb, 0);
+})();
+</script>
+<script id="yaps-security-helpers">
+/* Chat media links come from other users' database rows, so only allow https (or a local blob: preview) and make them safe inside HTML attributes. */
+function _mediaUrlSafe(u) {
+  u = String(u == null ? '' : u).trim();
+  return /^(https:\/\/|blob:)[^\s"'<>`\\]+$/i.test(u) ? u : '';
+}
+</script>
+<style id="bigscreen-fix">
+/* Big screens: content fills the space beside the sidebar; grids gain columns instead of leaving empty gutters */
+#main{max-width:none!important;margin:0!important;width:auto}
+@media (min-width:1600px){
+  .yv2-header,.yv2-hero,.yv2-cats,.yv2-section{max-width:none!important;margin-left:0!important;margin-right:0!important}
+  .atp-grid{grid-template-columns:repeat(7,minmax(0,1fr))}
+  .tvp-grid,.nvp-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .qvp-grid,.plp-grid,.nrp-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
+@media (min-width:2000px){
+  .atp-grid{grid-template-columns:repeat(9,minmax(0,1fr))}
+  .tvp-grid,.nvp-grid{grid-template-columns:repeat(8,minmax(0,1fr))}
+  .qvp-grid,.plp-grid,.nrp-grid{grid-template-columns:repeat(8,minmax(0,1fr))}
+  .ppl-item{width:220px}
+}
+@media (min-width:2500px){
+  .atp-grid{grid-template-columns:repeat(11,minmax(0,1fr))}
+  .tvp-grid,.nvp-grid{grid-template-columns:repeat(10,minmax(0,1fr))}
+  .qvp-grid,.plp-grid,.nrp-grid{grid-template-columns:repeat(10,minmax(0,1fr))}
+}
+/* Big screens, round 2: narrow centered columns now use the available width */
+@media (min-width:1200px){
+  html #page-profile .acx-head,html #page-profile .acx-user,html #page-profile .acx-stats,html #page-profile .gp-card,
+  html #page-profile .profile-actions,html #page-profile .acct-hub,html #page-profile .wr-card,.acct-hub{max-width:none!important}
+  #page-studio-intro .stp-wrap>:not(.hero-carousel):not(.stp-x){max-width:none!important;margin-left:clamp(16px,3vw,48px)!important;margin-right:clamp(16px,3vw,48px)!important}
+  html body #page-ai-dj .yai-wrap,#page-ai-dj .yai-wrap{max-width:1400px!important}
+  #page-song-lab .sl-wrap{max-width:1400px!important}
+  #page-community .cc-app{max-width:1400px!important}
+  #page-search .search-big,.home-search .search-big{max-width:1000px!important}
+}
+@media (min-width:1600px){
+  .disc-card{flex:0 0 168px}
+  .disc-row{gap:18px}
+}
+@media (min-width:2000px){
+  .disc-card{flex:0 0 200px}
+}
 </style>
 </body>
 </html>
