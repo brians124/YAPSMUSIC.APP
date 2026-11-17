@@ -5,10 +5,10 @@
  * Bump VERSION on every deploy that changes index.html or other shell files —
  * that is what triggers the in-app "update available" bar.
  * The split files (styles.css, app.js, studio*.css/js, song-creator-embed.html) are linked with ?v=N.
- * When one changes: raise its ?v=N in index.html / studio.html / app.js AND in PRECACHE below, then raise VERSION.
+ * When one changes: raise its ?v=N in index.html / yapsvirtual.html / app.js AND in PRECACHE below, then raise VERSION.
  * (bump-version.py does all of that in one go.)
  */
-const VERSION = 'v7';
+const VERSION = 'v11';
 const SHELL_CACHE   = 'yaps-shell-'   + VERSION;
 const RUNTIME_CACHE = 'yaps-runtime-' + VERSION;
 const IMAGE_CACHE   = 'yaps-images-'  + VERSION;
@@ -26,11 +26,13 @@ const PRECACHE = [
   'styles.css?v=1',
   'app.js?v=1',
   'song-creator-embed.html?v=1',
-  'studio.html',
+  'yapsvirtual.html',
+  'producer.html',
   'studio.css?v=1',
   'studio-2.css?v=1',
   'studio-app.js?v=1',
   'yaps-colors.css',
+  'yaps-guard.js',
   'manifest.json',
   'images/yaps-cover.png?v=2',
   'images/yaps-music-cover.jpg',
@@ -56,12 +58,23 @@ const PRECACHE = [
   'icons/app-icon-16-96.png'
 ];
 
+// Libraries the page loads from a CDN, pinned to an exact version. Saved at install so the app also starts offline
+// on a first visit. When you change a version in index.html, change it here too.
+const CDN_PRECACHE = [
+  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0',
+  'https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js',
+  'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js',
+  'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css'
+];
+// Exact-version URLs and font files never change, so they are served from the cache with no re-download on every load.
+const IMMUTABLE_CDN = /@\d+\.\d+\.\d+|\/\d+\.\d+\.\d+\/|fonts\.gstatic\.com/;
+
 const CDN_HOSTS = ['cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com', 'cdnjs.cloudflare.com'];
 // Never touched by the SW: live data, auth, and third-party streaming.
 const BYPASS_HOSTS = /(\.supabase\.co|youtube\.com|youtu\.be|ytimg\.com|googlevideo\.com|onrender\.com)$/i;
 // Split app files. Sub-resource requests for these are answered from SHELL_CACHE (where PRECACHE put them),
 // so the app and the DJ Studio open offline even if they were never fetched at runtime.
-const SHELL_ASSET = /\/(styles\.css|app\.js|song-creator-embed\.html|studio\.html|studio\.css|studio-2\.css|studio-app\.js|yaps-colors\.css)$/;
+const SHELL_ASSET = /\/(styles\.css|app\.js|song-creator-embed\.html|yapsvirtual\.html|producer\.html|studio\.css|studio-2\.css|studio-app\.js|yaps-guard\.js|yaps-colors\.css)$/;
 const MEDIA_EXT = /\.(mp3|m4a|aac|wav|ogg|opus|flac|mp4|webm|mov)$/i;
 
 const OFFLINE_HTML = '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
@@ -84,6 +97,13 @@ self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL_CACHE);
     await Promise.allSettled(PRECACHE.map(u => cache.add(new Request(u, { cache: 'reload' }))));
+    // CDN scripts are cross-origin (opaque), so they are fetched and stored with put() rather than add().
+    const cdn = await caches.open(CDN_CACHE);
+    await Promise.allSettled(CDN_PRECACHE.map(async u => {
+      if (await cdn.match(u)) return;
+      const res = await fetch(u, { mode: 'no-cors' });
+      if (cacheable(res)) await cdn.put(u, res);
+    }));
     // No skipWaiting() here on purpose: the app shows an update bar and sends SKIP_WAITING when the user agrees.
   })());
 });
@@ -92,6 +112,13 @@ self.addEventListener('activate', event => {
   event.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(keys.filter(k => k.startsWith('yaps-') && !ALL_CACHES.includes(k)).map(k => caches.delete(k)));
+    // Drop old unpinned/previous Supabase builds from the CDN cache so they do not pile up.
+    try {
+      const cdn = await caches.open(CDN_CACHE);
+      for (const r of await cdn.keys()) {
+        if (/\/@supabase\/supabase-js@/.test(r.url) && !CDN_PRECACHE.includes(r.url)) await cdn.delete(r);
+      }
+    } catch (e) {}
     if (self.registration.navigationPreload) { try { await self.registration.navigationPreload.enable(); } catch (e) {} }
     await self.clients.claim();
   })());
@@ -145,6 +172,17 @@ async function cacheFirst(event, cacheName, max) {
   }
 }
 
+async function cdnCacheFirst(event) {
+  const cache = await caches.open(CDN_CACHE);
+  const cached = await cache.match(event.request);
+  if (cached) return cached;
+  try {
+    const res = await fetch(event.request);
+    if (cacheable(res)) cache.put(event.request, res.clone()).catch(() => {});
+    return res;
+  } catch (e) { return Response.error(); }
+}
+
 async function shellAsset(event) {
   const cache = await caches.open(SHELL_CACHE);
   const req = event.request;
@@ -155,7 +193,7 @@ async function shellAsset(event) {
     return res;
   });
   if (cached) {
-    if (!versioned) event.waitUntil(fromNet().catch(() => {}));   // unversioned (studio.html, yaps-colors.css): refresh quietly for next time
+    if (!versioned) event.waitUntil(fromNet().catch(() => {}));   // unversioned (yapsvirtual.html, producer.html, yaps-colors.css): refresh quietly for next time
     return cached;
   }
   try { return await fromNet(); } catch (e) { return Response.error(); }   // after "Clear cache" this refills the shell on first use
@@ -214,7 +252,7 @@ self.addEventListener('fetch', event => {
   }
 
   if (CDN_HOSTS.includes(url.hostname)) {
-    event.respondWith(staleWhileRevalidate(event, CDN_CACHE));
+    event.respondWith(IMMUTABLE_CDN.test(req.url) ? cdnCacheFirst(event) : staleWhileRevalidate(event, CDN_CACHE));
     return;
   }
 

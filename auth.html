@@ -327,6 +327,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 
 /* ── Added: DJ account type, forgot password, new-password view ── */
 .acct-type-row { grid-template-columns: repeat(2, 1fr); }
+.acct-type-row .acct-type-btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .acct-type-icon i { font-size: 20px; }
 .acct-type-btn { user-select: none; }
 .acct-hint { font-size: 11.5px; color: var(--muted); line-height: 1.4; margin-top: 8px; min-height: 16px; }
@@ -462,6 +463,11 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
             <span class="acct-type-label">DJ</span>
             <span class="acct-type-sub">Mix &amp; perform</span>
           </div>
+          <div class="acct-type-btn" id="acctTypeProducer" data-type="producer" role="radio" aria-checked="false" tabindex="0">
+            <span class="acct-type-icon"><i class="fas fa-sliders"></i></span>
+            <span class="acct-type-label">Producer</span>
+            <span class="acct-type-sub">Make &amp; sell beats</span>
+          </div>
           <div class="acct-type-btn" id="acctTypePromoter" data-type="promoter" role="radio" aria-checked="false" tabindex="0">
             <span class="acct-type-icon"><i class="fas fa-bullhorn"></i></span>
             <span class="acct-type-label">Promoter</span>
@@ -546,12 +552,12 @@ var sb = (window.supabase && typeof window.supabase.createClient === "function")
 var qp = new URLSearchParams(location.search);
 var hp = new URLSearchParams(location.hash.replace(/^#/, ""));
 var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-var TYPES = ["listener", "artist", "dj", "promoter"];
+var TYPES = ["listener", "artist", "dj", "producer", "promoter"];
 var acctType = "listener", view = "login", recovery = hp.get("type") === "recovery", cooldownT = null;
 
 // Where Google / email links send people back to: the app root, the address already allowed in Supabase → Redirect URLs.
 function rootUrl() { return location.origin + location.pathname.replace(/[^\/]*$/, ""); }
-// ?next=studio.html returns the person to the page they came from (plain same-site .html pages only).
+// ?next=yapsvirtual.html returns the person to the page they came from (plain same-site .html pages only).
 function nextUrl(def) {
   var n = qp.get("next") || "";
   return (/^[\w\-.\/]+\.html(\?[\w=&%.\-]*)?(#[\w\-]*)?$/i.test(n) && n.charAt(0) !== "/" && n.indexOf("..") < 0) ? n : (def || "index.html");
@@ -614,9 +620,10 @@ var HINTS = {
   listener: "Discover and stream music, like songs and make playlists.",
   artist: "Upload your songs, add a profile and reach new fans.",
   dj: "Open DJ Studio: mix tracks, use sound packs and play live sets.",
+  producer: "Open the Music Producer: make beats, record and master, and share beats for artists.",
   promoter: "Get a promoter profile: list your events, connect with artists and reach wider audiences."
 };
-var LABELS = { listener: "Create free account", artist: "Create artist account", dj: "Create DJ account", promoter: "Create promoter account" };
+var LABELS = { listener: "Create free account", artist: "Create artist account", dj: "Create DJ account", producer: "Create producer account", promoter: "Create promoter account" };
 function selectAccountType(type) {
   if (TYPES.indexOf(type) < 0) type = "listener";
   acctType = type; $("authAccountType").value = type;
@@ -762,7 +769,7 @@ function showSignupSuccess(name, type, needsConfirm) {
   $("signupNextSteps").innerHTML = STEPS[type].map(function (s) { return '<div class="signup-next-step"><span class="step-icon"><i class="fas ' + s[0] + '"></i></span><span>' + s[1] + '</span></div>'; }).join("");
   var p = $("successPrimary"), a = $("successAlt");
   // DJs land on the Ugandan DJs page and artists on the Artists page, where their new profile is already listed
-  if (type === "dj") { p.textContent = "Go to the DJs page"; p.href = "index.html?page=djs"; a.hidden = false; a.textContent = "Open DJ Studio"; a.href = "studio.html"; }
+  if (type === "dj") { p.textContent = "Go to the DJs page"; p.href = "index.html?page=djs"; a.hidden = false; a.textContent = "Open DJ Studio"; a.href = "yapsvirtual.html"; }
   else if (type === "promoter") { p.textContent = "Go to the Promoters page"; p.href = "index.html?page=djs"; a.hidden = false; a.textContent = "Go to YAPSMusic"; a.href = nextUrl(); }
   else if (type === "artist") { p.textContent = "Go to the Artists page"; p.href = "index.html?page=artists"; a.hidden = false; a.textContent = "Go to YAPSMusic"; a.href = nextUrl(); }
   else { p.textContent = "Start listening"; p.href = nextUrl(); a.hidden = true; }

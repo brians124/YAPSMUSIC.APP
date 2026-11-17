@@ -59,7 +59,7 @@ window.__yapsInPop=0;addEventListener('popstate',function(){window.__yapsInPop=1
 </script>
 
 <!-- ── BACKEND SDKs ── -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 
 <!-- ── Local P2P song sharing: QR generate (offer/answer exchange) + QR scan (camera) — both work fully offline once cached ── -->
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" defer></script>
@@ -4663,6 +4663,11 @@ html[data-mode="light"] { --yai-art-bg: #fdfefe; --yai-art: url("images/yaps-ai-
   animation: actPulse 2s ease-in-out infinite;
 }
 @keyframes actPulse { 0%,100%{ opacity:1; } 50%{ opacity:0.6; } }
+.act-share{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border);cursor:pointer}
+.act-share span{min-width:0}.act-share b{display:block;font-size:13px;font-weight:700}
+.act-share em{display:block;font-style:normal;font-size:11.5px;line-height:1.4;color:var(--muted);margin-top:2px}
+.act-share input{flex:none;width:20px;height:20px;accent-color:var(--accent);cursor:pointer}
+.act-avatar{overflow:visible}
 
 /* ── TASTE PROFILE (tp-*) — summary banner + genre cards with progress rings ── */
 .taste-profile-section { padding: 0 16px 24px; }
@@ -6678,7 +6683,7 @@ html[data-theme="aurora"] #page-community .cc-btn,html:not([data-theme]) #page-c
 <body>
 <!-- Header styles up-front so the header looks right while the loading screen is up (copy of studio-chrome below, which still applies last) -->
 <style id="studio-chrome-early">
-/* ══ STUDIO HEADER + SIDEBAR CHROME — ported from studio.html (champagne-gold on navy, Playfair + Archivo) ══ */
+/* ══ STUDIO HEADER + SIDEBAR CHROME — ported from yapsvirtual.html (champagne-gold on navy, Playfair + Archivo) ══ */
 :root{--serif:'Playfair Display',Georgia,'Times New Roman',serif;--sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
  --au:#ffc94d;--au2:#ffe7a8;--au3:#b9861f;--au-rgb:255,201,77;
  --logo-g:linear-gradient(180deg,#fff3c9 0,#ffc94d 48%,#b9861f 100%);--topbar-h:68px}
@@ -6705,7 +6710,7 @@ html:root #topbar{position:fixed;overflow:visible;height:var(--topbar-h);padding
 #topbar .topbar-logo .logo small{display:block;font:700 10.5px var(--sans);letter-spacing:.42em;color:var(--au2);
  -webkit-text-fill-color:var(--au2);margin-top:3px;padding-left:2px}
 
-/* title block — same as studio.html .ttl (replaces the search bar) */
+/* title block — same as yapsvirtual.html .ttl (replaces the search bar) */
 #topbar .ttl{flex:0 1 auto;min-width:0;font:800 30px/1.05 var(--serif);letter-spacing:.005em;text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:2px}
 #topbar .ttl b{color:var(--au);font-weight:800}
 #topbar .ttl p{font:500 14px var(--sans);letter-spacing:.02em;color:var(--muted);margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -6805,7 +6810,7 @@ html:root #topbar{position:fixed;overflow:visible;height:var(--topbar-h);padding
 }
 @media(min-width:900px) and (min-height:521px){html #hamburgerBtn{display:none}}
 
-/* ===== PREMIUM / AURORA skin — same extruded 3D lettering as studio.html ===== */
+/* ===== PREMIUM / AURORA skin — same extruded 3D lettering as yapsvirtual.html ===== */
 html[data-theme="aurora"] #topbar .topbar-logo .logo{display:inline-flex;align-items:center;gap:.2em;font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:40px;font-weight:900;letter-spacing:.005em;line-height:1;
  background:linear-gradient(180deg,#fff 0%,#fff 45%,#d4c4ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
  filter:drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c) drop-shadow(4px 4px 0 #2c1470) drop-shadow(0 8px 10px rgba(0,0,0,.7)) drop-shadow(0 0 16px rgba(224,64,251,.45))}
@@ -7584,6 +7589,9 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
         <div class="sidebar-item" id="nav-dj-studio" onclick="openStudio()">
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect class="f" x="3" y="14" width="4.5" height="7" rx="1.8"/><rect class="f" x="16.5" y="14" width="4.5" height="7" rx="1.8"/></svg> <span>DJ Studio</span>
         </div>
+        <div class="sidebar-item" id="nav-producer" onclick="openProducer()">
+          <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M6 4v16M12 4v16M18 4v16"/><circle class="f" cx="6" cy="9" r="2"/><circle class="f" cx="12" cy="15" r="2"/><circle class="f" cx="18" cy="8" r="2"/></svg> <span>Music Producer</span>
+        </div>
         <div class="sidebar-item" id="nav-song-lab" onclick="navigate('song-lab')">
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M10 3c.7 4.6 2.3 7.3 6 8.5-3.7 1.2-5.3 3.9-6 8.5-.7-4.6-2.3-7.3-6-8.5 3.7-1.2 5.3-3.9 6-8.5z"/></svg> <span>Create with YAPS AI</span>
         </div>
@@ -7618,6 +7626,9 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
         </div>
         <div class="sidebar-item" id="nav-community" onclick="openCommunity()">
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="f" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg> <span>Listeners Hub</span>
+        </div>
+        <div class="sidebar-item" id="nav-friend-activity" onclick="closeSidebar();toggleActivityPanel()">
+          <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><circle class="f" cx="9" cy="8" r="3.4"/><path class="f" d="M2.5 19.5c0-3.6 3-5.8 6.5-5.8s6.5 2.2 6.5 5.8z"/><path class="s" d="M17.5 9.5a4 4 0 0 1 0 5M20 7a7.5 7.5 0 0 1 0 10"/></svg> <span>Friend Activity</span>
         </div>
         <div class="sidebar-item" id="nav-messages" onclick="navigate('messages')">
           <svg class="sb-ico " viewBox="0 0 24 24" aria-hidden="true"><path class="s" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><circle class="f" cx="8" cy="10.5" r="1.3"/><circle class="f" cx="12" cy="10.5" r="1.3"/><circle class="f" cx="16" cy="10.5" r="1.3"/></svg> <span data-i18n="nav_messages">Messages</span> <span class="badge" id="navMsgBadge" style="display:none;">0</span>
@@ -8351,6 +8362,24 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
             <input type="date" class="form-input" id="uploadReleaseDate">
           </div>
         </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Producer</label>
+            <input type="text" class="form-input" id="uploadProducer" maxlength="100" placeholder="Producer name (optional)">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Songwriter</label>
+            <input type="text" class="form-input" id="uploadWriter" maxlength="150" placeholder="Written by (optional)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Language</label>
+          <input type="text" class="form-input" id="uploadLanguage" maxlength="40" placeholder="Luganda, English, Swahili...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Lyrics</label>
+          <textarea class="form-textarea" id="uploadLyrics" maxlength="20000" style="min-height:150px;" placeholder="Paste lyrics here (optional).&#10;Use [Verse 1], [Chorus] on their own line for sections.&#10;Timed lyrics also work: [00:12.50] first line"></textarea>
+        </div>
         <button class="btn-primary" style="width:100%;justify-content:center;padding:14px;font-size:15px;" onclick="goToUploadStep(3)">
           Continue to Artwork &amp; Rights <i class="fas fa-arrow-right"></i>
         </button>
@@ -8359,16 +8388,16 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
         <!-- STEP 3: ARTWORK & RIGHTS -->
         <div id="uploadStep3" style="display:none;">
         <div class="form-group" id="uploadTrendingRow">
-          <label class="form-label">Is this song trending?</label>
-          <div style="display:flex;gap:10px;">
-            <div class="vis-option" id="uploadTrendingYes" onclick="_setTrending(true)" style="flex:0 0 auto;padding:10px 20px;">
-              <div class="vis-label">Yes</div>
-            </div>
-            <div class="vis-option selected" id="uploadTrendingNo" onclick="_setTrending(false)" style="flex:0 0 auto;padding:10px 20px;">
-              <div class="vis-label">No</div>
-            </div>
+          <label class="form-label">What kind of song is this? *</label>
+          <div style="font-size:12px;color:var(--muted);margin:-2px 0 10px;">Pick where it should show on the Home page. You can choose more than one.</div>
+          <div class="up-kinds" id="uploadKinds">
+            <button type="button" class="up-kind selected" data-kind="new" onclick="_toggleKind('new')"><i class="fas fa-bolt"></i><b>New Release</b><span>Fresh song. Shows in New Releases.</span></button>
+            <button type="button" class="up-kind" data-kind="trending" onclick="_toggleKind('trending')"><i class="fas fa-fire"></i><b>Trending</b><span>Hot right now. Shows in Trending Now.</span></button>
+            <button type="button" class="up-kind" data-kind="ug" onclick="_toggleKind('ug')"><i class="fas fa-location-dot"></i><b>Trending in Uganda</b><span>Popular at home. Shows in Trending in Uganda.</span></button>
+            <button type="button" class="up-kind" data-kind="global" onclick="_toggleKind('global')"><i class="fas fa-globe"></i><b>Global</b><span>For the world. Shows in Global Top Charts.</span></button>
+            <button type="button" class="up-kind" data-kind="exclusive" onclick="_toggleKind('exclusive')"><i class="fas fa-crown"></i><b>Exclusive Hit</b><span>A standout hit. Shows in Exclusive Hits.</span></button>
           </div>
-          <div id="uploadTrendingHint" style="font-size:12px;color:var(--muted);margin-top:6px;">Trending songs are shown in Trending Now.</div>
+          <div id="uploadTrendingHint" style="font-size:12px;color:var(--muted);margin-top:8px;">New Release goes live after approval.</div>
         </div>
         <div class="form-group">
           <label class="form-label">Artwork / Thumbnail</label>
@@ -8995,6 +9024,7 @@ a.djx-row{color:inherit;text-decoration:none}
           <button type="button" class="acct-card" style="--c:#f43f5e;--c2:#e040fb" onclick="navigate('notifications')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg></span></span><span class="ac-title">Alerts</span><span class="ac-desc">Likes, follows and new releases.</span></button>
           <button type="button" class="acct-card" style="--c:#19e68c;--c2:#8b5cf6" onclick="location.href='yaps-ai.html'"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></span></span><span class="ac-title">YAPS AI</span><span class="ac-desc">Chat with your AI DJ.</span></button>
           <button type="button" class="acct-card" style="--c:#22d3ee;--c2:#e040fb" onclick="openStudio()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4v16M12 4v16M18 4v16"/><circle cx="6" cy="9" r="2" fill="currentColor"/><circle cx="12" cy="15" r="2" fill="currentColor"/><circle cx="18" cy="8" r="2" fill="currentColor"/></svg></span></span><span class="ac-title">DJ Studio</span><span class="ac-desc">Build and publish your mixes.</span></button>
+          <button type="button" class="acct-card" style="--c:#19e68c;--c2:#8b5cf6" onclick="openProducer()"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14M12 5v14M19 5v14"/><rect x="3" y="8" width="4" height="3" rx="1" fill="currentColor"/><rect x="10" y="13" width="4" height="3" rx="1" fill="currentColor"/><rect x="17" y="7" width="4" height="3" rx="1" fill="currentColor"/></svg></span></span><span class="ac-title">Music Producer</span><span class="ac-desc">Make beats, record and export.</span></button>
           <button type="button" class="acct-card" style="--c:#8b5cf6;--c2:#22d3ee;display:none" data-mirror="nav-dashboard" onclick="navigate('dashboard')"><span class="ac-top"><span class="ac-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20v-7M11 20V5M17 20v-10"/><path d="M3 20h18"/></svg></span></span><span class="ac-title">Analytics</span><span class="ac-desc">Plays and audience stats.</span></button>
           </div>
           <div class="acct-group">Support</div>
@@ -9026,26 +9056,25 @@ a.djx-row{color:inherit;text-decoration:none}
         <div class="hero-carousel stp-hero-home">
           <div class="hero-slides" style="width:100%;transform:none">
             <div class="hero-slide hs-active" style="width:100%">
-              <img fetchpriority="high" decoding="async" class="hero-slide-img" src="images/studio-hero-art.jpg" alt="YAPS Studio">
+              <img fetchpriority="high" decoding="async" class="hero-slide-img" src="images/studio-hero-art.jpg" alt="YAPS Studio" data-t="YAPS Studio" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)">
               <div class="hero-content">
                 <div class="hero-tag">YAPS Studio</div>
                 <div class="hero-title">Create.<br>Mix.<br><em>Share.</em></div>
                 <div class="hero-sub">Turn your musical ideas into reality.</div>
-                <button type="button" class="hero-btn" onclick="studioIntroStart()">Start Studio <i class="fas fa-chevron-right" style="font-size:10px;"></i></button>
+                <button type="button" class="hero-btn" onclick="studioIntroStart()">DJ Studio <i class="fas fa-chevron-right" style="font-size:10px;"></i></button><button type="button" class="hero-btn" onclick="openProducer()" style="margin-left:8px">Music Producer <i class="fas fa-chevron-right" style="font-size:10px;"></i></button>
               </div>
             </div>
           </div>
         </div>
-        <button type="button" class="stp-x" onclick="studioIntroClose()" aria-label="Close">&#10005;</button>
         <div class="stp-what"><b class="y3d y3d-g y3d-live">What You Can Do</b></div>
-        <div class="stp-tiles"><div class="stp-tile" role="button" tabindex="0" data-go="mix"><img src="images/studio-mix.jpg" alt="" loading="lazy"><b>Mix Tracks</b><span>Create amazing mixes</span></div><div class="stp-tile" role="button" tabindex="0" data-go="record"><img src="images/studio-rec.jpg" alt="" loading="lazy"><b>Record Audio</b><span>Capture your voice or songs</span></div><div class="stp-tile" role="button" tabindex="0" data-go="songs"><img src="images/studio-ai.jpg" alt="" loading="lazy"><b>Create Songs</b><span>With AI &amp; beats</span></div><div class="stp-tile" role="button" tabindex="0" data-go="edit"><img src="images/studio-edit.jpg" alt="" loading="lazy"><b>Edit &amp; Master</b><span>Perfect your music</span></div><div class="stp-tile" role="button" tabindex="0" data-go="publish"><img src="images/studio-pub.jpg" alt="" loading="lazy"><b>Publish to YAPS</b><span>Share your music with the world</span></div></div>
+        <div class="stp-tiles"><div class="stp-tile" role="button" tabindex="0" data-go="mix"><img src="images/studio-mix.jpg" alt="" loading="lazy" data-t="Mix Tracks" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><b>Mix Tracks</b><span>Create amazing mixes</span></div><div class="stp-tile" role="button" tabindex="0" data-go="record"><img src="images/studio-rec.jpg" alt="" loading="lazy" data-t="Record Audio" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><b>Record Audio</b><span>Capture your voice or songs</span></div><div class="stp-tile" role="button" tabindex="0" data-go="songs"><img src="images/studio-ai.jpg" alt="" loading="lazy" data-t="Create Songs" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><b>Create Songs</b><span>With AI &amp; beats</span></div><div class="stp-tile" role="button" tabindex="0" data-go="edit"><img src="images/studio-edit.jpg" alt="" loading="lazy" data-t="Edit &amp; Master" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><b>Edit &amp; Master</b><span>Perfect your music</span></div><div class="stp-tile" role="button" tabindex="0" data-go="publish"><img src="images/studio-pub.jpg" alt="" loading="lazy" data-t="Publish to YAPS" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><b>Publish to YAPS</b><span>Share your music with the world</span></div></div>
         <div class="home-ad stp-featbox"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 auto;"><i class="fas fa-headphones" style="color:var(--accent);flex-shrink:0;"></i><div style="min-width:0;"><div style="font-size:12.5px;font-weight:700;">Featured DJs &amp; Promoters</div><div style="font-size:11px;color:var(--muted);">Tap a profile to open it</div></div></div><div class="ad-artists" role="group" aria-label="DJs and promoter"><button type="button" class="ad-art" title="DJ Shiru" aria-label="DJ Shiru" onclick="stpOpenDJ('n:shiru')"><b>S</b><img src="images/dj-shiru.webp" alt="" loading="lazy" onerror="this.remove()"></button><button type="button" class="ad-art" title="Julius Kyazze (Promoter)" aria-label="Julius Kyazze (Promoter)" onclick="stpOpenDJ('n:juliuskyazze')"><b>J</b><img src="images/julius-kyazze.png" alt="" loading="lazy" onerror="this.remove()"></button><button type="button" class="ad-art" title="DJ Zahara Toto" aria-label="DJ Zahara Toto" onclick="stpOpenDJ('n:zaharatoto')"><b>Z</b><img src="images/dj-zahara-toto.webp" alt="" loading="lazy" onerror="this.remove()"></button></div></div>
         <div class="stp-how"><div class="stp-how-h"><span class="y3d y3d-s y3d-g y3d-live">How It Works</span></div><div class="stp-steps"><div class="stp-step"><div class="stp-sn"><i class="fas fa-microphone" aria-hidden="true"></i><em>1</em></div><b>Create</b><span>Record your voice or make a song with AI</span></div><div class="stp-step"><div class="stp-sn"><i class="fas fa-headphones" aria-hidden="true"></i><em>2</em></div><b>Mix</b><span>Blend tracks on the decks and polish them</span></div><div class="stp-step"><div class="stp-sn"><i class="fas fa-upload" aria-hidden="true"></i><em>3</em></div><b>Share</b><span>Publish to YAPS for the whole world</span></div></div></div>
         <div class="stp-made" id="stpMade" style="display:none"><div class="stp-how-h"><span class="y3d y3d-s y3d-g y3d-live">Made in YAPS Studio</span></div><div class="stp-mrow" id="stpMadeRow"></div></div>
-        <div class="stp-creator"><div class="stp-cr-img"><img src="images/studio-art.jpg" alt="" loading="lazy"></div><div class="stp-cr-txt"><div class="stp-ct"><span class="y3d y3d-s">Be a Creator,</span><span class="y3d y3d-s y3d-g y3d-live">Not Just a Listener</span></div><ul class="stp-ticks"><li>Easy to Use</li><li>Powerful Tools</li><li>Share Your Talent</li></ul></div></div>
+        <div class="stp-creator"><div class="stp-cr-img"><img src="images/studio-art.jpg" alt="" loading="lazy" data-t="Be a Creator" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"></div><div class="stp-cr-txt"><div class="stp-ct"><span class="y3d y3d-s">Be a Creator,</span><span class="y3d y3d-s y3d-g y3d-live">Not Just a Listener</span></div><ul class="stp-ticks"><li>Easy to Use</li><li>Powerful Tools</li><li>Share Your Talent</li></ul></div></div>
         <div class="stp-plans" id="stpPlans" style="display:none"><div class="stp-how-h"><span class="y3d y3d-s y3d-g y3d-live">Free vs Premium</span></div><div class="stp-pgrid" id="stpPlansGrid"></div></div>
         <div class="stp-faq"><div class="stp-how-h"><span class="y3d y3d-s y3d-g y3d-live">Help &amp; Tips</span></div><div class="stp-faqs"><details><summary>Can I use my phone?</summary><p>Yes. YAPS Studio opens right inside the app, so a phone is all you need to start. Headphones help you hear your mix clearly.</p></details><details><summary>Do I need internet?</summary><p>The first time you open the Studio it needs a connection to load. After that, mixes you save stay on your device.</p></details><details><summary>Where are my mixes saved?</summary><p>Saved mixes stay on your device and show under My Saved Mixes on Home, where you can play them any time. They only become public when you publish them.</p></details><details><summary>How do I share my music with everyone?</summary><p>Tap Publish to YAPS to open the upload page. Publishing is for artist accounts, so you may be asked to switch to one first.</p></details><details><summary>What equipment do I need to record?</summary><p>Your phone&rsquo;s microphone works to begin with. For a cleaner sound, plug in headphones and record somewhere quiet.</p></details></div></div>
-        <div class="stp-foot"><button type="button" class="stp-go" onclick="studioIntroStart()">Start Studio</button>
+        <div class="stp-foot"><button type="button" class="stp-go" onclick="studioIntroStart()">DJ Studio</button><button type="button" class="stp-go" onclick="openProducer()">Music Producer</button>
           <label class="stp-skip"><input type="checkbox" id="stpSkip">Don&rsquo;t show again</label></div>
       </div>
     </section>
@@ -9108,6 +9137,14 @@ a.djx-row{color:inherit;text-decoration:none}
             </div>
         </div>
 
+        <!-- HOME SECTIONS: how many uploads each Home row holds -->
+        <div style="padding:0 24px 6px;">
+          <div class="dash-card" style="padding:16px;">
+            <div class="dash-card-head"><span>Home sections</span></div>
+            <div style="font-size:12px;color:var(--muted);margin:-4px 0 12px;">Uploaded songs in each Home row. Empty rows show catalog songs instead.</div>
+            <div class="dh-grid" id="dashHomeRows"></div>
+          </div>
+        </div>
         <!-- MAIN GRID -->
         <div class="dash-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:0 24px 16px;">
 
@@ -9432,6 +9469,16 @@ a.djx-row{color:inherit;text-decoration:none}
   </div>
 </div>
 
+<style id="song-about-db">
+/* About this song (database-driven) + lyrics from the database */
+.sfp-credit-row span:last-child{text-align:right;overflow-wrap:anywhere}
+.sfp-tags{display:flex;flex-wrap:wrap;gap:6px;padding-top:10px}
+.sfp-tags span{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--card2,rgba(255,255,255,.08));border:1px solid var(--border,rgba(255,255,255,.12));color:var(--muted)}
+.lp-line.lp-static{color:rgba(255,255,255,.88);font-size:19px;font-weight:700;cursor:default;line-height:1.5;padding:3px 0}
+.lp-line.lp-static:hover{color:rgba(255,255,255,.88)}
+.lp-gap{height:16px}
+html[data-mode="light"] .lp-line.lp-static,html[data-mode="light"] .lp-line.lp-static:hover{color:inherit}
+</style>
 <!-- SONG FACTS PANEL (About the Song) -->
 <div class="song-facts-panel" id="songFactsPanel">
   <div class="sfp-head">
@@ -9440,24 +9487,20 @@ a.djx-row{color:inherit;text-decoration:none}
   </div>
   <div class="sfp-art" id="sfpArt" style="overflow:hidden;"><img loading="lazy" decoding="async" id="sfpImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'"></div>
   <div class="sfp-track-info">
-    <div class="sfp-title" id="sfpTitle">P2</div>
-    <div class="sfp-artist" id="sfpArtist">King Saha</div>
+    <div class="sfp-title" id="sfpTitle"></div>
+    <div class="sfp-artist" id="sfpArtist"></div>
   </div>
   <div class="sfp-fact-card">
     <div class="fact-label">About the Track</div>
-    <div class="fact-text" id="sfpFact">"P2" by King Saha is one of Uganda's biggest Luganda Pop hits of 2026, dominating radio airplay and streaming charts across East Africa. King Saha's smooth vocals and catchy hooks have made him a fan favourite.</div>
+    <div class="fact-text" id="sfpFact" style="white-space:pre-line;"></div>
   </div>
   <div class="song-dna-card">
-    <h4>Song DNA</h4>
+    <h4>Song Details</h4>
     <div id="songDnaContent"></div>
   </div>
   <div class="sfp-credits">
     <h4>Credits</h4>
-    <div class="sfp-credit-row"><span>Artist</span><span>King Saha</span></div>
-    <div class="sfp-credit-row"><span>Producer</span><span>Daddy Andre</span></div>
-    <div class="sfp-credit-row"><span>Label</span><span>YAPSMusic</span></div>
-    <div class="sfp-credit-row"><span>Released</span><span>2024</span></div>
-    <div class="sfp-credit-row"><span>Genre</span><span>Afrobeats</span></div>
+    <div id="sfpCredits"></div>
   </div>
 </div>
 
@@ -9465,8 +9508,12 @@ a.djx-row{color:inherit;text-decoration:none}
 <div class="activity-panel" id="activityPanel">
   <div class="act-head">
     <h3>Friend Activity</h3>
-    <button onclick="toggleActivityPanel()" style="color:var(--muted);font-size:16px;cursor:pointer;"><i class="fas fa-times"></i></button>
+    <button onclick="toggleActivityPanel()" style="color:var(--muted);font-size:16px;cursor:pointer;" aria-label="Close"><i class="fas fa-times"></i></button>
   </div>
+  <label class="act-share">
+    <span><b>Share what I'm listening to</b><em>People who follow you can see your current song. Off by default.</em></span>
+    <input type="checkbox" id="actShareToggle" onchange="actSetShare(this.checked)">
+  </label>
   <div id="activity-list"></div>
 </div>
 
@@ -10404,6 +10451,33 @@ async function _refreshOwner() {
   _syncOwnerUI();
 }
 
+/* ── Real song info from the `tracks` table (feeds "About this song" and Lyrics) ── */
+window._dbLyrics = window._dbLyrics || {};
+function _trackMetaSet(t, r) {
+  if (!t || !r) return;
+  const tx = (v, n) => String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '').trim().slice(0, n);
+  t.album = tx(r.album, 150); t.description = tx(r.description, 2000); t.producer = tx(r.producer, 100);
+  t.writer = tx(r.writer, 150); t.language = tx(r.language, 40); t.releaseDate = tx(r.release_date, 10);
+  t.explicit = !!r.explicit; t.createdAt = r.created_at || '';
+  if (r.plays != null) t.plays = String(r.plays);
+  if (r.likes != null) t.likes = String(Number(r.likes) || 0);
+  if (r.duration) t.duration = r.duration;
+  const id = t.dbId || t.id;
+  if (r.lyrics) window._dbLyrics[id] = String(r.lyrics).slice(0, 20000); else delete window._dbLyrics[id];
+  t._metaLoaded = true;
+}
+/* Fetch one song's row when it was not part of the startup load (e.g. just uploaded). Safe to call repeatedly. */
+function _ensureTrackMeta(t) {
+  const id = t && (t.dbId || (t._remote && t.id));
+  if (!id || t._metaLoaded || typeof sb === 'undefined' || !sb) return Promise.resolve(t);
+  if (t._metaPromise) return t._metaPromise;
+  t._metaPromise = Promise.resolve(sb.from('tracks').select('*').eq('id', id).maybeSingle())
+    .then(res => { if (res && res.data) _trackMetaSet(t, res.data); return t; })
+    .catch(() => t)
+    .then(x => { t._metaPromise = null; return x; });
+  return t._metaPromise;
+}
+
 // Tracks uploaded by users live in the database; merge them into the catalogue on startup.
 async function _loadRemoteTracks() {
   window._remoteTracksStatus = 'loading';
@@ -10423,12 +10497,14 @@ async function _loadRemoteTracks() {
       const existing = tracks.find(x => String(x.id) === id) || (r.audio_url ? tracks.find(x => x.audioSrc && _afn(x.audioSrc) === _afn(r.audio_url)) : null);
       const img = r.artwork_url || (window._yapsCover ? window._yapsCover(r.title, r.artist) : '');
       const _up = r.user_id || r.uploader_id || r.owner_id || null;
-      if (existing) { existing.audioUrl = r.audio_url; existing.audioUrlLow = r.audio_url_low || null; existing.audioUrlStd = r.audio_url_std || null; existing._remote = true; if (_up) existing.uploaderId = _up; if (!existing.img) existing.img = img; return; }
-      tracks.push({
-        id, title: r.title, artist: r.artist, img, genre: r.genre || 'Afrobeats',
-        plays: String(r.plays || 0), likes: '0', duration: r.duration || '0:00',
+      if (existing) { existing.audioUrl = r.audio_url; existing.audioUrlLow = r.audio_url_low || null; existing.audioUrlStd = r.audio_url_std || null; existing._remote = true; existing.dbId = id; if (r.likes != null) existing.likes = String(Number(r.likes) || 0); _trackMetaSet(existing, r); if (_up) existing.uploaderId = _up; if (!existing.img) existing.img = img; return; }
+      const _nt = {
+        id, dbId: id, title: r.title, artist: r.artist, img, genre: r.genre || 'Afrobeats',
+        plays: String(r.plays || 0), likes: String(Number(r.likes) || 0), duration: r.duration || '0:00',
         tags: r.tags || [], audioUrl: r.audio_url, audioUrlLow: r.audio_url_low || null, audioUrlStd: r.audio_url_std || null, _remote: true, uploaderId: _up, savedAt: Date.parse(r.created_at) || Date.now(),
-      });
+      };
+      _trackMetaSet(_nt, r);
+      tracks.push(_nt);
       added++;
     });
     if (added) { if (typeof refreshHome === 'function') refreshHome(); }
@@ -10481,7 +10557,7 @@ async function _initAuth() {
     return;
   }
   const { data } = await sb.auth.getSession();
-  _demoUser = _userFromSession(data.session);
+  _demoUser = _userFromSession(data.session); try{window.dispatchEvent(new Event('yaps-auth'))}catch(e){}
   if (_demoUser) _migrateGuestLibraryToAccount(_demoUser.id);
   _persistLoad();
   _syncAuthUI();
@@ -10493,7 +10569,7 @@ async function _initAuth() {
   else { _clearHasAccount(); setTimeout(_guestWelcomePrompt, 3000); }
   setTimeout(() => { try { yapsPushSync(); } catch (e) {} }, 1500);
   sb.auth.onAuthStateChange((_event, session) => {
-    _demoUser = _userFromSession(session);
+    _demoUser = _userFromSession(session); try{window.dispatchEvent(new Event('yaps-auth'))}catch(e){}
     // A brand-new signup or a sign-in on this device: fold whatever was
     // collected as a guest into this account's own library (once), then
     // load that account's library instead of the guest one.
@@ -10552,7 +10628,7 @@ async function _confirmSidebarLogout() {
   if (!_demoUser) { showToast('You are not signed in'); closeSidebar(); return; }
   if (!confirm('Log out of YAPSMusic?')) return;
   try { await _libFlush(); } catch (e) {}   // save the latest likes/playlists to the cloud before the account is cleared
-  _demoUser = null;
+  _demoUser = null; try{window.dispatchEvent(new Event('yaps-auth'))}catch(e){}
   _persistLoad(); // switch back to this device's guest library
   _refreshLibraryUI();
   if (typeof _syncAuthUI === 'function') _syncAuthUI();
@@ -10671,8 +10747,8 @@ async function _ensureProfile(user) {
   const googlePic = meta.avatar_url || meta.picture || null;
   let pending = null;
   try { pending = localStorage.getItem('yaps_pending_account_type'); } catch (e) {}
-  const _metaType = (meta.account_type === 'artist' || meta.account_type === 'dj' || meta.account_type === 'promoter') ? meta.account_type : null;   // chosen on auth.html (email sign-up)
-  const _wantType = (pending === 'artist' || pending === 'dj' || pending === 'promoter') ? pending : _metaType;
+  const _metaType = (meta.account_type === 'artist' || meta.account_type === 'dj' || meta.account_type === 'producer' || meta.account_type === 'promoter') ? meta.account_type : null;   // chosen on auth.html (email sign-up)
+  const _wantType = (pending === 'artist' || pending === 'dj' || pending === 'producer' || pending === 'promoter') ? pending : _metaType;
   try {
     const cols = '*';  // tolerant: works whether or not optional columns (created_at, etc.) exist yet
     let { data: row, error } = await sb.from('yaps_profiles').select(cols).eq('id', uid).maybeSingle();
@@ -10719,7 +10795,7 @@ async function _ensureProfile(user) {
     if (pr.error) _dbWarn('yaps_account_private', pr.error);
     if (row) {
       window._yapsProfile = row;
-      if (_demoUser && _demoUser.id === uid) { _demoUser = _withProfile(_demoUser); _syncAuthUI(); }
+      if (_demoUser && _demoUser.id === uid) { _demoUser = _withProfile(_demoUser); _syncAuthUI(); try { _yapsApplyAccess(); } catch (e) {} }
     }
   } catch (e) { _dbWarn('yaps_profiles', e); }
 }
@@ -11725,8 +11801,8 @@ function _resetHorizontalScrollRows(root) {
 window.addEventListener('pageshow', () => _resetHorizontalScrollRows());
 document.addEventListener('DOMContentLoaded', () => _resetHorizontalScrollRows());
 
-// ── SHARE SONGS WITH DJ STUDIO (studio.html) ──
-// Writes the live song list (built-in + shared/remote) to localStorage so studio.html
+// ── SHARE SONGS WITH DJ STUDIO (yapsvirtual.html) ──
+// Writes the live song list (built-in + shared/remote) to localStorage so yapsvirtual.html
 // always sees the same songs as this page. Device uploads are read by the studio
 // straight from IndexedDB ('YapsMusicDB'), so they are not copied here.
 function _studioSync() {
@@ -11747,8 +11823,15 @@ function _studioSync() {
   } catch (e) { console.warn('Studio sync skipped:', e && e.message); }
 }
 function openStudio(trackId, deck) {
+  if (!_yapsCan('studio')) { _yapsDeny('studio'); return; }
   _studioSync();
   if (window._studioOpen) window._studioOpen(trackId, deck);
+}
+// Music Producer is its own page (producer.html), separate from the DJ Studio
+function openProducer() {
+  if (!_yapsCan('producer')) { _yapsDeny('producer'); return; }
+  try { if (window._studioClose) window._studioClose(true); } catch (e) {}
+  location.href = 'producer.html';
 }
 // ── DJ STUDIO: pick which deck a song loads into (same bottom-sheet look as the song menu) ──
 function _djMakeDeckSheet() {
@@ -11849,6 +11932,79 @@ function renderPopularPlaylists() {
   }).join('');
 }
 
+/* ── ACCOUNT-TYPE ACCESS: each account type only sees and opens what it uses ──
+   Everyone (guests too): browse, play, library, community, messages, events, settings, help, YAPS AI.
+   Extra, by account type (edit this table to change who gets what):               */
+const YAPS_ACCESS = {
+  studio:      ['dj'],                       // DJ Studio (yapsvirtual.html)
+  studiointro: ['dj', 'producer'],           // Studio tab + intro page
+  producer:    ['producer'],                 // Music Producer (producer.html) + beats
+  songcreator: ['artist', 'producer'],       // AI Song Creator
+  songlab:     ['artist', 'producer'],       // Song Lab
+  upload:      ['artist'],                   // Upload songs
+  earnings:    ['artist']                    // Earnings
+};
+const YAPS_PAGE_FEATURE = { 'upload': 'upload', 'earnings': 'earnings', 'song-lab': 'songlab', 'studio-intro': 'studiointro' };
+const YAPS_HIDE = {
+  studio:      ['[onclick^="openStudio("]'],
+  studiointro: ['#bn-studio', '[onclick*="studioIntroStart("]'],
+  producer:    ['[onclick^="openProducer("]'],
+  songcreator: ['[onclick^="openSongCreator("]'],
+  songlab:     ['[onclick*="navigate(\'song-lab\')"]'],
+  upload:      ['[onclick*="navigate(\'upload\')"]'],
+  earnings:    ['[onclick*="navigate(\'earnings\')"]']
+};
+const YAPS_ROLE_NAME = { listener: 'Listener', artist: 'Artist', dj: 'DJ', producer: 'Producer', promoter: 'Promoter' };
+function _yapsRole() {
+  const t = _demoUser && _demoUser.accountType;
+  return (t === 'artist' || t === 'dj' || t === 'producer' || t === 'promoter') ? t : 'listener';
+}
+function _yapsCan(feature) {
+  try { if (typeof _isOwner === 'function' && _isOwner()) return true; } catch (e) {}   // the app owner sees everything
+  const allow = YAPS_ACCESS[feature];
+  return !allow || allow.indexOf(_yapsRole()) >= 0;
+}
+function _yapsApplyAccess() {
+  if (!document.getElementById('yapsAccessCss')) {
+    const st = document.createElement('style'); st.id = 'yapsAccessCss';
+    st.textContent = '.yaps-noaccess{display:none!important}'; document.head.appendChild(st);
+  }
+  Object.keys(YAPS_HIDE).forEach(f => {
+    const ok = _yapsCan(f);
+    YAPS_HIDE[f].forEach(sel => document.querySelectorAll(sel).forEach(el => el.classList.toggle('yaps-noaccess', !ok)));
+  });
+  // a section title with nothing left under it is hidden too
+  document.querySelectorAll('.sidebar-section').forEach(sec => {
+    const items = sec.querySelectorAll('.sidebar-item');
+    if (!items.length) return;
+    const any = Array.prototype.some.call(items, i => !i.classList.contains('yaps-noaccess') && i.style.display !== 'none');
+    sec.classList.toggle('yaps-noaccess', !any);
+  });
+}
+function _yapsDeny(feature) {
+  if (document.getElementById('yapsRoleOv')) return;
+  const need = (YAPS_ACCESS[feature] || []).map(r => YAPS_ROLE_NAME[r]).join(' or ');
+  const needType = (YAPS_ACCESS[feature] || ['artist'])[0];
+  const guest = !_demoUser;
+  const mine = YAPS_ROLE_NAME[_yapsRole()];
+  const o = document.createElement('div');
+  o.id = 'yapsRoleOv';
+  o.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(5,8,24,.7);display:flex;align-items:center;justify-content:center;padding:20px';
+  o.onclick = e => { if (e.target === o) o.remove(); };
+  o.innerHTML = '<div role="dialog" aria-modal="true" aria-labelledby="yrT" style="width:min(380px,100%);background:var(--surface,#fff);color:var(--text,#0b1a3d);border:1px solid var(--border,#ccc);border-radius:20px;padding:24px;text-align:center">'
+    + '<div style="font-size:34px;color:var(--accent)"><i class="fas fa-lock"></i></div>'
+    + '<h3 id="yrT" style="margin:10px 0 6px;font-size:19px">This is for ' + need + ' accounts</h3>'
+    + '<p style="margin:0 0 18px;font-size:14px;line-height:1.5;color:var(--muted,#667)">'
+    + (guest ? 'Create a free ' + need + ' account to use this.' : 'Your account is a ' + mine + ' account, so this part of YAPSMusic is not part of it. Create a separate ' + need + ' account to use it.') + '</p>'
+    + '<button class="btn-primary" style="width:100%;margin-bottom:8px" onclick="document.getElementById(\'yapsRoleOv\').remove();goAuth(\'signup\',\'' + needType + '\')">Create ' + need + ' account</button>'
+    + (guest ? '<button class="btn-ghost" style="width:100%;margin-bottom:8px" onclick="document.getElementById(\'yapsRoleOv\').remove();goAuth(\'signin\')">I already have an account</button>' : '')
+    + '<button class="btn-ghost" style="width:100%" onclick="document.getElementById(\'yapsRoleOv\').remove()">Not now</button></div>';
+  document.body.appendChild(o);
+}
+window.addEventListener('yaps-auth', () => { setTimeout(_yapsApplyAccess, 0); });
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', _yapsApplyAccess); else _yapsApplyAccess();
+setTimeout(_yapsApplyAccess, 1500); setTimeout(_yapsApplyAccess, 5000);
+
 /* ── ARTIST-ONLY UPLOADS: only accounts registered as Artist can upload songs ── */
 function _isArtistAccount() {
   return !!(_demoUser && _demoUser.accountType === 'artist');
@@ -11894,6 +12050,8 @@ function _artistOnlyPrompt() {
 }
 
 function navigate(page) {
+  // Account-type access: pages that belong to another account type do not open
+  { const _f = YAPS_PAGE_FEATURE[page]; if (_f && !_yapsCan(_f)) { if (_f === 'upload') _artistOnlyPrompt(); else _yapsDeny(_f); return; } }
   // Guard upload page for guests
   if (page === 'upload' && !_isArtistAccount()) { _artistOnlyPrompt(); return; }
   // Leaving the pages where a scoped queue (artist profile or Downloads)
@@ -12194,6 +12352,13 @@ const TRENDING_ORDER_IDS = [
   156   // 9  Daddy, Da Agent
   // 10 Wendi (remote) — Mesach Semakula: add its track id here once the MP3 is added
 ];
+// An upload shows in a Home row only if its uploader picked that kind (tag). Catalog songs are unaffected.
+const _isUp = t => !!(t && t.savedAt && !t.audioSrc);
+// Small corner chip on cards of uploaded songs, naming the kind the uploader picked for the row it is shown in.
+const _CHIP_TEXT = { New: 'NEW', Trending: 'HOT', UgTrending: 'UG', Global: 'GLOBAL', Exclusive: 'EXCLUSIVE' };
+function _kindChip(t, tag) { return (_isUp(t) && _hasKind(t, tag)) ? `<span class="kind-chip kc-${tag}">${_CHIP_TEXT[tag]}</span>` : ''; }
+const _NEW_RELEASE_DAYS = 30;   // a song stays in "New Releases" for this long, then drops out on its own
+const _hasKind = (t, tag) => !!(t && t.tags && t.tags.includes(tag)) && (tag !== 'New' || !t.savedAt || (Date.now() - t.savedAt) < _NEW_RELEASE_DAYS * 864e5);
 function curatedTrending() {
   const curated = TRENDING_ORDER_IDS.map(id => tracks.find(t => t.id === id)).filter(Boolean);
   // Uploads the uploader marked "Trending" (approved + live) go first, newest first.
@@ -12214,7 +12379,7 @@ function renderHome() {
     const i = tracks.indexOf(t);
     return `
     <div class="track-card" onclick="playTrack(${i})">
-      <div class="tc-art">
+      <div class="tc-art">${_kindChip(t, 'Trending')}
         <img src="${t.img}" alt="${t.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
         <div class="tc-waveform">${waveformBars(22)}</div>
         <div class="tc-play"><i class="fas fa-play"></i></div>
@@ -12272,15 +12437,18 @@ function renderGlobalTopCharts(country) {
   const pool = (country === 'Uganda') ? tracks.filter(t => t.tags && t.tags.includes('Uganda')) : tracks;
   // Tracks tagged "Global" (Trending Global) are pinned first on the Global chip, then the rest by plays.
   const _isGlobalTag = t => !!(t.tags && t.tags.includes('Global'));
-  const _newUp = pool.filter(t => t && t.savedAt && !t.audioSrc && (Date.now() - t.savedAt) < 30*864e5).sort((a, b) => b.savedAt - a.savedAt).slice(0, 2);
-  const pinned = _newUp.concat(((country === 'Uganda') ? [] : pool.filter(_isGlobalTag)).filter(t => !_newUp.includes(t)));
-  const rest = pool.filter(t => !pinned.includes(t)).sort((a,b) => _parsePlayCount(b.plays) - _parsePlayCount(a.plays));
+  // Uploads only appear here when the uploader picked "Global"; the Uganda chip shows uploads picked for "Trending in Uganda".
+  const _pickedUp = tracks.filter(t => _isUp(t) && _hasKind(t, country === 'Uganda' ? 'UgTrending' : 'Global')).sort((a, b) => b.savedAt - a.savedAt);
+  const pool2 = pool.filter(t => !_isUp(t) || _pickedUp.includes(t));
+  const _newUp = _pickedUp;
+  const pinned = _newUp.concat(((country === 'Uganda') ? [] : pool2.filter(_isGlobalTag)).filter(t => !_newUp.includes(t)));
+  const rest = pool2.filter(t => !pinned.includes(t)).sort((a,b) => _parsePlayCount(b.plays) - _parsePlayCount(a.plays));
   const ranked = pinned.concat(rest).slice(0, 10);
   row.innerHTML = ranked.map((t) => {
     const i = tracks.indexOf(t);
     return `
     <div class="track-card" onclick="playTrack(${i})">
-      <div class="tc-art">
+      <div class="tc-art">${_kindChip(t, country === 'Uganda' ? 'UgTrending' : 'Global')}
         <img src="${t.img}" alt="${t.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
         <div class="tc-play"><i class="fas fa-play"></i></div>
       </div>
@@ -12297,12 +12465,12 @@ function renderUgandaTrending() {
   // Gospel-only on weekends, Gospel-free on weekdays (see gospelWeekendPool)
   const _ugPool = gospelWeekendPool(tracks).filter(t => t.tags && t.tags.includes('Uganda'));
   // Recently uploaded songs (real savedAt) surface first, newest first; the catalog fills in after.
-  const _ugNew = _ugPool.filter(t => t.savedAt && !t.audioSrc).sort((a, b) => b.savedAt - a.savedAt);
-  const _ugOld = _ugPool.filter(t => !(t.savedAt && !t.audioSrc));
+  const _ugNew = _ugPool.filter(t => _isUp(t) && _hasKind(t, 'UgTrending')).sort((a, b) => b.savedAt - a.savedAt);
+  const _ugOld = _ugPool.filter(t => !_isUp(t));
   const ugTracks = _ugNew.concat(_ugOld).slice(0, 10);
   row.innerHTML = ugTracks.map((t) => {
     const i = tracks.indexOf(t);
-    return _homeTrackCardHTML(t, i);
+    return _homeTrackCardHTML(t, i, 'UgTrending');
   }).join('');
 }
 
@@ -12334,10 +12502,10 @@ setInterval(updateHomeGreeting, 60000);
 // Unlike the sections in renderHome() above, these reflect this user's actual
 // activity (likes, follows, listening history) and are re-rendered every time
 // the user's data changes or they revisit the home page — not just once.
-function _homeTrackCardHTML(t, i) {
+function _homeTrackCardHTML(t, i, chipTag) {
   return `
     <div class="track-card" onclick="playTrack(${i})">
-      <div class="tc-art">
+      <div class="tc-art">${chipTag ? _kindChip(t, chipTag) : ''}
         <img src="${t.img}" alt="${t.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
         <div class="tc-play"><i class="fas fa-play"></i></div>
       </div>
@@ -13612,7 +13780,7 @@ function _syncProfileHeader() {
     page.classList.add('acx-in');
     nameEl.textContent = _demoUser.name || 'YAPS User';
     handleEl.textContent = '@' + (_demoUser.username || (_demoUser.name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '')) +
-      (_demoUser.accountType === 'artist' ? ' · Artist' : _demoUser.accountType === 'dj' ? ' · DJ' : _demoUser.accountType === 'promoter' ? ' · Promoter' : '') +
+      (_demoUser.accountType === 'artist' ? ' · Artist' : _demoUser.accountType === 'dj' ? ' · DJ' : _demoUser.accountType === 'producer' ? ' · Producer' : _demoUser.accountType === 'promoter' ? ' · Promoter' : '') +
       (_demoUser.joined && !isNaN(Date.parse(_demoUser.joined)) ? ' · Joined ' + new Date(_demoUser.joined).toLocaleDateString(undefined, { month: 'short', year: 'numeric' }) : '');
 
     if (bioEl) {
@@ -14046,12 +14214,8 @@ function playTrack(idx) {
     });
   }, 50);
 
-  if (songFactsOpen) {
-    document.getElementById('sfpTitle').textContent = t.title;
-    document.getElementById('sfpArtist').textContent = t.artist;
-    const sfpImg = document.getElementById('sfpImg');
-    if (sfpImg) sfpImg.src = t.img;
-  }
+  if (songFactsOpen && typeof renderSongFacts === 'function') renderSongFacts(t);
+  if (typeof _shareListening === 'function') _shareListening(t);
 
   // ── MEDIA SESSION API — lock screen & headphone controls ──
   if ('mediaSession' in navigator && _yS('lockscreen', true)) {
@@ -15594,7 +15758,7 @@ function renderArtistsGrid() {
     const name = _atpEsc(a.name);
     return `
       <div class="artist-card-full" role="button" tabindex="0" aria-label="Open ${name}" style="--d:${_atpReduced ? 0 : Math.min(i, 12) * 40}ms" onclick="openArtistProfileByName('${_atpEsc(jsName)}')" onkeydown="if(event.key==='Enter'&&event.target===this){openArtistProfileByName('${_atpEsc(jsName)}')}">
-        <div class="acf-art"><img src="${_atpEsc(a.img)}" alt="${name}" decoding="async" ${i > 7 ? 'loading="lazy"' : ''} onload="this.classList.add('ready')" onerror="this.classList.add('ready');this.style.visibility='hidden'"></div>
+        <div class="acf-art"><img src="${a.img ? _atpEsc(a.img) : (window._yapsCover ? window._yapsCover(a.name, '') : '')}" data-t="${name}" data-a="" alt="${name}" decoding="async" onload="this.classList.add('ready')" onerror="this.classList.add('ready');window._yapsImgErr&&window._yapsImgErr(this)"></div>
         <div class="acf-name">${name}</div>
         <div class="acf-subs"><span><b>${_atpEsc(a.followers)}</b> followers</span><span>${trackCount} track${trackCount === 1 ? '' : 's'}</span></div>
         <button type="button" class="acf-follow-btn ${isFollowing ? 'following' : ''}" aria-pressed="${isFollowing}" onclick="event.stopPropagation();toggleFollowArtist('${_atpEsc(jsName)}',this)">${isFollowing ? 'Following' : '+ Follow'}</button>
@@ -15817,7 +15981,7 @@ function exploreTrackCard(t) {
   const idx = tracks.indexOf(t);
   return `
     <div class="track-card" onclick="playTrack(${idx})" style="cursor:pointer;">
-      <div class="tc-art">
+      <div class="tc-art">${_kindChip(t, 'Trending')}
         <img src="${t.img}" alt="${t.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
         <div class="tc-waveform">${waveformBars(22)}</div>
         <div class="tc-play"><i class="fas fa-play"></i></div>
@@ -16064,6 +16228,17 @@ function renderExploreSection(section) {
 }
 
 // ── RENDER DASHBOARD ──
+// Owner dashboard: one tile per Home row with the number of uploaded songs currently placed in it.
+function _dashHomeRows() {
+  const el = document.getElementById('dashHomeRows'); if (!el) return;
+  const rows = [['New','New Releases','new-releases-home-row','fa-bolt'],['Trending','Trending Now','trending-row','fa-fire'],['UgTrending','Trending in Uganda','uganda-trending-row','fa-location-dot'],['Global','Global Top Charts','global-charts-row','fa-globe'],['Exclusive','Exclusive Hits','exclusive-hits-row','fa-crown']];
+  const ups = tracks.filter(_isUp);
+  el.innerHTML = rows.map(([tag, label, rowId, ic]) => {
+    const list = ups.filter(t => _hasKind(t, tag)).sort((a, b) => b.savedAt - a.savedAt);
+    const note = list.length ? 'Latest: ' + _escHtml(list[0].title) : 'Empty, showing catalog';
+    return `<button type="button" class="dh-tile${list.length ? '' : ' empty'}" onclick="navigate('home');setTimeout(()=>{const e=document.getElementById('${rowId}');if(e)e.scrollIntoView({behavior:'smooth',block:'center'})},350)"><i class="fas ${ic}"></i><span class="dh-n">${list.length}</span><b>${label}</b><span class="dh-s">${note}</span></button>`;
+  }).join('');
+}
 function renderDashboard() {
   if (!_isOwner()) {
     document.getElementById('dashContent').style.display = 'none';
@@ -16089,6 +16264,7 @@ function renderDashboard() {
   const statCards = document.querySelectorAll('.dash-stat-card .dsc-val');
   if (statCards[0]) statCards[0].textContent = _fmt(mine.reduce((n, t) => n + _num(t.plays), 0));
   if (statCards[2]) statCards[2].textContent = _fmt(mine.reduce((n, t) => n + _num(t.likes), 0));
+  try { _dashHomeRows(); } catch (e) { console.warn('home rows', e); }
   const _empty = '<div style="padding:22px 8px;text-align:center;color:var(--muted);font-size:13px;">No uploads yet. Upload your first track to see it here.</div>';
 
   // Recent releases (your uploads)
@@ -16638,6 +16814,7 @@ function clearUploadFile() {
   const artistInput = document.getElementById('uploadArtist'); if (artistInput) artistInput.value = '';
   const albumInput = document.getElementById('uploadAlbum'); if (albumInput) albumInput.value = '';
   const descInput = document.getElementById('uploadDescription'); if (descInput) descInput.value = '';
+  ['uploadReleaseDate','uploadProducer','uploadWriter','uploadLanguage','uploadLyrics'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   const tagsInput = document.getElementById('uploadTags'); if (tagsInput) tagsInput.value = '';
   const copyrightBox = document.getElementById('uploadCopyrightConfirm'); if (copyrightBox) copyrightBox.checked = false;
   _uploadExplicit = false;
@@ -16647,12 +16824,42 @@ function clearUploadFile() {
 
 // ── UPLOAD WIZARD (Step 1: Upload · Step 2: Details · Step 3: Artwork & Rights) ──
 let _uploadTrending = false;
-function _setTrending(val) {
-  _uploadTrending = !!val;
-  const yes = document.getElementById('uploadTrendingYes');
-  const no = document.getElementById('uploadTrendingNo');
-  if (yes) yes.classList.toggle('selected', !!val);
-  if (no) no.classList.toggle('selected', !val);
+// Song kinds the uploader picked. Each kind maps to ONE Home section so different songs fill different rows.
+//   new -> New Releases · trending -> Trending Now · ug -> Trending in Uganda · global -> Global Top Charts · exclusive -> Exclusive Hits
+// "new" goes live with the normal approval. The others are promotions: the owner's pick is applied straight away,
+// anyone else sends a request (tag ending in "Request") that the owner confirms in the review queue.
+const _KIND_TAG = { new: 'New', trending: 'Trending', ug: 'UgTrending', global: 'Global', exclusive: 'Exclusive' };
+const _KIND_LABEL = { new: 'New Release', trending: 'Trending', ug: 'Trending in Uganda', global: 'Global', exclusive: 'Exclusive Hit' };
+const _KIND_ROW = { new: 'New Releases', trending: 'Trending Now', ug: 'Trending in Uganda', global: 'Global Top Charts', exclusive: 'Exclusive Hits' };
+let _uploadKinds = new Set(['new']);
+function _renderKinds() {
+  document.querySelectorAll('#uploadKinds .up-kind').forEach(b => b.classList.toggle('selected', _uploadKinds.has(b.dataset.kind)));
+  _uploadTrending = _uploadKinds.has('trending');
+  const hint = document.getElementById('uploadTrendingHint');
+  if (hint) {
+    const promo = [..._uploadKinds].some(k => k !== 'new');
+    hint.textContent = !_uploadKinds.size ? 'Pick at least one kind.' : (promo && !_isOwner() ? 'Trending, Uganda, Global and Exclusive picks are confirmed during review. New Release goes live after approval.' : 'Your song will appear in the Home sections you picked.');
+  }
+}
+function _toggleKind(k) {
+  if (_uploadKinds.has(k)) _uploadKinds.delete(k); else _uploadKinds.add(k);
+  _renderKinds();
+}
+function _setTrending(val) { // kept for older callers: false = back to the default kind
+  if (!val) _uploadKinds = new Set(['new']); else _uploadKinds.add('trending');
+  _renderKinds();
+}
+/* Song info saved with a track (About this song + Lyrics read these back from the `tracks` table).
+   Only fields that were filled in are sent, so uploads keep working even before tracks_song_info.sql has been run. */
+const _TRACK_META_MAX = { album: 150, description: 2000, release_date: 10, producer: 100, writer: 150, language: 40, lyrics: 20000 };
+function _upExtraMeta() {
+  const v = id => { const el = document.getElementById(id); return el ? String(el.value || '').trim() : ''; };
+  const raw = { album: v('uploadAlbum'), description: v('uploadDescription'), release_date: v('uploadReleaseDate'),
+    producer: v('uploadProducer'), writer: v('uploadWriter'), language: v('uploadLanguage'), lyrics: v('uploadLyrics') };
+  const out = {};
+  Object.keys(raw).forEach(k => { if (raw[k]) out[k] = raw[k].slice(0, _TRACK_META_MAX[k]); });
+  if (out.release_date && !/^\d{4}-\d{2}-\d{2}$/.test(out.release_date)) delete out.release_date;
+  return out;
 }
 let _uploadExplicit = false;
 function _setExplicit(val) {
@@ -16702,11 +16909,12 @@ async function _submitUploadInner() {
   const ownerUpload = _isOwner();
   // Everyone is asked "Is this song trending?". Owner uploads go straight into Trending Now;
   // other artists send a request (TrendingRequest tag) that the owner confirms in the review queue.
-  const markTrending = ownerUpload && _uploadTrending;
-  const requestTrending = !ownerUpload && _uploadTrending;
+  if (!_uploadKinds.size) { showToast('Pick what kind of song this is'); goToUploadStep(3); return; }
   const baseTags = ['Uganda', genre];
-  if (markTrending) baseTags.push('Trending');
-  else if (requestTrending) baseTags.push('TrendingRequest');
+  _uploadKinds.forEach(k => {
+    const tag = _KIND_TAG[k]; if (!tag) return;
+    baseTags.push((k === 'new' || ownerUpload) ? tag : tag + 'Request');
+  });
 
   const progressWrap = document.getElementById('uploadProgressWrap');
   const progressFill = document.getElementById('uploadProgressFill');
@@ -16773,6 +16981,7 @@ async function _submitUploadInner() {
         title: String(title).slice(0, 150), artist: String(artistName).slice(0, 100),
         genre: String(genre).slice(0, 40), duration: String(duration).slice(0, 10), explicit: _uploadExplicit,
         tags: [...baseTags].slice(0, 20).map(String), audio_url: audioUrl, artwork_url: _hasArt ? artworkUrl : null,
+        ..._upExtraMeta(),
       } });
 
       clearInterval(fakeProgress);
@@ -16863,7 +17072,7 @@ function showUploadForm() {
     document.getElementById('uploadZone').style.display = 'none';
     document.getElementById('uploadForm').classList.add('visible');
     const trendHint = document.getElementById('uploadTrendingHint');
-    if (trendHint) trendHint.textContent = _isOwner() ? 'Yes puts this song straight into Trending Now.' : 'Trending songs are shown in Trending Now. Your answer is confirmed during review.';
+    _renderKinds();
     goToUploadStep(2);
   };
   // Owner (unlocked via the 5-tap logo + PIN) can upload straight away —
@@ -16936,6 +17145,31 @@ function _guestWelcomePrompt() {
 }
 
 // ── LIKE / REPOST TRACK ──
+/* Real like counts: each like is one row in yaps_track_likes (see yaps_track_likes.sql); a database trigger keeps tracks.likes in step.
+   The heart still works offline / before the SQL is run: the count just stays as it was. */
+function _syncTrackLike(t, liked) {
+  const id = t && (t.dbId || (t._remote && t.id));
+  if (!id || !sb || !_demoUser) return;
+  const before = Number(t.likes) || 0;
+  t.likes = String(Math.max(0, before + (liked ? 1 : -1)));                   // show the change straight away
+  if (typeof songFactsOpen !== 'undefined' && songFactsOpen && tracks[currentTrack] === t && typeof renderSongFacts === 'function') renderSongFacts(t);
+  const q = liked
+    ? sb.from('yaps_track_likes').upsert({ user_id: _demoUser.id, track_id: String(id) }, { onConflict: 'user_id,track_id', ignoreDuplicates: true })
+    : sb.from('yaps_track_likes').delete().eq('user_id', _demoUser.id).eq('track_id', String(id));
+  Promise.resolve(q).then(r => { if (r && r.error) { t.likes = String(before); console.warn('Like not saved:', r.error.message); } }).catch(() => { t.likes = String(before); });
+}
+/* One-time: likes made before this feature existed are added to the database so they count too. */
+function _backfillLikes() {
+  if (!sb || !_demoUser) return false;
+  const flag = 'yaps_likes_backfilled_' + _demoUser.id;
+  try { if (localStorage.getItem(flag) === '1') return true; } catch (e) {}
+  const rows = [..._likedTracks].map(i => tracks[i]).filter(t => t && (t.dbId || t._remote)).map(t => ({ user_id: _demoUser.id, track_id: String(t.dbId || t.id) }));
+  if (!rows.length) return true;
+  Promise.resolve(sb.from('yaps_track_likes').upsert(rows, { onConflict: 'user_id,track_id', ignoreDuplicates: true }))
+    .then(r => { if (r && !r.error) { try { localStorage.setItem(flag, '1'); } catch (e) {} } }).catch(() => {});
+  return true;
+}
+(function () { let n = 0; const iv = setInterval(() => { n++; try { if (_backfillLikes() || n > 8) clearInterval(iv); } catch (e) { if (n > 8) clearInterval(iv); } }, 10000); })();
 function toggleLikeTrack(idx) {
   if (!_demoUser) { requireAuth(() => toggleLikeTrack(idx)); return; }
   if (_likedTracks.has(idx)) { _likedTracks.delete(idx); showToast('Removed from likes'); }
@@ -16945,6 +17179,7 @@ function toggleLikeTrack(idx) {
     if (_yS('autoDlLiked', false) && window.YAPS_SETTINGS && YAPS_SETTINGS.canDownloadNow() && navigator.onLine && typeof downloadTrack === 'function') setTimeout(() => downloadTrack(idx), 400);
   }
   _persistSave();
+  _syncTrackLike(tracks[idx], _likedTracks.has(idx));
   if (typeof renderPersonalizedHome === 'function') renderPersonalizedHome();
   // update heart icon in player bar if this is current track
   const heart = document.getElementById('pbHeart');
@@ -17177,7 +17412,7 @@ function setFilter(el, name) {
 function _trendingCardHTML(t, i) {
   return `
     <div class="track-card" onclick="playTrack(${i})">
-      <div class="tc-art">
+      <div class="tc-art">${_kindChip(t, 'Trending')}
         <img src="${t.img}" alt="${t.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;">
         <div class="tc-waveform">${waveformBars(22)}</div>
         <div class="tc-play"><i class="fas fa-play"></i></div>
@@ -19380,68 +19615,119 @@ function addDJResponse(text, picks, dna, opts) {
 }
 
 // ── SONG FACTS PANEL ──
-const songDNA = [
-  { label:'Energy', pct:78 },
-  { label:'Danceability', pct:85 },
-  { label:'Acousticness', pct:34 },
-  { label:'Tempo', pct:92 },
-  { label:'Positivity', pct:61 },
-];
 function toggleSongFacts() {
   songFactsOpen = !songFactsOpen;
   document.getElementById('songFactsPanel').classList.toggle('open', songFactsOpen);
   document.getElementById('factsBtn').classList.toggle('active', songFactsOpen);
-  if (songFactsOpen) {
-    const t = tracks[currentTrack];
-    if (t) {
-      document.getElementById('sfpTitle').textContent = t.title;
-      document.getElementById('sfpArtist').textContent = t.artist;
-      const img = document.getElementById('sfpImg');
-      if (img) { img.src = t.img; img.style.display = 'block'; }
-    }
-    renderSongDNA();
-  }
+  if (songFactsOpen) renderSongFacts();
 }
-function renderSongDNA() {
-  document.getElementById('songDnaContent').innerHTML = songDNA.map(d => `
-    <div class="dna-bar-row">
-      <span class="dna-bar-label">${d.label}</span>
-      <div class="dna-bar-track"><div class="dna-bar-fill" style="width:${d.pct}%;"></div></div>
-      <span class="dna-bar-pct">${d.pct}</span>
-    </div>
-  `).join('');
+/* Fills the "About this song" panel from the real database row (title, artist, description, credits, stats). */
+function renderSongFacts(t) {
+  t = t || tracks[currentTrack];
+  const panel = document.getElementById('songFactsPanel');
+  if (!t || !panel) return;
+  const E = typeof _escHtml === 'function' ? _escHtml : (v => String(v == null ? '' : v));
+  document.getElementById('sfpTitle').textContent = t.title || '';
+  document.getElementById('sfpArtist').textContent = t.artist || '';
+  const img = document.getElementById('sfpImg');
+  if (img) { img.src = t.img || ''; img.style.display = t.img ? 'block' : 'none'; }
+
+  const needsFetch = !t._metaLoaded && (t.dbId || t._remote);
+  const fact = document.getElementById('sfpFact');
+  if (t.description) fact.textContent = t.description;
+  else fact.textContent = needsFetch ? 'Loading song info…' : 'The artist has not added a description for this song yet.';
+
+  const row = (k, v) => v ? `<div class="sfp-credit-row"><span>${E(k)}</span><span>${E(v)}</span></div>` : '';
+  let released = '';
+  if (t.releaseDate) { const d = new Date(t.releaseDate + 'T00:00:00'); released = isNaN(d) ? t.releaseDate : d.toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' }); }
+  else if (t.createdAt) { const d = new Date(t.createdAt); if (!isNaN(d)) released = d.toLocaleDateString(undefined, { month: 'long', year: 'numeric' }); }
+  const credits = row('Artist', t.artist) + row('Album', t.album) + row('Producer', t.producer) + row('Songwriter', t.writer) +
+    row('Language', t.language) + row('Genre', t.genre) + row('Released', released) + row('Content', t.explicit ? 'Explicit' : '');
+  document.getElementById('sfpCredits').innerHTML = credits || '<div class="sfp-credit-row"><span>No credits added yet</span><span></span></div>';
+
+  const plays = Number(t.plays) || 0;
+  const tags = (t.tags || []).filter(x => x && x !== 'TrendingRequest').slice(0, 8);
+  const hasLyr = !!(window._dbLyrics && window._dbLyrics[t.dbId || t.id]);
+  document.getElementById('songDnaContent').innerHTML =
+    row('Plays', plays.toLocaleString()) + ((t.dbId || t._remote) ? row('Likes', (Number(t.likes) || 0).toLocaleString()) : '') + row('Duration', t.duration && t.duration !== '0:00' ? t.duration : '') + row('Lyrics', hasLyr ? 'Available' : '') +
+    (tags.length ? `<div class="sfp-tags">${tags.map(x => `<span>${E(x)}</span>`).join('')}</div>` : '');
+
+  if (needsFetch) _ensureTrackMeta(t).then(() => { if (songFactsOpen && tracks[currentTrack] === t) renderSongFacts(t); });
 }
 
 // ── FRIEND ACTIVITY PANEL ──
-const friendActivity = [
-  { name:'Nakato J.', track:'Stamina', artist:'Eddy Kenzo', emoji:'', color:'#1565c0', online:true },
-  { name:'Ssemakula P.', track:'Personally', artist:'Jose Chameleone', emoji:'', color:'#0a2050', online:true },
-  { name:'Akello B.', track:'Weekend', artist:'Winnie Nwagi', emoji:'', color:'#1a6bb5', online:false },
-  { name:'Mugisha T.', track:'Nakudata', artist:'Ykee Benda', emoji:'', color:'#1561d6', online:true },
-  { name:'Nabirye F.', track:'Tusubira', artist:'Worship House', emoji:'', color:'#3ab4f2', online:false },
-];
+/* Real friend activity: what the people YOU FOLLOW are playing (table yaps_listening, see yaps_listening.sql).
+   Each person chooses to share; it is OFF until they turn it on in this panel. */
+let _actItems = [], _actTimer = null, _actLastShared = null;
+function _actShareOn() { try { return localStorage.getItem('yaps_share_listening') === '1'; } catch (e) { return false; } }
+function actSetShare(on) {
+  try { localStorage.setItem('yaps_share_listening', on ? '1' : '0'); } catch (e) {}
+  if (on) { const t = tracks[currentTrack]; _actLastShared = null; if (t && isPlaying) _shareListening(t); showToast('Followers can now see your current song'); }
+  else if (sb && _demoUser) { _actLastShared = null; Promise.resolve(sb.from('yaps_listening').delete().eq('user_id', _demoUser.id)).catch(() => {}); showToast('Sharing turned off'); }
+}
+/* Called from playTrack and by a 2-minute heartbeat while music plays. */
+function _shareListening(t) {
+  if (!t || !sb || !_demoUser || !_actShareOn()) return;
+  const tid = String(t.dbId || t.id);
+  const img = (typeof _safeUrl === 'function' ? _safeUrl(t.img) : '') || null;
+  _actLastShared = tid;
+  Promise.resolve(sb.from('yaps_listening').upsert({ user_id: _demoUser.id, track_id: tid, title: String(t.title || '').slice(0, 150), artist: String(t.artist || '').slice(0, 150), img, updated_at: new Date().toISOString() }))
+    .then(r => { if (r && r.error) console.warn('Listening share skipped:', r.error.message); }).catch(() => {});
+}
+setInterval(() => { try { if (isPlaying && _actShareOn()) _shareListening(tracks[currentTrack]); } catch (e) {} }, 120000);
+
+async function _loadFriendActivity() {
+  const list = document.getElementById('activity-list'); if (!list) return;
+  const note = (icon, msg) => { list.innerHTML = `<div style="padding:34px 24px;text-align:center;color:var(--muted);font-size:13px;line-height:1.5;"><i class="fas ${icon}" style="font-size:30px;opacity:.5;margin-bottom:12px;display:block;"></i>${msg}</div>`; };
+  if (!sb || !_demoUser) { note('fa-user-friends', 'Sign in to see what the people you follow are listening to.'); return; }
+  try {
+    if (!_myFollowing || !_myFollowing.size) { try { await _loadMyFollowing(); } catch (e) {} }
+    if (!_myFollowing || !_myFollowing.size) { note('fa-user-plus', 'Follow friends and artists to see what they are listening to.'); return; }
+    const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+    const lr = await sb.from('yaps_listening').select('*').gt('updated_at', since).order('updated_at', { ascending: false }).limit(60);
+    if (lr.error) throw lr.error;
+    const rows = (lr.data || []).filter(r => r.user_id !== _demoUser.id && _myFollowing.has(r.user_id));
+    if (!rows.length) { note('fa-headphones', 'Nobody you follow is sharing a song right now.<br>People choose to share, so this fills up as friends turn it on.'); return; }
+    const pr = await sb.from('yaps_profiles').select('id,username,full_name,avatar_url').in('id', rows.map(r => r.user_id));
+    const byId = {}; ((pr && pr.data) || []).forEach(x => { byId[x.id] = x; });
+    _actItems = rows.map(r => { const u = byId[r.user_id] || {}; return { uid: r.user_id, name: u.full_name || u.username || 'Listener', avatar: _safeUrl(u.avatar_url), tid: r.track_id, title: r.title, artist: r.artist, img: _safeUrl(r.img), at: Date.parse(r.updated_at) || 0 }; });
+    renderActivity();
+  } catch (e) {
+    const missing = e && /yaps_listening|relation|does not exist|42P01/i.test(String(e.message || e.code || ''));
+    note('fa-exclamation-circle', missing ? 'Friend Activity is not set up yet. Run yaps_listening.sql in Supabase.' : 'Could not load friend activity. Try again soon.');
+  }
+}
+function _actAgo(ms) { const m = Math.floor((Date.now() - ms) / 60000); if (m < 5) return 'Listening now'; if (m < 60) return m + ' min ago'; const h = Math.floor(m / 60); return h + (h === 1 ? ' hour ago' : ' hours ago'); }
 function toggleActivityPanel() {
   activityOpen = !activityOpen;
   document.getElementById('activityPanel').classList.toggle('open', activityOpen);
-  if (activityOpen) renderActivity();
+  clearInterval(_actTimer); _actTimer = null;
+  if (activityOpen) {
+    const cb = document.getElementById('actShareToggle'); if (cb) cb.checked = _actShareOn();
+    _loadFriendActivity(); _actTimer = setInterval(_loadFriendActivity, 30000);
+  }
 }
 function renderActivity() {
   const list = document.getElementById('activity-list');
   if (!list) return;
-  list.innerHTML = friendActivity.map(f => `
-    <div class="act-item" onclick="showToast('Listening along!')">
-      <div class="act-avatar" style="background:${f.color};">
-        ${f.name.charAt(0)}
-        ${f.online ? '<div class="act-online-dot"></div>' : ''}
-      </div>
+  list.innerHTML = _actItems.map((f, i) => {
+    const live = Date.now() - f.at < 5 * 60000;
+    const av = f.avatar ? `<img src="${_escHtml(f.avatar)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.remove()">` : '';
+    return `<div class="act-item" onclick="actPlay(${i})">
+      <div class="act-avatar" style="background:var(--accent);">${_escHtml((f.name || '?').charAt(0).toUpperCase())}${av ? `<span style="position:absolute;inset:0;">${av}</span>` : ''}${live ? '<div class="act-online-dot"></div>' : ''}</div>
       <div class="act-info">
-        <div class="act-name">${f.name}</div>
-        <div class="act-track">${f.track}</div>
-        <div class="act-artist">${f.artist}</div>
+        <div class="act-name">${_escHtml(f.name)}</div>
+        <div class="act-track">${_escHtml(f.title || '')}</div>
+        <div class="act-artist">${_escHtml(f.artist || '')} · ${_actAgo(f.at)}</div>
       </div>
-      <div class="act-track-art">${f.emoji}</div>
-    </div>
-  `).join('');
+      ${f.img ? `<img class="act-track-art" src="${_escHtml(f.img)}" alt="" style="object-fit:cover;${live ? '' : 'animation:none;'}" onerror="this.remove()">` : ''}
+    </div>`;
+  }).join('');
+}
+function actPlay(i) {
+  const f = _actItems[i]; if (!f) return;
+  const idx = tracks.findIndex(t => String(t.dbId || t.id) === String(f.tid));
+  if (idx >= 0) playTrack(idx); else showToast('That song is not available to play here');
 }
 
 // ── MESSAGES — Supabase Realtime ──
@@ -21385,7 +21671,7 @@ navigate = function(page) {
 })();
 
 // ── SIDEBAR FIX 2: page deep link used by the DJ Studio sidebar ──
-// studio.html links here as  index.html?page=library  /  ?page=library&go=downloads  /  ?go=settings
+// yapsvirtual.html links here as  index.html?page=library  /  ?page=library&go=downloads  /  ?go=settings
 const _plParams = new URLSearchParams(location.search);   // read now, before any other code cleans the URL
 window._yapsDeepLink = function (page, go, clean) {
   if (!page && !go) return;
@@ -21660,9 +21946,12 @@ function _plpRender() {
     const n = _plpTrackCount(p);
     const nTxt = n + (n === 1 ? ' track' : ' tracks');
     const id = _plpEsc(p.id);
-    const art = [0,1,2,3].map(k => p.imgs && p.imgs[k]
-      ? `<img src="${_plpEsc(p.imgs[k])}" alt="" loading="lazy" decoding="async" onerror="this.style.visibility='hidden'">`
-      : '<span></span>').join('');
+    const art = [0,1,2,3].map(k => {
+      const src = p.imgs && p.imgs[k];
+      // always show a picture: a missing/broken image becomes a generated cover (never a blank tile)
+      const cov = window._yapsCover ? window._yapsCover(p.title + ' ' + k, p.title) : '';
+      return `<img src="${src ? _plpEsc(src) : cov}" data-t="${_plpEsc(p.title + ' ' + k)}" data-a="${_plpEsc(p.title)}" alt="" loading="eager" decoding="async" onerror="window._yapsImgErr&&window._yapsImgErr(this)">`;
+    }).join('');
     return `<li class="plp-card" style="--i:${Math.min(i, 12)}">
       <div class="plp-art">${art}<span class="plp-shade"></span>
         <button type="button" class="plp-play" data-id="${id}" aria-label="Play ${name}"><i class="fas fa-play" aria-hidden="true"></i></button>
@@ -21863,7 +22152,7 @@ function _nrpCardHTML(t, i) {
   const img = _nrpEsc(t.img || _NRP_FALLBACK_IMG);
   const badge = _nrpIsFresh(t) ? '<span class="nrp-badge">NEW</span>' : '';
   return `<li class="nrp-card" style="--i:${i}" data-id="${_nrpEsc(t.id)}">
-    <div class="nrp-art"><img src="${t.img?img:window._yapsCover(t.title,t.artist)}" data-t="${title}" data-a="${artist}" alt="${title} cover art" loading="lazy" decoding="async" onerror="window._yapsImgErr(this)">${badge}<span class="nrp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
+    <div class="nrp-art"><img src="${t.img?img:window._yapsCover(t.title,t.artist)}" data-t="${title}" data-a="${artist}" alt="${title} cover art" loading="eager" decoding="async" onerror="window._yapsImgErr(this)">${badge}<span class="nrp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
     <div class="nrp-foot"><div class="nrp-info"><div class="nrp-name">${title}</div><div class="nrp-artist">${artist}</div></div>
       <button type="button" class="nrp-more" data-act="menu" aria-label="More options for ${title}" aria-haspopup="dialog"><i class="fas fa-ellipsis-v" aria-hidden="true"></i></button></div>
     <button type="button" class="nrp-open" data-act="play" aria-label="Play ${title} by ${artist}"></button>
@@ -22313,7 +22602,7 @@ function renderExclusiveHits() {
   const leadArtist = t => String(t.artist || '').split(/\s+(?:ft\.?|feat\.?|featuring|&|x)\s+|,/i)[0].trim().toLowerCase();
   const score = t => _ehPlays(t.plays) + 20 * _ehPlays(t.likes);
   const eligible = tracks.filter(t => t && t.img && (t.year ? Number(t.year) >= 2013 : !t.savedAt) && score(t) > 0);
-  const _newUp = tracks.filter(t => t && t.img && t.savedAt && !t.audioSrc && (Date.now() - t.savedAt) < 30*864e5).sort((a, b) => b.savedAt - a.savedAt).slice(0, 2);
+  const _newUp = tracks.filter(t => t && t.img && _isUp(t) && _hasKind(t, 'Exclusive')).sort((a, b) => b.savedAt - a.savedAt).slice(0, 3);
   const pinned = _newUp.concat(EXCLUSIVE_HITS_PINNED_IDS.map(id => eligible.find(t => t.id === id)).filter(t => t && !_newUp.includes(t)));
   const rest = eligible.filter(t => !pinned.includes(t)).sort((a, b) => score(b) - score(a));
   const perArtist = {};
@@ -22334,7 +22623,7 @@ function renderExclusiveHits() {
       const i = tracks.indexOf(t);
       const plays = String(t.plays || '0');
       return `<div class="qvl-row" role="button" tabindex="0" onclick="_ehPlay(${i}, this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();_ehPlay(${i}, this);}">
-        <div class="qvl-thumb"><img src="${e(t.img)}" alt="" loading="lazy" decoding="async"><span class="qvl-eq" aria-hidden="true"><i></i><i></i><i></i></span></div>
+        <div class="qvl-thumb">${_kindChip(t, 'Exclusive')}<img src="${e(t.img)}" alt="" loading="lazy" decoding="async"><span class="qvl-eq" aria-hidden="true"><i></i><i></i><i></i></span></div>
         <div class="qvl-info"><div class="qvl-title">${e(t.title)}</div><div class="qvl-sub">${t.explicit ? '<b class="qvl-badge" title="Explicit" aria-label="Explicit">E</b>' : ''}<span>${e(t.artist)} \u2022 ${e(plays)} plays</span></div></div>
         <button type="button" class="qvl-more" aria-label="More options for ${e(t.title)}" onclick="event.stopPropagation();_ehMenu(${i})"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button>
       </div>`;
@@ -22368,13 +22657,13 @@ function renderNewReleasesHomeRow() {
   const pool = gospelWeekendPool(tracks);
   // Recently uploaded tracks (real timestamp) surface first, newest first;
   // the rest of the catalog fills in after, in its existing order.
-  const withDate = pool.map((t) => ({ t, i: tracks.indexOf(t) })).filter(x => x.t.savedAt);
+  const withDate = pool.map((t) => ({ t, i: tracks.indexOf(t) })).filter(x => _isUp(x.t) && _hasKind(x.t, 'New'));
   withDate.sort((a, b) => b.t.savedAt - a.t.savedAt);
-  const withoutDate = pool.map((t) => ({ t, i: tracks.indexOf(t) })).filter(x => !x.t.savedAt);
+  const withoutDate = pool.map((t) => ({ t, i: tracks.indexOf(t) })).filter(x => !_isUp(x.t));
   const ordered = [...withDate, ...withoutDate].slice(0, 6);
   row.innerHTML = ordered.map(({ t, i }) => `
     <div class="track-card" onclick="playTrack(${i})" style="cursor:pointer;min-width:145px;">
-      <div class="tc-art" style="position:relative;border-radius:10px;overflow:hidden;">
+      <div class="tc-art" style="position:relative;border-radius:10px;overflow:hidden;">${_kindChip(t, 'New')}
         <img src="${t.img}" alt="${t.title}" style="width:100%;aspect-ratio:1;object-fit:cover;" loading="lazy">
         <div class="tc-play"><i class="fas fa-play"></i></div>
       </div>
@@ -24303,7 +24592,7 @@ function _syncMiniPlayerEq() {
   }
   eq.classList.toggle('show', !!isPlaying);
 }
-setInterval(_syncMiniPlayerEq, 500);
+setInterval(function(){ if(!document.hidden) _syncMiniPlayerEq(); }, 500);
 
 /* ── SLEEP TIMER ── */
 let _sleepTimerHandle = null;
@@ -24430,7 +24719,7 @@ new MutationObserver((mutations) => {
 window.addEventListener('load', () => {
   const c = navigator.connection || {};
   if (c.saveData || c.type === 'cellular' || (c.effectiveType && c.effectiveType !== '4g')) return;
-  (window.requestIdleCallback || (f => setTimeout(f, 4000)))(() => { try { fetch('studio.html', { priority: 'low' }).catch(() => {}); } catch (e) {} });
+  (window.requestIdleCallback || (f => setTimeout(f, 4000)))(() => { try { fetch('yapsvirtual.html', { priority: 'low' }).catch(() => {}); } catch (e) {} });
 });
 
 // Without sw.js, offline/PWA caching will not function (error is caught silently).
@@ -25085,7 +25374,21 @@ async function openLyrics() {
   body.innerHTML = '';   // no loading screen, lyrics appear as soon as they're ready
   const reqIdx = currentTrack;
 
-  // Check hardcoded DB first
+  // 1) Lyrics saved in the database (tracks.lyrics) — the real source
+  try { await _ensureTrackMeta(t); } catch (e) {}
+  if (reqIdx !== currentTrack || !_lyricsOpen) return;
+  const dbText = window._dbLyrics && window._dbLyrics[t.dbId || t.id];
+  if (dbText) {
+    const parsed = _parseDbLyrics(dbText, t);
+    _lyricsTrackIdx = currentTrack;
+    _lyricsData     = parsed.lines;
+    document.getElementById('lpSourceBadge').innerHTML = parsed.timed ? '<i class="fas fa-clock"></i> Synced lyrics' : '<i class="fas fa-music"></i> Lyrics';
+    _renderLyrics(_lyricsData);
+    _startLyricsSync();
+    return;
+  }
+
+  // 2) Older built-in lyrics list (kept as a fallback)
   const key = _lyricsKey(t.title, t.artist);
   if (_lyricsDB[key]) {
     _lyricsTrackIdx = currentTrack;
@@ -25096,28 +25399,53 @@ async function openLyrics() {
     return;
   }
 
-  // Try AI generation
-  const apiKey = true; // the key lives on the server now; /api/ai/lyrics decides if AI is available
-  if (apiKey) {
+  // 3) AI-written lyrics are made up, so they are OFF by default. Set window.YAPS_LYRICS_AI_FALLBACK = true to bring them back.
+  if (window.YAPS_LYRICS_AI_FALLBACK === true) {
     try {
-      const lyrics = await _generateLyricsAI(t.title, t.artist, apiKey);
-      if (reqIdx !== currentTrack || !_lyricsOpen) return;   // track changed / panel closed while waiting
+      const lyrics = await _generateLyricsAI(t.title, t.artist);
+      if (reqIdx !== currentTrack || !_lyricsOpen) return;
       _lyricsTrackIdx = currentTrack;
       _lyricsData     = lyrics;
       document.getElementById('lpSourceBadge').innerHTML = '<i class="fas fa-robot"></i> AI Generated';
       _renderLyrics(_lyricsData);
       _startLyricsSync();
-    } catch(e) {
-      _showLyricsEmpty(true);
-    }
-  } else {
-    // Show demo placeholder lyrics
-    _lyricsTrackIdx = currentTrack;
-    _lyricsData = _demoPlaceholderLyrics(t.title, t.artist);
-    document.getElementById('lpSourceBadge').innerHTML = '<i class="fas fa-star"></i> Demo Lyrics';
-    _renderLyrics(_lyricsData);
-    _startLyricsSync();
+      return;
+    } catch (e) { /* fall through to the empty state */ }
   }
+  document.getElementById('lpSourceBadge').innerHTML = '';
+  _showLyricsEmpty(false);
+}
+
+/* ── Turn the text saved in tracks.lyrics into lines the panel can show ──
+   · "[Verse 1]" / "[Chorus]" / "(Bridge)" on their own line = section heading
+   · "[mm:ss.xx] text" = timed line (highlights in time with the song)
+   · plain lines = shown as normal readable text, no fake highlighting */
+function _parseDbLyrics(text, t) {
+  const rows = String(text || '').replace(/\r/g, '').split('\n');
+  let dur = (audioEngine && isFinite(audioEngine.duration) && audioEngine.duration) || 0;
+  if (!dur && t && /^\d+:\d{2}$/.test(t.duration || '')) { const q = t.duration.split(':'); dur = (+q[0]) * 60 + (+q[1]); }
+  const lrc = /^\s*((?:\[\d{1,2}:\d{2}(?:[.:]\d{1,3})?\])+)\s*(.*)$/;
+  const timed = dur > 0 && rows.filter(r => lrc.test(r)).length >= 2;
+  const out = [];
+  rows.forEach(raw => {
+    const line = raw.trim();
+    if (!line) { if (out.length && !out[out.length - 1].br && !out[out.length - 1].s) out.push({ br: true }); return; }
+    const m = line.match(lrc);
+    if (m && timed) {
+      const body = m[2].trim();
+      m[1].match(/\[(\d{1,2}):(\d{2})(?:[.:](\d{1,3}))?\]/g).forEach(stamp => {
+        const q = stamp.match(/\[(\d{1,2}):(\d{2})(?:[.:](\d{1,3}))?\]/);
+        const sec = (+q[1]) * 60 + (+q[2]) + (q[3] ? (+q[3]) / Math.pow(10, q[3].length) : 0);
+        if (body) out.push({ t: body, p: Math.max(0, Math.min(99.5, sec / dur * 100)) });
+      });
+      return;
+    }
+    const sec = line.match(/^[\[(]\s*([A-Za-z][^\])]{0,40}?)\s*[\])]$/);
+    if (sec) { out.push({ s: sec[1] }); return; }
+    out.push(timed ? { t: line.replace(/^\[[^\]]*\]\s*/, ''), p: (out.length ? (out[out.length - 1].p || 0) : 0) } : { t: line, u: true });
+  });
+  while (out.length && out[out.length - 1].br) out.pop();
+  return { lines: out, timed };
 }
 
 /* ── Close lyrics panel ── */
@@ -25132,9 +25460,12 @@ function closeLyrics() {
 /* ── Render lyrics lines into DOM ── */
 function _renderLyrics(data) {
   const body = document.getElementById('lpBody');
+  const E = typeof _escHtml === 'function' ? _escHtml : (v => v);
   body.innerHTML = data.map((item, i) => {
-    if (item.s) return `<div class="lp-section">${item.s}</div>`;
-    return `<div class="lp-line" id="lp-line-${i}" data-p="${item.p || 0}" onclick="_lyricsSeekTo(${item.p || 0})">${item.t}</div>`;
+    if (item.br) return '<div class="lp-gap"></div>';
+    if (item.s) return `<div class="lp-section">${E(item.s)}</div>`;
+    if (item.u) return `<div class="lp-line lp-static" id="lp-line-${i}">${E(item.t)}</div>`;
+    return `<div class="lp-line" id="lp-line-${i}" data-p="${item.p || 0}" onclick="_lyricsSeekTo(${item.p || 0})">${E(item.t)}</div>`;
   }).join('');
 }
 
@@ -25157,7 +25488,7 @@ function _syncLyricsHighlight() {
   if (fill) fill.style.width = progress + '%';
 
   // Find active line
-  const lines = document.querySelectorAll('.lp-line');
+  const lines = document.querySelectorAll('.lp-line:not(.lp-static)');
   if (!lines.length) return;
 
   let activeEl = null;
@@ -27439,17 +27770,36 @@ h1, h2, h3, h4, h5, h6,
    icon (FontAwesome name), colors [from,to], desc, ticketUrl (optional: opens in new tab). */
 (function () {
   'use strict';
-  /* artists:[...] must match names in the app's artists list (their photo + followers are used). SAMPLE lineups: edit to real ones. */
-  const EVENTS = [
-    { id:'live-night-1', artists:['Azawi','Joshua Baraka','Fik Fameica'], title:'YAPS Live Night Vol. 1', cat:'Concerts', start:'2026-10-24T19:00', city:'Kampala', venue:'Venue to be announced', price:'UGX 30,000', icon:'microphone-lines', colors:['#1d4ed8','#0b1a4a'], desc:'An evening of live performances from rising Ugandan artists, hosted by YAPSMusic. Doors open at 6 PM.', ticketUrl:'' },
-    { id:'afrobeats-fest', artists:['Eddy Kenzo','Joshua Baraka','Winnie Nwagi','Sheebah'], title:'Afrobeats Festival', cat:'Festivals', start:'2026-11-14T16:00', city:'Kampala', venue:'Venue to be announced', price:'UGX 50,000', icon:'drum', colors:['#b8892b','#3b2a08'], desc:'A full day of Afrobeats, Bongo Flava and dancehall across the main stage, with food and craft vendors.', ticketUrl:'' },
-    { id:'release-party', artists:['Vinka','Kapeke','Pawaboy'], title:'New Releases Listening Party', cat:'Listening Parties', start:'2026-10-16T20:00', city:'Online', venue:'Live on YAPSMusic', price:'Free', icon:'headphones', colors:['#0891b2','#082f49'], desc:'Be first to hear the newest drops with the artists, live. Join from anywhere.', ticketUrl:'' },
-    { id:'masterclass', artists:['Maurice Kirya'], title:'Artist Masterclass: Release Strategy', cat:'Workshops', start:'2026-10-30T18:00', city:'Online', venue:'Live video session', price:'Free', icon:'chalkboard-user', colors:['#0f766e','#052e2b'], desc:'Learn how to plan, release and promote your music, with a live Q&A at the end.', ticketUrl:'' },
-    { id:'cypher', artists:['Navio','Fik Fameica','Cando'], title:'Hip-Hop Cypher Showcase', cat:'Concerts', start:'2026-12-05T18:30', city:'Jinja', venue:'Venue to be announced', price:'UGX 20,000', icon:'headset', colors:['#be123c','#2a0a14'], desc:'Cyphers, battles and live sets from the region\u2019s sharpest MCs.', ticketUrl:'' },
-    { id:'year-end', artists:['Bebe Cool','Jose Chameleone','Sheebah'], title:'Year-End Countdown Concert', cat:'Festivals', start:'2026-12-31T21:00', city:'Kampala', venue:'Venue to be announced', price:'UGX 80,000', icon:'champagne-glasses', colors:['#c2410c','#2b1005'], desc:'Ring in the new year with a night of headline performances and a midnight countdown.', ticketUrl:'' }
-  ];
-  window.yapsEventsList = EVENTS;   // read by the home page Live Now strip
-  const CATS = ['All', 'Concerts', 'Festivals', 'Listening Parties', 'Workshops'];
+  /* Events come from the database (table yaps_events, see yaps_events.sql). No sample events are bundled.
+     artists:[...] should match names in the app's artists list (their photo + followers are used). */
+  const EVENTS = [];                       // filled by loadEvents(); same array object, so other code can keep a reference
+  window.yapsEventsList = EVENTS;          // read by the home page Live Now strip
+  let CATS = ['All'];
+  let _evState = 'idle';                   // idle | loading | ready | error | missing
+  async function loadEvents() {
+    if (typeof sb === 'undefined' || !sb) { _evState = 'error'; return; }
+    _evState = 'loading';
+    try {
+      const since = new Date(Date.now() - 6 * 3600 * 1000).toISOString();   // keep events that started in the last 6 h so "Live Now" works
+      const r = await sb.from('yaps_events').select('*').eq('published', true).gte('starts_at', since).order('starts_at', { ascending: true }).limit(200);
+      if (r.error) throw r.error;
+      const clean = (v, n) => String(v == null ? '' : v).replace(/[<>`]/g, '').trim().slice(0, n);
+      const rows = (r.data || []).map(x => ({
+        id: String(x.id), title: clean(x.title, 150), cat: clean(x.cat, 30) || 'Concerts', start: x.starts_at,
+        city: clean(x.city, 60), venue: clean(x.venue, 120), price: clean(x.price, 40) || 'Free',
+        icon: /^[a-z0-9-]{2,30}$/.test(x.icon || '') ? x.icon : 'calendar-days',
+        colors: [/^#[0-9a-f]{3,8}$/i.test(x.color_from || '') ? x.color_from : '#1d4ed8', /^#[0-9a-f]{3,8}$/i.test(x.color_to || '') ? x.color_to : '#0b1a4a'],
+        desc: clean(x.description, 800), artists: (Array.isArray(x.artists) ? x.artists : []).map(n => clean(n, 80)).filter(Boolean).slice(0, 12),
+        ticketUrl: (typeof _safeUrl === 'function' ? _safeUrl(x.ticket_url) : '') }));
+      EVENTS.length = 0; rows.forEach(x => EVENTS.push(x));
+      CATS = ['All'].concat([...new Set(EVENTS.map(x => x.cat))]);
+      _evState = 'ready';
+    } catch (e) {
+      EVENTS.length = 0; CATS = ['All'];
+      _evState = /yaps_events|relation|does not exist|42P01/i.test(String((e && (e.message || e.code)) || '')) ? 'missing' : 'error';
+    }
+    try { if (typeof window.yapsRenderLive === 'function') window.yapsRenderLive(); } catch (e) {}
+  }
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const S = { cat: 'All', timer: null };
@@ -27461,7 +27811,7 @@ h1, h2, h3, h4, h5, h6,
   const upcoming = () => EVENTS.filter(e => when(e) > new Date()).sort((a, b) => when(a) - when(b));
   const fmtDate = (e, long) => when(e).toLocaleDateString('en-GB', long ? { weekday:'long', day:'numeric', month:'long', year:'numeric' } : { day:'numeric', month:'short' });
   const fmtTime = e => when(e).toLocaleTimeString('en-GB', { hour:'numeric', minute:'2-digit', hour12:true }).toUpperCase();
-  const place = e => e.city === 'Online' ? e.venue : e.city + ' · ' + e.venue;
+  const place = e => e.city === 'Online' ? (e.venue || 'Online') : [e.city, e.venue].filter(Boolean).join(' · ');
   const poster = e => `background:linear-gradient(135deg,${e.colors[0]},${e.colors[1]})`;
   /* artist photos come from the app's own `artists` list (name, img, followers) */
   const ART = n => { try { return (typeof artists !== 'undefined' && artists.find(a => a.name === n)) || null; } catch (x) { return null; } };
@@ -27532,7 +27882,16 @@ h1, h2, h3, h4, h5, h6,
     const list = all.filter(e => S.cat === 'All' || e.cat === S.cat);
     $('evpCount').innerHTML = list.length ? `<b>${list.length}</b> upcoming event${list.length === 1 ? '' : 's'}${S.cat !== 'All' ? ' · ' + S.cat : ''}` : '';
     $('evpGrid').innerHTML = list.map(cardHTML).join('');
-    $('evpEmpty').hidden = list.length > 0;
+    const em = $('evpEmpty');
+    em.hidden = list.length > 0;
+    if (!list.length) {
+      const msg = _evState === 'loading' ? ['Loading events…', 'One moment.']
+        : _evState === 'missing' ? ['Events are not set up yet', 'Run yaps_events.sql in Supabase, then add your events.']
+        : _evState === 'error' ? ['Could not load events', 'Check your connection and try again.']
+        : S.cat !== 'All' ? ['No upcoming events here', 'Try another category.']
+        : ['No upcoming events yet', 'New events will appear here as soon as they are published.'];
+      em.innerHTML = '<i class="fas fa-calendar-alt"></i><h2>' + msg[0] + '</h2><p>' + msg[1] + '</p>';
+    }
     tick(); clearInterval(S.timer); S.timer = setInterval(tick, 1000);
   }
 
@@ -27601,7 +27960,9 @@ h1, h2, h3, h4, h5, h6,
   $('evpBack').addEventListener('click', () => { close(); navigate('home'); if (typeof updateBottomNav === 'function') updateBottomNav('home'); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
-  window.renderEventsPage = function () { S.cat = 'All'; render(); };
+  window.renderEventsPage = function () { S.cat = 'All'; _evState = 'loading'; render(); loadEvents().then(render); };
+  /* load once at startup too, so the home page Live Now strip knows about today's events */
+  setTimeout(() => { loadEvents(); }, 2500);
 })();
 </script>
 
@@ -27726,25 +28087,37 @@ h1, h2, h3, h4, h5, h6,
    An episode plays when audioUrl is set (direct .mp3/.m4a link). */
 (function () {
   'use strict';
-  /* people:[...] and episode guest must match names in the app's artists list (photo + followers are used). SAMPLE guests: edit to real ones. */
-  const SHOWS = [
-    { id:'yaps-talk', people:['Sheebah','Joshua Baraka','Azawi'], title:'YAPS Talk', host:'Hosted by YAPS Studio', cat:'Music Talk', icon:'microphone-lines', colors:['#1d4ed8','#0b1a4a'], featured:true,
-      desc:'Weekly conversations about new releases, the artists behind them and where Ugandan music is heading.',
-      episodes:[ {title:'The Sound of the Season', guest:'Joshua Baraka', date:'2026-10-02', mins:42, audioUrl:''}, {title:'From Bedroom Studio to Big Stage', guest:'Azawi', date:'2026-09-25', mins:38, audioUrl:''}, {title:'What Makes a Hit?', guest:'Sheebah', date:'2026-09-18', mins:45, audioUrl:''} ] },
-    { id:'studio-sessions', people:['Maurice Kirya','Eddy Kenzo'], title:'Studio Sessions', host:'Hosted by YAPS Studio', cat:'Interviews', icon:'headphones', colors:['#b8892b','#3b2a08'],
-      desc:'Long-form interviews with producers, singers and rappers about how their songs are made.',
-      episodes:[ {title:'Inside the Beat', guest:'Maurice Kirya', date:'2026-10-01', mins:51, audioUrl:''}, {title:'Writing in Luganda', guest:'Eddy Kenzo', date:'2026-09-24', mins:36, audioUrl:''} ] },
-    { id:'music-business', people:['Bebe Cool','Jose Chameleone'], title:'Music Business Basics', host:'Hosted by YAPS Studio', cat:'Business', icon:'chart-line', colors:['#0f766e','#052e2b'],
-      desc:'Practical advice for artists on royalties, contracts, marketing and building a sustainable career.',
-      episodes:[ {title:'Getting Paid for Your Music', guest:'Bebe Cool', date:'2026-09-29', mins:29, audioUrl:''}, {title:'Release Day Checklist', guest:'Jose Chameleone', date:'2026-09-22', mins:31, audioUrl:''} ] },
-    { id:'culture-corner', people:['Cindy Sanyu','Vinka'], title:'Culture Corner', host:'Hosted by YAPS Studio', cat:'Culture', icon:'earth-africa', colors:['#c2410c','#2b1005'],
-      desc:'Dance, fashion, language and the culture that shapes the music we love.',
-      episodes:[ {title:'Dance Trends Explained', guest:'Cindy Sanyu', date:'2026-09-28', mins:27, audioUrl:''}, {title:'Slang of the Streets', guest:'Vinka', date:'2026-09-21', mins:34, audioUrl:''} ] },
-    { id:'afro-stories', people:['Eddy Kenzo','Joshua Baraka'], title:'Afrobeats Stories', host:'Hosted by YAPS Studio', cat:'Music Talk', icon:'drum', colors:['#be123c','#2a0a14'],
-      desc:'The history, the hits and the people who built the Afrobeats wave.',
-      episodes:[ {title:'Origins of the Wave', guest:'Eddy Kenzo', date:'2026-09-27', mins:44, audioUrl:''}, {title:'Kampala Meets Lagos', guest:'Joshua Baraka', date:'2026-09-20', mins:39, audioUrl:''} ] }
-  ];
-  const CATS = ['All', 'Music Talk', 'Interviews', 'Business', 'Culture'];
+  /* Shows and episodes come from the database (yaps_podcast_shows + yaps_podcast_episodes, see yaps_podcasts.sql).
+     people:[...] and episode guest should match names in the app's artists list (their photo + followers are used). */
+  let SHOWS = [];
+  let CATS = ['All'];
+  let _loadState = 'idle';   // idle | loading | ready | error | missing
+  async function loadShows() {
+    if (typeof sb === 'undefined' || !sb) { _loadState = 'error'; return; }
+    _loadState = 'loading';
+    try {
+      const sr = await sb.from('yaps_podcast_shows').select('*').eq('published', true).order('sort', { ascending: true }).order('created_at', { ascending: false });
+      if (sr.error) throw sr.error;
+      const er = await sb.from('yaps_podcast_episodes').select('*').eq('published', true).order('published_on', { ascending: false }).limit(500);
+      if (er.error) throw er.error;
+      const clean = (v, n) => String(v == null ? '' : v).replace(/[<>`]/g, '').trim().slice(0, n);
+      const byShow = {};
+      (er.data || []).forEach(r => { (byShow[r.show_id] = byShow[r.show_id] || []).push({
+        title: clean(r.title, 150), guest: clean(r.guest, 100), date: String(r.published_on || r.created_at || '').slice(0, 10) || '1970-01-01',
+        mins: Number(r.mins) || 0, audioUrl: (typeof _safeUrl === 'function' ? _safeUrl(r.audio_url) : '') }); });
+      SHOWS = (sr.data || []).map(r => ({
+        id: String(r.id), title: clean(r.title, 100), host: clean(r.host, 100), cat: clean(r.cat, 30) || 'Music Talk',
+        icon: /^[a-z0-9-]{2,30}$/.test(r.icon || '') ? r.icon : 'microphone-lines',
+        colors: [/^#[0-9a-f]{3,8}$/i.test(r.color_from || '') ? r.color_from : '#1d4ed8', /^#[0-9a-f]{3,8}$/i.test(r.color_to || '') ? r.color_to : '#0b1a4a'],
+        desc: clean(r.description, 400), people: (Array.isArray(r.people) ? r.people : []).map(x => clean(x, 80)).filter(Boolean).slice(0, 8),
+        featured: !!r.featured, episodes: byShow[r.id] || [] }));
+      CATS = ['All'].concat([...new Set(SHOWS.map(x => x.cat))]);
+      _loadState = 'ready';
+    } catch (e) {
+      SHOWS = []; CATS = ['All'];
+      _loadState = /yaps_podcast|relation|does not exist|42P01/i.test(String((e && (e.message || e.code)) || '')) ? 'missing' : 'error';
+    }
+  }
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const S = { cat:'All' };
@@ -27759,7 +28132,7 @@ h1, h2, h3, h4, h5, h6,
   const withLine = s => { const L = s.people || []; if (!L.length) return ''; return `<div class="pdp-with">${L.slice(0, 4).map(x => av(x, 'md')).join('')}<span>With <b>${esc(L.slice(0, 2).join(', '))}</b>${L.length > 2 ? ' +' + (L.length - 2) : ''}</span></div>`; };
   const guestList = () => { const m = new Map(); SHOWS.forEach(s => (s.people || []).forEach(n => { if (!m.has(n)) m.set(n, s.id); })); return [...m]; };
   const fmtD = d => new Date(d + 'T00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
-  const latest = s => s.episodes.slice().sort((a, b) => b.date.localeCompare(a.date))[0];
+  const latest = s => s.episodes.slice().sort((a, b) => b.date.localeCompare(a.date))[0] || null;
   const toast = m => { if (typeof showToast === 'function') showToast(m); };
 
   function heroHTML(s) {
@@ -27772,7 +28145,7 @@ h1, h2, h3, h4, h5, h6,
         <p>${esc(s.desc)}</p>
         ${withLine(s)}
         <div class="pdp-cta">
-          <button type="button" class="pdp-btn gold" data-act="play" data-id="${s.id}" data-ep="${s.episodes.indexOf(ep)}"><i class="fas fa-play"></i> Play latest</button>
+          ${ep ? `<button type="button" class="pdp-btn gold" data-act="play" data-id="${s.id}" data-ep="${s.episodes.indexOf(ep)}"><i class="fas fa-play"></i> Play latest</button>` : ''}
           <button type="button" class="pdp-btn ghost" data-act="open" data-id="${s.id}">All episodes</button>
         </div>
       </div></div></div>`;
@@ -27789,7 +28162,7 @@ h1, h2, h3, h4, h5, h6,
       </div></li>`;
   }
   function render() {
-    const feat = SHOWS.find(s => s.featured) || SHOWS[0];
+    const feat = SHOWS.find(s => s.featured) || SHOWS.find(s => s.episodes.length) || SHOWS[0];
     $('pdpHero').innerHTML = feat ? heroHTML(feat) : '';
     const gl = guestList();
     $('pdpGuests').innerHTML = gl.length ? `<div class="pdp-gh">Artists on the shows</div><div class="pdp-gs">${gl.map(([n, id]) => `<button type="button" class="pdp-g" data-act="open" data-id="${id}" aria-label="${esc(n)}">${av(n, 'xl')}<span>${esc(n)}</span></button>`).join('')}</div>` : '';
@@ -27797,7 +28170,16 @@ h1, h2, h3, h4, h5, h6,
     const list = SHOWS.filter(s => S.cat === 'All' || s.cat === S.cat);
     $('pdpCount').innerHTML = list.length ? `<b>${list.length}</b> show${list.length === 1 ? '' : 's'}${S.cat !== 'All' ? ' · ' + S.cat : ''}` : '';
     $('pdpGrid').innerHTML = list.map(cardHTML).join('');
-    $('pdpEmpty').hidden = list.length > 0;
+    const em = $('pdpEmpty');
+    em.hidden = list.length > 0;
+    if (!list.length) {
+      const msg = _loadState === 'loading' ? ['Loading shows…', 'One moment.']
+        : _loadState === 'missing' ? ['Podcasts are not set up yet', 'Run yaps_podcasts.sql in Supabase, then add your shows.']
+        : _loadState === 'error' ? ['Could not load podcasts', 'Check your connection and try again.']
+        : S.cat !== 'All' ? ['No shows here yet', 'Try another category.']
+        : ['No podcasts yet', 'New shows will appear here as soon as they are published.'];
+      em.innerHTML = '<i class="fas fa-podcast"></i><h2>' + msg[0] + '</h2><p>' + msg[1] + '</p>';
+    }
   }
 
   /* ── show sheet ── */
@@ -27822,7 +28204,8 @@ h1, h2, h3, h4, h5, h6,
       <div class="pdp-sbtn"><button type="button" class="pdp-btn gold${on ? ' on' : ''}" data-act="follow" data-id="${id}">${on ? '<i class="fas fa-check"></i> Following' : '<i class="fas fa-plus"></i> Follow show'}</button></div>
       ${(s.people || []).length ? `<div class="pdp-eph">Featuring</div><div class="pdp-feat">${s.people.map(n => { const a = ART(n); return `<div class="pdp-f">${av(n, 'xl')}<b>${esc(n)}</b><span>${a && a.followers && a.followers !== 'New' ? esc(a.followers) : 'Artist'}</span></div>`; }).join('')}</div>` : ''}
       <div class="pdp-eph">Episodes</div>
-      ${eps.map(({ e, i }) => `<div class="pdp-ep">${e.guest ? av(e.guest, 'md') : ''}<div class="pdp-ep-t"><b>${esc(e.title)}</b><span>${fmtD(e.date)} · ${e.mins} min${e.guest ? ' · with ' + esc(e.guest) : ''}</span></div>
+      ${eps.length ? '' : '<p class="pdp-sdesc">No episodes published yet.</p>'}
+      ${eps.map(({ e, i }) => `<div class="pdp-ep">${e.guest ? av(e.guest, 'md') : ''}<div class="pdp-ep-t"><b>${esc(e.title)}</b><span>${fmtD(e.date)}${e.mins ? ' · ' + e.mins + ' min' : ''}${e.guest ? ' · with ' + esc(e.guest) : ''}${e.audioUrl ? '' : ' · audio coming soon'}</span></div>
         <button type="button" class="pdp-play" data-act="play" data-id="${id}" data-ep="${i}" aria-label="Play ${esc(e.title)}"><i class="fas fa-play"></i></button></div>`).join('')}`;
     bg.classList.add('open'); requestAnimationFrame(() => sheet.classList.add('open'));
   }
@@ -27834,7 +28217,7 @@ h1, h2, h3, h4, h5, h6,
   function setIcon() { $('pdpMiniPlay').innerHTML = `<i class="fas fa-${audio.paused ? 'play' : 'pause'}"></i>`; }
   function play(id, idx) {
     const s = SHOWS.find(x => x.id === id), e = s && s.episodes[+idx]; if (!e) return;
-    if (!e.audioUrl) { toast('Sample episode, add an audioUrl to play it'); return; }
+    if (!e.audioUrl) { toast('This episode has no audio yet'); return; }
     if (typeof isPlaying !== 'undefined' && isPlaying && typeof togglePlay === 'function') { try { togglePlay(); } catch (x) {} }
     audio.src = e.audioUrl;
     audio.play().then(() => {}, () => toast('Couldn\u2019t play this episode'));
@@ -27872,7 +28255,7 @@ h1, h2, h3, h4, h5, h6,
   $('pdpBack').addEventListener('click', () => { close(); navigate('home'); if (typeof updateBottomNav === 'function') updateBottomNav('home'); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 
-  window.renderPodcastsPage = function () { S.cat = 'All'; render(); };
+  window.renderPodcastsPage = function () { S.cat = 'All'; _loadState = 'loading'; render(); loadShows().then(render); };
 })();
 </script>
 
@@ -27991,7 +28374,7 @@ h1, h2, h3, h4, h5, h6,
   function render(){head.style.display='';
     if(!mixes.length){msg('No DJ mixes yet. <a href="#" onclick="event.preventDefault();openStudio()" style="color:var(--accent-light);font-weight:700;">Be the first. Open the DJ Studio</a>');return}
     row.style.display='';row.innerHTML=mixes.map(card).join('')}
-  /* Same mixes the DJ Studio publishes: FastAPI when deployed, otherwise straight from the Supabase `mixes` table (what studio.html writes to) */
+  /* Same mixes the DJ Studio publishes: FastAPI when deployed, otherwise straight from the Supabase `mixes` table (what yapsvirtual.html writes to) */
   async function fetchMixes(viaApi){
     if(viaApi)return api('/api/mixes?limit=20');
     const r=await window.sb.from('mixes').select('*').eq('visibility','public').order('created_at',{ascending:false}).limit(20);
@@ -28618,7 +29001,7 @@ h1, h2, h3, h4, h5, h6,
     const end=Math.min(S.shown,list.length);
     if(S.rendered<end){let h='';for(let i=S.rendered;i<end;i++){const t=list[i];
       h+=`<li class="nrp-card" style="--i:${(i-S.rendered)%12}" data-id="${esc(t.id)}">
-        <div class="nrp-art"><img src="${t.img&&t.img!==FALLBACK?esc(t.img):window._yapsCover(t.title,t.artist)}" data-t="${esc(t.title)}" data-a="${esc(t.artist)}" alt="${esc(t.title)} cover art" loading="lazy" decoding="async" onerror="window._yapsImgErr(this)"><span class="nrp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
+        <div class="nrp-art"><img src="${t.img&&t.img!==FALLBACK?esc(t.img):window._yapsCover(t.title,t.artist)}" data-t="${esc(t.title)}" data-a="${esc(t.artist)}" alt="${esc(t.title)} cover art" loading="eager" decoding="async" onerror="window._yapsImgErr(this)"><span class="nrp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
         <div class="nrp-foot"><div class="nrp-info"><div class="nrp-name">${esc(t.title)}</div><div class="nrp-artist">${esc(t.artist)}</div></div>
           ${t.menu?`<button type="button" class="nrp-more" data-act="menu" aria-label="More options for ${esc(t.title)}" aria-haspopup="dialog"><i class="fas fa-ellipsis-v" aria-hidden="true"></i></button>`:''}</div>
         <button type="button" class="nrp-open" data-act="play" aria-label="Play ${esc(t.title)} by ${esc(t.artist)}"></button></li>`}
@@ -29114,7 +29497,7 @@ applyAll();setTimeout(loadUserSettings,2500);
 (function(){['Language','EditProfile','Help','About','Legal','Rate'].forEach(function(n){var e=document.querySelector('#modal'+n+' .modal-close i');if(e)e.className='fas fa-arrow-left';var c=document.querySelector('#modal'+n+' .modal-close');if(c)c.setAttribute('aria-label','Back')})})();
 </script>
 <style id="studio-chrome">
-/* ══ STUDIO HEADER + SIDEBAR CHROME — ported from studio.html (champagne-gold on navy, Playfair + Archivo) ══ */
+/* ══ STUDIO HEADER + SIDEBAR CHROME — ported from yapsvirtual.html (champagne-gold on navy, Playfair + Archivo) ══ */
 :root{--serif:'Playfair Display',Georgia,'Times New Roman',serif;--sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
  --au:#ffc94d;--au2:#ffe7a8;--au3:#b9861f;--au-rgb:255,201,77;
  --logo-g:linear-gradient(180deg,#fff3c9 0,#ffc94d 48%,#b9861f 100%);--topbar-h:68px}
@@ -29141,7 +29524,7 @@ html:root #topbar{position:fixed;overflow:visible;height:var(--topbar-h);padding
 #topbar .topbar-logo .logo small{display:block;font:700 10.5px var(--sans);letter-spacing:.42em;color:var(--au2);
  -webkit-text-fill-color:var(--au2);margin-top:3px;padding-left:2px}
 
-/* title block — same as studio.html .ttl (replaces the search bar) */
+/* title block — same as yapsvirtual.html .ttl (replaces the search bar) */
 #topbar .ttl{flex:0 1 auto;min-width:0;font:800 30px/1.05 var(--serif);letter-spacing:.005em;text-transform:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-bottom:2px}
 #topbar .ttl b{color:var(--au);font-weight:800}
 #topbar .ttl p{font:500 14px var(--sans);letter-spacing:.02em;color:var(--muted);margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -29241,7 +29624,7 @@ html:root #topbar{position:fixed;overflow:visible;height:var(--topbar-h);padding
 }
 @media(min-width:900px) and (min-height:521px){html #hamburgerBtn{display:none}}
 
-/* ===== PREMIUM / AURORA skin — same extruded 3D lettering as studio.html ===== */
+/* ===== PREMIUM / AURORA skin — same extruded 3D lettering as yapsvirtual.html ===== */
 html[data-theme="aurora"] #topbar .topbar-logo .logo{display:inline-flex;align-items:center;gap:.2em;font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:40px;font-weight:900;letter-spacing:.005em;line-height:1;
  background:linear-gradient(180deg,#fff 0%,#fff 45%,#d4c4ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
  filter:drop-shadow(1px 1px 0 #7a4cf0) drop-shadow(2px 2px 0 #5a32c8) drop-shadow(3px 3px 0 #43229c) drop-shadow(4px 4px 0 #2c1470) drop-shadow(0 8px 10px rgba(0,0,0,.7)) drop-shadow(0 0 16px rgba(224,64,251,.45))}
@@ -29503,6 +29886,7 @@ async function _directMedia(path, method, body) {
       audio_url: body.audio_url, artwork_url: body.artwork_url, explicit: !!body.explicit,
       copyright_confirmed: true, copyright_confirmed_at: now(), status: _isOwner() ? 'approved' : 'pending'
     };
+    Object.keys(_TRACK_META_MAX).forEach(k => { if (body[k]) row[k] = String(body[k]).slice(0, _TRACK_META_MAX[k]); });
     return ok(await sb.from('tracks').insert(row).select('*').single());
   }
   if ((m = p.match(/^\/api\/tracks\/([^\/]+)$/))) {
@@ -29510,6 +29894,7 @@ async function _directMedia(path, method, body) {
     if (method === 'PATCH') {
       const patch = {};
       ['title', 'artist', 'genre', 'explicit', 'artwork_url', 'tags'].forEach(k => { if (body && body[k] !== undefined) patch[k] = body[k]; });
+      Object.keys(_TRACK_META_MAX).forEach(k => { if (body && body[k] !== undefined) patch[k] = body[k] ? String(body[k]).slice(0, _TRACK_META_MAX[k]) : null; });
       patch.status = _isOwner() ? 'approved' : 'pending'; patch.reject_reason = null; patch.updated_at = now();
       return ok(await sb.from('tracks').update(patch).eq('id', m[1]).eq('user_id', uid).select('*').single());
     }
@@ -29657,13 +30042,20 @@ function _relBadge(r) {
   const s = r.status || 'approved';
   return s === 'approved' ? '<span class="rel-b ok">Live</span>' : s === 'rejected' ? '<span class="rel-b no">Rejected</span>' : '<span class="rel-b wait">In review</span>';
 }
+function _relKindBadges(r) {
+  const t = r.tags || [];
+  return Object.keys(_KIND_TAG).map(k => { const tg = _KIND_TAG[k];
+    if (t.includes(tg)) return `<span class="rel-b ok" style="margin-left:4px">${_KIND_LABEL[k]}</span>`;
+    if (t.includes(tg + 'Request')) return `<span class="rel-b wait" style="margin-left:4px">${_KIND_LABEL[k]} · asked</span>`;
+    return ''; }).join('');
+}
 async function relLoadMine() {
   _relBody().innerHTML = '<div class="rel-empty">Loading…</div>';
   try {
     _REL.rows = await _directMedia('/api/tracks/mine', 'GET');
     if (!_REL.rows.length) { _relBody().innerHTML = '<div class="rel-empty">No releases yet. Upload your first track from the Upload page.</div>'; return; }
     _relBody().innerHTML = _REL.rows.map(r => `<div class="rel-card"><img loading="lazy" decoding="async" src="${_escHtml(r.artwork_url || '')}" alt="" onerror="this.style.visibility='hidden'">
-<div class="rel-info"><div class="rel-t">${_escHtml(r.title)}</div><div class="rel-s">${_escHtml(r.artist || '')} · ${_escHtml(r.genre || '')}</div>${_relBadge(r)}
+<div class="rel-info"><div class="rel-t">${_escHtml(r.title)}</div><div class="rel-s">${_escHtml(r.artist || '')} · ${_escHtml(r.genre || '')}</div>${_relBadge(r)}${_relKindBadges(r)}
 ${r.status === 'rejected' && r.reject_reason ? `<div class="rel-why">Reason: ${_escHtml(r.reject_reason)}</div>` : ''}
 <div class="rel-act"><button class="rel-btn" onclick="relEdit('${r.id}')">Edit</button><button class="rel-btn bad" onclick="relDelete('${r.id}')">Delete</button></div></div></div>`).join('');
   } catch (e) { _relBody().innerHTML = '<div class="rel-empty">' + _escHtml(_uploadErrText(e)) + '</div>'; }
@@ -29697,6 +30089,16 @@ function relEdit(id) {
 <label>Artist name</label><input type="text" id="relArtist" maxlength="100" value="${_escHtml(r.artist || '')}">
 <label>Genre</label><select id="relGenre">${g.map(x => `<option${x === r.genre ? ' selected' : ''}>${_escHtml(x)}</option>`).join('')}</select>
 <label>Explicit content</label><select id="relExplicit"><option value="0"${r.explicit ? '' : ' selected'}>No</option><option value="1"${r.explicit ? ' selected' : ''}>Yes</option></select>
+<label>Album</label><input type="text" id="relAlbum" maxlength="150" value="${_escHtml(r.album || '')}">
+<label>Producer</label><input type="text" id="relProducer" maxlength="100" value="${_escHtml(r.producer || '')}">
+<label>Songwriter</label><input type="text" id="relWriter" maxlength="150" value="${_escHtml(r.writer || '')}">
+<label>Language</label><input type="text" id="relLanguage" maxlength="40" value="${_escHtml(r.language || '')}">
+<label>Release date</label><input type="date" id="relReleaseDate" value="${_escHtml(r.release_date || '')}">
+<label>About this song</label><textarea id="relDescription" maxlength="2000" rows="3" style="width:100%">${_escHtml(r.description || '')}</textarea>
+<label>Lyrics ([Verse 1] for sections, [00:12.50] for timed lines)</label><textarea id="relLyrics" maxlength="20000" rows="8" style="width:100%">${_escHtml(r.lyrics || '')}</textarea>
+<label>Where it shows on Home</label>
+<div class="up-kinds" id="relKinds">${Object.keys(_KIND_TAG).map(k => { const tg = _KIND_TAG[k], on = (r.tags || []).some(x => x === tg || x === tg + 'Request'); return `<button type="button" class="up-kind${on ? ' selected' : ''}" data-kind="${k}" onclick="this.classList.toggle('selected')"><b>${_KIND_LABEL[k]}</b><span>${_KIND_ROW[k]}</span></button>`; }).join('')}</div>
+<div class="rel-s" style="margin-top:6px">New Release drops out of New Releases after ${_NEW_RELEASE_DAYS} days.</div>
 <label>Replace cover artwork (optional, max 10 MB)</label><input type="file" id="relArt" accept="image/*">
 <div class="rel-prog" id="relProg" style="display:none"><i id="relProgFill"></i></div>
 <div class="rel-s" style="margin-top:12px">${_isOwner() ? '' : 'Saving sends this release back for review. To change the audio, delete it and upload again.'}</div>
@@ -29711,6 +30113,17 @@ async function relSave(id) {
   const btn = document.getElementById('relSaveBtn'); btn.disabled = true; btn.textContent = 'Saving…';
   try {
     const patch = { title: title.slice(0, 150), artist: document.getElementById('relArtist').value.trim().slice(0, 100), genre: document.getElementById('relGenre').value, explicit: document.getElementById('relExplicit').value === '1' };
+    { const g = id => document.getElementById(id).value.trim();
+      patch.album = g('relAlbum'); patch.producer = g('relProducer'); patch.writer = g('relWriter'); patch.language = g('relLanguage');
+      patch.release_date = g('relReleaseDate') || ''; patch.description = g('relDescription'); patch.lyrics = g('relLyrics'); }
+    { // song kinds: keep other tags, keep already-granted promotions, send new promotions as requests unless owner
+      const picked = [...document.querySelectorAll('#relKinds .up-kind.selected')].map(b => b.dataset.kind);
+      if (!picked.length) { showToast('Pick at least one kind'); btn.disabled = false; btn.textContent = 'Save changes'; return; }
+      const all = Object.values(_KIND_TAG), old = r.tags || [];
+      const tags = old.filter(x => !all.some(a => x === a || x === a + 'Request'));
+      picked.forEach(k => { const tg = _KIND_TAG[k]; tags.push((k === 'new' || _isOwner() || old.includes(tg)) ? tg : tg + 'Request'); });
+      patch.tags = tags.slice(0, 20);
+    }
     if (file) {
       const pr = document.getElementById('relProg'), fill = document.getElementById('relProgFill'); pr.style.display = 'block';
       patch.artwork_url = await _apiUpload('artwork', file, { onProgress: p => { fill.style.width = p + '%'; btn.textContent = 'Uploading artwork ' + Math.floor(p) + '%'; } });
@@ -29739,7 +30152,7 @@ async function relLoadReview() {
     const q = await _directMedia('/api/moderation/queue', 'GET');
     window._relQ = q;
     const tr = q.tracks.map(r => `<div class="rel-card"><img loading="lazy" decoding="async" src="${_escHtml(r.artwork_url || '')}" alt="" onerror="this.style.visibility='hidden'"><div class="rel-info">
-<div class="rel-t">${_escHtml(r.title)}</div><div class="rel-s">${_escHtml(r.artist || '')} · ${_escHtml(r.genre || '')}${r.explicit ? ' · Explicit' : ''}${(r.tags || []).includes('TrendingRequest') ? ' · <b style="color:var(--accent)">Marked trending by artist</b>' : ''}<br>Rights confirmed ${r.copyright_confirmed ? (r.copyright_confirmed_at ? new Date(r.copyright_confirmed_at).toLocaleDateString() : 'yes') : 'NO'}</div>
+<div class="rel-t">${_escHtml(r.title)}</div><div class="rel-s">${_escHtml(r.artist || '')} · ${_escHtml(r.genre || '')}${r.explicit ? ' · Explicit' : ''}${(r.tags || []).some(t => /^(Trending|UgTrending|Global|Exclusive)Request$/.test(t)) ? ' · <b style="color:var(--accent)">Artist asked for: ' + (r.tags || []).filter(t => /Request$/.test(t)).map(t => t.replace(/Request$/, '').replace('UgTrending','Trending in Uganda')).join(', ') + '</b>' : ''}<br>Rights confirmed ${r.copyright_confirmed ? (r.copyright_confirmed_at ? new Date(r.copyright_confirmed_at).toLocaleDateString() : 'yes') : 'NO'}</div>
 <audio controls preload="none" src="${_escHtml(r.audio_url || '')}"></audio>
 <div class="rel-act"><button class="rel-btn pri" onclick="relDecide('tracks','${r.id}','approve')">Approve</button><button class="rel-btn bad" onclick="relDecide('tracks','${r.id}','reject')">Reject</button></div></div></div>`).join('');
     const vd = q.videos.map(r => `<div class="rel-card"><div class="rel-info"><div class="rel-t">${_escHtml(r.caption || 'Video')}</div><div class="rel-s">${_escHtml(r.uploader_name || '')} · ${_escHtml(r.hashtags || '')}<br>Rights confirmed ${r.copyright_confirmed ? 'yes' : 'NO'}</div>
@@ -29757,8 +30170,8 @@ async function relDecide(kind, id, decision) {
       const uid = row.user_id || row.uploader_id, name = row.title || row.caption || 'your upload';
       if (uid) sendNotification({ toUserId: uid, type: 'release', trackTitle: row.title || '', trackImg: row.artwork_url || '', body: decision === 'approve' ? `Your upload "${name}" is now live` : `Your upload "${name}" was not approved${reason ? ': ' + reason : ''}` });
     } catch (e) {}
-    if (decision === 'approve' && kind === 'tracks' && row && (row.tags || []).includes('TrendingRequest')) {
-      try { await sb.from('tracks').update({ tags: row.tags.map(t => t === 'TrendingRequest' ? 'Trending' : t) }).eq('id', id); } catch (e) { console.warn('trending promote failed', e); }
+    if (decision === 'approve' && kind === 'tracks' && row && (row.tags || []).some(t => /^(Trending|UgTrending|Global|Exclusive)Request$/.test(t))) {
+      try { await sb.from('tracks').update({ tags: row.tags.map(t => /^(Trending|UgTrending|Global|Exclusive)Request$/.test(t) ? t.replace(/Request$/, '') : t) }).eq('id', id); } catch (e) { console.warn('trending promote failed', e); }
     }
     showToast(decision === 'approve' ? 'Approved, now live' : 'Rejected');
     relLoadReview();
@@ -30769,7 +31182,7 @@ button,[role="button"],a,label,select{touch-action:manipulation}
     try{var r=await sb.from('yaps_blocks').select('blocked_id').eq('blocker_id',u.id);
       if(!r.error&&r.data){blocks.clear();r.data.forEach(function(x){blocks.add(x.blocked_id)});refreshViews()}}catch(e){}
   }
-  setInterval(load,1500);
+  window.addEventListener('yaps-auth',load);setTimeout(load,1500);setInterval(function(){if(!document.hidden)load()},15000);
 
   // hide blocked people's chats and notifications everywhere the app reads them
   if(typeof _directApi==='function'){
@@ -30950,7 +31363,7 @@ button,[role="button"],a,label,select{touch-action:manipulation}
   // keep dots current when the chat list / header re-renders
   try{new MutationObserver(function(){clearTimeout(window.__ypT);window.__ypT=setTimeout(paint,120)}).observe(document.getElementById('page-messages')||document.body,{childList:true,subtree:true})}catch(e){}
   // follow sign-in / sign-out
-  setInterval(function(){try{var u=me();if(u&&typeof sb!=='undefined'&&sb){if(!ch||chUid!==u.id)start()}else if(ch)stop()}catch(e){}},1500);
+  var _fol=function(){try{var u=me();if(u&&typeof sb!=='undefined'&&sb){if(!ch||chUid!==u.id)start()}else if(ch)stop()}catch(e){}};window.addEventListener('yaps-auth',_fol);setTimeout(_fol,1500);setInterval(function(){if(!document.hidden)_fol()},15000);
 })();
 </script>
 
@@ -30980,7 +31393,7 @@ window.__yapsNavCut=function(r){
 /* ══════ DJ STUDIO, built into this file ══════
    The Virtual DJ Studio lives inside this single page as its own isolated screen (an embedded frame), so its styles and code
    never clash with the app. Same origin: same login, theme, library and storage. Open it with openStudio(). */
-window.__STUDIO_SRC = null;   // the DJ Studio page now lives in studio.html and is fetched the first time the Studio is opened
+window.__STUDIO_SRC = null;   // the DJ Studio page now lives in yapsvirtual.html and is fetched the first time the Studio is opened
 (function(){
   var ov=null,fr=null,pushed=false,saved=null,rotEl=null,rotDismissed=false;
   /* The DJ Studio opens sideways by default on phones and small tablets: fullscreen + landscape lock (Android), plus a "turn your phone" screen where the browser cannot lock (iPhone). */
@@ -31042,10 +31455,10 @@ window.__STUDIO_SRC = null;   // the DJ Studio page now lives in studio.html and
     document.documentElement.style.overflow='hidden';
     if(!pushed){try{history.pushState({yapsStudio:1},'')}catch(e){}pushed=true}}
   var loading=false;
-  /* studio.html is fetched once (browser/service-worker cache after that), so the 390 KB Studio no longer weighs down every app launch */
+  /* yapsvirtual.html is fetched once (browser/service-worker cache after that), so the 390 KB Studio no longer weighs down every app launch */
   function loadSrc(){
     if(window.__STUDIO_SRC)return Promise.resolve(window.__STUDIO_SRC);
-    return fetch('studio.html').then(function(r){if(!r.ok)throw new Error('studio '+r.status);return r.text()}).then(function(t){window.__STUDIO_SRC=t;return t});
+    return fetch('yapsvirtual.html').then(function(r){if(!r.ok)throw new Error('studio '+r.status);return r.text()}).then(function(t){window.__STUDIO_SRC=t;return t});
   }
   window._studioOpen=function(trackId,deck){
     if(!ov&&!window.__STUDIO_SRC){
@@ -31074,7 +31487,7 @@ window.__STUDIO_SRC = null;   // the DJ Studio page now lives in studio.html and
   };
   /* phone Back button closes the Studio instead of leaving the app */
   addEventListener('popstate',function(){if(ov&&ov.style.display!=='none'){pushed=false;ov.style.display='none';studioFlag(false);document.documentElement.style.overflow='';setActive(false)}});
-  /* Preload: once the app is idle, fetch studio.html and build the Studio frame hidden, so opening it is instant (skipped on Data Saver / slow links) */
+  /* Preload: once the app is idle, fetch yapsvirtual.html and build the Studio frame hidden, so opening it is instant (skipped on Data Saver / slow links) */
   function warm(){
     try{var c=navigator.connection||{};if(c.saveData||/(^|-)2g$/.test(c.effectiveType||''))return}catch(e){}
     if(ov||loading||document.hidden)return;
@@ -31141,7 +31554,7 @@ window.__STUDIO_SRC = null;   // the DJ Studio page now lives in studio.html and
     document.documentElement.style.overflow='hidden';
     if(!pushed){try{history.pushState({yapsSongCreator:1},'')}catch(e){}pushed=true}
   }
-  window.openSongCreator=function(){ if(!ov)build(); show(); };
+  window.openSongCreator=function(){ if(typeof _yapsCan==='function'&&!_yapsCan('songcreator')){_yapsDeny('songcreator');return} if(!ov)build(); show(); };
   /* keep=true when leaving through an app link: the history entry becomes a normal one (no history.back() racing with the page that is about to push its own) */
   window._songCreatorClose=function(keep){
     if(!isOpen())return;
@@ -31178,7 +31591,7 @@ window.__STUDIO_SRC = null;   // the DJ Studio page now lives in studio.html and
 </script>
 
 <script>
-/* ══════ YAPS bridge: live link with studio.html (same origin) ══════
+/* ══════ YAPS bridge: live link with yapsvirtual.html (same origin) ══════
    Messages (BroadcastChannel 'yaps_bridge', localStorage fallback):
    app-play      this page started a song          -> Studio pauses its decks
    studio-play   Studio started a deck             -> this page pauses its player
@@ -31924,7 +32337,7 @@ function ensureInbox(){
       .subscribe();
   } catch (e) { console.warn('call inbox', e); }
 }
-setInterval(ensureInbox, 1500);
+window.addEventListener('yaps-auth',ensureInbox);setTimeout(ensureInbox,1500);setInterval(function(){ if(!document.hidden) ensureInbox(); },15000);
 
 function outChannel(peerId){
   if (S.outCh && S.outFor === peerId) return Promise.resolve(S.outCh);
@@ -33047,7 +33460,7 @@ html body #page-ai-dj .yai-composer:focus-within{box-shadow:none;border:0;border
 <script id="yaiFeatureGuide">
 (function(){
 const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const FN={queue:()=>toggleQueue(),studio:()=>{if(typeof openStudio==='function')openStudio();else location.href='studio.html'},creator:()=>openSongCreator(),mixes:()=>sapOpen('dj-mixes'),lyrics:()=>openLyrics(),facts:()=>toggleSongFacts(),sleep:()=>openSleepTimer(),speed:()=>cyclePlaybackSpeed(),downloads:()=>_p2pGoToDownloads(),help:()=>openHelpCenter(),sub:()=>openSubscriptionModal(),edit:()=>openEditProfileModal(),rate:()=>openRateAppModal(),install:()=>pwaInstall(),about:()=>openModal('about'),lang:()=>openModal('language'),terms:()=>openLegal('terms'),privacy:()=>openLegal('privacypolicy'),bug:()=>openFeedback('bug'),feedback:()=>openFeedback('feedback'),signin:()=>goAuth('signin'),signup:()=>goAuth('signup'),now:()=>openNowPlaying(),logout:()=>_confirmSidebarLogout()};
+const FN={queue:()=>toggleQueue(),studio:()=>{if(typeof openStudio==='function')openStudio();else location.href='yapsvirtual.html'},creator:()=>openSongCreator(),mixes:()=>sapOpen('dj-mixes'),lyrics:()=>openLyrics(),facts:()=>toggleSongFacts(),sleep:()=>openSleepTimer(),speed:()=>cyclePlaybackSpeed(),downloads:()=>_p2pGoToDownloads(),help:()=>openHelpCenter(),sub:()=>openSubscriptionModal(),edit:()=>openEditProfileModal(),rate:()=>openRateAppModal(),install:()=>pwaInstall(),about:()=>openModal('about'),lang:()=>openModal('language'),terms:()=>openLegal('terms'),privacy:()=>openLegal('privacypolicy'),bug:()=>openFeedback('bug'),feedback:()=>openFeedback('feedback'),signin:()=>goAuth('signin'),signup:()=>goAuth('signup'),now:()=>openNowPlaying(),logout:()=>_confirmSidebarLogout()};
 window.yaiGo=function(k){try{const i=k.indexOf(':'),t=k.slice(0,i),v=k.slice(i+1);if(t==='p'){navigate(v);try{updateBottomNav(v)}catch(e){}}else if(t==='s')openSettings(v);else if(t==='q'){const q=decodeURIComponent(v);openSettings('home');setTimeout(()=>{const e=document.getElementById('ysQ');if(e){e.value=q;e.dispatchEvent(new Event('input',{bubbles:true}));e.focus()}},400)}else if(t==='m'){const q=decodeURIComponent(v);navigate('search');setTimeout(()=>{try{filterMainSearch(q);const e=document.querySelector('#page-search input');if(e)e.value=q}catch(_){}},300)}else if(t==='n')(window._yaiNav||[])[+v].click();else FN[v]()}catch(e){console.warn('yaiGo',k,e);try{showToast('Could not open that here')}catch(_){}}};
 // Feature guide: [pattern, answer, ...[button label, action]]. Every action calls something that already exists in the app.
 const K=[];const k=(re,say,...b)=>K.push({re:new RegExp(re),say,b});
@@ -33351,6 +33764,33 @@ document.addEventListener('click',function(e){var t=e.target.closest('[data-j],[
   }
   if (vv) { vv.addEventListener('resize', pin); vv.addEventListener('scroll', pin); }
   new MutationObserver(pin).observe(root, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+<style id="chat-surface-css">
+/* Chat screens (Messages conversation, Community chat, YAPS AI, Connect chat): the floating mini player must never sit over the
+   message box. On phones/tablets it steps aside while a chat is on screen and returns as soon as the user leaves it. */
+@media (max-width: 1024px) {
+  html.chat-surface #miniBubble { display: none !important; }
+  html.chat-surface { --player-h: 0px !important; }
+}
+</style>
+<script id="chat-surface-js">
+(function () {
+  var root = document.documentElement, raf = 0;
+  function vis(el) { return !!(el && el.getClientRects().length); }
+  function on() {
+    var act = document.querySelector('.page.active'), id = act ? act.id : '';
+    if (id === 'page-community' || id === 'page-ai-dj') return true;
+    if (id === 'page-messages') return vis(document.querySelector('#msg-chat-view.open'));
+    if (id === 'page-connect') return vis(document.querySelector('#page-connect .cn-send, #page-connect textarea'));
+    return false;
+  }
+  function sync() { raf = 0; var v = on(); if (root.classList.contains('chat-surface') !== v) root.classList.toggle('chat-surface', v); }
+  function queue() { if (!raf) raf = requestAnimationFrame(sync); }
+  var main = document.getElementById('main') || document.body;
+  new MutationObserver(queue).observe(main, { subtree: true, attributes: true, attributeFilter: ['class', 'style'], childList: true });
+  window.addEventListener('resize', queue); window.addEventListener('hashchange', queue);
+  sync();
 })();
 </script>
 <style>
@@ -33768,6 +34208,7 @@ body.yaps-paused .qvl-eq i { animation-play-state: paused; }
     box.querySelector('#sotdTalk').onclick = function () { try { window.openCommunity({ artist: '', c: 'yaps-connect' }); } catch (e) { navigate('community'); } };
   }
 
+  window.yapsRenderLive = renderLive;
   function all() { try { renderLive(); renderSotd(); loadRooms(); } catch (e) { } }
   window.addEventListener('load', function () { setTimeout(all, 600); setTimeout(all, 3500); });
   document.addEventListener('visibilitychange', function () { if (!document.hidden) all(); });
@@ -33904,38 +34345,53 @@ html #page-profile .acct-hub #acctMain .ac-title{overflow-wrap:normal;word-break
 html #page-profile .acct-hub #acctMain .ac-desc{padding-right:14px}
 </style>
 
+<style id="upload-kinds-css">
+.dh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.dh-tile{position:relative;text-align:left;font-family:inherit;color:var(--text);cursor:pointer;padding:12px;border-radius:14px;border:1px solid var(--border);background:linear-gradient(135deg,var(--card),var(--surface,var(--bg)));display:flex;flex-direction:column;gap:2px}
+.dh-tile:hover{border-color:var(--accent)}
+.dh-tile i{color:var(--accent-light,var(--accent));font-size:14px}
+.dh-tile .dh-n{position:absolute;top:6px;right:12px;font-size:22px;line-height:1.1;font-weight:900;color:var(--accent-lighter,var(--accent))}
+.dh-tile.empty .dh-n{color:var(--dim)}
+.dh-tile b{margin-top:20px;font-size:13px;font-weight:800}
+.dh-tile .dh-s{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.kind-chip{position:absolute;top:6px;left:6px;z-index:3;padding:3px 7px;border-radius:999px;font-size:9px;font-weight:800;letter-spacing:.06em;line-height:1;color:#fff;background:var(--neon-btn);box-shadow:0 4px 10px -2px rgba(0,0,0,.55);pointer-events:none}
+.kind-chip.kc-Trending{background:linear-gradient(100deg,#f97316,#ef4444)}
+.kind-chip.kc-Exclusive{background:linear-gradient(100deg,#ffb300,#ffd466);color:#1a1200}
+.qvl-thumb{position:relative}.qvl-thumb .kind-chip{top:3px;left:3px;padding:2px 5px;font-size:7.5px}
+
+.up-kinds{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.up-kind{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;padding:12px 12px 12px 12px;border-radius:14px;cursor:pointer;font-family:inherit;color:var(--text);
+  background:linear-gradient(135deg,var(--card),var(--surface,var(--bg)));border:1.5px solid var(--border);transition:border-color .15s,box-shadow .15s,transform .1s}
+.up-kind:active{transform:scale(.98)}
+.up-kind i{font-size:15px;color:var(--accent-light,var(--accent));margin-bottom:4px}
+.up-kind b{font-size:13.5px;font-weight:800;line-height:1.2}
+.up-kind span{font-size:11.5px;line-height:1.35;color:var(--muted)}
+.up-kind::after{content:"";position:absolute;top:10px;right:10px;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border);display:grid;place-items:center;font-size:10px;font-weight:900;color:#fff}
+.up-kind.selected{border-color:var(--accent);box-shadow:0 10px 24px -14px var(--accent-glow);background:linear-gradient(135deg,var(--accent-dim),var(--card))}
+.up-kind.selected::after{content:"\2713";background:var(--neon-btn);border-color:transparent}
+@media (max-width:340px){.up-kinds{grid-template-columns:1fr}}
+</style>
 <style id="studio-intro-css">
+/* Studio page: base + navy skin + layout + app-theme match, merged in cascade order */
 #page-studio-intro{color:#fff;background:linear-gradient(180deg,#07123f 0%,#040a2a 55%,#030720 100%);min-height:100%;padding-bottom:110px}
 #page-studio-intro .stp-wrap{max-width:none;margin:0 auto;position:relative}
 #page-studio-intro .stp-hero-home .hero-slide-img{object-position:center 62%}
 #page-studio-intro .stp-hero-home{border-radius:0 0 16px 16px}
 #page-studio-intro .stp-wrap>:not(.hero-carousel):not(.stp-x){max-width:640px;margin-left:auto;margin-right:auto}
-#page-studio-intro .stp-hero{position:relative;overflow:hidden;min-height:clamp(250px,72vw,330px);background:radial-gradient(80% 90% at 20% 30%,#0b2a8f,#050e38 70%);border-bottom:1px solid #2f7bff}
-#page-studio-intro .stp-hero-art{position:absolute;right:0;top:0;height:100%;width:auto;max-width:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%)}
-#page-studio-intro .stp-eq{position:absolute;left:62px;top:10px;display:flex;align-items:flex-end;gap:5px;height:34px;filter:drop-shadow(0 0 6px rgba(61,141,255,.9))}
-#page-studio-intro .stp-eq i{width:9px;background:repeating-linear-gradient(180deg,#46a0ff 0 5px,transparent 5px 7px)}
-#page-studio-intro .stp-eq i:nth-child(1){height:40%}#page-studio-intro .stp-eq i:nth-child(2){height:60%}#page-studio-intro .stp-eq i:nth-child(3){height:80%}#page-studio-intro .stp-eq i:nth-child(4){height:100%}#page-studio-intro .stp-eq i:nth-child(5){height:75%}#page-studio-intro .stp-eq i:nth-child(6){height:55%}#page-studio-intro .stp-eq i:nth-child(7){height:35%}
-#page-studio-intro .stp-hero-txt{position:relative;z-index:1;padding:44px 14px 18px;max-width:62%}
-#page-studio-intro .stp-hero-txt,#page-studio-intro .stp-hero-txt *{font-family:'Archivo','Arial Black',Impact,sans-serif}
-#page-studio-intro .stp-logo{margin:0;display:flex;flex-direction:column;line-height:.88;font-style:italic;font-weight:900;letter-spacing:-2px}
-#page-studio-intro .stp-yaps{font-size:clamp(46px,14.5vw,84px);background:linear-gradient(180deg,#fff 0%,#c9d3e6 55%,#8fa0c0 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 3px 0 #2a3558) drop-shadow(0 7px 10px rgba(0,0,0,.65))}
-#page-studio-intro .stp-studio{font-size:clamp(50px,16vw,92px);margin-left:-2px;background:linear-gradient(180deg,#8fe0ff 0%,#2ba0ff 50%,#0b5fe0 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 3px 0 #06307a) drop-shadow(0 8px 12px rgba(0,0,0,.65))}
-#page-studio-intro .stp-tag{display:inline-flex;align-items:center;gap:8px;margin:8px 0 12px;padding:5px 14px;border-radius:3px;background:linear-gradient(180deg,#fff,#b8c4de);border:1px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.5);color:#0b1230;font-style:italic;font-weight:900;font-size:clamp(13px,4vw,20px)}
-#page-studio-intro .stp-tag i{width:7px;height:7px;border-radius:50%;background:#1d6bff}
-#page-studio-intro .stp-welcome{margin:0;font-size:clamp(17px,5.4vw,28px);font-weight:900;font-style:italic;line-height:1.1;text-shadow:0 2px 8px rgba(0,0,0,.7)}
-#page-studio-intro .stp-welcome b{color:#35d0ff}
-#page-studio-intro .stp-sub{margin:3px 0 0;font-size:clamp(11.5px,3.4vw,16px);font-style:italic;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.8)}
-@media (min-width:600px){#page-studio-intro .stp-hero-txt{padding-top:50px}#page-studio-intro .stp-eq{left:70px}}
 #page-studio-intro .stp-x{position:absolute;top:10px;right:10px;width:36px;height:36px;display:grid;place-items:center;border:1.5px solid rgba(255,255,255,.7);border-radius:6px;background:rgba(0,0,0,.55);color:#fff;font-size:20px;line-height:1;cursor:pointer}
 #page-studio-intro .stp-what{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px 12px;background:none;border-top:0;border-bottom:0;}
-#page-studio-intro .stp-what{justify-content:space-between}#page-studio-intro .stp-what::before,#page-studio-intro .stp-what::after{content:"";flex:1;max-width:70px;height:2px;background:linear-gradient(90deg,transparent,#8cc4ff)}
+#page-studio-intro .stp-what{justify-content:space-between}
+#page-studio-intro .stp-what::before,#page-studio-intro .stp-what::after{content:"";flex:1;max-width:70px;height:2px;background:linear-gradient(90deg,transparent,#8cc4ff)}
 #page-studio-intro .stp-what::after{transform:scaleX(-1)}
 #page-studio-intro .stp-what>b.y3d{text-shadow:none;letter-spacing:-.3px;font-size:24px;line-height:1.1;padding-bottom:4px}
 #page-studio-intro .stp-what>b{font-size:23px;font-weight:900;font-style:italic;letter-spacing:-.3px;text-shadow:0 2px 8px rgba(0,0,0,.6)}
-#page-studio-intro .stp-tiles{display:flex;flex-wrap:nowrap;justify-content:flex-start;gap:10px;padding:14px 12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding:0 12px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y;scrollbar-width:none}#page-studio-intro .stp-tiles::-webkit-scrollbar{display:none}
+#page-studio-intro .stp-tiles{display:flex;flex-wrap:nowrap;justify-content:flex-start;gap:10px;padding:14px 12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding:0 12px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;touch-action:pan-x pan-y;scrollbar-width:none}
+#page-studio-intro .stp-tiles::-webkit-scrollbar{display:none}
 #page-studio-intro .stp-tile{flex:0 0 clamp(138px,40vw,170px);scroll-snap-align:start;box-sizing:border-box;padding:6px 4px 9px;text-align:center;border:1.5px solid #2a86ff;border-radius:6px;background:linear-gradient(180deg,#071a58,#030b2c);box-shadow:inset 0 0 14px rgba(42,134,255,.25)}
-
-#page-studio-intro .stp-tile{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s,box-shadow .12s}#page-studio-intro .stp-tile:active{transform:scale(.97)}#page-studio-intro .stp-tile:focus-visible{outline:2px solid #7fb6ff;outline-offset:2px}
+#page-studio-intro .stp-tile{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s,box-shadow .12s}
+#page-studio-intro .stp-tile:active{transform:scale(.97)}
+#page-studio-intro .stp-tile:focus-visible{outline:2px solid #7fb6ff;outline-offset:2px}
 #page-studio-intro .stp-tile img{display:block;width:100%;height:84px;object-fit:cover;border-radius:5px;margin-bottom:6px}
 #page-studio-intro .stp-tile b{display:block;font-size:13px;font-weight:800;font-style:italic;line-height:1.15}
 #page-studio-intro .stp-tile span{display:block;margin-top:2px;font-size:10.5px;font-style:italic;line-height:1.25;color:#cfe2ff}
@@ -33947,12 +34403,57 @@ html #page-profile .acct-hub #acctMain .ac-desc{padding-right:14px}
 #page-studio-intro .stp-ticks li{display:flex;align-items:center;gap:7px;font-size:13px;font-style:italic}
 #page-studio-intro .stp-ticks li::before{content:"✓";display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:linear-gradient(180deg,#3f8dff,#1c4fd6);font-style:normal;font-size:12px;font-weight:900;box-shadow:0 0 8px rgba(63,141,255,.8)}
 @media (min-width:480px){#page-studio-intro .stp-ticks{flex:0 0 auto;flex-direction:column}}
-#page-studio-intro .stp-creator{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center}#page-studio-intro .stp-cr-img{min-width:0}#page-studio-intro .stp-creator .stp-cr-img img{display:block;width:100%;height:auto;aspect-ratio:1/1;max-height:260px;object-fit:cover;border-radius:10px}#page-studio-intro .stp-cr-txt{min-width:0;display:flex;flex-direction:column;gap:12px}#page-studio-intro .stp-ct{flex:none;font-size:clamp(18px,5.6vw,26px);line-height:1.08}#page-studio-intro .stp-ct .y3d{display:block;font-style:italic;text-shadow:none;letter-spacing:-.3px;margin-bottom:6px}#page-studio-intro .stp-cr-txt .stp-ticks{flex:none;flex-direction:column;flex-wrap:nowrap}
-
-#page-studio-intro .stp-how{padding:6px 12px 14px}#page-studio-intro .stp-how-h{text-align:center;margin:4px 0 12px;font-size:22px;line-height:1.1}#page-studio-intro .stp-how-h .y3d{font-style:italic}#page-studio-intro .stp-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;position:relative}#page-studio-intro .stp-steps::before{content:"";position:absolute;left:16%;right:16%;top:26px;border-top:2px dashed rgba(127,182,255,.45)}#page-studio-intro .stp-step{position:relative;text-align:center;min-width:0}#page-studio-intro .stp-sn{position:relative;width:52px;height:52px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;font-size:20px;color:#fff;background:linear-gradient(180deg,#3f8dff,#1448d0);border:2px solid #7fb6ff;box-shadow:0 0 16px -2px rgba(63,141,255,.9)}#page-studio-intro .stp-sn em{position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:900 11px/1 inherit;font-style:normal;background:#f5c451;color:#1a1200;box-shadow:0 0 0 2px #040a2a}#page-studio-intro .stp-step b{display:block;font-size:14px;font-weight:800;font-style:italic;line-height:1.15}#page-studio-intro .stp-step span{display:block;margin-top:3px;font-size:10.5px;font-style:italic;line-height:1.3;color:#cfe2ff}
-#page-studio-intro .stp-made{padding:2px 0 14px}#page-studio-intro .stp-made .stp-how-h{padding:0 12px}#page-studio-intro .stp-mrow{display:flex;gap:10px;padding:0 12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 12px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none}#page-studio-intro .stp-mrow::-webkit-scrollbar{display:none}#page-studio-intro .stp-mc{flex:0 0 118px;scroll-snap-align:start;cursor:pointer;min-width:0;-webkit-tap-highlight-color:transparent}#page-studio-intro .stp-mc:active{transform:scale(.97)}#page-studio-intro .stp-mart{position:relative;width:118px;height:118px;border-radius:8px;overflow:hidden;border:1.5px solid #2a86ff;background:#071a58;box-shadow:inset 0 0 14px rgba(42,134,255,.25)}#page-studio-intro .stp-mart img{width:100%;height:100%;object-fit:cover;display:block}#page-studio-intro .stp-mart i{position:absolute;right:6px;bottom:6px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:#fff;background:linear-gradient(180deg,#3f8dff,#1448d0);border:1.5px solid #7fb6ff;box-shadow:0 0 12px rgba(63,141,255,.8)}#page-studio-intro .stp-mc b{display:block;margin-top:6px;font-size:12.5px;font-weight:800;font-style:italic;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#page-studio-intro .stp-mc span{display:block;font-size:10.5px;font-style:italic;color:#cfe2ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#page-studio-intro .stp-plans{padding:4px 12px 14px}#page-studio-intro .stp-pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}#page-studio-intro .stp-pc{position:relative;display:flex;flex-direction:column;padding:12px 10px;border:1.5px solid #2a86ff;border-radius:8px;background:linear-gradient(180deg,#071a58,#030b2c);box-shadow:inset 0 0 14px rgba(42,134,255,.25);min-width:0}#page-studio-intro .stp-pc.prem{border-color:#f5c451;box-shadow:inset 0 0 14px rgba(245,196,81,.18),0 0 16px -6px rgba(245,196,81,.7)}#page-studio-intro .stp-pc h4{margin:0;font-size:15px;font-weight:900;font-style:italic;display:flex;align-items:center;gap:6px}#page-studio-intro .stp-pc.prem h4 i{color:#f5c451}#page-studio-intro .stp-pp{margin:4px 0 8px;font-size:13px;font-weight:800;color:#cfe2ff}#page-studio-intro .stp-pp small{font-size:10.5px;font-weight:600;opacity:.85}#page-studio-intro .stp-pc ul{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px;flex:1}#page-studio-intro .stp-pc li{display:flex;gap:6px;align-items:flex-start;font-size:11.5px;font-style:italic;line-height:1.25}#page-studio-intro .stp-pc li i{margin-top:2px;font-size:11px;color:#46d39a;flex:none}#page-studio-intro .stp-pc li.no{opacity:.6}#page-studio-intro .stp-pc li.no i{color:#9db4e6}#page-studio-intro .stp-pbtn{width:100%;padding:10px 8px;border:2px solid #f5c451;border-radius:6px;color:#1a1200;font:900 13px/1 inherit;font-family:inherit;font-style:italic;cursor:pointer;background:linear-gradient(180deg,#ffd978,#f5a623)}#page-studio-intro .stp-pbtn:active{transform:scale(.97)}
-#page-studio-intro .stp-faq{padding:4px 12px 14px}#page-studio-intro .stp-faqs{display:flex;flex-direction:column;gap:8px}#page-studio-intro .stp-faqs details{border:1.5px solid #2a86ff;border-radius:8px;background:linear-gradient(180deg,#071a58,#030b2c);box-shadow:inset 0 0 14px rgba(42,134,255,.2)}#page-studio-intro .stp-faqs summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;font-size:13px;font-weight:800;font-style:italic;-webkit-tap-highlight-color:transparent}#page-studio-intro .stp-faqs summary::-webkit-details-marker{display:none}#page-studio-intro .stp-faqs summary::after{content:"+";flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:900 15px/1 inherit;font-style:normal;background:linear-gradient(180deg,#3f8dff,#1448d0);border:1.5px solid #7fb6ff}#page-studio-intro .stp-faqs details[open] summary::after{content:"\2212"}#page-studio-intro .stp-faqs p{margin:0;padding:0 12px 12px;font-size:12px;font-style:italic;line-height:1.45;color:#cfe2ff}
+#page-studio-intro .stp-creator{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center}
+#page-studio-intro .stp-cr-img{min-width:0}
+#page-studio-intro .stp-creator .stp-cr-img img{display:block;width:100%;height:auto;aspect-ratio:1/1;max-height:260px;object-fit:cover;border-radius:10px}
+#page-studio-intro .stp-cr-txt{min-width:0;display:flex;flex-direction:column;gap:12px}
+#page-studio-intro .stp-ct{flex:none;font-size:clamp(18px,5.6vw,26px);line-height:1.08}
+#page-studio-intro .stp-ct .y3d{display:block;font-style:italic;text-shadow:none;letter-spacing:-.3px;margin-bottom:6px}
+#page-studio-intro .stp-cr-txt .stp-ticks{flex:none;flex-direction:column;flex-wrap:nowrap}
+#page-studio-intro .stp-how{padding:6px 12px 14px}
+#page-studio-intro .stp-how-h{text-align:center;margin:4px 0 12px;font-size:22px;line-height:1.1}
+#page-studio-intro .stp-how-h .y3d{font-style:italic}
+#page-studio-intro .stp-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;position:relative}
+#page-studio-intro .stp-steps::before{content:"";position:absolute;left:16%;right:16%;top:26px;border-top:2px dashed rgba(127,182,255,.45)}
+#page-studio-intro .stp-step{position:relative;text-align:center;min-width:0}
+#page-studio-intro .stp-sn{position:relative;width:52px;height:52px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;font-size:20px;color:#fff;background:linear-gradient(180deg,#3f8dff,#1448d0);border:2px solid #7fb6ff;box-shadow:0 0 16px -2px rgba(63,141,255,.9)}
+#page-studio-intro .stp-sn em{position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:900 11px/1 inherit;font-style:normal;background:#f5c451;color:#1a1200;box-shadow:0 0 0 2px #040a2a}
+#page-studio-intro .stp-step b{display:block;font-size:14px;font-weight:800;font-style:italic;line-height:1.15}
+#page-studio-intro .stp-step span{display:block;margin-top:3px;font-size:10.5px;font-style:italic;line-height:1.3;color:#cfe2ff}
+#page-studio-intro .stp-made{padding:2px 0 14px}
+#page-studio-intro .stp-made .stp-how-h{padding:0 12px}
+#page-studio-intro .stp-mrow{display:flex;gap:10px;padding:0 12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 12px;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scrollbar-width:none}
+#page-studio-intro .stp-mrow::-webkit-scrollbar{display:none}
+#page-studio-intro .stp-mc{flex:0 0 118px;scroll-snap-align:start;cursor:pointer;min-width:0;-webkit-tap-highlight-color:transparent}
+#page-studio-intro .stp-mc:active{transform:scale(.97)}
+#page-studio-intro .stp-mart{position:relative;width:118px;height:118px;border-radius:8px;overflow:hidden;border:1.5px solid #2a86ff;background:#071a58;box-shadow:inset 0 0 14px rgba(42,134,255,.25)}
+#page-studio-intro .stp-mart img{width:100%;height:100%;object-fit:cover;display:block}
+#page-studio-intro .stp-mart i{position:absolute;right:6px;bottom:6px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;color:#fff;background:linear-gradient(180deg,#3f8dff,#1448d0);border:1.5px solid #7fb6ff;box-shadow:0 0 12px rgba(63,141,255,.8)}
+#page-studio-intro .stp-mc b{display:block;margin-top:6px;font-size:12.5px;font-weight:800;font-style:italic;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-studio-intro .stp-mc span{display:block;font-size:10.5px;font-style:italic;color:#cfe2ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-studio-intro .stp-plans{padding:4px 12px 14px}
+#page-studio-intro .stp-pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:stretch}
+#page-studio-intro .stp-pc{position:relative;display:flex;flex-direction:column;padding:12px 10px;border:1.5px solid #2a86ff;border-radius:8px;background:linear-gradient(180deg,#071a58,#030b2c);box-shadow:inset 0 0 14px rgba(42,134,255,.25);min-width:0}
+#page-studio-intro .stp-pc.prem{border-color:#f5c451;box-shadow:inset 0 0 14px rgba(245,196,81,.18),0 0 16px -6px rgba(245,196,81,.7)}
+#page-studio-intro .stp-pc h4{margin:0;font-size:15px;font-weight:900;font-style:italic;display:flex;align-items:center;gap:6px}
+#page-studio-intro .stp-pc.prem h4 i{color:#f5c451}
+#page-studio-intro .stp-pp{margin:4px 0 8px;font-size:13px;font-weight:800;color:#cfe2ff}
+#page-studio-intro .stp-pp small{font-size:10.5px;font-weight:600;opacity:.85}
+#page-studio-intro .stp-pc ul{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px;flex:1}
+#page-studio-intro .stp-pc li{display:flex;gap:6px;align-items:flex-start;font-size:11.5px;font-style:italic;line-height:1.25}
+#page-studio-intro .stp-pc li i{margin-top:2px;font-size:11px;color:#46d39a;flex:none}
+#page-studio-intro .stp-pc li.no{opacity:.6}
+#page-studio-intro .stp-pc li.no i{color:#9db4e6}
+#page-studio-intro .stp-pbtn{width:100%;padding:10px 8px;border:2px solid #f5c451;border-radius:6px;color:#1a1200;font:900 13px/1 inherit;font-family:inherit;font-style:italic;cursor:pointer;background:linear-gradient(180deg,#ffd978,#f5a623)}
+#page-studio-intro .stp-pbtn:active{transform:scale(.97)}
+#page-studio-intro .stp-faq{padding:4px 12px 14px}
+#page-studio-intro .stp-faqs{display:flex;flex-direction:column;gap:8px}
+#page-studio-intro .stp-faqs details{border:1.5px solid #2a86ff;border-radius:8px;background:linear-gradient(180deg,#071a58,#030b2c);box-shadow:inset 0 0 14px rgba(42,134,255,.2)}
+#page-studio-intro .stp-faqs summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;font-size:13px;font-weight:800;font-style:italic;-webkit-tap-highlight-color:transparent}
+#page-studio-intro .stp-faqs summary::-webkit-details-marker{display:none}
+#page-studio-intro .stp-faqs summary::after{content:"+";flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font:900 15px/1 inherit;font-style:normal;background:linear-gradient(180deg,#3f8dff,#1448d0);border:1.5px solid #7fb6ff}
+#page-studio-intro .stp-faqs details[open] summary::after{content:"\2212"}
+#page-studio-intro .stp-faqs p{margin:0;padding:0 12px 12px;font-size:12px;font-style:italic;line-height:1.45;color:#cfe2ff}
 #page-studio-intro .stp-foot{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 12px}
 #page-studio-intro .stp-go{flex:1 1 200px;display:flex;align-items:center;justify-content:center;gap:12px;padding:15px 18px;border:2px solid #7fb6ff;border-radius:6px;color:#fff;cursor:pointer;font:900 22px/1 inherit;font-family:inherit;font-style:italic;background:linear-gradient(180deg,#3f8dff,#1448d0);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 22px -4px rgba(63,141,255,.95);text-shadow:0 2px 6px rgba(0,0,0,.5)}
 #page-studio-intro .stp-go::before{content:"";width:0;height:0;border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
@@ -33961,23 +34462,12 @@ html #page-profile .acct-hub #acctMain .ac-desc{padding-right:14px}
 #page-studio-intro .stp-skip input{appearance:none;-webkit-appearance:none;width:22px;height:22px;border-radius:50%;border:2px solid #cfe2ff;background:transparent;display:grid;place-items:center;cursor:pointer;margin:0}
 #page-studio-intro .stp-skip input:checked{background:#2f7bff;border-color:#7fb6ff}
 #page-studio-intro .stp-skip input:checked::after{content:"✓";font-size:13px;font-weight:900;color:#fff}
-</style>
-<style id="studio-intro-pro">
-/* ═══ STUDIO PAGE — professional dark-navy skin (overrides #studio-intro-css above) ═══
-   Replaces the bright electric / light-blue outlines, glows, italics and rainbow 3D lettering with a calm dark-navy look:
-   flat navy cards, thin quiet borders, ONE deep-blue accent, plain bold headings. Gold is kept only for Premium. */
 html #page-studio-intro{
   --sp-bg1:#0a1330; --sp-bg2:#070e26; --sp-bg3:#050a1b;
   --sp-card:#0d1735; --sp-card2:#101c40; --sp-line:rgba(120,142,210,.20);
   --sp-text:#eaf0ff; --sp-muted:#98a8d0; --sp-accent:#2f59d1; --sp-accent2:#244bb8; --sp-soft:#8ea6ea;
   color:var(--sp-text);
   background:linear-gradient(180deg,var(--sp-bg1) 0%,var(--sp-bg2) 55%,var(--sp-bg3) 100%);
-}
-/* headings: plain, bold, white (no 3D rainbow, no animation) */
-html #page-studio-intro .y3d,html #page-studio-intro .y3d-g,html #page-studio-intro .y3d-s,html #page-studio-intro .y3d-live{
-  font-family:'Archivo',system-ui,sans-serif!important;font-weight:800!important;font-style:normal!important;text-transform:none;letter-spacing:-.01em;
-  background:none!important;color:var(--sp-text)!important;-webkit-text-fill-color:var(--sp-text)!important;
-  filter:none!important;animation:none!important;text-shadow:none!important;
 }
 html #page-studio-intro .stp-what{padding:14px 12px 4px}
 html #page-studio-intro .stp-what>b,html #page-studio-intro .stp-what>b.y3d{font-size:19px;font-style:normal;line-height:1.2;padding-bottom:0}
@@ -33987,8 +34477,6 @@ html #page-studio-intro .stp-how-h .y3d{font-style:normal}
 html #page-studio-intro .stp-ct{font-style:normal;font-size:clamp(17px,5vw,24px)}
 html #page-studio-intro .stp-ct .y3d{font-style:normal;margin-bottom:4px}
 html #page-studio-intro .stp-x{border:1px solid var(--sp-line);border-radius:10px;background:rgba(6,11,29,.72)}
-
-/* cards: flat navy, thin quiet border, soft shadow (no neon outline / inner glow) */
 html #page-studio-intro .stp-tile,html #page-studio-intro .stp-pc,html #page-studio-intro .stp-faqs details,html #page-studio-intro .stp-featbox{
   border:1px solid var(--sp-line);border-radius:12px;
   background:linear-gradient(180deg,var(--sp-card2),var(--sp-card));box-shadow:0 6px 18px rgba(2,6,20,.35);
@@ -34000,44 +34488,193 @@ html #page-studio-intro .stp-tile b{font-style:normal;font-weight:700;font-size:
 html #page-studio-intro .stp-tile span{font-style:normal;color:var(--sp-muted);font-size:11px}
 html #page-studio-intro .stp-tile:focus-visible{outline-color:var(--sp-soft)}
 html #page-studio-intro .stp-featbox i.fa-headphones{color:var(--sp-soft)!important}
-
-/* How it works */
 html #page-studio-intro .stp-steps::before{border-top:1px dashed var(--sp-line)}
 html #page-studio-intro .stp-sn{background:#13224f;border:1px solid rgba(142,166,234,.38);box-shadow:none;color:var(--sp-soft)}
 html #page-studio-intro .stp-sn em{background:var(--sp-accent);color:#fff;box-shadow:0 0 0 2px var(--sp-bg2)}
 html #page-studio-intro .stp-step b{font-style:normal;font-weight:700}
 html #page-studio-intro .stp-step span{font-style:normal;color:var(--sp-muted)}
-
-/* Made in YAPS Studio rail */
 html #page-studio-intro .stp-mart i{background:var(--sp-accent);border:1px solid rgba(255,255,255,.22);box-shadow:0 2px 8px rgba(0,0,0,.45)}
 html #page-studio-intro .stp-mc b{font-style:normal;font-weight:700}
 html #page-studio-intro .stp-mc span{font-style:normal;color:var(--sp-muted)}
-
-/* creator banner */
 html #page-studio-intro .stp-creator{background:linear-gradient(180deg,var(--sp-card2),var(--sp-card));border:1px solid var(--sp-line);border-radius:14px;padding:14px}
 html #page-studio-intro .stp-creator .stp-cr-img img{border-radius:10px}
 html #page-studio-intro .stp-ticks li{font-style:normal;color:var(--sp-text)}
 html #page-studio-intro .stp-ticks li::before{background:var(--sp-accent);box-shadow:none}
-
-/* plans (Premium keeps its gold, calmer) */
 html #page-studio-intro .stp-pc.prem{border-color:rgba(245,196,81,.5);box-shadow:0 6px 18px rgba(2,6,20,.35)}
 html #page-studio-intro .stp-pc h4,html #page-studio-intro .stp-pc li{font-style:normal}
 html #page-studio-intro .stp-pp{color:var(--sp-text)}
 html #page-studio-intro .stp-pc li.no i{color:var(--sp-muted)}
 html #page-studio-intro .stp-pbtn{border:0;border-radius:10px;font-style:normal;font-weight:800;background:#f5c451;color:#1a1200}
-
-/* FAQ */
 html #page-studio-intro .stp-faqs summary{font-style:normal;font-weight:700}
 html #page-studio-intro .stp-faqs summary::after{background:#16275a;border:1px solid var(--sp-line);color:var(--sp-soft)}
 html #page-studio-intro .stp-faqs p{font-style:normal;color:var(--sp-muted)}
-
-/* main call-to-action: one clean deep-blue button */
 html #page-studio-intro .stp-go{border:0;border-radius:12px;padding:14px 18px;gap:10px;font-size:16px;font-weight:700;font-style:normal;text-shadow:none;
   background:linear-gradient(180deg,var(--sp-accent),var(--sp-accent2));box-shadow:0 8px 22px -8px rgba(47,89,209,.75)}
 html #page-studio-intro .stp-go::before{border-left-width:12px;border-top-width:7px;border-bottom-width:7px}
 html #page-studio-intro .stp-skip{font-style:normal;font-size:13px;color:var(--sp-muted)}
 html #page-studio-intro .stp-skip input{border-color:var(--sp-line)}
 html #page-studio-intro .stp-skip input:checked{background:var(--sp-accent);border-color:var(--sp-soft)}
+html #page-studio-intro{
+  --sp-bg1:#0b1431; --sp-bg2:#070f26; --sp-bg3:#050a1b;
+  --sp-card:#0e1938; --sp-card2:#122046; --sp-line:rgba(140,160,225,.16); --sp-line2:rgba(140,160,225,.30);
+  --sp-text:#eef2ff; --sp-muted:#9aa9d3; --sp-accent:#3b66e8; --sp-accent2:#2a4fc4; --sp-soft:#9db4f2; --sp-gold:#f5c451;
+  --sp-gut:16px; --sp-r:14px;
+  font-family:'Archivo',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  padding-bottom:120px;
+}
+html #page-studio-intro .stp-wrap>:not(.hero-carousel):not(.stp-x){max-width:720px}
+html #page-studio-intro .stp-hero-home{border-radius:0 0 22px 22px;overflow:hidden;position:relative;box-shadow:0 18px 40px -22px rgba(0,0,0,.8)}
+html #page-studio-intro .stp-hero-home::after{content:"";position:absolute;inset:auto 0 0 0;height:45%;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(5,10,27,.78))}
+html #page-studio-intro .stp-hero-home .hero-content{z-index:2}
+html #page-studio-intro .stp-hero-home .hero-tag{display:inline-block;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff}
+html #page-studio-intro .stp-hero-home .hero-title{font-weight:800;letter-spacing:-.02em;line-height:1.02;text-shadow:0 2px 16px rgba(0,0,0,.45)}
+html #page-studio-intro .stp-hero-home .hero-title em{font-style:normal;color:var(--sp-soft)}
+html #page-studio-intro .stp-hero-home .hero-sub{font-size:14px;line-height:1.45;color:#dbe4ff;opacity:.95}
+html #page-studio-intro .stp-hero-home .hero-btn{border:0;border-radius:12px;padding:12px 20px;font-weight:700;font-size:14px;background:#fff;color:#0b1431;box-shadow:0 10px 24px -10px rgba(0,0,0,.7)}
+html #page-studio-intro .stp-x{top:max(12px,env(safe-area-inset-top,0px));right:12px;width:38px;height:38px;border-radius:50%;font-size:16px;z-index:5;background:rgba(6,11,29,.62);border:1px solid rgba(255,255,255,.28);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:background .15s}
+html #page-studio-intro .stp-x:hover{background:rgba(6,11,29,.85)}
+html #page-studio-intro .stp-what,html #page-studio-intro .stp-how-h{display:block;text-align:left;padding:0 var(--sp-gut);margin:30px auto 14px}
+html #page-studio-intro .stp-what::before,html #page-studio-intro .stp-what::after{display:none}
+html #page-studio-intro .stp-what>b,html #page-studio-intro .stp-what>b.y3d,html #page-studio-intro .stp-how-h .y3d{font-size:20px!important;line-height:1.2;font-weight:800!important;letter-spacing:-.015em;padding:0}
+html #page-studio-intro .stp-how-h{padding:0}
+html #page-studio-intro .stp-how,html #page-studio-intro .stp-made,html #page-studio-intro .stp-plans,html #page-studio-intro .stp-faq{padding-left:var(--sp-gut);padding-right:var(--sp-gut)}
+html #page-studio-intro .stp-made .stp-how-h{padding:0}
+html #page-studio-intro .stp-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 var(--sp-gut);overflow:visible;scroll-snap-type:none}
+html #page-studio-intro .stp-tile{flex:none;position:relative;display:flex;flex-direction:column;padding:0;overflow:hidden;border-radius:var(--sp-r);text-align:left;
+  background:var(--sp-card);border:1px solid var(--sp-line);box-shadow:0 8px 22px -12px rgba(0,0,0,.7);transition:transform .15s,border-color .15s,box-shadow .15s}
+html #page-studio-intro .stp-tile:hover{transform:translateY(-2px);border-color:var(--sp-line2);box-shadow:0 14px 28px -14px rgba(0,0,0,.8)}
+html #page-studio-intro .stp-tile:active{transform:scale(.98)}
+html #page-studio-intro .stp-tile img{width:100%;height:96px;margin:0;border-radius:0;object-fit:cover;background:var(--sp-card2)}
+html #page-studio-intro .stp-tile b{margin:12px 12px 0;font-size:14.5px;font-weight:700;line-height:1.25;color:var(--sp-text)}
+html #page-studio-intro .stp-tile span{margin:3px 12px 13px;font-size:12px;line-height:1.35;color:var(--sp-muted)}
+html #page-studio-intro .stp-tile:first-child{grid-column:1/-1;flex-direction:row;align-items:stretch}
+html #page-studio-intro .stp-tile:first-child img{width:44%;height:auto;min-height:108px;flex:none}
+html #page-studio-intro .stp-tile:first-child b,html #page-studio-intro .stp-tile:first-child span{margin-left:14px;margin-right:14px}
+html #page-studio-intro .stp-tile:first-child b{margin-top:auto;font-size:16px}
+html #page-studio-intro .stp-tile:first-child span{margin-bottom:auto;font-size:12.5px}
+html #page-studio-intro .stp-featbox{margin:18px auto 0;padding:12px 14px;display:flex;align-items:center;gap:12px;border-radius:var(--sp-r);width:auto}
+html #page-studio-intro .stp-featbox>div:first-child i{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;background:rgba(59,102,232,.16);border:1px solid var(--sp-line2);font-size:15px}
+html #page-studio-intro .stp-featbox>div:first-child>div>div:first-child{font-size:14px!important;font-weight:700!important;color:var(--sp-text)}
+html #page-studio-intro .stp-featbox>div:first-child>div>div:last-child{font-size:12px!important;color:var(--sp-muted)!important}
+html #page-studio-intro .stp-featbox .ad-artists{margin-left:auto;display:flex;gap:8px;flex:none}
+html #page-studio-intro .stp-featbox .ad-art{width:42px;height:42px;border-radius:50%;overflow:hidden;border:2px solid var(--sp-line2);background:var(--sp-card2);padding:0;transition:transform .15s,border-color .15s}
+html #page-studio-intro .stp-featbox .ad-art:hover{transform:translateY(-2px);border-color:var(--sp-soft)}
+html #page-studio-intro .stp-featbox{margin-left:var(--sp-gut)!important;margin-right:var(--sp-gut)!important}
+@media (min-width:760px){html #page-studio-intro .stp-wrap>.stp-featbox{margin-left:auto!important;margin-right:auto!important}}
+html #page-studio-intro .stp-steps{gap:12px}
+html #page-studio-intro .stp-steps::before{left:17%;right:17%;top:27px;border-top:2px dashed var(--sp-line2)}
+html #page-studio-intro .stp-step{padding:0 2px}
+html #page-studio-intro .stp-sn{width:54px;height:54px;margin-bottom:10px;font-size:19px;background:var(--sp-card2);border:1px solid var(--sp-line2);color:var(--sp-soft);box-shadow:0 0 0 5px var(--sp-bg2)}
+html #page-studio-intro .stp-sn em{top:-4px;right:-4px;width:21px;height:21px;font-size:11px;background:var(--sp-accent);color:#fff;box-shadow:0 0 0 3px var(--sp-bg2)}
+html #page-studio-intro .stp-step b{font-size:15px;font-weight:700}
+html #page-studio-intro .stp-step span{font-size:12px;line-height:1.4;margin-top:4px;color:var(--sp-muted)}
+html #page-studio-intro .stp-made{padding-left:0;padding-right:0}
+html #page-studio-intro .stp-made .stp-how-h{padding:0 var(--sp-gut)}
+html #page-studio-intro .stp-mrow{padding:0 var(--sp-gut);gap:12px}
+html #page-studio-intro .stp-mc{flex-basis:132px}
+html #page-studio-intro .stp-mart{width:132px;height:132px;border-radius:12px;border:1px solid var(--sp-line)}
+html #page-studio-intro .stp-mc b{font-size:13px;margin-top:8px}
+html #page-studio-intro .stp-mc span{font-size:11.5px}
+html #page-studio-intro .stp-creator{margin-top:30px;padding:14px;gap:16px;border-radius:18px;
+  background:linear-gradient(135deg,var(--sp-card2),var(--sp-card) 70%);border:1px solid var(--sp-line);box-shadow:0 14px 30px -18px rgba(0,0,0,.8)}
+html #page-studio-intro .stp-creator .stp-cr-img img{border-radius:12px;max-height:200px}
+html #page-studio-intro .stp-ct{font-size:clamp(18px,5vw,24px);line-height:1.15}
+html #page-studio-intro .stp-ct .y3d{font-size:inherit!important}
+html #page-studio-intro .stp-ct .y3d:last-child{color:var(--sp-soft)!important;-webkit-text-fill-color:var(--sp-soft)!important}
+html #page-studio-intro .stp-ticks{gap:8px}
+html #page-studio-intro .stp-ticks li{font-size:13.5px;gap:9px}
+html #page-studio-intro .stp-ticks li::before{width:20px;height:20px;font-size:11px;background:rgba(59,102,232,.2);border:1px solid var(--sp-line2);color:var(--sp-soft)}
+html #page-studio-intro .stp-pgrid{gap:12px}
+html #page-studio-intro .stp-pc{padding:16px 14px;border-radius:var(--sp-r)}
+html #page-studio-intro .stp-pc h4{font-size:16px;font-weight:700}
+html #page-studio-intro .stp-pp{font-size:18px;font-weight:800;margin:6px 0 12px}
+html #page-studio-intro .stp-pp small{font-size:11.5px;font-weight:500;color:var(--sp-muted)}
+html #page-studio-intro .stp-pc ul{gap:9px}
+html #page-studio-intro .stp-pc li{font-size:12.5px;line-height:1.35;color:#dbe4ff}
+html #page-studio-intro .stp-pc li i{color:#4fd1a1}
+html #page-studio-intro .stp-pc li.no{opacity:.65}
+html #page-studio-intro .stp-pc.prem{background:linear-gradient(180deg,rgba(245,196,81,.09),var(--sp-card) 55%);border-color:rgba(245,196,81,.55)}
+html #page-studio-intro .stp-pc.prem h4 i{color:var(--sp-gold)}
+html #page-studio-intro .stp-pbtn{padding:12px 8px;border-radius:10px;font-size:13px;font-weight:800;background:var(--sp-gold);color:#1a1200;transition:filter .15s}
+html #page-studio-intro .stp-pbtn:hover{filter:brightness(1.07)}
+html #page-studio-intro .stp-faqs{gap:10px}
+html #page-studio-intro .stp-faqs details{border-radius:12px;box-shadow:none;transition:border-color .15s}
+html #page-studio-intro .stp-faqs details[open]{border-color:var(--sp-line2)}
+html #page-studio-intro .stp-faqs summary{padding:14px 14px;font-size:14px;font-weight:600}
+html #page-studio-intro .stp-faqs summary::after{width:24px;height:24px;font-size:16px;color:var(--sp-soft)}
+html #page-studio-intro .stp-faqs p{padding:0 14px 14px;font-size:13px;line-height:1.55}
+html #page-studio-intro .stp-foot{margin-top:10px;padding:16px var(--sp-gut) 0;flex-direction:column;align-items:stretch;gap:14px}
+html #page-studio-intro .stp-go{flex:none;width:100%;padding:16px 18px;border-radius:14px;font-size:16px;font-weight:700;letter-spacing:.01em;background:linear-gradient(180deg,var(--sp-accent),var(--sp-accent2));box-shadow:0 14px 28px -12px rgba(59,102,232,.8);transition:transform .12s,filter .15s}
+html #page-studio-intro .stp-go:hover{filter:brightness(1.08)}
+html #page-studio-intro .stp-skip{justify-content:center;font-size:13px}
+html #page-studio-intro .stp-tile:focus-visible,html #page-studio-intro .stp-mc:focus-visible,html #page-studio-intro .stp-go:focus-visible,html #page-studio-intro .stp-faqs summary:focus-visible{outline:2px solid var(--sp-soft);outline-offset:2px}
+@media (min-width:640px){html #page-studio-intro .stp-tiles{grid-template-columns:repeat(6,minmax(0,1fr))}html #page-studio-intro .stp-tile:first-child{grid-column:span 6}html #page-studio-intro .stp-tile:not(:first-child){grid-column:span 3}html #page-studio-intro .stp-tile img{height:110px}html #page-studio-intro .stp-foot{flex-direction:row;align-items:center}html #page-studio-intro .stp-go{flex:1 1 260px;width:auto}}
+@media (min-width:1200px){html #page-studio-intro .stp-tiles{grid-template-columns:repeat(5,minmax(0,1fr))}html #page-studio-intro .stp-tile:first-child,html #page-studio-intro .stp-tile:not(:first-child){grid-column:auto}html #page-studio-intro .stp-tile:first-child{flex-direction:column}html #page-studio-intro .stp-tile:first-child img{width:100%;height:130px;min-height:0}html #page-studio-intro .stp-tile:first-child b,html #page-studio-intro .stp-tile:first-child span{margin-left:12px;margin-right:12px}html #page-studio-intro .stp-tile:first-child b{margin-top:12px;font-size:14.5px}html #page-studio-intro .stp-tile:first-child span{margin-bottom:13px;font-size:12px}html #page-studio-intro .stp-tile img{height:130px}html #page-studio-intro .stp-steps{max-width:900px;margin:0 auto}}
+@media (prefers-reduced-motion:reduce){html #page-studio-intro *{transition:none!important}}
+html[data-mode="light"] #page-studio-intro{
+  --sp-bg1:#f4f7ff; --sp-bg2:#eef3ff; --sp-bg3:#e8eefc;
+  --sp-card:#ffffff; --sp-card2:#f6f8ff; --sp-line:rgba(40,64,140,.14); --sp-line2:rgba(40,64,140,.28);
+  --sp-text:#0f1a3d; --sp-muted:#55648f; --sp-accent:#2f59d1; --sp-accent2:#2548b0; --sp-soft:#2f59d1;
+  color:var(--sp-text);
+}
+html[data-mode="light"] #page-studio-intro .stp-tile,html[data-mode="light"] #page-studio-intro .stp-pc,html[data-mode="light"] #page-studio-intro .stp-featbox,html[data-mode="light"] #page-studio-intro .stp-creator,html[data-mode="light"] #page-studio-intro .stp-faqs details{box-shadow:0 8px 22px -14px rgba(30,50,120,.35)}
+html[data-mode="light"] #page-studio-intro .stp-pc li{color:#25335f}
+html[data-mode="light"] #page-studio-intro .stp-pc.prem{background:linear-gradient(180deg,rgba(245,196,81,.16),#fff 55%);border-color:rgba(214,158,30,.7)}
+html[data-mode="light"] #page-studio-intro .stp-pc li i{color:#14946a}
+html[data-mode="light"] #page-studio-intro .stp-sn{background:#fff}
+html[data-mode="light"] #page-studio-intro .stp-sn em{color:#fff}
+html[data-mode="light"] #page-studio-intro .stp-ticks li::before{background:rgba(47,89,209,.12)}
+html[data-mode="light"] #page-studio-intro .stp-faqs summary::after{background:#eaf0ff}
+html[data-mode="light"] #page-studio-intro .stp-skip input{background:#fff}
+html[data-mode="light"] #page-studio-intro .stp-hero-home::after{background:linear-gradient(180deg,transparent,rgba(10,19,48,.55))}
+html[data-mode="light"] #page-studio-intro .stp-hero-home .hero-sub{color:#fff}
+html[data-mode="light"] #page-studio-intro .stp-hero-home .hero-title em{color:#bcd0ff}
+html #page-studio-intro{
+  --sp-bg1:var(--bg); --sp-bg2:var(--bg); --sp-bg3:var(--bg);
+  --sp-card:var(--card); --sp-card2:var(--card2); --sp-line:var(--border); --sp-line2:var(--accent);
+  --sp-text:var(--text); --sp-muted:var(--muted); --sp-accent:var(--accent); --sp-accent2:var(--accent-dark); --sp-soft:var(--accent-light);
+  color:var(--text);
+  background:
+    radial-gradient(70% 38% at 85% 0%,var(--accent-dim),transparent 70%),
+    radial-gradient(60% 30% at 0% 42%,rgba(34,211,238,.08),transparent 70%),
+    var(--bg);
+}
+html #page-studio-intro .stp-hero-home::after{background:linear-gradient(180deg,transparent,var(--bg))}
+html #page-studio-intro .stp-hero-home .hero-tag{background:var(--neon-btn);border:0;color:#fff;box-shadow:0 6px 18px -6px var(--accent-glow)}
+html #page-studio-intro .stp-hero-home .hero-title{text-shadow:0 3px 0 rgba(0,0,0,.35),0 8px 24px rgba(0,0,0,.5)}
+html #page-studio-intro .stp-hero-home .hero-title em{background:var(--neon-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+html #page-studio-intro .stp-hero-home .hero-btn,html #page-studio-intro .stp-go,html #page-studio-intro .stp-pbtn{
+  background:var(--neon-btn);color:#fff;border:1.5px solid rgba(255,255,255,.28);border-radius:999px;
+  box-shadow:0 10px 26px -10px var(--accent-glow),inset 0 1px 0 rgba(255,255,255,.25);text-shadow:0 1px 2px rgba(0,0,0,.35)}
+html #page-studio-intro .stp-go{padding:15px 20px;font-weight:800}
+html #page-studio-intro .stp-pbtn{border-width:1.5px}
+html #page-studio-intro .stp-x{border-color:var(--border);background:rgba(5,7,18,.6)}
+html #page-studio-intro .stp-tile,html #page-studio-intro .stp-pc,html #page-studio-intro .stp-faqs details,html #page-studio-intro .stp-featbox,html #page-studio-intro .stp-creator,html #page-studio-intro .stp-mart{
+  background:linear-gradient(135deg,var(--card),var(--surface,var(--bg)));
+  border:1px solid var(--border);
+  box-shadow:0 10px 26px -16px var(--accent-glow),inset 0 0 0 1px rgba(255,255,255,.02)}
+html #page-studio-intro .stp-tile:hover,html #page-studio-intro .stp-faqs details[open]{border-color:var(--accent);box-shadow:0 14px 30px -14px var(--accent-glow)}
+html #page-studio-intro .stp-tile b{color:var(--text)}
+html #page-studio-intro .stp-tile span,html #page-studio-intro .stp-step span,html #page-studio-intro .stp-mc span,html #page-studio-intro .stp-faqs p,html #page-studio-intro .stp-skip{color:var(--muted)}
+html #page-studio-intro .stp-tile img{border-bottom:1px solid var(--border)}
+html #page-studio-intro .stp-tile:first-child img{border-bottom:0;border-right:1px solid var(--border)}
+html #page-studio-intro .stp-featbox>div:first-child i{background:var(--accent-dim);border-color:var(--accent);color:var(--accent-light)!important}
+html #page-studio-intro .stp-what,html #page-studio-intro .stp-how-h{display:flex;align-items:center;gap:12px}
+html #page-studio-intro .stp-what::after,html #page-studio-intro .stp-how-h::after{content:"";display:block;transform:none;flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--accent),transparent);opacity:.7}
+html #page-studio-intro .stp-how-h{padding:0}
+html #page-studio-intro .stp-steps::before{border-top-color:var(--accent);opacity:.5}
+html #page-studio-intro .stp-sn{background:var(--card2);border:1.5px solid var(--accent);color:var(--accent-light);box-shadow:0 0 0 5px var(--bg),0 0 18px -4px var(--accent-glow)}
+html #page-studio-intro .stp-sn em{background:var(--neon-btn);box-shadow:0 0 0 3px var(--bg)}
+html #page-studio-intro .stp-ticks li::before{background:var(--neon-btn);border:0;color:#fff}
+html #page-studio-intro .stp-ct .y3d:last-child{color:inherit!important}
+html #page-studio-intro .stp-pc.prem{border-color:var(--gold);background:linear-gradient(180deg,var(--gold-dim),var(--card) 60%)}
+html #page-studio-intro .stp-pc.prem .stp-pbtn{background:linear-gradient(100deg,#ffb300,#ffd466);color:#1a1200;border-color:rgba(255,255,255,.4);text-shadow:none}
+html #page-studio-intro .stp-faqs summary{color:var(--text)}
+html #page-studio-intro .stp-faqs summary::after{background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent-light)}
+html #page-studio-intro .stp-skip input{border-color:var(--accent)}
+html #page-studio-intro .stp-skip input:checked{background:var(--neon-btn);border-color:var(--accent-light)}
+html[data-mode="light"] #page-studio-intro{background:radial-gradient(70% 38% at 85% 0%,var(--accent-dim),transparent 70%),var(--bg)}
+html[data-mode="light"] #page-studio-intro .stp-pc li,html[data-mode="light"] #page-studio-intro .stp-ticks li{color:var(--text)}
 </style>
 <script id="studio-intro-js">
 (function(){
@@ -34054,6 +34691,7 @@ html #page-studio-intro .stp-skip input:checked{background:var(--sp-accent);bord
   };
   window.studioIntroClose=function(){navigate('home');updateBottomNav('home')};
   window.studioIntroTile=function(k){
+    if(k==='record'||k==='edit'){openProducer();return}
     if(k==='songs'&&window.openSongCreator){window.openSongCreator();return}
     if(k==='publish'){try{navigate('upload');updateBottomNav('upload')}catch(e){navigate('upload')}return}
     window.studioIntroStart();
@@ -34085,7 +34723,7 @@ html #page-studio-intro .stp-skip input:checked{background:var(--sp-accent);bord
     box.style.display='';
   }
   document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('#stpPlanBtn')&&window.openSubscriptionModal)window.openSubscriptionModal()});
-  setInterval(function(){var p=document.getElementById('page-studio-intro');if(p&&p.classList.contains('active')){madeRender();plansRender()}},1500);
+  setInterval(function(){if(document.hidden)return;var p=document.getElementById('page-studio-intro');if(p&&p.classList.contains('active')){madeRender();plansRender()}},1500);
   document.addEventListener('DOMContentLoaded',plansRender);
   document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('#page-studio-intro .stp-tile[data-go]');if(t)window.studioIntroTile(t.dataset.go)});
   document.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var t=e.target.closest&&e.target.closest('#page-studio-intro .stp-tile[data-go]');if(t){e.preventDefault();window.studioIntroTile(t.dataset.go)}});
@@ -34703,7 +35341,7 @@ html[data-mode="light"] #miniBubble .mc-eq{background:rgba(255,255,255,.85)}
     scr.classList.toggle('vinyl-spin', !!isPlaying);
     paintVol();
   }
-  setInterval(sync, 250);
+  setInterval(function(){ if(!document.hidden) sync(); }, 250);
   new MutationObserver(function () { lastId = null; sync(); }).observe(scr, { attributes: true, attributeFilter: ['class'] });
 
   /* keyboard access for the icon-style controls */
