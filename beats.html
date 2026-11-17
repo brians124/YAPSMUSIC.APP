@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050b22">
+<title>YAPS Beat Store | Find beats from Ugandan producers</title>
+<meta name="description" content="Listen to beats made by producers on YAPS Music and contact them to use or buy a beat.">
+<style>
+:root{color-scheme:dark;--bg:#050b22;--card:#0e1a45;--bd:#27407f;--tx:#eef4ff;--mu:#9db4e6;--cy:#22d3ee;--gr:#19e68c;--pu:#8b5cf6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root{--bg:#eef4ff;--card:#fff;--bd:#b9c9ee;--tx:#0b1536;--mu:#4a5f93;color-scheme:light}}
+*,*:before,*:after{box-sizing:border-box;margin:0}
+body{font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:radial-gradient(800px 420px at 90% -10%,rgba(139,92,246,.35),transparent 60%),radial-gradient(700px 420px at 0 100%,rgba(25,230,140,.18),transparent 60%),var(--bg);color:var(--tx);min-height:100dvh;padding:14px}
+.wrap{max-width:980px;margin:0 auto}
+header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+a.back{color:var(--cy);text-decoration:none;font-weight:700;border:1px solid var(--bd);border-radius:12px;padding:8px 12px}
+h1{font-size:26px;line-height:1.15}h1 small{display:block;font-size:13px;font-weight:500;color:var(--mu)}
+.f{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px 0}
+.f input,.f select{width:100%;min-height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:0 12px;font:inherit}
+.f input.s{grid-column:1/-1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.cv{aspect-ratio:16/9;background:linear-gradient(135deg,var(--pu),var(--gr));background-size:cover;background-position:center}
+.b{padding:12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.b h2{font-size:17px;word-break:break-word}.by{color:var(--mu);font-size:13px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chips span{font-size:12px;border:1px solid var(--cy);color:var(--cy);border-radius:999px;padding:1px 9px}
+audio{width:100%;margin-top:4px}
+.go{margin-top:auto;display:block;text-align:center;text-decoration:none;font-weight:800;border-radius:12px;padding:12px;background:var(--gr);color:#031a10}
+.go.no{background:transparent;border:1px dashed var(--bd);color:var(--mu);font-weight:500}
+#st{color:var(--mu);margin:16px 0;text-align:center}
+.note{color:var(--mu);font-size:13px;margin-top:18px}
+@media(max-width:560px){.f{grid-template-columns:1fr 1fr}.f select{grid-column:1/-1}}
+</style></head><body><div class="wrap">
+<header><a class="back" href="producer.html" aria-label="Back to the producer">&larr; Producer</a>
+<h1>YAPS Beat Store<small>Beats from producers on YAPS Music. Listen, then contact the producer.</small></h1></header>
+<div class="f" role="search">
+ <input class="s" id="q" type="search" placeholder="Search by title, producer or style" aria-label="Search beats">
+ <input id="b1" type="number" inputmode="numeric" placeholder="BPM from" aria-label="BPM from">
+ <input id="b2" type="number" inputmode="numeric" placeholder="BPM to" aria-label="BPM to">
+ <select id="k" aria-label="Key"><option value="">Any key</option></select>
+</div>
+<div id="st" role="status" aria-live="polite">Loading beats…</div>
+<div class="grid" id="g"></div>
+<p class="note">Producers publish a beat from the YAPS Music Producer by ticking "This is a beat for artists" and adding a contact. Agree the price and the rights directly with the producer.</p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SB_URL='https://wnpqikufnwyiivrqfktk.supabase.co',SB_KEY='sb_publishable_1Dc7Ag-ZqsqJsgETEkxi5Q_VcG1w0XJ',TAG='beat-for-artists';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const NN=['C','D\u266d','D','E\u266d','E','F','F\u266f','G','A\u266d','A','B\u266d','B'];
+$('k').innerHTML+=NN.map(n=>'<option>'+n+' major</option><option>'+n+' minor</option>').join('');
+let beats=[];
+const isBeat=r=>(Array.isArray(r.tags)&&r.tags.map(String).includes(TAG))||/Beat for artists/i.test(String(r.description||''));
+function parse(r){const d=String(r.description||''),tags=Array.isArray(r.tags)?r.tags.map(String):[];let bpm=0;
+ tags.forEach(t=>{const m=/^(\d{2,3})bpm$/i.exec(t);if(m)bpm=+m[1]});
+ if(!bpm){const m=/(\d{2,3}) BPM/.exec(d);if(m)bpm=+m[1]}
+ const km=/Key:\s*([A-G][\u266d\u266f]?\s(?:major|minor))/.exec(d),cm=/Contact:\s*(\S+)/i.exec(d),pm=/Produced by ([^\u00b7\n]+)/i.exec(d);
+ return{bpm,key:km?km[1]:'',contact:cm?cm[1]:'',producer:((pm&&pm[1].trim())||r.creator_name||'').toString()}}
+function link(c,title){if(!c)return '';
+ if(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c))return 'mailto:'+c+'?subject='+encodeURIComponent('Your beat on YAPS: '+title);
+ let d=c.replace(/\D/g,'');if(d.length===10&&d[0]==='0')d='256'+d.slice(1);
+ return(d.length>=8&&d.length<=15)?'https://wa.me/'+d+'?text='+encodeURIComponent('Hi, I found your beat "'+title+'" on YAPS Beat Store.'):''}
+function draw(){const q=$('q').value.trim().toLowerCase(),b1=+$('b1').value||0,b2=+$('b2').value||0,k=$('k').value;
+ const list=beats.filter(x=>{const p=x.p;if(b1&&(!p.bpm||p.bpm<b1))return false;if(b2&&(!p.bpm||p.bpm>b2))return false;if(k&&p.key!==k)return false;
+  if(q&&!(String(x.r.title||'')+' '+p.producer+' '+(x.r.genre||'')+' '+(Array.isArray(x.r.tags)?x.r.tags.join(' '):'')).toLowerCase().includes(q))return false;return true});
+ $('st').textContent=!beats.length?'No beats have been published yet. Be the first from the YAPS Studio.':(list.length?list.length+' beat'+(list.length>1?'s':''):'No beats match those filters.');
+ $('g').innerHTML=list.map(({r,p})=>{const t=String(r.title||'Untitled beat'),href=link(p.contact,t),au=/^https:\/\//.test(r.audio_url||'')?r.audio_url:'',cv=/^https:\/\//.test(r.cover_url||'')?r.cover_url:'';
+  return '<article class="c"><div class="cv"'+(cv?' style="background-image:url(\''+esc(cv).replace(/'/g,'%27')+'\')"':'')+'></div><div class="b"><h2>'+esc(t)+'</h2>'+(p.producer?'<div class="by">Produced by '+esc(p.producer)+'</div>':'')+
+   '<div class="chips">'+(p.bpm?'<span>'+p.bpm+' BPM</span>':'')+(p.key?'<span>'+esc(p.key)+'</span>':'')+(r.genre?'<span>'+esc(r.genre)+'</span>':'')+'</div>'+
+   (au?'<audio controls preload="none" src="'+esc(au)+'"></audio>':'<div class="by">No preview available</div>')+
+   (href?'<a class="go" target="_blank" rel="noopener noreferrer" href="'+esc(href)+'">Contact producer</a>':'<span class="go no">No contact given</span>')+'</div></article>'}).join('')}
+async function load(){
+ try{if(!window.supabase)throw new Error('The beat list could not load. Check your connection.');
+  const sb=supabase.createClient(SB_URL,SB_KEY);
+  let r=await sb.from('mixes').select('*').eq('visibility','public').contains('tags',[TAG]).order('created_at',{ascending:false}).limit(200),rows;
+  if(r.error){r=await sb.from('mixes').select('*').eq('visibility','public').order('created_at',{ascending:false}).limit(300);if(r.error)throw r.error;rows=(r.data||[]).filter(isBeat)}else rows=r.data||[];
+  beats=rows.map(r=>({r,p:parse(r)}));draw()}
+ catch(e){$('st').textContent='Could not load beats: '+(e&&e.message||e)}}
+['q','b1','b2'].forEach(i=>$(i).addEventListener('input',draw));$('k').addEventListener('change',draw);
+load();
+</script></body></html>
