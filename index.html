@@ -6639,6 +6639,16 @@ html[data-theme="aurora"] #page-community .cc-msg.me .cc-b,html:not([data-theme]
 #page-community .cc-jbtn.joined{border-color:rgba(var(--au-rgb),.45);box-shadow:none;background:rgba(var(--au-rgb),.06);color:var(--muted)}
 #page-community .cc-jbtn:disabled{opacity:.5;cursor:default}
 @media (max-width:480px){#page-community .cc-live span{display:none}#page-community .cc-jbtn{padding:8px 14px}#page-community .cc-jbtn i,#page-community .cc-jbtn .cc-lg{display:none}#page-community .cc-head{gap:9px;padding:10px 12px}}
+#page-community .cc-back{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:16px;color:var(--text);background:var(--card);border:1px solid var(--border);cursor:pointer;-webkit-tap-highlight-color:transparent}
+#page-community .cc-back:active{transform:scale(.92)}
+/* Phones: the app nav floats over the bottom of the screen, so the chat is sized to the visible area and keeps the composer above the nav */
+@media (max-width:768px){
+  #page-community .cc-app{box-sizing:border-box;height:calc(var(--vh,1vh)*100 - var(--topbar-h,0px));height:calc(100dvh - var(--topbar-h,0px));padding-bottom:calc(68px + env(safe-area-inset-bottom,0px))}
+  html #main:has(#page-community.active){padding-bottom:0!important;overflow:hidden!important}
+  html.kb-open #page-community .cc-app{padding-bottom:0}
+  #page-community .cc-form{padding-bottom:max(10px,env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:480px){#page-community .cc-ico{display:none}}
 #page-community .cc-pin[hidden]{display:none}
 #page-community .cc-pin{flex:none;display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--border);background:linear-gradient(90deg,var(--accent-dim),transparent)}
 #page-community .cc-pin img{width:40px;height:40px;border-radius:9px;object-fit:cover;flex:none}
@@ -8527,11 +8537,13 @@ a.djx-row{color:inherit;text-decoration:none}
     <section class="page" id="page-ai-dj" aria-label="YAPS AI chat">
       <div class="yai-wrap">
         <header class="yai-head">
+          <button type="button" class="yai-icon-btn yai-back" aria-label="Go back" onclick="window.yapsGoBack&&window.yapsGoBack()"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
           <div class="yai-orb" id="yaiOrb" data-state="idle" aria-hidden="true"><span class="yai-orb-core"></span><span class="yai-orb-ring"></span></div>
           <div class="yai-head-text"><h2>YAPS AI</h2><div class="yai-status" id="yaiStatus" aria-live="polite">Ready when you are</div></div>
           <span class="yai-live"><i></i><span>Online</span></span>
           <button type="button" class="yai-icon-btn" onclick="clearDJChat()" title="Start a new chat" aria-label="Start a new chat"><i class="fas fa-rotate-left"></i></button>
         </header>
+        <div class="chat-off" role="status"><i class="fas fa-wifi" aria-hidden="true"></i><span>You're offline. Some features may be limited.</span><button type="button" onclick="window.openOfflineOptions&amp;&amp;openOfflineOptions()">Options</button></div>
         <div class="yai-chips" role="group" aria-label="Quick prompts"><button type="button" class="dj-prompt-chip new" data-q="What can you do?" onclick="sendDJPrompt(this.dataset.q)">What can you do?</button><button type="button" class="dj-prompt-chip" data-q="Songs like Yoyo" onclick="sendDJPrompt(this.dataset.q)">Songs like Yoyo</button><button type="button" class="dj-prompt-chip" data-q="Where are my downloads?" onclick="sendDJPrompt(this.dataset.q)">Where are my downloads?</button><button type="button" class="dj-prompt-chip" data-q="How do I make a song?" onclick="sendDJPrompt(this.dataset.q)">How do I make a song?</button><button type="button" class="dj-prompt-chip" data-q="Open settings" onclick="sendDJPrompt(this.dataset.q)">Open settings</button><button type="button" class="dj-prompt-chip" data-q="Chill Sunday vibes" onclick="sendDJPrompt(this.dataset.q)">Chill Sunday vibes</button><button type="button" class="dj-prompt-chip" data-q="Hype me up" onclick="sendDJPrompt(this.dataset.q)">Hype me up</button><button type="button" class="dj-prompt-chip" data-q="Kampala nights" onclick="sendDJPrompt(this.dataset.q)">Kampala nights</button><button type="button" class="dj-prompt-chip" data-q="What's new" onclick="sendDJPrompt(this.dataset.q)">What's new</button></div>
         <div class="dj-chat-area" id="djChatArea" role="log" aria-live="polite">
           <div class="dj-message"><div class="dj-msg-avatar"></div><div class="dj-msg-bubble">Sssup! I'm YAPS AI, built right into the app. Ask me for music by mood, artist or length, or ask how to do anything in YAPSMusic and I'll show you.</div></div>
@@ -8615,6 +8627,7 @@ a.djx-row{color:inherit;text-decoration:none}
             <div class="msg-chat-action-btn" onclick="yapsChatMenu()" title="Report or block" aria-label="Report or block"><i class="fas fa-ellipsis-vertical"></i></div>
           </div>
         </div>
+        <div class="chat-off" role="status"><i class="fas fa-wifi" aria-hidden="true"></i><span>You're offline. Messages may not send until you're back online.</span><button type="button" onclick="window.openOfflineOptions&amp;&amp;openOfflineOptions()">Options</button></div>
         <div class="msg-chat-body" id="chatBody"></div>
 
         <!-- Attach menu: Photo / Video / Song -->
@@ -8848,12 +8861,15 @@ a.djx-row{color:inherit;text-decoration:none}
     <section class="page" id="page-community" aria-label="Community chat">
       <div class="cc-app" id="ccApp">
         <div class="cc-head">
-          <span class="cc-ico"><i class="fas fa-comments"></i></span>
+          <button type="button" class="cc-back" id="ccBack" aria-label="Go back" onclick="window.yapsGoBack&&window.yapsGoBack()"><i class="fas fa-arrow-left" aria-hidden="true"></i></button>
+          <span class="cc-ico" id="ccIco"><i class="fas fa-comments"></i></span>
           <div class="cc-t"><b id="ccTitle">Community Chat</b><span id="ccSub">Open to artists, DJs and listeners: talk about any artist, DJ or song</span></div>
           <span class="cc-live off" id="ccLive"><i></i><span>Connecting</span></span>
           <button class="cc-jbtn" id="ccJoin" type="button" aria-label="Join community"><i class="fas fa-user-plus"></i><b>Join<span class="cc-lg"> Community</span></b></button>
         </div>
         <div class="cc-note" id="ccNote" hidden>Preview mode: messages are saved on this device only.</div>
+        <div class="chat-off" role="status"><i class="fas fa-wifi" aria-hidden="true"></i><span>You're offline. Messages may not send until you're back online.</span><button type="button" onclick="window.openOfflineOptions&amp;&amp;openOfflineOptions()">Options</button></div>
+        <section class="cc-prof" id="ccProf" hidden aria-label="Profile"></section>
         <div class="cc-pin" id="ccPin" hidden></div>
         <div class="cc-log" id="ccLog" role="log" aria-live="polite" aria-label="Messages"></div>
         <div class="cc-pick" id="ccPick" hidden>
@@ -8861,8 +8877,13 @@ a.djx-row{color:inherit;text-decoration:none}
           <input type="search" id="ccPickQ" placeholder="Search a song or artist, or type your own request" aria-label="Search songs" autocomplete="off">
           <div class="cc-pick-l" id="ccPickL"></div>
         </div>
+        <div class="cc-emoji" id="ccEmoji" hidden role="group" aria-label="Emoji"></div>
         <form class="cc-form" id="ccForm" autocomplete="off">
-          <button type="button" class="cc-req" id="ccReq" hidden aria-label="Request a song" title="Request a song for the DJ"><i class="fas fa-music"></i></button>
+          <div class="cc-tools" id="ccTools" role="toolbar" aria-label="Chat tools">
+            <button type="button" class="cc-tool" id="ccEmo" aria-label="Emoji" aria-pressed="false"><i class="far fa-face-smile" aria-hidden="true"></i> Emoji</button>
+            <button type="button" class="cc-tool" id="ccNow" aria-label="Share the song I am playing"><i class="fas fa-headphones" aria-hidden="true"></i> Share song</button>
+            <button type="button" class="cc-tool cc-req" id="ccReq" hidden aria-label="Request a song" title="Request a song for the DJ"><i class="fas fa-music" aria-hidden="true"></i> Request song</button>
+          </div>
           <textarea class="cc-input" id="ccInput" rows="1" maxlength="1000" placeholder="Type a message…" aria-label="Type a message" enterkeyhint="send"></textarea>
           <button class="cc-send" id="ccSend" type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
         </form>
@@ -11959,7 +11980,10 @@ function _yapsRole() {
   const t = _demoUser && _demoUser.accountType;
   return (t === 'artist' || t === 'dj' || t === 'producer' || t === 'promoter') ? t : 'listener';
 }
+// Set to true to limit each account type to its own pages again (see YAPS_ACCESS). false = everyone gets everything.
+const YAPS_LIMIT_BY_ACCOUNT = false;
 function _yapsCan(feature) {
+  if (!YAPS_LIMIT_BY_ACCOUNT) return true;
   try { if (typeof _isOwner === 'function' && _isOwner()) return true; } catch (e) {}   // the app owner sees everything
   const allow = YAPS_ACCESS[feature];
   return !allow || allow.indexOf(_yapsRole()) >= 0;
@@ -12007,6 +12031,7 @@ setTimeout(_yapsApplyAccess, 1500); setTimeout(_yapsApplyAccess, 5000);
 
 /* ── ARTIST-ONLY UPLOADS: only accounts registered as Artist can upload songs ── */
 function _isArtistAccount() {
+  if (typeof YAPS_LIMIT_BY_ACCOUNT !== 'undefined' && !YAPS_LIMIT_BY_ACCOUNT) return true;
   return !!(_demoUser && _demoUser.accountType === 'artist');
 }
 function openArtistRegistration() {
@@ -21741,16 +21766,30 @@ function _qvpSongs(v) {
 const _QVP_TILE_BG = ['linear-gradient(135deg,#19e68c,#3b6bff)','linear-gradient(135deg,#3b6bff,#a64bff)','linear-gradient(135deg,#a64bff,#e040fb)','linear-gradient(135deg,#00c6ff,#19e68c)'];
 // Cover = collage of real song artwork. If a picture fails to load it is removed and the coloured tile with the song's initial shows instead.
 function _qvpCoverHTML(v) {
-  const songs = _qvpSongs(v);
-  if (!songs.length) {
-    return `<span class="qvp-grid-art n1"><span class="qvp-tile" style="background:${_QVP_TILE_BG[0]}"><i class="fas fa-music"></i></span></span>`;
+  // Every Quick Vibe shows REAL artwork so people can tell what is inside it:
+  // 1) covers of its songs  2) pictures of its featured artists  3) a generated cover with the vibe's initials.
+  // A picture that fails to load is swapped for a generated cover (never an empty gradient tile).
+  const seen = new Set(), pics = [];
+  const add = (title, artist, src) => {
+    const key = src ? String(src) : ('gen:' + title + '|' + artist);
+    if (seen.has(key) || pics.length >= 4) return;
+    seen.add(key); pics.push({ title: title || v.title, artist: artist || '', src: src || '' });
+  };
+  _qvpSongs(v).forEach(t => add(t.title, t.artist, t.img));
+  if (pics.length < 2) {
+    (v.artistNames || []).forEach(n => {
+      const a = (typeof artists !== 'undefined' && Array.isArray(artists)) ? artists.find(x => x && x.name === n) : null;
+      if (a && a.img) add(a.name, '', a.img);
+    });
   }
-  const tiles = songs.map((t, i) => {
-    const letter = _qvpEsc(String(t.title || '?').trim().charAt(0).toUpperCase() || '?');
-    const src = t.img ? `<img src="${_qvpEsc(encodeURI(String(t.img)))}" alt="" loading="lazy" decoding="async" onerror="this.remove()">` : '';
-    return `<span class="qvp-tile" style="background:${_QVP_TILE_BG[i % _QVP_TILE_BG.length]}"><b>${letter}</b>${src}</span>`;
+  if (!pics.length) add(v.title, 'Quick Vibes', '');
+  const tiles = pics.map(p => {
+    const t = _qvpEsc(p.title), a = _qvpEsc(p.artist);
+    const cov = window._yapsCover ? window._yapsCover(p.title, p.artist) : '';
+    const src = p.src ? _qvpEsc(encodeURI(String(p.src))) : cov;
+    return `<span class="qvp-tile"><img src="${src}" data-t="${t}" data-a="${a}" alt="" loading="eager" decoding="async" onerror="window._yapsImgErr&&window._yapsImgErr(this)"></span>`;
   }).join('');
-  return `<span class="qvp-grid-art n${songs.length}">${tiles}</span>`;
+  return `<span class="qvp-grid-art n${pics.length}">${tiles}</span>`;
 }
 function _qvpMatchesCat(v, cat) {
   if (cat === 'All') return true;
@@ -21771,6 +21810,19 @@ function _qvpSyncChips() {
   const active = document.querySelector('#qvpFilters .qvp-chip[aria-selected="true"]');
   if (panel && active) panel.setAttribute('aria-labelledby', active.id);
 }
+// Up to 3 songs per vibe, each tappable (plays that exact song) with its own small cover.
+function _qvpSongRows(v) {
+  const list = _qvpSongs(v).slice(0, 3);
+  const rows = list.map(t => {
+    const idx = tracks.indexOf(t);
+    const ti = _qvpEsc(t.title), ar = _qvpEsc(t.artist || '');
+    const cov = window._yapsCover ? window._yapsCover(t.title, t.artist || '') : '';
+    const src = t.img ? _qvpEsc(encodeURI(String(t.img))) : cov;
+    return `<button type="button" class="qvp-song" data-ti="${idx}" aria-label="Play ${ti}${ar ? ' by ' + ar : ''}"><img src="${src}" data-t="${ti}" data-a="${ar}" alt="" loading="lazy" decoding="async" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><span class="qvp-st"><b>${ti}</b><em>${ar}</em></span></button>`;
+  }).join('');
+  const more = (v.tracks || 0) - list.length;
+  return rows + (more > 0 ? `<div class="qvp-more">+${more} more songs</div>` : '');
+}
 function renderQuickVibesPage() {
   const grid = document.getElementById('qvpGrid');
   if (!grid) return;
@@ -21780,7 +21832,7 @@ function renderQuickVibesPage() {
     const n = v.tracks + (v.tracks === 1 ? ' track' : ' tracks');
     return `<li class="qvp-card" data-id="${_qvpEsc(v.id)}">
       <div class="qvp-media">${_qvpCoverHTML(v)}<span class="qvp-play" aria-hidden="true"><i class="fas fa-play"></i></span></div>
-      <div class="qvp-info"><div class="qvp-name">${name}</div><div class="qvp-meta">${n}</div><div class="qvp-songs">${_qvpEsc(_qvpSongs(v).map(t => t.title).slice(0, 3).join(' · '))}</div></div>
+      <div class="qvp-info"><div class="qvp-name">${name}</div><div class="qvp-meta">${n}</div><div class="qvp-songs">${_qvpSongRows(v)}</div></div>
       <button type="button" class="qvp-open" aria-label="Play ${name}, ${n}"></button>
     </li>`;
   }).join('');
@@ -21833,6 +21885,8 @@ function _qvpBind() {
     n.focus(); n.click();
   });
   document.getElementById('qvpGrid').addEventListener('click', e => {
+    const sb = e.target.closest('.qvp-song');
+    if (sb) { e.stopPropagation(); const ti = parseInt(sb.dataset.ti, 10); if (ti >= 0 && tracks[ti]) playTrack(ti); return; }
     const card = e.target.closest('.qvp-card'); if (!card) return;
     openQuickVibe(card.dataset.id);
   });
@@ -21871,6 +21925,7 @@ function _qvpOnShow() {
   _qvpBind();
   _qvpSyncChips();
   renderQuickVibesPage();
+  setTimeout(() => { if (currentPage === 'quickvibes') renderQuickVibesPage(); }, 1500);
   const hdr = document.getElementById('qvpHeader'), page = document.getElementById('page-quickvibes');
   if (hdr && page && hdr.offsetHeight) page.style.setProperty('--qvp-head-h', hdr.offsetHeight + 'px');
 }
@@ -33000,8 +33055,8 @@ function rowHtml(m) {
   if (!last || dayKey(last.t) !== dayKey(t)) html += '<div class="cc-day">' + esc(dayLabel(t)) + "</div>";
   var cont = !!(last && last.uid === u.id && dayKey(last.t) === dayKey(t) && t - last.t < 5 * 60000);
   last = { uid: u.id, t: t };
-  return html + '<div class="cc-msg' + (mine ? " me" : "") + (cont ? " cont" : "") + '" data-id="' + esc(m.id) + '">' + (mine ? "" : avatar(u)) +
-    '<div class="cc-b' + (/^\uD83C\uDFB5/.test(m.body) ? " req" : "") + '"><div class="cc-nm">' + esc(u.name) + (u.role && u.role !== "fan" ? ' <span class="cc-role">' + (u.role === "dj" ? "DJ" : "Artist") + "</span>" : "") + "</div>" +
+  return html + '<div class="cc-msg' + (mine ? " me" : "") + (cont ? " cont" : "") + '" data-id="' + esc(m.id) + '" data-uid="' + esc(u.id || "") + '">' + (mine ? "" : avatar(u)) +
+    '<div class="cc-b' + (/^\uD83C\uDFB5/.test(m.body) ? " req" : /^\uD83C\uDFA7 Now playing:/.test(m.body) ? " np" : "") + '"><div class="cc-nm">' + esc(u.name) + (ROOM_UID && cleanId(u.id) === ROOM_UID ? ' <span class="cc-role cc-host">Host</span>' : u.role && u.role !== "fan" ? ' <span class="cc-role">' + (u.role === "dj" ? "DJ" : "Artist") + "</span>" : "") + "</div>" +
     '<div class="cc-tx">' + linkify(m.body) + '</div><div class="cc-tm">' + esc(hm(t)) + "</div></div></div>";
 }
 function add(rows, force) {
@@ -33036,6 +33091,7 @@ function paintJoin() {
   b.setAttribute("aria-label", (S.joined ? "Leave" : "Join") + nm.toLowerCase());
   b.innerHTML = S.joined ? '<i class="fas fa-right-from-bracket"></i><b>Leave<span class="cc-lg">' + nm + '</span></b>' : '<i class="fas fa-' + (isHub() ? "headphones" : "user-plus") + '"></i><b>Join<span class="cc-lg">' + nm + '</span></b>';
   $("ccSub").textContent = BASE_SUB + (members != null ? " · " + members.toLocaleString() + (members === 1 ? " member" : " members") : "");
+  var pm = $("ccPMem"); if (pm) pm.textContent = members != null ? members.toLocaleString() : "\u2013";
 }
 async function toggleJoin() {
   if (!S.me) { signIn(); return; }
@@ -33050,6 +33106,128 @@ async function toggleJoin() {
   b.disabled = false;
 }
 async function autoJoin() { if (S.joined || S.left || !S.me || creatorInHub() || (S.live && !S.me.real)) return; try { await API.setJoined(true); S.joined = true; if (members != null) members++; paintJoin(); } catch (e) {} }
+
+/* ── artist / DJ profile shown on the room (photo in the header + profile card under it) ── */
+var ROOM_UID = "", ROOM_NAME = "", profInfo = null;
+function cleanId(v) { return String(v || "").toLowerCase().replace(/[^a-z0-9-]/g, ""); }
+function normKey(n) { return String(n || "").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 60); }
+function safeImg(u) { u = String(u || ""); return /^(https?:\/\/|images\/|data:image\/)/i.test(u) ? u : ""; }
+function trackNum(p) { var s = String(p == null ? "" : p).trim(), n = parseFloat(s.replace(/[KM]/gi, "")); if (isNaN(n)) return 0; return /m/i.test(s) ? n * 1e6 : /k/i.test(s) ? n * 1e3 : n; }
+function fmtNum(n) { return n >= 1e6 ? (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M" : n >= 1e3 ? Math.round(n / 1e3) + "K" : String(Math.round(n)); }
+function roomInfo() {
+  var m = /^(artist|dj)-u-([a-z0-9-]+)$/.exec(COMMUNITY);
+  if (m) return { kind: m[1], uid: m[2] };
+  m = /^artist-([a-z0-9_-]+)$/.exec(COMMUNITY);
+  if (m) return { kind: "artist", key: m[1].replace(/[^a-z0-9]/g, "") };
+  return null;
+}
+function findArtist(info, name) {
+  var list = (typeof artists !== "undefined" && artists) ? artists : [], i, n = normKey(name);
+  if (info && info.uid) for (i = 0; i < list.length; i++) if (list[i]._account && cleanId(list[i]._account.id) === info.uid) return list[i];
+  if (info && info.key) for (i = 0; i < list.length; i++) if (normKey(list[i].name) === info.key) return list[i];
+  if (n) for (i = 0; i < list.length; i++) if (normKey(list[i].name) === n) return list[i];
+  return null;
+}
+function artistStats(a) {
+  var list = (typeof tracks !== "undefined" && tracks) ? tracks : [], re = null, mine = [], i;
+  try { re = _artistMatchRegex(a.name); } catch (e) {}
+  if (re) for (i = 0; i < list.length; i++) { var t = list[i]; if (t && re.test(String(t.artist || "").toLowerCase())) mine.push(t); }
+  var plays = 0, g = {};
+  mine.forEach(function (t) { plays += trackNum(t.plays); if (t.genre) g[t.genre] = (g[t.genre] || 0) + 1; });
+  return {
+    count: mine.length, plays: plays,
+    genres: Object.keys(g).sort(function (x, y) { return g[y] - g[x]; }).slice(0, 3),
+    top: mine.slice().sort(function (x, y) { return trackNum(y.plays) - trackNum(x.plays); }).slice(0, 3)
+  };
+}
+function infoFromArtist(a) {
+  var bio = (typeof artistBios !== "undefined" && artistBios[a.name]) || (a._fromAccount && a.bio) || "";
+  return { kind: "artist", name: a.name, img: safeImg(a.img), bio: bio, followers: a.followers, st: artistStats(a), follow: a.name, uid: a._account ? cleanId(a._account.id) : "" };
+}
+async function infoFromAccount(kind, uid) {
+  var c = getSb(), u = null, cols = ["id,username,full_name,avatar_url,account_type,bio", "id,username,full_name,avatar_url,account_type"], i;
+  if (!c || !uid) return null;
+  for (i = 0; i < cols.length && !u; i++) {
+    try { var r = await c.from("yaps_profiles").select(cols[i]).eq("id", uid).maybeSingle(); if (!r.error && r.data) u = r.data; } catch (e) {}
+  }
+  if (!u) return null;
+  var t = String(u.account_type || "").toLowerCase();
+  return { kind: t === "dj" ? "dj" : t === "promoter" ? "promoter" : kind, name: u.full_name || u.username || ROOM_NAME || "YAPS user", img: safeImg(u.avatar_url), bio: u.bio || "", followers: null, st: null, follow: "", uid: uid };
+}
+function resetProfile() {
+  profInfo = null;
+  var box = $("ccProf"), ico = $("ccIco");
+  if (box) { box.hidden = true; box.innerHTML = ""; }
+  if (ico) { ico.classList.remove("has-img"); ico.innerHTML = '<i class="fas fa-comments"></i>'; }
+}
+function paintProfile(info) {
+  var box = $("ccProf"), ico = $("ccIco");
+  if (!info || !box) { resetProfile(); return; }
+  profInfo = info;
+  var label = info.kind === "dj" ? "DJ" : info.kind === "promoter" ? "Promoter" : "Artist";
+  var initial = esc(String(info.name || "?").trim().charAt(0).toUpperCase() || "?");
+  var img = info.img ? '<img src="' + esc(info.img) + '" alt="" loading="lazy" onerror="this.remove()">' : "";
+  if (ico) { ico.classList.add("has-img"); ico.innerHTML = "<b>" + initial + "</b>" + img; }
+  var fol = info.followers == null ? "" : String(info.followers);
+  var meta = [label];
+  if (fol) meta.push(/^new$/i.test(fol) ? "New on YAPS" : fol + " followers");
+  if (info.st && info.st.count) meta.push(info.st.count + (info.st.count === 1 ? " track" : " tracks"));
+  var stats = [];
+  if (fol) stats.push([/^new$/i.test(fol) ? "New" : fol, "Followers"]);
+  if (info.st) { stats.push([String(info.st.count), info.st.count === 1 ? "Track" : "Tracks"]); stats.push([info.st.plays ? fmtNum(info.st.plays) : "0", "Plays"]); }
+  stats.push([members != null ? members.toLocaleString() : "\u2013", "Members", "ccPMem"]);
+  var bio = info.bio || (info.kind === "artist" ? "Fans of " + info.name + " hang out here. Chat about their music, new releases and shows." : "Chat with " + info.name + " and other fans here: share mixes, requests and event news.");
+  var top = info.st && info.st.top.length ? '<p class="cc-prof-top"><b>Top songs:</b> ' + info.st.top.map(function (t) { return esc(t.title) + (t.plays ? " (" + esc(t.plays) + ")" : ""); }).join(" \u2022 ") + "</p>" : "";
+  var following = !!(info.follow && typeof _followedArtists !== "undefined" && _followedArtists.has(info.follow));
+  var canView = !!(info.follow || info.uid);
+  box.innerHTML =
+    '<div class="cc-prof-bar"><div class="cc-prof-tog" id="ccProfTog" role="button" tabindex="0" aria-expanded="false" aria-controls="ccProfMore" aria-label="' + esc(info.name) + ' profile, show details">' +
+      '<span class="cc-pav"><b>' + initial + "</b>" + img + "</span>" +
+      '<span class="cc-prof-id"><b>' + esc(info.name) + "</b><small>" + esc(meta.join(" \u00B7 ")) + '</small></span><i class="fas fa-chevron-down cc-prof-chev" aria-hidden="true"></i></div>' +
+      (info.follow ? '<button type="button" class="cc-prof-follow' + (following ? " following" : "") + '" id="ccPFollow" aria-pressed="' + following + '">' + (following ? "Following" : "+ Follow") + "</button>" : "") + "</div>" +
+    '<div class="cc-prof-more" id="ccProfMore" hidden><p class="cc-prof-bio">' + esc(bio) + "</p>" +
+      '<div class="cc-prof-stats">' + stats.map(function (s) { return "<span><b" + (s[2] ? ' id="' + s[2] + '"' : "") + ">" + esc(s[0]) + "</b>" + esc(s[1]) + "</span>"; }).join("") + "</div>" +
+      (info.st && info.st.genres.length ? '<div class="cc-prof-tags">' + info.st.genres.map(function (g) { return "<span>" + esc(g) + "</span>"; }).join("") + "</div>" : "") +
+      top + (canView ? '<div class="cc-prof-acts"><button type="button" id="ccPView"><i class="fas fa-user" aria-hidden="true"></i> View full profile</button></div>' : "") + "</div>";
+  box.hidden = false;
+  var tog = $("ccProfTog"), more = $("ccProfMore");
+  function flip() { var open = more.hidden; more.hidden = !open; tog.setAttribute("aria-expanded", String(open)); tog.setAttribute("aria-label", info.name + " profile, " + (open ? "hide" : "show") + " details"); }
+  tog.addEventListener("click", flip);
+  tog.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+  var fb = $("ccPFollow");
+  if (fb) fb.addEventListener("click", function () {
+    if (typeof toggleFollowArtist !== "function") return;
+    try { toggleFollowArtist(info.follow, fb); } catch (er) {}
+    fb.setAttribute("aria-pressed", String(fb.classList.contains("following")));
+  });
+  var vb = $("ccPView");
+  if (vb) vb.addEventListener("click", function () {
+    try {
+      if (info.follow && typeof openArtistProfileByName === "function") openArtistProfileByName(info.follow);
+      else if (info.uid && typeof openUserProfile === "function") openUserProfile(info.uid);
+    } catch (er) {}
+  });
+}
+async function loadProfile(my) {
+  var info = roomInfo();
+  ROOM_UID = info && info.uid ? info.uid : "";
+  if (!info) { resetProfile(); return; }
+  var a = findArtist(info, ROOM_NAME);
+  if (a) { paintProfile(infoFromArtist(a)); return; }
+  if (info.uid) {
+    var p = await infoFromAccount(info.kind, info.uid);
+    if (my !== bootId) return;
+    if (p) { paintProfile(p); return; }
+  }
+  if (ROOM_NAME) paintProfile({ kind: info.kind, name: ROOM_NAME, img: "", bio: "", followers: null, st: null, follow: "", uid: "" });
+}
+function insertAtCaret(txt) {
+  var i = $("ccInput"), s = i.selectionStart == null ? i.value.length : i.selectionStart, e = i.selectionEnd == null ? s : i.selectionEnd;
+  if (i.value.length - (e - s) + txt.length > (i.maxLength > 0 ? i.maxLength : 1000)) return;
+  i.value = i.value.slice(0, s) + txt + i.value.slice(e);
+  i.selectionStart = i.selectionEnd = s + txt.length;
+  autoGrow();
+}
 
 function bind() {
   if (bound) return; bound = true;
@@ -33067,6 +33245,7 @@ function bind() {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var v = input.value.trim(); if (!v) return;
+    closeEmoji();
     post(v, true);
   });
   /* song requests (DJ communities): pick a song from the app's library, or type your own request */
@@ -33077,13 +33256,40 @@ function bind() {
     pl.innerHTML = (q ? '<button type="button" class="cc-song" data-own="1"><span><b>Request \u201C' + esc(pq.value.trim()) + '\u201D</b><small>Send exactly what you typed</small></span></button>' : "") +
       out.map(function (t) { return '<button type="button" class="cc-song" data-t="' + esc(t.title) + '" data-a="' + esc(t.artist || "") + '">' + (safeUrl(t.img) ? '<img alt="" loading="lazy" src="' + esc(t.img) + '">' : "") + '<span><b>' + esc(t.title) + '</b><small>' + esc(t.artist || "") + "</small></span></button>"; }).join("");
   }
-  $("ccReq").addEventListener("click", function () { pick.hidden = false; pq.value = ""; drawPick(); pq.focus(); });
+  $("ccReq").addEventListener("click", function () { closeEmoji(); pick.hidden = false; pq.value = ""; drawPick(); pq.focus(); });
   $("ccPickX").addEventListener("click", function () { pick.hidden = true; });
   pq.addEventListener("input", drawPick);
   pl.addEventListener("click", async function (e) {
     var b = e.target.closest(".cc-song"); if (!b) return;
     var text = b.dataset.own ? "\uD83C\uDFB5 Request: " + pq.value.trim() : "\uD83C\uDFB5 Request: " + b.dataset.t + (b.dataset.a ? " \u00B7 " + b.dataset.a : "");
     if (await post(text, false)) { pick.hidden = true; toast("Request sent to the DJ"); }
+  });
+  /* chat tools: emoji and "share the song I'm playing" are always visible above the message box */
+  var EMOJI = ["😀","😂","🤣","😍","😎","🥳","😅","😭","🙏","👏","🙌","💪","👍","🔥","💯","❤️","💃","🕺","🎶","🎤","🎧","🥁","🎸","🎹","🇺🇬","🌍","✨","🎉","🤝","😮","🤩","😘","🥰","😁","🤔","😢","😡","👀","🚀","⭐","🌟","🙂","😉","💙","💚","💛","🧡","💜"];
+  var emo = $("ccEmoji"), emoBtn = $("ccEmo");
+  function closeEmoji() { emo.hidden = true; emoBtn.setAttribute("aria-pressed", "false"); }
+  emoBtn.addEventListener("click", function () {
+    var open = emo.hidden;
+    if (open) {
+      if (!emo.firstChild) emo.innerHTML = EMOJI.map(function (e) { return '<button type="button" data-e="' + e + '" aria-label="Insert ' + e + '">' + e + "</button>"; }).join("");
+      $("ccPick").hidden = true;
+    }
+    emo.hidden = !open; emoBtn.setAttribute("aria-pressed", String(open));
+    if (!open) input.focus();
+  });
+  emo.addEventListener("mousedown", function (e) { e.preventDefault(); });   // keep the keyboard up while picking
+  emo.addEventListener("click", function (e) { var b = e.target.closest("button[data-e]"); if (b) insertAtCaret(b.getAttribute("data-e")); });
+  $("ccNow").addEventListener("click", function () {
+    var list = (typeof tracks !== "undefined" && tracks) ? tracks : [], t = list[(typeof currentTrack !== "undefined") ? currentTrack : -1];
+    if (!t || !(typeof isPlaying !== "undefined" && isPlaying)) { toast("Play a song first, then share it here"); return; }
+    post("\uD83C\uDFA7 Now playing: " + t.title + (t.artist ? " \u00B7 " + t.artist : ""), false);
+  });
+  /* tap a person's photo or name to see their profile */
+  $("ccLog").addEventListener("click", function (e) {
+    var t = e.target.closest(".cc-av,.cc-nm"); if (!t) return;
+    var row = t.closest(".cc-msg"), id = row && row.getAttribute("data-uid");
+    if (!id || !/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id)) return;   // only real accounts have a profile
+    if (typeof openUserProfile === "function") { try { openUserProfile(id); } catch (er) {} }
   });
   $("ccJoin").addEventListener("click", toggleJoin);
 }
@@ -33119,11 +33325,13 @@ async function start(opts) {
   if (opts.artist != null || opts.c != null) {
     OWNER = String(opts.artist || "").replace(/[^A-Za-z0-9_-]/g, "").slice(0, 64);
     COMMUNITY = cleanKey(opts.c || (OWNER ? "artist-" + OWNER : "yaps-connect"), 80) || "yaps-connect";
+    ROOM_NAME = String(opts.name || "").slice(0, 80);
   }
   bind(); hookAuth();
   seen = {}; last = null; members = null; S.joined = false; S.left = false;
   $("ccTitle").textContent = isHub() ? "Listeners Hub" : "Community Chat"; BASE_SUB = isHub() ? "Every YAPS listener in one place: talk about any artist, DJ or song" : "Open to artists, DJs and listeners: talk about any artist, DJ or song"; $("ccSub").textContent = BASE_SUB;
   $("ccLog").innerHTML = "";
+  resetProfile(); loadProfile(my);
   try { await API.init(); S.me = await API.session(); } catch (e) { console.error(e); }
   if (my !== bootId) return;
   var tag = $("ccLive");
@@ -34961,7 +35169,7 @@ html:not([data-theme]):not([data-mode="light"]) #page-song-lab{--sl-bg:#000d29;-
    Cause: .cc-app is sized with 100dvh, which does not shrink on Android when the keyboard opens, so the page grew taller
    than the visible area and the browser scrolled the header up under the app top bar. */
 @media (max-width:1024px){
-  html.kb-open #page-community .cc-app{height:calc(var(--vh,1vh)*100 - var(--topbar-h,0px))!important}
+  html.kb-open #page-community .cc-app{height:calc(var(--vh,1vh)*100 - var(--topbar-h,0px))!important;padding-bottom:0!important}
   html.kb-open #page-community .cc-head{position:sticky;top:0;z-index:6;background:var(--surface)}
   html.kb-open #main:has(#page-community.active){overflow:hidden!important}
 }
@@ -34996,7 +35204,18 @@ html:not([data-theme]):not([data-mode="light"]) #page-song-lab{--sl-bg:#000d29;-
 #page-quickvibes .qvp-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.45));pointer-events:none}
 #page-quickvibes .qvp-play{z-index:3}
 #page-quickvibes .qvp-info{display:block}
-#page-quickvibes .qvp-songs{margin-top:3px;font-size:11.5px;line-height:1.3;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.9}
+#page-quickvibes .qvp-songs{margin-top:8px;display:flex;flex-direction:column;gap:4px;opacity:1}
+#page-quickvibes .qvp-song{position:relative;z-index:2;display:flex;align-items:center;gap:8px;width:100%;min-width:0;min-height:40px;padding:4px 6px 4px 4px;margin:0;border:0;border-radius:10px;background:rgba(255,255,255,.05);color:inherit;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
+#page-quickvibes .qvp-song:active{background:var(--accent-dim)}
+@media (hover:hover){#page-quickvibes .qvp-song:hover{background:var(--accent-dim)}}
+#page-quickvibes .qvp-song:focus-visible{outline:2px solid var(--accent-light);outline-offset:1px}
+#page-quickvibes .qvp-song img{flex:0 0 auto;width:32px;height:32px;border-radius:7px;object-fit:cover;background:var(--card2)}
+#page-quickvibes .qvp-st{display:flex;flex-direction:column;min-width:0;flex:1 1 auto}
+#page-quickvibes .qvp-st b{font-size:12px;font-weight:700;line-height:1.25;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-quickvibes .qvp-st em{font-style:normal;font-size:11px;line-height:1.25;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-quickvibes .qvp-more{margin-top:2px;padding-left:4px;font-size:11px;color:var(--dim)}
+#page-quickvibes .qvp-name{color:var(--text)}
+#page-quickvibes .qvp-tile{background:var(--card2)}
 </style>
 <style id="np-yaps-redesign-css">
 /* ═══ YAPS Music: responsive Now Playing redesign (overrides the earlier np-* styles) ═══ */
@@ -35517,7 +35736,7 @@ html body #page-profile>.yb-float{background:rgba(0,0,0,.45);-webkit-backdrop-fi
 (function(){
   var stack=[],restoring=false,userMoved=false,MAX=40;
   var OWN={'artists':['atp','atpBack'],'new-releases':['nrp','nrpBack'],'trending-videos':['tvp','tvpBack'],'new-videos':['nvp','nvpBack']};
-  var NOARROW={'home':1,'artists':1,'new-releases':1,'trending-videos':1,'new-videos':1};
+  var NOARROW={'community':1,'home':1,'artists':1,'new-releases':1,'trending-videos':1,'new-videos':1};
   var COVER={'artists':1,'new-releases':1,'trending-videos':1,'new-videos':1};
   function cur(){try{return currentPage||'home'}catch(e){return 'home'}}
   function mainEl(){return document.getElementById('main')}
@@ -35536,6 +35755,7 @@ html body #page-profile>.yb-float{background:rgba(0,0,0,.45);-webkit-backdrop-fi
     return false}
   function mkBtn(){var b=document.createElement('button');b.type='button';b.className='nrp-btn yb-btn';b.setAttribute('aria-label','Go back');b.innerHTML='<i class="fas fa-arrow-left" aria-hidden="true"></i>';b.onclick=function(){window.yapsGoBack()};return b}
   function ensureArrow(pg,id){
+    if(pg&&id==='community'){var st=pg.querySelector(':scope>.yb-row');if(st)st.remove();return}
     if(!pg||NOARROW[id]||/^sa-/.test(id))return;
     var mine=pg.querySelector(':scope>.yb-row,:scope>.yb-float');
     if(id==='profile'){if(!mine){var f=mkBtn();f.classList.add('yb-float');pg.appendChild(f)}return}
@@ -35599,5 +35819,270 @@ html body #page-profile>.yb-float{background:rgba(0,0,0,.45);-webkit-backdrop-fi
   addEventListener('load',function(){try{decorate()}catch(e){}setTimeout(function(){try{decorate()}catch(e){}},1500)});
 })();
 </script>
+<style id="chatFixCss">
+/* ══ CHAT FIXES — message boxes, headers and tools are never covered by app overlays ══
+   --chat-nav-h : height of the floating bottom nav (phones only; 0 on desktop and while the keyboard is open)
+   --chat-lift  : extra space a chat needs above the nav (the app reserves a flat 86px, but the nav is 68px + the phone's safe area) */
+:root{--chat-nav-h:0px}
+@media (max-width:768px){:root{--chat-nav-h:calc(68px + env(safe-area-inset-bottom,0px))}}
+html.kb-open{--chat-nav-h:0px}
+:root{--chat-lift:max(0px,calc(var(--chat-nav-h) - var(--mnav-h,0px)))}
+
+/* 1. The floating "You're offline" card sat on top of every chat header. In a chat it becomes a slim strip inside the chat. */
+html.chat-surface #offlineAlertCard{display:none!important}
+.chat-off{display:none;flex:none;align-items:center;justify-content:center;gap:8px;padding:6px 12px;font-size:12.5px;font-weight:700;line-height:1.3;color:var(--gold);background:var(--gold-dim);text-align:center}
+.chat-off span{min-width:0}
+.chat-off button{flex:none;border:0;border-radius:12px;padding:4px 11px;background:var(--gold);color:#1a1200;font-weight:800;font-size:12px;font-family:inherit;cursor:pointer}
+html.is-offline .chat-off{display:flex}
+
+/* 2. Toasts no longer land on the message box */
+html.chat-surface .toast{bottom:calc(var(--player-h,0px) + var(--chat-nav-h) + 132px)}
+
+/* 3. YAPS AI chat: the message box sat under the bottom nav (an extra back-arrow row pushed the page down, and the nav is taller than the space reserved for it) */
+.yai-back{display:flex}
+@media (max-width:768px){
+  html body #main:has(#page-ai-dj.active){padding-bottom:0!important;overflow:hidden!important}
+  html body #main #page-ai-dj .yai-wrap{box-sizing:border-box;height:calc(100dvh - var(--topbar-h,0px));padding-bottom:var(--chat-nav-h)!important}
+  html.kb-open body #main #page-ai-dj .yai-wrap{height:calc(var(--vh,1vh)*100 - var(--topbar-h,0px))}
+}
+html.kb-open #page-ai-dj .yai-chips{display:none}
+
+/* 4. Messages chat: lift the message bar (and its attach menu / voice-recording bar) clear of the nav */
+#msg-chat-view .msg-chat-input-row,#msg-chat-view .msg-record-bar{margin-bottom:var(--chat-lift)}
+#msg-chat-view .msg-attach-menu{bottom:calc(62px + var(--chat-lift))}
+
+/* 5. Community chat */
+@media (max-width:768px){html:not(.kb-open) #page-community .cc-form{padding-bottom:10px}}
+#page-community .cc-av,#page-community .cc-nm{cursor:pointer}
+#page-community .cc-host{background:var(--gold-dim);color:var(--gold)}
+#page-community .cc-b.np{box-shadow:inset 3px 0 0 var(--accent)}
+/* artist / DJ photo in the header */
+#page-community .cc-ico.has-img{display:grid!important;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--accent),var(--accent-dark));box-shadow:0 0 0 2px var(--accent-dim),0 0 0 3.5px var(--accent)}
+#page-community .cc-ico.has-img b{font-size:16px;font-weight:800}
+#page-community .cc-ico.has-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* profile card */
+#page-community .cc-prof{flex:none;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--accent-dim),transparent 130%),var(--surface)}
+#page-community .cc-prof[hidden]{display:none}
+.cc-prof-bar{display:flex;align-items:center;gap:10px;padding:8px 12px}
+.cc-prof-tog{display:flex;align-items:center;gap:10px;flex:1;min-width:0;cursor:pointer;border-radius:12px;-webkit-tap-highlight-color:transparent}
+.cc-prof-tog:focus-visible{outline:2px solid var(--accent-light);outline-offset:2px}
+.cc-pav{position:relative;width:46px;height:46px;border-radius:50%;flex:none;display:grid;place-items:center;overflow:hidden;color:#fff;font-weight:800;font-size:17px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));box-shadow:0 0 0 2px var(--accent-dim),0 0 0 3.5px var(--accent)}
+.cc-pav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cc-prof-id{min-width:0;flex:1;display:block}
+.cc-prof-id b{display:block;font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-prof-id small{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-prof-chev{color:var(--muted);font-size:12px;transition:transform .2s;flex:none}
+.cc-prof-tog[aria-expanded="true"] .cc-prof-chev{transform:rotate(180deg)}
+.cc-prof-follow{flex:none;min-height:36px;padding:0 14px;border-radius:18px;border:1.5px solid var(--accent-light);background:transparent;color:var(--accent-light);font-weight:800;font-size:12.5px;font-family:inherit;cursor:pointer;white-space:nowrap}
+.cc-prof-follow.following{background:var(--accent-dim);border-color:transparent;color:var(--text)}
+.cc-prof-more{padding:0 14px 12px;max-height:min(280px,38dvh);overflow-y:auto;overscroll-behavior:contain}
+.cc-prof-more[hidden]{display:none}
+.cc-prof-bio{margin:0 0 10px;font-size:13.5px;line-height:1.5;color:var(--text)}
+.cc-prof-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:6px;margin-bottom:10px}
+.cc-prof-stats span{display:block;text-align:center;padding:7px 2px;border-radius:12px;background:var(--card);border:1px solid var(--border);font-size:11px;color:var(--muted)}
+.cc-prof-stats b{display:block;font-size:15px;color:var(--text)}
+.cc-prof-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.cc-prof-tags span{padding:3px 10px;border-radius:12px;background:var(--accent-dim);color:var(--accent-lighter,var(--accent-light));font-size:12px;font-weight:700}
+.cc-prof-top{margin:0 0 10px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.cc-prof-top b{color:var(--text)}
+.cc-prof-acts{display:flex;gap:8px;flex-wrap:wrap}
+.cc-prof-acts button{min-height:38px;padding:0 16px;border-radius:19px;border:0;font-weight:800;font-size:13px;font-family:inherit;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-dark))}
+/* the card already shows the photo, so the header photo only appears while the card is hidden (keyboard open) */
+#page-community .cc-app:has(.cc-prof:not([hidden])) .cc-ico.has-img{display:none!important}
+html.kb-open #page-community .cc-app:has(.cc-prof:not([hidden])) .cc-ico.has-img{display:grid!important}
+html.kb-open #page-community .cc-prof,html.kb-open #page-community .cc-pin{display:none}
+@media (max-height:520px){#page-community .cc-prof-more{display:none!important}}
+/* composer tools row: every chat feature is visible as a labelled button */
+#page-community .cc-form{flex-wrap:wrap;row-gap:8px}
+#page-community .cc-tools{flex:1 0 100%;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#page-community .cc-tools::-webkit-scrollbar{display:none}
+.cc-tool{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 13px;border-radius:18px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:700;font-size:12.5px;font-family:inherit;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.cc-tool i{color:var(--accent-light);font-size:13px}
+.cc-tool[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-dim)}
+#page-community .cc-tools .cc-req{width:auto;height:36px;border-radius:18px;display:inline-flex;font-size:12.5px}
+#page-community .cc-tools .cc-req[hidden]{display:none}
+#page-community .cc-emoji{flex:none;display:grid;grid-template-columns:repeat(8,1fr);gap:2px;padding:8px 10px;border-top:1px solid var(--border);background:var(--surface);max-height:min(180px,30dvh);overflow-y:auto;overscroll-behavior:contain}
+#page-community .cc-emoji[hidden]{display:none}
+.cc-emoji button{font-size:24px;line-height:1;min-height:40px;border:0;background:none;border-radius:10px;cursor:pointer}
+.cc-emoji button:active{background:var(--card)}
+</style>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     YAPS RESPONSIVE LAYER — device polish for phones, tablets, laptops, desktops
+     Additive and last in the cascade: delete this one block to revert.
+     Phones ≤599 · Tablets 600–1023 · Laptops 1024–1439 · Desktops ≥1440 · Ultra-wide ≥1920
+     ════════════════════════════════════════════════════════════════════ -->
+<style id="yaps-responsive-layer">
+/* 1 ── Base safety (all devices) */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+img,video{max-width:100%}
+#main{overscroll-behavior-y:contain;scroll-padding-top:12px}
+:where(button,a,[onclick],.sidebar-item,.bn-item,.track-card,.tr-action-btn){touch-action:manipulation}
+:where(a,button,[role="button"],[tabindex]:not([tabindex="-1"]),input,select,textarea):focus-visible{outline:2px solid var(--accent-light);outline-offset:2px}
+.scroll-row img{-webkit-user-drag:none}
+
+/* 2 ── Notches / rounded corners in landscape (viewport-fit=cover is already on) */
+@supports (padding:max(0px)){
+  #topbar{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+  #layout{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+}
+@media (max-width:768px){
+  @supports (padding:max(0px)){
+    #bottomNav{left:max(10px,env(safe-area-inset-left));right:max(10px,env(safe-area-inset-right))}
+    #miniBubble{left:max(8px,env(safe-area-inset-left));right:max(8px,env(safe-area-inset-right))}
+  }
+}
+
+/* 3 ── Touch screens: bigger tap areas without changing the layout, and no iOS focus-zoom */
+@media (pointer:coarse){
+  .tr-action-btn,.pb-ctrl-btn,.modal-close{position:relative}
+  .tr-action-btn::after,.pb-ctrl-btn::after,.modal-close::after{content:"";position:absolute;inset:-9px}
+  .topbar-icon-btn{min-width:40px;min-height:40px}
+}
+@media (pointer:coarse) and (max-width:1024px){
+  input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="color"]):not([type="submit"]):not([type="button"]),
+  select,textarea{font-size:16px!important}
+}
+
+/* 4 ── Phones (≤599): dialogs become bottom sheets */
+@media (max-width:599px){
+  .modal-overlay{align-items:flex-end}
+  .modal{width:100%;max-width:none;border-radius:20px 20px 0 0;max-height:92vh;max-height:92dvh;padding-bottom:env(safe-area-inset-bottom)}
+  .modal-overlay .modal{transform:translateY(40px)}
+  .modal-overlay.open .modal{transform:translateY(0)}
+}
+@media (max-width:400px){
+  .modal-head{padding-left:16px;padding-right:16px}
+  .modal-body{padding-left:16px;padding-right:16px}
+}
+@media (max-width:340px){
+  .topbar-logo{font-size:13px}
+  .bn-item span{font-size:10px}
+  .track-card{width:140px}
+}
+
+/* 5 ── Large phones / small tablets in portrait (601–768): keep floating bars from stretching edge to edge */
+@media (min-width:601px) and (max-width:768px){
+  #bottomNav,#miniBubble{max-width:600px;margin-left:auto;margin-right:auto}
+}
+
+/* 6 ── Dialogs on tablets and up */
+@media (min-width:600px){
+  .modal{max-width:min(520px,92vw)}
+}
+
+/* 7 ── Landscape phones with the bottom nav (≤768 wide, ≤520 tall): reclaim vertical space */
+@media (max-height:520px) and (orientation:landscape) and (max-width:768px){
+  :root{--topbar-h:44px;--mnav-h:58px}
+  #bottomNav{height:50px;bottom:4px}
+  .bn-item{flex-direction:row;gap:6px;padding:0 2px}
+  .bn-item span{font-size:10px}
+  #bnIndicator{bottom:3px}
+}
+
+/* 8 ── Short screens (landscape phones, small windows) */
+@media (max-height:520px){
+  .modal{max-height:96vh;max-height:96dvh}
+  .modal-head{padding-top:12px;padding-bottom:12px}
+}
+
+/* 9 ── Tablets (769–1023) and landscape phones wider than 768: the sidebar becomes a slim icon rail */
+@media (min-width:769px) and (max-width:1023px),
+       (min-width:769px) and (max-height:520px) and (orientation:landscape){
+  :root{--sidebar-w:76px}
+  #sidebar{overflow:hidden}
+  #sidebar .sidebar-header{padding:14px 0;justify-content:center}
+  #sidebar .sidebar-header-info,#sidebar .sidebar-header-caret,#sidebar .sidebar-label{display:none}
+  #sidebar .sidebar-item{font-size:0;gap:0;justify-content:center;padding:13px 0}
+  #sidebar .sidebar-item>:not(svg):not(i):not(img){display:none}
+  #sidebar .sidebar-item .sb-ico,#sidebar .sidebar-item .sb-home-svg{width:22px;height:22px}
+  #sidebar .sidebar-item i{font-size:18px;width:auto}
+  .modal{max-width:min(560px,90vw)}
+}
+
+/* 10 ── Laptops and desktops */
+@media (min-width:1280px){
+  .track-card{width:172px}
+}
+@media (min-width:1440px){
+  :root{--sidebar-w:244px}
+  #sidebar .sidebar-item{font-size:14px}
+}
+@media (min-width:1700px){
+  .track-card{width:188px}
+}
+@media (min-width:1920px){
+  :root{--sidebar-w:268px}
+  .genre-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+}
+
+/* 11 ── Mouse + keyboard devices: slim themed scrollbars, drag-to-scroll rows */
+@media (hover:hover) and (pointer:fine){
+  #main,#sidebarScroll{scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+  #main::-webkit-scrollbar,#sidebarScroll::-webkit-scrollbar{width:10px}
+  #main::-webkit-scrollbar-thumb,#sidebarScroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px;border:2px solid transparent;background-clip:content-box}
+  #main::-webkit-scrollbar-thumb:hover{background:var(--dim);background-clip:content-box}
+  #main::-webkit-scrollbar-track,#sidebarScroll::-webkit-scrollbar-track{background:transparent}
+  .scroll-row.yaps-dragging{cursor:grabbing;user-select:none;-webkit-user-select:none;scroll-behavior:auto}
+  .scroll-row.yaps-dragging *{pointer-events:none}
+}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<script id="yaps-responsive-layer-js">
+(function(){
+  'use strict';
+  /* Tooltips for the tablet icon rail: label every sidebar item while the rail is showing */
+  var railMQ=window.matchMedia('(min-width:769px) and (max-width:1023px), (min-width:769px) and (max-height:520px) and (orientation:landscape)');
+  function syncRailTips(){
+    var items=document.querySelectorAll('#sidebar .sidebar-item');
+    for(var i=0;i<items.length;i++){
+      var el=items[i];
+      if(railMQ.matches){
+        if(!el.hasAttribute('title')){
+          var t=(el.textContent||'').replace(/\s+/g,' ').trim();
+          if(t){el.setAttribute('title',t);el.setAttribute('data-yaps-tip','1');}
+        }
+      }else if(el.getAttribute('data-yaps-tip')){
+        el.removeAttribute('title');el.removeAttribute('data-yaps-tip');
+      }
+    }
+  }
+  if(railMQ.addEventListener)railMQ.addEventListener('change',syncRailTips);else if(railMQ.addListener)railMQ.addListener(syncRailTips);
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',syncRailTips);else syncRailTips();
+  setTimeout(syncRailTips,1500);
+
+  /* Click-and-drag horizontal scrolling for rows on mouse devices (their scrollbars are hidden) */
+  if(!window.matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  var drag=null,suppress=false;
+  document.addEventListener('pointerdown',function(e){
+    if(e.pointerType!=='mouse'||e.button!==0)return;
+    var row=e.target.closest&&e.target.closest('.scroll-row');
+    if(!row||row.scrollWidth<=row.clientWidth+2)return;
+    drag={row:row,x:e.clientX,left:row.scrollLeft,moved:false};
+  },true);
+  document.addEventListener('pointermove',function(e){
+    if(!drag)return;
+    var dx=e.clientX-drag.x;
+    if(!drag.moved&&Math.abs(dx)>6){drag.moved=true;drag.row.classList.add('yaps-dragging');}
+    if(drag.moved)drag.row.scrollLeft=drag.left-dx;
+  },true);
+  function endDrag(){
+    if(!drag)return;
+    if(drag.moved){suppress=true;setTimeout(function(){suppress=false;},60);}
+    drag.row.classList.remove('yaps-dragging');
+    drag=null;
+  }
+  document.addEventListener('pointerup',endDrag,true);
+  document.addEventListener('pointercancel',endDrag,true);
+  document.addEventListener('click',function(e){
+    if(suppress){e.stopPropagation();e.preventDefault();suppress=false;}
+  },true);
+  document.addEventListener('dragstart',function(e){
+    if(e.target&&e.target.tagName==='IMG'&&e.target.closest&&e.target.closest('.scroll-row'))e.preventDefault();
+  },true);
+})();
+</script>
+
 </body>
 </html>
