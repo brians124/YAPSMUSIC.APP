@@ -30,11 +30,12 @@ window.__yapsInPop=0;addEventListener('popstate',function(){window.__yapsInPop=1
 <script>
 (function(){
   try {
-    var nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || {};
-    var seen = sessionStorage.getItem('yaps_loader_seen') === '1';
-    // skip when already seen in this session, unless the user pressed refresh
+    // Loading screen is for NEW users only: shown on the very first open, never again on this device
+    var seen = false;
+    try { seen = localStorage.getItem('yaps_loader_seen') === '1'; } catch(e0) {}
+    try { if (!seen) seen = sessionStorage.getItem('yaps_loader_seen') === '1'; } catch(e1) {}
     var deep = /[?&](page|go)=/.test(location.search);   // arriving from a Studio sidebar link
-    if ((seen || deep) && nav.type !== 'reload') document.documentElement.className += ' yl-skip';
+    if (seen || deep) document.documentElement.className += ' yl-skip';
   } catch(e) {}
 })();
 </script>
@@ -4962,6 +4963,17 @@ html[data-mode="light"] { --yai-art-bg: #fdfefe; --yai-art: url("images/yaps-ai-
   font-weight: 700;
 }
 .bn-item:hover .bn-svg-icon { filter: drop-shadow(0 0 8px var(--accent-glow)); }
+/* Profile button: show the signed-in user's photo instead of the generic icon */
+.bn-avatar { display:none; width:26px; height:26px; border-radius:50%; overflow:hidden; flex:none;
+  align-items:center; justify-content:center; color:#fff; font-size:12px; font-weight:800; line-height:1;
+  background:linear-gradient(135deg,var(--accent-light),var(--accent-dark));
+  box-shadow:0 0 0 1.5px var(--accent), 0 0 4px var(--accent-dim);
+  transition:box-shadow .25s, transform .25s; }
+.bn-avatar img { width:100%; height:100%; object-fit:cover; display:block; border-radius:50%; }
+.bn-item.has-avatar .bn-svg-icon { display:none; }
+.bn-item.has-avatar .bn-avatar { display:flex; }
+.bn-item.active .bn-avatar { transform:translateY(-1px) scale(1.1);
+  box-shadow:0 0 0 2px var(--accent-lighter), 0 0 8px var(--accent-glow), 0 0 16px var(--accent-glow); }
 .bn-item:hover span { color: var(--accent-light); }
 
 /* ── FIRE FLAME TAP EFFECT (bottom nav) ── */
@@ -7097,6 +7109,7 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
     if (el.parentNode) el.parentNode.removeChild(el);
     return;
   }
+  try { localStorage.setItem('yaps_loader_seen', '1'); } catch (e) {}
   try { sessionStorage.setItem('yaps_loader_seen', '1'); } catch (e) {}
   // decorative equalizer bars
   function eq(id, hs) {
@@ -7490,6 +7503,7 @@ html:has(#yapsLoader) #hamburgerBtn{pointer-events:none}
     <span data-i18n="bn_library">My Music</span>
   </div>
   <div class="bn-item" id="bn-profile" onclick="navigate('profile');updateBottomNav('profile')">
+    <span class="bn-avatar" id="bnAvatar" aria-hidden="true"></span>
     <svg class="bn-svg-icon" viewBox="0 0 24 24">
       <circle class="bn-stroke" cx="12" cy="12" r="9.2"/>
       <circle class="bn-fill" cx="12" cy="9.6" r="3"/>
@@ -8882,6 +8896,8 @@ a.djx-row{color:inherit;text-decoration:none}
           <div class="cc-tools" id="ccTools" role="toolbar" aria-label="Chat tools">
             <button type="button" class="cc-tool" id="ccEmo" aria-label="Emoji" aria-pressed="false"><i class="far fa-face-smile" aria-hidden="true"></i> Emoji</button>
             <button type="button" class="cc-tool" id="ccNow" aria-label="Share the song I am playing"><i class="fas fa-headphones" aria-hidden="true"></i> Share song</button>
+            <button type="button" class="cc-tool" id="ccVoice" aria-label="Record a voice message"><i class="fas fa-microphone" aria-hidden="true"></i> <span id="ccVoiceLbl">Voice</span></button>
+            <button type="button" class="cc-tool cc-vcancel" id="ccVoiceX" hidden aria-label="Cancel recording"><i class="fas fa-trash" aria-hidden="true"></i> Cancel</button>
             <button type="button" class="cc-tool cc-req" id="ccReq" hidden aria-label="Request a song" title="Request a song for the DJ"><i class="fas fa-music" aria-hidden="true"></i> Request song</button>
           </div>
           <textarea class="cc-input" id="ccInput" rows="1" maxlength="1000" placeholder="Type a message…" aria-label="Type a message" enterkeyhint="send"></textarea>
@@ -9070,32 +9086,31 @@ a.djx-row{color:inherit;text-decoration:none}
     </section>
 
 <script>window.stpOpenDJ=function(k){try{if(window.djxOpenProfile){window.djxOpenProfile(k);return}}catch(e){}try{navigate("djs")}catch(e){}};</script>
-    <!-- STUDIO WELCOME PAGE -->
+    <!-- STUDIO WELCOME PAGE (redesigned: tools link to DJ studio, producer.html, Song Creator/Song Lab, Library, Upload) -->
     <section class="page" id="page-studio-intro">
       <div class="stp-wrap">
-        <!-- HERO: same design as the Home hero -->
-        <div class="hero-carousel stp-hero-home">
-          <div class="hero-slides" style="width:100%;transform:none">
-            <div class="hero-slide hs-active" style="width:100%">
-              <img fetchpriority="high" decoding="async" class="hero-slide-img" src="images/studio-hero-art.jpg" alt="YAPS Studio" data-t="YAPS Studio" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)">
-              <div class="hero-content">
-                <div class="hero-tag">YAPS Studio</div>
-                <div class="hero-title">Create.<br>Mix.<br><em>Share.</em></div>
-                <div class="hero-sub">Turn your musical ideas into reality.</div>
-                <button type="button" class="hero-btn" onclick="studioIntroStart()">DJ Studio <i class="fas fa-chevron-right" style="font-size:10px;"></i></button><button type="button" class="hero-btn" onclick="openProducer()" style="margin-left:8px">Music Producer <i class="fas fa-chevron-right" style="font-size:10px;"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="stp-what"><b class="y3d y3d-g y3d-live">What You Can Do</b></div>
-        <div class="stp-tiles"><div class="stp-tile" role="button" tabindex="0" data-go="mix"><img src="images/studio-mix.jpg" alt="" loading="lazy" data-t="Mix Tracks" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><b>Mix Tracks</b><span>Create amazing mixes</span></div><div class="stp-tile" role="button" tabindex="0" data-go="record"><img src="images/studio-rec.jpg" alt="" loading="lazy" data-t="Record Audio" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><b>Record Audio</b><span>Capture your voice or songs</span></div><div class="stp-tile" role="button" tabindex="0" data-go="songs"><img src="images/studio-ai.jpg" alt="" loading="lazy" data-t="Create Songs" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><b>Create Songs</b><span>With AI &amp; beats</span></div><div class="stp-tile" role="button" tabindex="0" data-go="edit"><img src="images/studio-edit.jpg" alt="" loading="lazy" data-t="Edit &amp; Master" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><b>Edit &amp; Master</b><span>Perfect your music</span></div><div class="stp-tile" role="button" tabindex="0" data-go="publish"><img src="images/studio-pub.jpg" alt="" loading="lazy" data-t="Publish to YAPS" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"><b>Publish to YAPS</b><span>Share your music with the world</span></div></div>
+        <div class="sx">
+<section class="sx-hero"><img src="images/studio-hero-art.jpg" alt="" fetchpriority="high" decoding="async" onerror="this.remove()">
+<div class="sx-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<div class="sx-ht"><span class="sx-badge"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> YAPS Studio</span>
+<h1>Make music that <em>moves Uganda</em></h1><p>Mix, record, produce and publish &mdash; all in one place.</p>
+<div class="sx-hb"><button type="button" class="sx-go" data-go="dj"><i class="fas fa-play" aria-hidden="true"></i> Start Creating</button></div></div></section>
+<h2 class="sx-h2">Studio Tools</h2>
+<div class="sx-tiles"><button type="button" class="sx-t " data-go="dj"><span class="sx-ic"><i class="fas fa-compact-disc" aria-hidden="true"></i></span><b>Virtual DJ</b><small>Mix, scratch & perform</small><i class="fas fa-arrow-right sx-ar" aria-hidden="true"></i></button><button type="button" class="sx-t " data-go="ai"><span class="sx-ic"><i class="fas fa-microchip" aria-hidden="true"></i></span><b>AI Song Creator</b><small>Generate songs with AI</small><i class="fas fa-arrow-right sx-ar" aria-hidden="true"></i></button><button type="button" class="sx-t " data-go="record"><span class="sx-ic"><i class="fas fa-microphone-lines" aria-hidden="true"></i></span><b>Record Studio</b><small>Record & edit audio</small><i class="fas fa-arrow-right sx-ar" aria-hidden="true"></i></button><button type="button" class="sx-t " data-go="beat"><span class="sx-ic"><i class="fas fa-table-cells" aria-hidden="true"></i></span><b>Beat Maker</b><small>Create beats & loops</small><i class="fas fa-arrow-right sx-ar" aria-hidden="true"></i></button><button type="button" class="sx-t " data-go="edit"><span class="sx-ic"><i class="fas fa-scissors" aria-hidden="true"></i></span><b>Audio Editor</b><small>Cut, trim & enhance</small><i class="fas fa-arrow-right sx-ar" aria-hidden="true"></i></button><button type="button" class="sx-t " data-go="library"><span class="sx-ic"><i class="fas fa-folder-open" aria-hidden="true"></i></span><b>Studio Library</b><small>Manage your projects</small><i class="fas fa-arrow-right sx-ar" aria-hidden="true"></i></button><button type="button" class="sx-t sx-dk" data-go="master"><span class="sx-ic"><i class="fas fa-sliders" aria-hidden="true"></i></span><b>Mastering</b><small>Polish your sound</small><i class="fas fa-arrow-right sx-ar" aria-hidden="true"></i></button><button type="button" class="sx-t sx-dk" data-go="lyrics"><span class="sx-ic"><i class="fas fa-pen-nib" aria-hidden="true"></i></span><b>AI Lyrics</b><small>Write words that hit</small><i class="fas fa-arrow-right sx-ar" aria-hidden="true"></i></button></div>
+<section class="sx-ai"><div class="sx-aih"><span class="sx-ic"><i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i></span><div><b>AI Studio Assistant</b><small>Describe a song and let YAPS AI start it</small></div></div>
+<div class="sx-row"><input id="sxPrompt" type="text" maxlength="200" placeholder="e.g. A love song in Afrobeat style" aria-label="Describe the song you want"><button type="button" class="sx-go" data-go="assist">Generate</button></div>
+<div class="sx-chips"><button type="button" class="sx-chip" onclick="var i=document.getElementById('sxPrompt');i.value=this.textContent;i.focus()">A love song in Afrobeat style</button><button type="button" class="sx-chip" onclick="var i=document.getElementById('sxPrompt');i.value=this.textContent;i.focus()">Luganda gospel worship</button><button type="button" class="sx-chip" onclick="var i=document.getElementById('sxPrompt');i.value=this.textContent;i.focus()">Bongo Flava party beat</button></div></section>
+<h2 class="sx-h2">Quick Tools</h2>
+<div class="sx-quick"><button type="button" class="sx-qc sx-mb" data-go="lyrics"><i class="fas fa-pen-nib" aria-hidden="true"></i>AI Lyrics</button><button type="button" class="sx-qc " data-go="vocal"><i class="fas fa-microphone" aria-hidden="true"></i>Vocal Enhancer</button><button type="button" class="sx-qc sx-mb" data-go="master"><i class="fas fa-sliders" aria-hidden="true"></i>Mastering</button><button type="button" class="sx-qc " data-go="fx"><i class="fas fa-star" aria-hidden="true"></i>Sound Effects</button><button type="button" class="sx-qc " data-go="collab"><i class="fas fa-users" aria-hidden="true"></i>Collaboration</button><button type="button" class="sx-qc " data-go="publish"><i class="fas fa-cloud-arrow-up" aria-hidden="true"></i>Export & Publish</button><button type="button" class="sx-qc " data-go="producer"><i class="fas fa-grip" aria-hidden="true"></i>More Tools</button></div>
+<div class="sx-two"><button type="button" class="sx-card" data-go="top"><span class="sx-ic"><i class="fas fa-fire" aria-hidden="true"></i></span><span><b>Top Sounds</b><small>Trending beats &amp; songs</small></span><i class="fas fa-chevron-right" aria-hidden="true"></i></button></div>
+<section class="sx-pro"><i class="fas fa-trophy" aria-hidden="true"></i><div><b>Create. Share. Grow.</b><small>Let the world hear your music with YAPS Studio</small></div><button type="button" class="sx-gold" data-go="pro">Go Pro</button></section>
+</div>
         <div class="home-ad stp-featbox"><div style="display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 auto;"><i class="fas fa-headphones" style="color:var(--accent);flex-shrink:0;"></i><div style="min-width:0;"><div style="font-size:12.5px;font-weight:700;">Featured DJs &amp; Promoters</div><div style="font-size:11px;color:var(--muted);">Tap a profile to open it</div></div></div><div class="ad-artists" role="group" aria-label="DJs and promoter"><button type="button" class="ad-art" title="DJ Shiru" aria-label="DJ Shiru" onclick="stpOpenDJ('n:shiru')"><b>S</b><img src="images/dj-shiru.webp" alt="" loading="lazy" onerror="this.remove()"></button><button type="button" class="ad-art" title="Julius Kyazze (Promoter)" aria-label="Julius Kyazze (Promoter)" onclick="stpOpenDJ('n:juliuskyazze')"><b>J</b><img src="images/julius-kyazze.png" alt="" loading="lazy" onerror="this.remove()"></button><button type="button" class="ad-art" title="DJ Zahara Toto" aria-label="DJ Zahara Toto" onclick="stpOpenDJ('n:zaharatoto')"><b>Z</b><img src="images/dj-zahara-toto.webp" alt="" loading="lazy" onerror="this.remove()"></button></div></div>
         <div class="stp-how"><div class="stp-how-h"><span class="y3d y3d-s y3d-g y3d-live">How It Works</span></div><div class="stp-steps"><div class="stp-step"><div class="stp-sn"><i class="fas fa-microphone" aria-hidden="true"></i><em>1</em></div><b>Create</b><span>Record your voice or make a song with AI</span></div><div class="stp-step"><div class="stp-sn"><i class="fas fa-headphones" aria-hidden="true"></i><em>2</em></div><b>Mix</b><span>Blend tracks on the decks and polish them</span></div><div class="stp-step"><div class="stp-sn"><i class="fas fa-upload" aria-hidden="true"></i><em>3</em></div><b>Share</b><span>Publish to YAPS for the whole world</span></div></div></div>
         <div class="stp-made" id="stpMade" style="display:none"><div class="stp-how-h"><span class="y3d y3d-s y3d-g y3d-live">Made in YAPS Studio</span></div><div class="stp-mrow" id="stpMadeRow"></div></div>
-        <div class="stp-creator"><div class="stp-cr-img"><img src="images/studio-art.jpg" alt="" loading="lazy" data-t="Be a Creator" data-a="YAPS Studio" onerror="window._yapsImgErr&&window._yapsImgErr(this)"></div><div class="stp-cr-txt"><div class="stp-ct"><span class="y3d y3d-s">Be a Creator,</span><span class="y3d y3d-s y3d-g y3d-live">Not Just a Listener</span></div><ul class="stp-ticks"><li>Easy to Use</li><li>Powerful Tools</li><li>Share Your Talent</li></ul></div></div>
         <div class="stp-plans" id="stpPlans" style="display:none"><div class="stp-how-h"><span class="y3d y3d-s y3d-g y3d-live">Free vs Premium</span></div><div class="stp-pgrid" id="stpPlansGrid"></div></div>
         <div class="stp-faq"><div class="stp-how-h"><span class="y3d y3d-s y3d-g y3d-live">Help &amp; Tips</span></div><div class="stp-faqs"><details><summary>Can I use my phone?</summary><p>Yes. YAPS Studio opens right inside the app, so a phone is all you need to start. Headphones help you hear your mix clearly.</p></details><details><summary>Do I need internet?</summary><p>The first time you open the Studio it needs a connection to load. After that, mixes you save stay on your device.</p></details><details><summary>Where are my mixes saved?</summary><p>Saved mixes stay on your device and show under My Saved Mixes on Home, where you can play them any time. They only become public when you publish them.</p></details><details><summary>How do I share my music with everyone?</summary><p>Tap Publish to YAPS to open the upload page. Publishing is for artist accounts, so you may be asked to switch to one first.</p></details><details><summary>What equipment do I need to record?</summary><p>Your phone&rsquo;s microphone works to begin with. For a cleaner sound, plug in headphones and record somewhere quiet.</p></details></div></div>
-        <div class="stp-foot"><button type="button" class="stp-go" onclick="studioIntroStart()">DJ Studio</button><button type="button" class="stp-go" onclick="openProducer()">Music Producer</button>
+        <div class="stp-foot">
           <label class="stp-skip"><input type="checkbox" id="stpSkip">Don&rsquo;t show again</label></div>
       </div>
     </section>
@@ -10210,7 +10225,7 @@ const SUPABASE_ANON_KEY = "sb_publishable_1Dc7Ag-ZqsqJsgETEkxi5Q_VcG1w0XJ";
 // If the Supabase script from the CDN did not load (offline / blocked / slow), window.supabase is
 // undefined. Calling createClient on it threw an error that stopped the rest of this script and
 // left the first page empty. Now we fall back to null and the app runs without live sign-in.
-const sb = (SUPABASE_URL.startsWith("http") && window.supabase && typeof window.supabase.createClient === "function")
+let sb = (SUPABASE_URL.startsWith("http") && window.supabase && typeof window.supabase.createClient === "function")
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
     })
@@ -10571,25 +10586,99 @@ function _userFromSession(session) {
   return _withProfile(_base);
 }
 
-async function _initAuth() {
-  if (!sb) {
-    const lbl = document.getElementById('sbStatusLabel');
-    if (lbl) lbl.textContent = 'Supabase not configured';
-    return;
+/* ═══ STAY SIGNED IN, EVEN OFFLINE ═══════════════════════════════════════════
+   Like other apps, the account stays on this device until the person taps Logout.
+   Before: with no internet the expired login token could not be refreshed, Supabase returned
+   "no session", and the app showed the guest screen. Now the saved login is used as it is, the app
+   shows the account straight away, and it reconnects quietly when the internet is back. */
+const _SB_STORE_KEY = 'sb-' + ((SUPABASE_URL.match(/^https?:\/\/([^.\/]+)/) || [])[1] || 'x') + '-auth-token';
+const _SB_CDN = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0';
+const _SB_LIB_CACHE = 'yaps-auth-lib-v1';
+const _AUTH_SNAP_KEY = 'yaps_auth_snapshot';
+let _offlineAuth = false;   // true while the account shown comes from the saved login (server not reachable)
+let _authBound = false;
+
+// Keep the saved profile (name, photo, account type) so it shows offline too
+(function () {
+  let _p = null;
+  try { _p = JSON.parse(localStorage.getItem('yaps_profile_cache') || 'null'); } catch (e) {}
+  try {
+    Object.defineProperty(window, '_yapsProfile', {
+      configurable: true,
+      get() { return _p; },
+      set(v) { _p = v; try { if (v) localStorage.setItem('yaps_profile_cache', JSON.stringify(v)); else localStorage.removeItem('yaps_profile_cache'); } catch (e) {} }
+    });
+  } catch (e) {}
+})();
+
+function _storedSession() {   // Supabase keeps the login here until sign-out (or until the server really rejects it)
+  try {
+    const raw = localStorage.getItem(_SB_STORE_KEY);
+    if (!raw) return null;
+    let x = JSON.parse(raw);
+    if (x && x.currentSession) x = x.currentSession;
+    return x && x.user && x.user.id ? x : null;
+  } catch (e) { return null; }
+}
+function _saveAuthSnapshot(session) {
+  try { if (session && session.user) localStorage.setItem(_AUTH_SNAP_KEY, JSON.stringify({ user: session.user, t: Date.now() })); } catch (e) {}
+}
+function _clearAuthCaches() {
+  try { localStorage.removeItem(_AUTH_SNAP_KEY); } catch (e) {}
+  try { window._yapsProfile = null; } catch (e) {}
+}
+function _offlineSession() {
+  const st = _storedSession();
+  if (st) return st;
+  if (navigator.onLine === false) {   // backup copy, only trusted while the device is offline
+    try { const sn = JSON.parse(localStorage.getItem(_AUTH_SNAP_KEY) || 'null'); if (sn && sn.user && sn.user.id) return { user: sn.user, access_token: '', refresh_token: '', expires_at: 0 }; } catch (e) {}
   }
-  const { data } = await sb.auth.getSession();
-  _demoUser = _userFromSession(data.session); try{window.dispatchEvent(new Event('yaps-auth'))}catch(e){}
-  if (_demoUser) _migrateGuestLibraryToAccount(_demoUser.id);
-  _persistLoad();
-  _syncAuthUI();
-  _afterSignIn(data.session);
-  _loadVideoFeed();
-  _subscribeVideoFeed();
-  _refreshOwner(); _loadRemoteTracks();
-  if (_demoUser) { _loadNotifications(); _subscribeNotifications(); _markHasAccount(); _refreshPremiumFromServer(); }
-  else { _clearHasAccount(); setTimeout(_guestWelcomePrompt, 3000); }
-  setTimeout(() => { try { yapsPushSync(); } catch (e) {} }, 1500);
+  return null;
+}
+
+function _loadScript(src) {
+  return new Promise((res, rej) => { const el = document.createElement('script'); el.src = src; el.onload = () => res(); el.onerror = () => rej(new Error('script load failed')); document.head.appendChild(el); });
+}
+function _mkSb() {
+  if (sb) return sb;
+  if (window.supabase && typeof window.supabase.createClient === 'function') {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
+    window.sb = sb;
+  }
+  return sb;
+}
+// If the app is opened with no internet, the Supabase script from the CDN is missing. Use the copy saved on this device.
+async function _ensureSb() {
+  if (_mkSb()) return sb;
+  try {
+    if ('caches' in window) {
+      const c = await caches.open(_SB_LIB_CACHE);
+      const r = await c.match(_SB_CDN);
+      if (r) { const u = URL.createObjectURL(await r.blob()); try { await _loadScript(u); } finally { URL.revokeObjectURL(u); } }
+    }
+  } catch (e) {}
+  if (!window.supabase && navigator.onLine !== false) { try { await _loadScript(_SB_CDN); } catch (e) {} }
+  return _mkSb();
+}
+function _keepAuthLib() {   // save a copy of the script once, while online
+  if (!window.supabase || !('caches' in window) || navigator.onLine === false) return;
+  caches.open(_SB_LIB_CACHE).then(async c => {
+    if (await c.match(_SB_CDN)) return;
+    const r = await fetch(_SB_CDN);
+    if (r && r.ok) await c.put(_SB_CDN, r.clone());
+  }).catch(() => {});
+}
+
+function _bindAuthEvents() {
+  if (_authBound || !sb) return;
+  _authBound = true;
   sb.auth.onAuthStateChange((_event, session) => {
+    if (_event === 'SIGNED_OUT') { _offlineAuth = false; _clearAuthCaches(); }
+    else if (!session) {
+      // No session but nobody signed out = the token could not be refreshed (offline / weak network). Keep the account.
+      const off = _offlineSession();
+      if (off) { session = off; _offlineAuth = true; }
+    } else { _offlineAuth = false; _saveAuthSnapshot(session); }
     _demoUser = _userFromSession(session); try{window.dispatchEvent(new Event('yaps-auth'))}catch(e){}
     // A brand-new signup or a sign-in on this device: fold whatever was
     // collected as a guest into this account's own library (once), then
@@ -10607,6 +10696,66 @@ async function _initAuth() {
     if (_demoUser) { closeModal('auth'); _loadNotifications(); _subscribeNotifications(); _markHasAccount(); _refreshPremiumFromServer(); }
     else { _clearHasAccount(); _refreshPremiumFromServer(); _loadNotifications(); /* signed out: clears notifications */ }
   });
+}
+
+// Internet is back: refresh the login quietly and load everything that needs the server
+let _resuming = false;
+async function _resumeAuth() {
+  if (_resuming || !_demoUser || !_offlineAuth || navigator.onLine === false) return;
+  _resuming = true;
+  try {
+    await _ensureSb();
+    if (!sb) return;
+    _keepAuthLib();
+    _bindAuthEvents();
+    const { data } = await sb.auth.getSession();   // refreshes the expired token when the server can be reached
+    const session = data && data.session;
+    if (!session) return;                          // still no connection: stay in offline mode and try again later
+    _offlineAuth = false;
+    _saveAuthSnapshot(session);
+    _demoUser = _userFromSession(session); try{window.dispatchEvent(new Event('yaps-auth'))}catch(e){}
+    _syncAuthUI(); _markHasAccount();
+    _syncingUid = null;
+    _afterSignIn(session);
+    _loadVideoFeed(); _subscribeVideoFeed(); _refreshOwner(); _loadRemoteTracks();
+    _loadNotifications(); _subscribeNotifications(); _refreshPremiumFromServer();
+  } catch (e) { /* try again on the next signal */ }
+  finally { _resuming = false; }
+}
+window.addEventListener('online', () => setTimeout(_resumeAuth, 600));
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') _resumeAuth(); });
+setInterval(() => { if (_offlineAuth) _resumeAuth(); }, 45000);   // also covers Wi-Fi that is connected but has no internet
+
+async function _initAuth() {
+  await _ensureSb();
+  let session = null;
+  if (sb) { try { const { data } = await sb.auth.getSession(); session = data && data.session; } catch (e) {} }
+  if (!session) {
+    const off = _offlineSession();
+    if (off) { session = off; _offlineAuth = true; }
+  }
+  if (!sb && !session) {
+    const lbl = document.getElementById('sbStatusLabel');
+    if (lbl) lbl.textContent = 'Supabase not configured';
+    return;
+  }
+  if (session && !_offlineAuth) _saveAuthSnapshot(session);
+  _demoUser = _userFromSession(session); try{window.dispatchEvent(new Event('yaps-auth'))}catch(e){}
+  if (_demoUser) _migrateGuestLibraryToAccount(_demoUser.id);
+  _persistLoad();
+  _syncAuthUI();
+  _afterSignIn(session);
+  if (sb) { _loadVideoFeed(); _subscribeVideoFeed(); _refreshOwner(); _loadRemoteTracks(); }
+  if (_demoUser) {
+    _markHasAccount();
+    if (sb) { _loadNotifications(); _subscribeNotifications(); _refreshPremiumFromServer(); }
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}   // stop the browser from clearing the saved login to free space
+  }
+  else { _clearHasAccount(); setTimeout(_guestWelcomePrompt, 3000); }
+  if (sb) setTimeout(() => { try { yapsPushSync(); } catch (e) {} }, 1500);
+  _keepAuthLib();
+  _bindAuthEvents();
+  if (_offlineAuth) setTimeout(_resumeAuth, 1500);
 }
 
 /* ── INLINE VALIDATORS ── */
@@ -10637,9 +10786,15 @@ function validateDisplayName(input) {
 }
 
 async function signOutUser() {
-  if (!sb) return;
-  try { await _libFlush(); } catch (e) {}
-  try { await sb.auth.signOut(); } catch (e) { console.warn('Sign-out error:', e && e.message); }
+  _offlineAuth = false; _clearAuthCaches();
+  if (sb) {
+    try { await _libFlush(); } catch (e) {}
+    let failed = navigator.onLine === false;
+    if (!failed) { try { const r = await sb.auth.signOut(); failed = !!(r && r.error); } catch (e) { failed = true; } }
+    // Offline (or the server could not be reached): sign out on this device only, so the account really goes away
+    if (failed) { try { await sb.auth.signOut({ scope: 'local' }); } catch (e) { console.warn('Sign-out error:', e && e.message); } }
+  }
+  try { localStorage.removeItem(_SB_STORE_KEY); } catch (e) {}
   showToast('Signed out');
 }
 
@@ -10653,7 +10808,7 @@ async function _confirmSidebarLogout() {
   _persistLoad(); // switch back to this device's guest library
   _refreshLibraryUI();
   if (typeof _syncAuthUI === 'function') _syncAuthUI();
-  if (sb) signOutUser();
+  signOutUser();
   closeSidebar();
   navigate('home');
   showToast('Logged out');
@@ -10726,6 +10881,14 @@ function _syncAuthUI() {
   }
   const ownerLink = document.getElementById('ownerDashLink');
   if (ownerLink) ownerLink.style.display = _isOwner() ? 'flex' : 'none';
+  // Mobile bottom nav: Profile button shows the user's photo (or initial) when signed in
+  try {
+    const bnP = document.getElementById('bn-profile'), bnA = document.getElementById('bnAvatar');
+    if (bnP && bnA) {
+      if (_demoUser) { bnA.innerHTML = _avatarInner(_demoUser.avatar, _demoUser.name); bnP.classList.add('has-avatar'); }
+      else { bnA.innerHTML = ''; bnP.classList.remove('has-avatar'); }
+    }
+  } catch (e) {}
   _syncProfileHeader();
   if (typeof updateHomeGreeting === 'function') updateHomeGreeting();
   try {
@@ -33049,6 +33212,14 @@ var seen = {}, last = null, members = null, BASE_SUB = "", chan = null, poll = n
 function nearBottom() { var l = $("ccLog"); return l.scrollHeight - l.scrollTop - l.clientHeight < 120; }
 function toBottom(smooth) { var l = $("ccLog"); l.style.scrollBehavior = smooth ? "smooth" : "auto"; l.scrollTop = l.scrollHeight; }
 
+var VOICE_RE = /^\uD83C\uDFA4voice\|(https?:\/\/[^|\s]+)\|(\d{1,4})$/;
+function fmtDur(n) { n = Math.max(0, Math.round(n || 0)); return Math.floor(n / 60) + ":" + (n % 60 < 10 ? "0" : "") + (n % 60); }
+function voiceHtml(body) {
+  var m = VOICE_RE.exec(String(body || "")); if (!m) return "";
+  var url = esc(JSON.stringify(m[1]));
+  return '<div class="cc-voice"><div class="msg-voice-play cc-voice-play" role="button" tabindex="0" aria-label="Play voice message" onclick="_toggleVoicePlay(this,' + url + ')"><i class="fas fa-play"></i></div>' +
+    '<div class="cc-voice-track"><div class="msg-voice-bar" onclick="_seekVoice(event,this)"><div class="msg-voice-bar-fill"></div></div><div class="cc-voice-dur">' + fmtDur(+m[2]) + '</div></div></div>';
+}
 function rowHtml(m) {
   var u = m.user || { name: "YAPS user", role: "fan" }, mine = !!(S.me && u.id === S.me.id), html = "";
   var t = new Date(m.created_at).getTime();
@@ -33057,7 +33228,7 @@ function rowHtml(m) {
   last = { uid: u.id, t: t };
   return html + '<div class="cc-msg' + (mine ? " me" : "") + (cont ? " cont" : "") + '" data-id="' + esc(m.id) + '" data-uid="' + esc(u.id || "") + '">' + (mine ? "" : avatar(u)) +
     '<div class="cc-b' + (/^\uD83C\uDFB5/.test(m.body) ? " req" : /^\uD83C\uDFA7 Now playing:/.test(m.body) ? " np" : "") + '"><div class="cc-nm">' + esc(u.name) + (ROOM_UID && cleanId(u.id) === ROOM_UID ? ' <span class="cc-role cc-host">Host</span>' : u.role && u.role !== "fan" ? ' <span class="cc-role">' + (u.role === "dj" ? "DJ" : "Artist") + "</span>" : "") + "</div>" +
-    '<div class="cc-tx">' + linkify(m.body) + '</div><div class="cc-tm">' + esc(hm(t)) + "</div></div></div>";
+    '<div class="cc-tx">' + (voiceHtml(m.body) || linkify(m.body)) + '</div><div class="cc-tm">' + esc(hm(t)) + "</div></div></div>";
 }
 function add(rows, force) {
   rows = rows.filter(function (m) { if (seen[m.id]) return false; seen[m.id] = 1; return true; });
@@ -33284,6 +33455,50 @@ function bind() {
     if (!t || !(typeof isPlaying !== "undefined" && isPlaying)) { toast("Play a song first, then share it here"); return; }
     post("\uD83C\uDFA7 Now playing: " + t.title + (t.artist ? " \u00B7 " + t.artist : ""), false);
   });
+  /* voice messages: tap Voice to record, tap again to send (uploads to the chat-media bucket, stored in the message as a marker) */
+  var vBtn = $("ccVoice"), vX = $("ccVoiceX"), vLbl = $("ccVoiceLbl"), vRec = null, vStream = null, vChunks = [], vStart = 0, vTimer = null, vCancel = false;
+  function vReset() {
+    clearInterval(vTimer); vTimer = null;
+    if (vStream) { vStream.getTracks().forEach(function (t) { t.stop(); }); vStream = null; }
+    vBtn.classList.remove("rec"); vBtn.setAttribute("aria-label", "Record a voice message"); vLbl.textContent = "Voice"; vX.hidden = true; vBtn.disabled = false;
+  }
+  async function vSend(blob, secs) {
+    vBtn.disabled = true; vLbl.textContent = "Sending…";
+    try {
+      var ext = /mp4|aac/.test(blob.type) ? "m4a" : /ogg/.test(blob.type) ? "ogg" : "webm";
+      var url = await _apiUpload("chat-media", blob, { filename: "voice-" + Date.now() + "." + ext, contentType: blob.type || "audio/webm" });
+      var row = await API.send("\uD83C\uDFA4voice|" + url + "|" + secs);
+      add([row], true); autoJoin();
+    } catch (er) { toast("Voice message not sent"); console.warn(er); }
+    vReset();
+  }
+  function vStop(cancel) { vCancel = !!cancel; if (vRec && vRec.state !== "inactive") vRec.stop(); else vReset(); }
+  vBtn.addEventListener("click", async function () {
+    if (!S.me) { signIn(); return; }
+    if (vRec && vRec.state === "recording") { vStop(false); return; }
+    if (!S.live) { toast("Sign in with your account to send voice messages"); return; }
+    if (!navigator.mediaDevices || !window.MediaRecorder) { toast("Voice messages aren't supported on this browser"); return; }
+    try { vStream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch (e) { toast("Microphone access denied"); return; }
+    closeEmoji(); $("ccPick").hidden = true;
+    vChunks = []; vCancel = false;
+    var mt = MediaRecorder.isTypeSupported("audio/webm;codecs=opus") ? "audio/webm;codecs=opus" : MediaRecorder.isTypeSupported("audio/mp4") ? "audio/mp4" : "";
+    vRec = mt ? new MediaRecorder(vStream, { mimeType: mt }) : new MediaRecorder(vStream);
+    vRec.ondataavailable = function (e) { if (e.data && e.data.size) vChunks.push(e.data); };
+    vRec.onstop = function () {
+      var secs = Math.max(1, Math.round((Date.now() - vStart) / 1000)), blob = new Blob(vChunks, { type: vRec.mimeType || "audio/webm" });
+      vChunks = [];
+      if (vCancel || !blob.size) { vReset(); return; }
+      if (blob.size > 12 * 1024 * 1024) { toast("Voice message too long"); vReset(); return; }
+      vSend(blob, secs);
+    };
+    vRec.start(); vStart = Date.now();
+    vBtn.classList.add("rec"); vBtn.setAttribute("aria-label", "Stop and send voice message"); vX.hidden = false; vLbl.textContent = "0:00 · Tap to send";
+    vTimer = setInterval(function () {
+      var sec = Math.floor((Date.now() - vStart) / 1000); vLbl.textContent = fmtDur(sec) + " · Tap to send";
+      if (sec >= 300) vStop(false);   // 5 min cap
+    }, 250);
+  });
+  vX.addEventListener("click", function () { vStop(true); });
   /* tap a person's photo or name to see their profile */
   $("ccLog").addEventListener("click", function (e) {
     var t = e.target.closest(".cc-av,.cc-nm"); if (!t) return;
@@ -34937,6 +35152,129 @@ html[data-mode="light"] #page-studio-intro .stp-pc li,html[data-mode="light"] #p
   document.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var t=e.target.closest&&e.target.closest('#page-studio-intro .stp-tile[data-go]');if(t){e.preventDefault();window.studioIntroTile(t.dataset.go)}});
 })();
 </script>
+
+<style id="studio-redesign-css">
+/* Studio page: built only from the app's own theme variables, so it follows Neon / Aurora / every colour and light mode */
+#page-studio-intro .sx{max-width:760px;margin:0 auto;padding:0 var(--sp-gut,14px);box-sizing:border-box}
+#page-studio-intro .sx button{font-family:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+#page-studio-intro .sx-hero{position:relative;overflow:hidden;margin-top:10px;border-radius:22px;border:1px solid var(--border);background:radial-gradient(90% 120% at 90% 0%,var(--accent-dim),transparent 60%),linear-gradient(160deg,var(--card2),var(--bg));box-shadow:0 18px 40px -22px var(--accent)}
+#page-studio-intro .sx-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 60%;opacity:.35;mix-blend-mode:luminosity}
+#page-studio-intro .sx-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 8%,transparent 80%);opacity:.85}
+#page-studio-intro .sx-ht{position:relative;z-index:2;padding:22px 18px 20px;max-width:430px}
+#page-studio-intro .sx-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:99px;background:var(--accent-dim);border:1px solid var(--accent);font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-light)}
+#page-studio-intro .sx-hero h1{margin:12px 0 8px;font-size:clamp(26px,7.5vw,38px);line-height:1.05;font-weight:900;color:var(--text)}
+#page-studio-intro .sx-hero h1 em{font-style:normal;background:var(--neon-grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+#page-studio-intro .sx-hero p{margin:0 0 16px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+#page-studio-intro .sx-hb{display:flex;gap:10px;flex-wrap:wrap}
+#page-studio-intro .sx-go{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:99px;padding:12px 22px;font-weight:800;font-size:14px;color:#fff;cursor:pointer;background:var(--neon-btn,var(--accent));box-shadow:0 8px 22px -8px var(--accent)}
+#page-studio-intro .sx-ghost{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--accent);border-radius:99px;padding:11px 18px;font-weight:700;font-size:14px;background:var(--accent-dim);color:var(--accent-light);cursor:pointer}
+#page-studio-intro .sx-eq{position:absolute;right:14px;bottom:0;z-index:1;display:flex;align-items:flex-end;gap:5px;height:100px;opacity:.55}
+#page-studio-intro .sx-eq i{width:6px;border-radius:4px 4px 0 0;background:var(--neon-grad,var(--accent));height:30%;animation:sxeq 1.2s ease-in-out infinite alternate}
+#page-studio-intro .sx-eq i:nth-child(2n){animation-duration:.9s;animation-delay:-.3s}#page-studio-intro .sx-eq i:nth-child(3n){animation-duration:1.5s;animation-delay:-.7s}#page-studio-intro .sx-eq i:nth-child(4n){animation-delay:-.5s}
+@keyframes sxeq{to{height:95%}}
+#page-studio-intro .sx-h2{display:flex;align-items:center;gap:10px;margin:22px 2px 10px;font-size:17px;font-weight:800;color:var(--text)}
+#page-studio-intro .sx-h2::before{content:"";width:4px;height:18px;border-radius:4px;background:var(--neon-btn,var(--accent))}
+#page-studio-intro .sx-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#page-studio-intro .sx-t{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:14px 13px 13px;text-align:left;border-radius:18px;border:1px solid var(--border);background:linear-gradient(160deg,var(--card2),var(--card));cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s}
+#page-studio-intro .sx-t:first-child{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;align-items:center;column-gap:12px;border-color:var(--accent);background:radial-gradient(120% 140% at 100% 0%,var(--accent-dim),transparent 60%),linear-gradient(160deg,var(--card2),var(--card))}
+#page-studio-intro .sx-t:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 14px 26px -16px var(--accent)}
+#page-studio-intro .sx-t:active,#page-studio-intro .sx-card:active{transform:scale(.97)}
+#page-studio-intro .sx-ic{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:14px;font-size:19px;color:#fff;background:var(--neon-btn,var(--accent));box-shadow:0 6px 16px -6px var(--accent)}
+#page-studio-intro .sx-t .sx-ic{margin-bottom:8px}#page-studio-intro .sx-t:first-child .sx-ic{margin:0}
+#page-studio-intro .sx-t b{font-size:14.5px;font-weight:800;color:var(--text)}
+#page-studio-intro .sx-t small,#page-studio-intro .sx-card small,#page-studio-intro .sx-aih small,#page-studio-intro .sx-pro small{font-size:11.5px;line-height:1.3;color:var(--muted)}
+#page-studio-intro .sx-ar{position:absolute;right:12px;top:14px;font-size:12px;color:var(--accent-light);opacity:.8}
+#page-studio-intro .sx-t:first-child b,#page-studio-intro .sx-t:first-child small{flex:1 1 60%}
+#page-studio-intro .sx-ai{margin-top:14px;padding:14px;border-radius:20px;border:1px solid var(--accent);background:radial-gradient(100% 160% at 0% 0%,var(--accent-dim),transparent 65%),var(--card)}
+#page-studio-intro .sx-aih{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+#page-studio-intro .sx-aih b{display:block;font-size:15px;font-weight:800;color:var(--text)}
+#page-studio-intro .sx-row{display:flex;gap:8px}
+#page-studio-intro .sx-row input{flex:1;min-width:0;padding:12px 14px;border-radius:99px;border:1px solid var(--border);background:var(--bg);color:var(--text);font:14px inherit;outline:none}
+#page-studio-intro .sx-row input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+#page-studio-intro .sx-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+#page-studio-intro .sx-chip{border:1px solid var(--border);border-radius:99px;padding:6px 11px;font-size:11.5px;background:var(--card2);color:var(--muted);cursor:pointer}
+#page-studio-intro .sx-chip:hover{border-color:var(--accent);color:var(--text)}
+#page-studio-intro .sx-quick{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;scroll-snap-type:x proximity}
+#page-studio-intro .sx-quick::-webkit-scrollbar{display:none}
+#page-studio-intro .sx-qc{flex:none;scroll-snap-align:start;display:inline-flex;align-items:center;gap:8px;padding:10px 15px;border-radius:99px;border:1px solid var(--border);background:var(--card);font-size:13px;font-weight:700;color:var(--text);cursor:pointer;white-space:nowrap}
+#page-studio-intro .sx-qc i{color:var(--accent-light)}
+#page-studio-intro .sx-qc:hover{border-color:var(--accent);background:var(--accent-dim)}
+#page-studio-intro .sx-two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+#page-studio-intro .sx-card{display:flex;align-items:center;gap:10px;padding:12px;text-align:left;border-radius:16px;border:1px solid var(--border);background:var(--card);cursor:pointer;min-width:0}
+#page-studio-intro .sx-card .sx-ic{width:40px;height:40px;font-size:17px}
+#page-studio-intro .sx-card>span:nth-child(2){flex:1;min-width:0}
+#page-studio-intro .sx-card b{display:block;font-size:13.5px;font-weight:800;color:var(--text)}
+#page-studio-intro .sx-card>i{font-size:11px;color:var(--accent-light)}
+#page-studio-intro .sx-pro{display:flex;align-items:center;gap:12px;margin:14px 0 6px;padding:14px;border-radius:18px;border:1px solid var(--gold);background:linear-gradient(100deg,var(--gold-dim),transparent 80%),var(--card)}
+#page-studio-intro .sx-pro>i{font-size:30px;color:var(--gold)}
+#page-studio-intro .sx-pro>div{flex:1;min-width:0}
+#page-studio-intro .sx-pro b{display:block;font-size:14.5px;font-weight:800;color:var(--text)}
+#page-studio-intro .sx-gold{flex:none;border:0;border-radius:99px;padding:11px 18px;font-weight:900;font-size:13px;color:#1a1200;background:linear-gradient(100deg,#ffb300,#ffd466);cursor:pointer}
+#page-studio-intro .sx button:focus-visible{outline:2px solid var(--accent-light);outline-offset:2px}
+@media (min-width:640px){#page-studio-intro .sx{max-width:1100px}#page-studio-intro .sx-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}#page-studio-intro .sx-t:first-child{grid-column:span 2}#page-studio-intro .sx-hero{min-height:260px}#page-studio-intro .sx-ht{padding:34px 30px;max-width:520px}#page-studio-intro .sx-eq{height:180px;right:30px}}
+@media (prefers-reduced-motion:reduce){#page-studio-intro .sx-eq i{animation:none}#page-studio-intro *{transition:none!important}}
+</style>
+<style id="studio-neon-css">
+/* YAPS Studio neon look (matches mockups): navy glass cards, blue / purple / magenta glow. Desktop = 4 columns, phone = 3 columns */
+#page-studio-intro{--accent:#2f7bff;--accent-light:#8fd0ff;--accent-dim:rgba(47,123,255,.2);--border:rgba(80,140,255,.55);--card:#08123f;--card2:#0c1a5c;--bg:#040821;--neon-btn:linear-gradient(90deg,#00b8ff,#7b4dff 60%,#e040fb);--neon-grad:linear-gradient(90deg,#fff,#7cc4ff 45%,#e040fb);background:radial-gradient(80% 40% at 80% 0%,rgba(123,77,255,.35),transparent 70%),linear-gradient(180deg,#07123f,#030720)}
+#page-studio-intro .sx-hero{border-color:#3d7bff;box-shadow:0 0 28px -6px rgba(47,123,255,.7),inset 0 0 40px rgba(123,77,255,.25)}
+#page-studio-intro .sx-hero h1{font-style:italic;font-weight:900;letter-spacing:-.5px}
+#page-studio-intro .sx-t,#page-studio-intro .sx-ai,#page-studio-intro .sx-card,#page-studio-intro .sx-qc{border-width:1.5px;box-shadow:inset 0 0 18px rgba(47,123,255,.22),0 0 14px -6px rgba(47,123,255,.8)}
+#page-studio-intro .sx-tiles{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#page-studio-intro .sx-t:first-child{grid-column:auto;flex-direction:column;align-items:flex-start}
+#page-studio-intro .sx-t:first-child b,#page-studio-intro .sx-t:first-child small{flex:none}
+#page-studio-intro .sx-t:first-child .sx-ic{margin-bottom:8px}
+#page-studio-intro .sx-t{padding:12px 10px;min-height:118px;justify-content:flex-end}
+#page-studio-intro .sx-t b{font-size:13.5px}#page-studio-intro .sx-t small{font-size:10.5px}
+#page-studio-intro .sx-t:nth-child(1){background:linear-gradient(160deg,#0b2a7a,#06103a)}
+#page-studio-intro .sx-t:nth-child(2){background:linear-gradient(160deg,#4a24b8,#0b1a6a);border-color:#9b5cff}
+#page-studio-intro .sx-t:nth-child(3){background:linear-gradient(160deg,#0a3a9a,#06103a)}
+#page-studio-intro .sx-t:nth-child(4){background:linear-gradient(160deg,#7a1fc8,#2a0f7a);border-color:#d34cff}
+#page-studio-intro .sx-t:nth-child(5){background:linear-gradient(160deg,#0a46b8,#06103a)}
+#page-studio-intro .sx-t:nth-child(6){background:linear-gradient(160deg,#5a2ad0,#0a1a6a);border-color:#9b5cff}
+#page-studio-intro .sx-t:nth-child(7){background:linear-gradient(160deg,#0a46b8,#06103a)}
+#page-studio-intro .sx-t:nth-child(8){background:linear-gradient(160deg,#7a1fc8,#2a0f7a);border-color:#d34cff}
+#page-studio-intro .sx-ic{background:linear-gradient(135deg,#00b8ff,#7b4dff);box-shadow:0 0 16px rgba(0,184,255,.6)}
+#page-studio-intro .sx-dk{display:none}
+#page-studio-intro .sx-ai{background:linear-gradient(100deg,#4a24b8,#0a1a6a 70%);border-color:#9b5cff}
+#page-studio-intro .sx-qc{background:#08123f}
+#page-studio-intro .sx-two{grid-template-columns:1fr}
+#page-studio-intro .sx-pro{border-color:#f5c451;background:linear-gradient(100deg,rgba(245,196,81,.2),transparent 70%),#08123f}
+@media (min-width:640px){
+ #page-studio-intro .sx-tiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+ #page-studio-intro .sx-t:first-child{grid-column:auto}
+ #page-studio-intro .sx-t{min-height:130px}
+ #page-studio-intro .sx-dk{display:flex}
+ #page-studio-intro .sx-mb{display:none}
+ #page-studio-intro .sx-quick{flex-wrap:wrap;overflow:visible}
+ #page-studio-intro .sx-two{grid-template-columns:1fr 1fr}
+}
+</style>
+<script id="studio-redesign-js">
+(function(){
+  /* Tool -> file/page map. DJ = yapsvirtual.html via openStudio(); Producer tools = producer.html; AI = Song Creator / Song Lab; Library & Publish = in-app pages */
+  var PRODUCER={producer:'',record:'record',beat:'beats',edit:'edit',master:'master',vocal:'vocal',fx:'fx',lyrics:'lyrics',collab:'collab'};
+  function go(k){
+    var pr=document.getElementById('sxPrompt');
+    if(k==='dj'){window.studioIntroStart();return}
+    if(k==='ai'){if(window.openSongCreator)window.openSongCreator();else navigate('song-lab');return}
+    if(k==='assist'){try{if(pr&&pr.value.trim())sessionStorage.setItem('yaps_studio_prompt',pr.value.trim())}catch(e){}
+      if(window.openSongCreator)window.openSongCreator();else navigate('song-lab');return}
+    if(PRODUCER[k]){
+      if(typeof _yapsCan==='function'&&!_yapsCan('producer')){_yapsDeny('producer');return}
+      try{if(window._studioClose)window._studioClose(true)}catch(e){}
+      location.href='producer.html'+(PRODUCER[k]?'?tool='+PRODUCER[k]:'');return}
+    if(k==='library'||k==='top'){try{navigate(k==='top'?'home':'library');updateBottomNav(k==='top'?'home':'library')}catch(e){}return}
+    if(k==='publish'){try{navigate('upload');updateBottomNav('upload')}catch(e){navigate('upload')}return}
+    if(k==='pro'){if(window.openSubscriptionModal)window.openSubscriptionModal();return}
+  }
+  window.studioIntroTile=go;
+  function hit(e){var t=e.target.closest&&e.target.closest('#page-studio-intro [data-go]');if(t&&!t.classList.contains('stp-tile')){go(t.dataset.go)}}
+  document.addEventListener('click',hit);
+  document.addEventListener('keydown',function(e){if(e.key!=='Enter'&&e.key!==' ')return;var t=e.target.closest&&e.target.closest('#page-studio-intro .sx-tile[data-go],#page-studio-intro .sx-card[data-go]');if(t){e.preventDefault();go(t.dataset.go)}});
+})();
+</script>
+
 <style>
 /* ═══ SONG LAB — "Create with YAPS AI" guided page (additive; scoped to #page-song-lab) ═══ */
 #page-song-lab .sl-wrap{max-width:760px;margin:0 auto;padding:16px 16px 40px}
@@ -35717,7 +36055,8 @@ html body #page-profile .acx-view{grid-area:act;justify-self:end;align-self:end;
 </style>
 <style id="yapsBackCss">
 /* in-page back arrow (same round button as the New Releases page) */
-.yb-row{display:flex;align-items:center;padding:10px 14px 0}
+/* the phone's own Back button now does this job, so the arrow row takes no space */
+.yb-row{display:none!important}
 .yb-float{position:absolute;top:12px;left:12px;z-index:6}
 html body #page-profile>.yb-float{background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-color:rgba(255,255,255,.5);color:#fff}
 /* COVER PHOTO of songs behind the header of song / artist / video list pages */
@@ -35794,12 +36133,29 @@ html body #page-profile>.yb-float{background:rgba(0,0,0,.45);-webkit-backdrop-fi
         if(i>=0){var y=stack[i].y;stack.length=i;restoreY(y)}else stack.length=0;
       }else{
         stack.push({p:from,y:fromY});if(stack.length>MAX)stack.shift();
+        if(!OWN[to]&&!/^sa-/.test(to)){try{history.pushState({yapsNav:1},'')}catch(e){}}   /* so the phone Back button can step back to the previous page */
       }
     }
     try{decorate()}catch(e){}
     setTimeout(function(){try{decorate()}catch(e){}},600);
     return r;
   };
+
+  /* ── phone / browser Back button: go back to the page the person was on (and its scroll position) ── */
+  var curSt=history.state,departed=null,ovWas=false,_ps=history.pushState,_rs=history.replaceState;
+  history.pushState=function(st){curSt=st;return _ps.apply(this,arguments)};
+  history.replaceState=function(st){curSt=st;return _rs.apply(this,arguments)};
+  addEventListener('popstate',function(e){departed=curSt;curSt=e.state;ovWas=!!(window.__scOpen||window.__studioOpen)},true);
+  addEventListener('popstate',function(){
+    if(!(departed&&departed.yapsNav)||ovWas)return;      /* only steps that this page-to-page tracking pushed; Studio / Song Creator / list pages keep their own */
+    setTimeout(function(){                               /* after the pages' own popstate handlers have looked at the old page */
+      var cp=cur(),t=stack[stack.length-1],target=t?t.p:(cp!=='home'?'home':null);
+      if(!target||target===cp)return;
+      window.__yapsInPop=1;try{navigate(target)}finally{window.__yapsInPop=0}
+      try{if(typeof updateBottomNav==='function')updateBottomNav(target)}catch(x){}
+      try{decorate()}catch(x){}
+    },0);
+  });
 
   window.yapsGoBack=function(){
     try{
@@ -35809,6 +36165,7 @@ html body #page-profile>.yb-float{background:rgba(0,0,0,.45);-webkit-backdrop-fi
     var cp=cur(),own=OWN[cp],hs=history.state||{};
     if(own&&hs[own[0]]&&typeof window[own[1]]==='function'){window[own[1]]();return}
     if(/^sa-/.test(cp)&&hs.sap){history.back();return}
+    if(hs.yapsNav){history.back();return}                     /* same as the phone Back button */
     var t=stack.pop(),target=t?t.p:(cp!=='home'?'home':null);
     if(!target)return;
     restoring=true;try{navigate(target)}finally{restoring=false}
@@ -35898,6 +36255,18 @@ html.kb-open #page-community .cc-prof,html.kb-open #page-community .cc-pin{displ
 #page-community .cc-tools::-webkit-scrollbar{display:none}
 .cc-tool{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:0 13px;border-radius:18px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:700;font-size:12.5px;font-family:inherit;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
 .cc-tool i{color:var(--accent-light);font-size:13px}
+.cc-tool.rec{border-color:#e0455f;background:rgba(224,69,95,.16);color:#fff}
+.cc-tool.rec i{color:#e0455f;animation:vsPulse 1s ease-in-out infinite}
+.cc-tool[hidden]{display:none!important}
+.cc-voice{display:flex;align-items:center;gap:10px;min-width:200px;max-width:250px;padding:2px 0}
+.cc-voice-play{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-size:13px;background:var(--accent-dim);color:var(--accent)}
+.cc-msg.me .cc-voice-play{background:rgba(255,255,255,.25);color:#fff}
+.cc-voice-track{flex:1;display:flex;align-items:center;gap:8px;min-width:0}
+.cc-voice .msg-voice-bar{flex:1;height:4px;border-radius:2px;background:var(--border);position:relative;cursor:pointer}
+.cc-msg.me .cc-voice .msg-voice-bar{background:rgba(255,255,255,.35)}
+.cc-voice .msg-voice-bar-fill{height:100%;width:0;border-radius:2px;background:var(--accent)}
+.cc-msg.me .cc-voice .msg-voice-bar-fill{background:#fff}
+.cc-voice-dur{font-size:11px;opacity:.85;flex:none;min-width:28px}
 .cc-tool[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-dim)}
 #page-community .cc-tools .cc-req{width:auto;height:36px;border-radius:18px;display:inline-flex;font-size:12.5px}
 #page-community .cc-tools .cc-req[hidden]{display:none}

@@ -8,7 +8,7 @@
  * When one changes: raise its ?v=N in index.html / yapsvirtual.html / app.js AND in PRECACHE below, then raise VERSION.
  * (bump-version.py does all of that in one go.)
  */
-const VERSION = 'v11';
+const VERSION = 'v12';
 const SHELL_CACHE   = 'yaps-shell-'   + VERSION;
 const RUNTIME_CACHE = 'yaps-runtime-' + VERSION;
 const IMAGE_CACHE   = 'yaps-images-'  + VERSION;
